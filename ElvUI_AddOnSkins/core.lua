@@ -227,14 +227,6 @@ function addon:PLAYER_ENTERING_WORLD()
 		for _, data in pairs(alldata) do
 			self:RegisteredSkin(skin, data.priority, data.func, data.events)
 		end
-		
-		if(not V.addOnSkins[skin]) then
-			if(find(skin, "Blizzard_")) then
-				V.addOnSkins[skin] = false;
-			else
-				V.addOnSkins[skin] = true;
-			end
-		end
 	end
 	
 	for skin, funcs in pairs(self.skins) do
@@ -245,7 +237,7 @@ function addon:PLAYER_ENTERING_WORLD()
 		end
 	end
 	
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
+	--self:UnregisterEvent("PLAYER_ENTERING_WORLD");
 end
 
 function addon:ADDON_LOADED(event, addon)
@@ -256,7 +248,7 @@ function addon:Initialize()
 	EP:RegisterPlugin(addonName, getOptions);
 	
 	self:RegisterEvent("ADDON_LOADED");
-	self:RegisterEvent("PLAYER_ENTERING_WORLD");
+	self:PLAYER_ENTERING_WORLD();
 end
 
 E:RegisterModule(addon:GetName());

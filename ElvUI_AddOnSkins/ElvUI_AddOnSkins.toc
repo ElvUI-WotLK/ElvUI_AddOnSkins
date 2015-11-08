@@ -6,4 +6,5 @@
 ## RequiredDeps: ElvUI
 
 core.lua
+addons\load_addons.xml
 blizzard\load_blizzard.xml
