@@ -1,7 +1,7 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
 
-if not (addon:CheckAddOn("SexyCooldown") and addon:CheckAddOn("ElvUI")) then return; end
+if(not addon:CheckAddOn("SexyCooldown")) then return; end
 
 function addon:SexyCooldown()
 	local function SkinSexyCooldownIcon(bar, icon)

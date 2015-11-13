@@ -5,6 +5,9 @@
 ## Notes: AddOn skins for ElvUI :)
 ## RequiredDeps: ElvUI
 
+profiles.lua
 core.lua
+embed.lua
 addons\load_addons.xml
 blizzard\load_blizzard.xml
+modules\load_modules.xml
