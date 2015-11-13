@@ -8,7 +8,7 @@ P.addOnSkins = {
 		main = "Recount",
 		left = "Recount",
 		right = "Recount",
-		rightChat = false,
+		rightChat = true,
 		leftWidth = 200,
 		belowTop = false,
 	}
