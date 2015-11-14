@@ -42,7 +42,7 @@ local function getOptions()
 			addOns = {
 				order = 0,
 				type = "group",
-				name = "AddOn Skins",
+				name = L["AddOn Skins"],
 				get = function(info) return addon:CheckOption(info[#info]) end,
 				set = function(info, value) addon:SetOption(info[#info], value) end,
 				guiInline = true,
@@ -51,7 +51,7 @@ local function getOptions()
 			blizzard = {
 				order = 1,
 				type = "group",
-				name = "Blizzard Skins",
+				name = L["Blizzard Skins"],
 				get = function(info) return addon:CheckOption(info[#info]) end,
 				set = function(info, value) addon:SetOption(info[#info], value) end,
 				guiInline = true,
@@ -66,7 +66,7 @@ local function getOptions()
 				args = {
 					desc = {
 						type = "description",
-						name = "Settings to control Embedded AddOns:\n\nAvailable Embeds: alDamageMeter | Details | Omen | Skada | Recount | TinyDPS",
+						name = "Settings to control Embedded AddOns:\n\nAvailable Embeds: Omen | Skada | Recount ",
 						order = 1
 					},
 					single = {
