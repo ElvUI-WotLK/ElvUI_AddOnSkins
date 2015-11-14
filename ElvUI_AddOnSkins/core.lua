@@ -14,11 +14,7 @@ addon.addOns = {};
 
 for i = 1, GetNumAddOns() do
 	local name, title, notes, enabled = GetAddOnInfo(i);
-	if(enabled ~= nil) then
-		addon.addOns[strlower(name)] = true;
-	else
-		addon.addOns[strlower(name)] = false;
-	end
+	addon.addOns[strlower(name)] = enabled ~= nil;
 end
 
 local function getOptions()
@@ -372,11 +368,11 @@ function addon:ADDON_LOADED(event, ...)
 	if(... == addonName) then
 		do
 			for k, _ in pairs(addon.register) do
-				if(not V.addOnSkins[k]) then
+				if(not V["addOnSkins"][k]) then
 					if(find(k, "Blizzard_")) then
-						V.addOnSkins[k] = false;
+						V["addOnSkins"][k] = false;
 					else
-						V.addOnSkins[k] = true;
+						V["addOnSkins"][k] = true;
 					end
 				end
 			end

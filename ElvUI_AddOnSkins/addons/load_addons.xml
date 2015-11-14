@@ -3,4 +3,6 @@
 	<Script file="recount.lua"/>
 	<Script file="omen.lua"/>
 	<Script file="skada.lua"/>
+	<Script file="auctionator.lua"/>
+	<Script file="dbm.lua"/>
 </Ui>

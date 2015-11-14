@@ -4,6 +4,7 @@ local addon = E:GetModule("AddOnSkins");
 if(not addon:CheckAddOn("Recount")) then return; end
 
 function addon:Recount()
+	local S = E:GetModule("Skins");
 	Recount_MainWindow:SetBackdrop(nil);
 	
 	local backdrop = CreateFrame("Frame", nil, Recount_MainWindow);
@@ -49,8 +50,8 @@ function addon:Recount()
 		end
 	end
 	
---	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar);
-
+	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar);
+	
 	Recount_MainWindow.DragBottomLeft:SetNormalTexture(nil);
 	Recount_MainWindow.DragBottomRight:SetNormalTexture(nil);
 	
