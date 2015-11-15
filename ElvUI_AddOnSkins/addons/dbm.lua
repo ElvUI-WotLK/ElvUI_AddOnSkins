@@ -3,6 +3,9 @@ local addon = E:GetModule("AddOnSkins");
 
 if(not addon:CheckAddOn("DBM-Core")) then return; end
 
+local rwiconsize = 18;
+local buttonsize = 22;
+
 local function SkinBars(self)
 	for bar in self:GetBarIterator() do
 		if ( not bar.injected ) then
