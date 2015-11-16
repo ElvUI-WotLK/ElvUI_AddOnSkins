@@ -21,6 +21,8 @@ V.addOnSkins = {
 	DBM = true,
 	Skada = true,
 	Auctionator = true,
+	BugSack = true,
+	CallToArms = true,
 	
 	Blizzard_WorldStateFrame = true,
 };

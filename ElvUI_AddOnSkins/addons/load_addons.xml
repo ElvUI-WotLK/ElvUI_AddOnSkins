@@ -6,4 +6,5 @@
 	<Script file="auctionator.lua"/>
 	<Script file="dbm.lua"/>
 	<Script file="bugSack.lua"/>
+	<Script file="callToArms.lua"/>
 </Ui>
