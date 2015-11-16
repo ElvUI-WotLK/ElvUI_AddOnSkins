@@ -13,3 +13,14 @@ P.addOnSkins = {
 		belowTop = false,
 	}
 };
+
+V.addOnSkins = {
+	Omen = true,
+	Recount = true,
+	SexyCooldown = true,
+	DBM = true,
+	Skada = true,
+	Auctionator = true,
+	
+	Blizzard_WorldStateFrame = true,
+};

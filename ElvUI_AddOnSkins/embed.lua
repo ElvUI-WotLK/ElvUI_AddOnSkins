@@ -155,6 +155,34 @@ function addon:Embed_Toggle(message)
 	end
 end
 
+function addon:EmbedInit()
+	if(E.db.addOnSkins.embed.single or E.db.addOnSkins.embed.dual) then
+		if(not self.EmbedSystemCreated) then
+			EmbedSystem_MainWindow = CreateFrame("Frame", "EmbedSystem_MainWindow", UIParent);
+			EmbedSystem_LeftWindow = CreateFrame("Frame", "EmbedSystem_LeftWindow", EmbedSystem_MainWindow);
+			EmbedSystem_RightWindow = CreateFrame("Frame", "EmbedSystem_RightWindow", EmbedSystem_MainWindow);
+			
+			self.EmbedSystemCreated = true;
+			
+			self:EmbedSystemHooks();
+			self:EmbedSystem_WindowResize();
+			
+			hooksecurefunc(E:GetModule('Chat'), 'PositionChat', function(self, override)
+				if(override) then
+					addon:Embed_Check();
+				end
+			end);
+			hooksecurefunc(E:GetModule('Layout'), 'ToggleChatPanels', function() addon:Embed_Check(); end);
+			
+			self:Embed_Check(true);
+			
+			EmbedSystem_MainWindow:HookScript("OnShow", self.Embed_Show);
+			EmbedSystem_MainWindow:HookScript("OnHide", self.Embed_Hide);
+			-- EmbedSystem_MainWindow:SetTemplate();
+		end
+	end
+end
+
 function addon:EmbedSystemHooks()
 	if(addon:CheckAddOn("Recount")) then
 		function addon:Embed_Recount()
@@ -379,9 +407,8 @@ function addon:EmbedSystem_WindowResize()
 	_G["EmbedSystem_LeftWindow"]:SetPoint('LEFT', _G["EmbedSystem_MainWindow"], 'LEFT', 0, 0);
 	_G["EmbedSystem_RightWindow"]:SetPoint('RIGHT', _G["EmbedSystem_MainWindow"], 'RIGHT', 0, 0);
 	
-	-- Dynamic Range
-	if IsAddOnLoaded('ElvUI_Config') then
-		--E.Options.args.addonskins.args.embed.args.EmbedLeftWidth.min = floor(_G["EmbedSystem_MainWindow"]:GetWidth() * .25)
-		--E.Options.args.addonskins.args.embed.args.EmbedLeftWidth.max = floor(_G["EmbedSystem_MainWindow"]:GetWidth() * .75)
+	if(IsAddOnLoaded("ElvUI_Config")) then
+		E.Options.args.addOnSkins.args.embed.args.leftWidth.min = floor(_G["EmbedSystem_MainWindow"]:GetWidth() * .25);
+		E.Options.args.addOnSkins.args.embed.args.leftWidth.max = floor(_G["EmbedSystem_MainWindow"]:GetWidth() * .75);
 	end
 end

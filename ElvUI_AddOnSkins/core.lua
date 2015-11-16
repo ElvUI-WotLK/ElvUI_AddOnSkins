@@ -1,6 +1,6 @@
 ﻿local addonName = ...;
 local E, L, V, P, G, _ = unpack(ElvUI);
-local EP = LibStub("LibElvUIPlugin-1.0");
+local EP = LibStub("LibElvUIPlugin-1.0", true);
 local addon = E:NewModule("AddOnSkins", "AceHook-3.0", "AceEvent-3.0");
 
 local find = string.find;
@@ -22,15 +22,10 @@ local function getOptions()
 		local text = trim(skinName:gsub("^Blizzard_(.+)","%1"):gsub("(%l)(%u%l)","%1 %2"));
 		local options = {
 			type = "toggle",
-			name = text,
 			order = order,
-			desc = "SkinDesc",
-		}
-		options.confirm = true;
-		if(find(skinName, "Blizzard_")) then
-			options.desc = "ElvUIDesc";
-		end
-		options.set = function(info, value) addon:SetOption(info[#info], value); end
+			name = text,
+			desc = L["TOGGLESKIN_DESC"],
+		};
 		return options;
 	end
 	
@@ -40,21 +35,21 @@ local function getOptions()
 		name = "AddOn Skins",
 		args = {
 			addOns = {
-				order = 0,
+				order = 1,
 				type = "group",
 				name = L["AddOn Skins"],
-				get = function(info) return addon:CheckOption(info[#info]) end,
-				set = function(info, value) addon:SetOption(info[#info], value) end,
 				guiInline = true,
+				get = function(info) return E.private.addOnSkins[info[#info]]; end,
+				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 				args = {},
 			},
 			blizzard = {
-				order = 1,
+				order = 2,
 				type = "group",
 				name = L["Blizzard Skins"],
-				get = function(info) return addon:CheckOption(info[#info]) end,
-				set = function(info, value) addon:SetOption(info[#info], value) end,
 				guiInline = true,
+				get = function(info) return E.private.addOnSkins[info[#info]]; end,
+				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 				args = {},
 			},
 			embed = {
@@ -199,12 +194,8 @@ local function getOptions()
 			order = order + 1;
 		end
 	end
-
-	local EP = LibStub("LibElvUIPlugin-1.0", true)
-	if EP then
-		local Ace3OptionsPanel = IsAddOnLoaded("ElvUI") and ElvUI[1];
-		Ace3OptionsPanel.Options.args.addOnSkins = options;
-	end
+	
+	E.Options.args.addOnSkins = options;
 end
 
 function addon:CheckOption(optionName, ...)
@@ -346,45 +337,22 @@ function addon:UnregisterSkinEvent(skinName, event)
 	end
 end
 
-function addon:PLAYER_ENTERING_WORLD()
+function addon:Initialize()
+	EP:RegisterPlugin(addonName, getOptions);
+	
 	for skin, alldata in pairs(self.register) do
 		for _, data in pairs(alldata) do
-			self:RegisteredSkin(skin, data.priority, data.func, data.events)
+			self:RegisteredSkin(skin, data.priority, data.func, data.events);
 		end
 	end
 	
 	for skin, funcs in pairs(self.skins) do
 		if self:CheckOption(skin) then
 			for _, func in ipairs(funcs) do
-				self:CallSkin(skin, func, event)
+				self:CallSkin(skin, func, event);
 			end
 		end
 	end
-	
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
-end
-
-function addon:ADDON_LOADED(event, ...)
-	if(... == addonName) then
-		do
-			for k, _ in pairs(addon.register) do
-				if(not V["addOnSkins"][k]) then
-					if(find(k, "Blizzard_")) then
-						V["addOnSkins"][k] = false;
-					else
-						V["addOnSkins"][k] = true;
-					end
-				end
-			end
-		end
-	end
-end
-
-function addon:Initialize()
-	EP:RegisterPlugin(addonName, getOptions);
-	
-	self:RegisterEvent("ADDON_LOADED");
-	self:PLAYER_ENTERING_WORLD();
 	
 	if(E.db.addOnSkins.embed.single or E.db.addOnSkins.embed.dual) then
 		if(not self.EmbedSystemCreated) then

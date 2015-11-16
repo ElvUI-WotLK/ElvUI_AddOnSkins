@@ -5,4 +5,5 @@
 	<Script file="skada.lua"/>
 	<Script file="auctionator.lua"/>
 	<Script file="dbm.lua"/>
+	<Script file="bugSack.lua"/>
 </Ui>
