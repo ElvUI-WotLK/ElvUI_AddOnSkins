@@ -26,7 +26,7 @@ function addon:ToggleChatFrame(hide)
 		_G[chatFrame.."Tab"].originalParent = _G[chatFrame.."Tab"]:GetParent();
 		_G[chatFrame.."Tab"]:SetParent(E.HiddenFrame);
 	else
-		if(_G[chatFrame].parent) then
+		if(_G[chatFrame].originalParent) then
 			_G[chatFrame]:SetParent(_G[chatFrame].originalParent);
 			_G[chatFrame.."Tab"]:SetParent(_G[chatFrame.."Tab"].originalParent);
 		end
@@ -197,17 +197,6 @@ function addon:EmbedSystemHooks()
 			Recount_MainWindow:ClearAllPoints();
 			Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 7);
 			Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 0, 0);
-			
-			if(addon:CheckOption("Recount")) then
-				if(Recount_MainWindow.backdrop) then
-					Recount_MainWindow.backdrop:SetTemplate(addon:CheckOption("TransparentEmbed") and "Transparent" or "Default");
-					if addon:CheckOption("RecountBackdrop") then
-						Recount_MainWindow.backdrop:Show();
-					else
-						Recount_MainWindow.backdrop:Hide();
-					end
-				end
-			end
 			
 			Recount.db.profile.Locked = true;
 			Recount.db.profile.Scaling = 1;
