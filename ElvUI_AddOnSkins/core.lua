@@ -32,7 +32,7 @@ local function getOptions()
 	local options = {
 		order = 100,
 		type = "group",
-		name = "AddOn Skins",
+		name = L["AddOn Skins"],
 		args = {
 			addOns = {
 				order = 1,
@@ -120,15 +120,15 @@ local function getOptions()
 						max = 30,
 						step = 1,
 						disabled = function() return not ((E.db.addOnSkins.embed.dual or E.db.addOnSkins.embed.single) and AS:CheckOption("EmbedOoC")) end,
-					},
-					HideChatFrame = {
-						name = ASL["Hide Chat Frame"],
+					},]]
+					hideChat = {
+						name = "Hide Chat Frame",
 						order = 10,
 						type = "select",
-						values = AS:GetChatWindowInfo(),
+						values = addon:GetChatWindowInfo(),
 						disabled = function() return not (E.db.addOnSkins.embed.dual or E.db.addOnSkins.embed.single) end,
 					},
-					EmbedSexyCooldown = {
+					--[[EmbedSexyCooldown = {
 						type = "toggle",
 						name = ASL["Attach SexyCD to action bar"],
 						order = 11,

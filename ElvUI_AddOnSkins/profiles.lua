@@ -11,6 +11,7 @@ P.addOnSkins = {
 		rightChat = true,
 		leftWidth = 200,
 		belowTop = false,
+		hideChat = "NONE",
 	}
 };
 

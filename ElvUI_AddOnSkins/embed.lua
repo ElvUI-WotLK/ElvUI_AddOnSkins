@@ -1,15 +1,15 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
 
+local _G = _G;
 local format, gsub, pairs, ipairs, select, tinsert, tonumber = string.format, gsub, pairs, ipairs, select, tinsert, tonumber;
 
 local lower = string.lower;
 
-addon.ChatFrameHider = CreateFrame("Frame");
-addon.ChatFrameHider:Hide();
+local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS;
 
 function addon:GetChatWindowInfo()
-	local ChatTabInfo = { ["NONE"] = "NONE" };
+	local ChatTabInfo = { ["NONE"] = NONE };
 	for i = 1, NUM_CHAT_WINDOWS do
 		ChatTabInfo["ChatFrame"..i] = _G["ChatFrame"..i.."Tab"]:GetText();
 	end
@@ -17,17 +17,18 @@ function addon:GetChatWindowInfo()
 end
 
 function addon:ToggleChatFrame(hide)
-	if(self:CheckOption("HideChatFrame") == "NONE") then return; end
+	local chatFrame = E.db.addOnSkins.embed.hideChat;
+	if(chatFrame == "NONE") then return; end
 	if(hide) then
-		_G[self:CheckOption("HideChatFrame")].OriginalParent = _G[self:CheckOption("HideChatFrame")]:GetParent();
-		_G[self:CheckOption("HideChatFrame")]:SetParent(self.ChatFrameHider);
+		_G[chatFrame].originalParent = _G[chatFrame]:GetParent();
+		_G[chatFrame]:SetParent(E.HiddenFrame);
 		
-		_G[self:CheckOption("HideChatFrame").."Tab"].OriginalParent = _G[self:CheckOption("HideChatFrame").."Tab"]:GetParent();
-		_G[self:CheckOption("HideChatFrame").."Tab"]:SetParent(self.ChatFrameHider);
+		_G[chatFrame.."Tab"].originalParent = _G[chatFrame.."Tab"]:GetParent();
+		_G[chatFrame.."Tab"]:SetParent(E.HiddenFrame);
 	else
-		if _G[self:CheckOption("HideChatFrame")].OriginalParent then
-			_G[self:CheckOption("HideChatFrame")]:SetParent(_G[self:CheckOption("HideChatFrame")].OriginalParent);
-			_G[self:CheckOption("HideChatFrame").."Tab"]:SetParent(_G[self:CheckOption("HideChatFrame").."Tab"].OriginalParent);
+		if(_G[chatFrame].parent) then
+			_G[chatFrame]:SetParent(_G[chatFrame].originalParent);
+			_G[chatFrame.."Tab"]:SetParent(_G[chatFrame.."Tab"].originalParent);
 		end
 	end
 end
@@ -50,7 +51,7 @@ function addon:Embed_Show()
 			_G[EmbedSystem_RightWindow.FrameName]:Show();
 		end
 	end
-	-- addon:ToggleChatFrame(true);
+	addon:ToggleChatFrame(true);
 end
 
 function addon:Embed_Hide()
@@ -71,7 +72,7 @@ function addon:Embed_Hide()
 			_G[EmbedSystem_RightWindow.FrameName]:Hide();
 		end
 	end
-	-- addon:ToggleChatFrame(false);
+	addon:ToggleChatFrame(false);
 end
 
 function addon:CheckEmbed(addOn)
