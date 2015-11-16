@@ -32,7 +32,7 @@ function addon:BugSack()
 		
 		BugSackFrame.isSkinned = true;
 	end
-	hooksecurefunc(BugSack, "OpenSack", BugSack_OpenStack);
+	hooksecurefunc(BugSack, "OpenSack", BugSack_OpenSack);
 end
 
 addon:RegisterSkin("BugSack", addon.BugSack);
