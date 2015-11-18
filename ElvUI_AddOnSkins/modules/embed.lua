@@ -370,8 +370,8 @@ function module:WindowResize()
 	end
 	
 	if(IsAddOnLoaded("ElvUI_Config")) then
-	--	E.Options.args.addOnSkins.args.embed.args.dualGroup.args.leftWidth.min = floor(self.main:GetWidth() * .25);
-	--	E.Options.args.addOnSkins.args.embed.args.dualGroup.args.leftWidth.max = floor(self.main:GetWidth() * .75);
+	--	E.Options.args.addOnSkins.args.embed.args.leftWidth.min = floor(self.left:GetWidth() * .25);
+	--	E.Options.args.addOnSkins.args.embed.args.leftWidth.max = floor(self.left:GetWidth() * .75);
 	end
 end
 
@@ -402,9 +402,9 @@ end
 function module:Initialize()
 	self.db = E.db.addOnSkins.embed;
 	
-	--if(not self.db.embedType == "DISABLE") then
+	if(self.db.embedType ~= "DISABLE") then
 		self:Init();
-	--end
+	end
 end
 
 E:RegisterModule(module:GetName());
