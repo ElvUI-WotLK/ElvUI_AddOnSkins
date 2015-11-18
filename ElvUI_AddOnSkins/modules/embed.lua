@@ -355,13 +355,14 @@ function module:WindowResize()
 	local chatData = self.db.rightChat and RightChatDataPanel or LeftChatToggleButton;
 	local topRight = chatData == RightChatDataPanel and (E.db.datatexts.rightChatPanel and "TOPLEFT" or "BOTTOMLEFT") or chatData == LeftChatToggleButton and (E.db.datatexts.leftChatPanel and "TOPLEFT" or "BOTTOMLEFT");
 	local yOffset = (chatData == RightChatDataPanel and E.db.datatexts.rightChatPanel and (E.PixelMode and 1 or 3)) or (chatData == LeftChatToggleButton and E.db.datatexts.leftChatPanel and (E.PixelMode and 1 or 3)) or 0;
-	local xOffset = E.db.chat.panelBackdrop == "RIGHT" or E.db.chat.panelBackdrop == "LEFT" or E.db.chat.panelBackdrop == "SHOWBOTH" and 0 or (E.PixelMode and 3 or 5);
+	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and chatPanel) or (E.db.chat.panelBackdrop == "LEFT" and not chatPanel) or E.db.chat.panelBackdrop == "SHOWBOTH" and 0 or (E.PixelMode and 3 or 5);
 	local isDouble = self.db.embedType == "DOUBLE";
 	
+	print(isDouble)
 	self.left:SetParent(chatPanel);
 	self.left:ClearAllPoints();
 	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and self.db.leftWidth -(E.PixelMode and 1 or 3) or 0, yOffset);
-	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (self.db.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (self.db.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), xOffset, self.db.belowTop and -(E.PixelMode and 1 or 3) or 0);
+	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (self.db.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (self.db.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), self.db.embedType == "SINGLE" and xOffset or -xOffset, self.db.belowTop and -(E.PixelMode and 1 or 3) or 0);
 	
 	if(isDouble) then
 		self.right:ClearAllPoints();
