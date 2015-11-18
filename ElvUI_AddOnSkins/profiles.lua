@@ -24,6 +24,7 @@ V.addOnSkins = {
 	Auctionator = true,
 	BugSack = true,
 	CallToArms = true,
+	Postal = true,	
 	
 	Blizzard_WorldStateFrame = true,
 };
