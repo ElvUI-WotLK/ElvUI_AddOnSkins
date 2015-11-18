@@ -358,7 +358,6 @@ function module:WindowResize()
 	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and chatPanel) or (E.db.chat.panelBackdrop == "LEFT" and not chatPanel) or E.db.chat.panelBackdrop == "SHOWBOTH" and 0 or (E.PixelMode and 3 or 5);
 	local isDouble = self.db.embedType == "DOUBLE";
 	
-	print(isDouble)
 	self.left:SetParent(chatPanel);
 	self.left:ClearAllPoints();
 	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and self.db.leftWidth -(E.PixelMode and 1 or 3) or 0, yOffset);
