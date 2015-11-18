@@ -3,11 +3,9 @@ local E, L, V, P, G, _ = unpack(ElvUI);
 
 P.addOnSkins = {
 	embed = {
-		single = true,
-		dual = false,
-		main = "Recount",
-		left = "Recount",
-		right = "Recount",
+		embedType = "DISABLE",
+		left = "Skada",
+		right = "Skada",
 		rightChat = true,
 		leftWidth = 200,
 		belowTop = false,
@@ -24,7 +22,7 @@ V.addOnSkins = {
 	Auctionator = true,
 	BugSack = true,
 	CallToArms = true,
-	Postal = true,	
+	Postal = true,
 	
 	Blizzard_WorldStateFrame = true,
 };

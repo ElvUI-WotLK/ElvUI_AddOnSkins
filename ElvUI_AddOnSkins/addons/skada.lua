@@ -20,31 +20,13 @@ function addon:Skada()
 				if(win.db.reversegrowth) then
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", 0, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", 0, 0);
-					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.PixelMode and 1 or 3) or win.db.barheight);
+					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.PixelMode and 1 or 3) or -win.db.barheight);
 				else
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", 0, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", 0, 0);
 					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.PixelMode and 1 or 3) or win.db.barheight);
 				end
 			end
-		end
-	end);
-	
-	hooksecurefunc(Skada, "CreateWindow", function()
-		if(addon:CheckEmbed("Skada")) then
-			addon:Embed_Skada();
-		end
-	end);
-	
-	hooksecurefunc(Skada, "DeleteWindow", function()
-		if(addon:CheckEmbed("Skada")) then
-			addon:Embed_Skada();
-		end
-	end);
-	
-	hooksecurefunc(Skada, "UpdateDisplay", function()
-		if(addon:CheckEmbed("Skada") and not InCombatLockdown()) then
-			addon:Embed_Skada();
 		end
 	end);
 end

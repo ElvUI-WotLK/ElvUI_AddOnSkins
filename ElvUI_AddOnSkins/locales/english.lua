@@ -4,3 +4,8 @@ if not L then return; end
 
 L["AddOn Skins"] = true;
 L["Blizzard Skins"] = true;
+L["Embed Type"] = true;
+L["Double"] = true;
+L["Left Panel"] = true;
+L["Right Panel"] = true;
+L["Single"] = true;
