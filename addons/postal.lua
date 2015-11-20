@@ -43,6 +43,20 @@ function addon:Postal(event)
 	if Postal_BlackBookButton then
 		S:HandleNextPrevButton(Postal_BlackBookButton, true);
 	end
+
+	addon:SecureHook(Postal, "CreateAboutFrame", function()
+		if PostalAboutFrame then
+			PostalAboutFrame:StripTextures();
+			PostalAboutFrame:SetTemplate("Default");
+			if PostalAboutScroll then
+				S:HandleScrollBar(PostalAboutScrollScrollBar);
+			end
+			local closeButton = select(2, PostalAboutFrame:GetChildren());
+			if closeButton then
+				S:HandleCloseButton(closeButton);
+			end
+		end
+	end);
 end
 
 addon:RegisterSkin("Postal", addon.Postal);
