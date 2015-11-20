@@ -23,6 +23,7 @@ V.addOnSkins = {
 	BugSack = true,
 	CallToArms = true,
 	Postal = true,
-	
+	QuestPointer = true,
+
 	Blizzard_WorldStateFrame = true,
 };

@@ -8,4 +8,5 @@
 	<Script file="bugSack.lua"/>
 	<Script file="callToArms.lua"/>
 	<Script file="postal.lua"/>
+	<Script file="questPointer.lua"/>
 </Ui>
