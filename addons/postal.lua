@@ -47,7 +47,7 @@ function addon:Postal(event)
 	addon:SecureHook(Postal, "CreateAboutFrame", function()
 		if PostalAboutFrame then
 			PostalAboutFrame:StripTextures();
-			PostalAboutFrame:SetTemplate("Default");
+			PostalAboutFrame:SetTemplate("Transparent");
 			if PostalAboutScroll then
 				S:HandleScrollBar(PostalAboutScrollScrollBar);
 			end
