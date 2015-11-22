@@ -68,13 +68,20 @@ function addon:Clique()
 		
 		S:HandleButton(CliqueCustomButtonBinding);
 		S:HandleButton(CliqueCustomButtonIcon);
+		CliqueCustomButtonIcon.icon:SetTexCoord(unpack(E.TexCoords));
+		CliqueCustomButtonIcon.icon:SetInside();
 		
-		S:HandleEditBox(CliqueCustomArg1);
-		S:HandleEditBox(CliqueCustomArg2);
-		S:HandleEditBox(CliqueMulti);
-		S:HandleEditBox(CliqueCustomArg3);
-		S:HandleEditBox(CliqueCustomArg4);
-		S:HandleEditBox(CliqueCustomArg5);
+		for i = 1, 5 do
+			S:HandleEditBox(_G["CliqueCustomArg"..i]);
+			_G["CliqueCustomArg"..i].backdrop:Point("TOPLEFT", -5, -5);
+			_G["CliqueCustomArg"..i].backdrop:Point("BOTTOMRIGHT", -5, 5);
+		end
+		
+		CliqueMulti:SetBackdrop(nil);
+		CliqueMulti:CreateBackdrop("Default");
+		CliqueMulti.backdrop:Point("TOPLEFT", 5, -8);
+		CliqueMulti.backdrop:Point("BOTTOMRIGHT", -5, 8);
+		S:HandleScrollBar(CliqueMultiScrollFrameScrollBar);
 		
 		S:HandleButton(CliqueCustomButtonCancel);
 		S:HandleButton(CliqueCustomButtonSave);
@@ -82,7 +89,16 @@ function addon:Clique()
 		SkinFrame(CliqueIconSelectFrame);
 		
 		for i = 1, 20 do
-			local icon = _G["CliqueIcon"..i];
+			local button = _G["CliqueIcon"..i];
+			local buttonIcon = _G["CliqueIcon"..i.."Icon"];
+			
+			button:StripTextures();
+			button:StyleButton(nil, true);
+			button.hover:SetAllPoints();
+			button:CreateBackdrop("Default");
+			
+			buttonIcon:SetAllPoints();
+			buttonIcon:SetTexCoord(unpack(E.TexCoords));
 		end
 		
 		CliqueIconScrollFrame:StripTextures();
