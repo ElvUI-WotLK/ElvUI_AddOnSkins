@@ -9,4 +9,5 @@
 	<Script file="callToArms.lua"/>
 	<Script file="postal.lua"/>
 	<Script file="questPointer.lua"/>
+	<Script file="clique.lua"/>
 </Ui>

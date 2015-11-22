@@ -24,6 +24,7 @@ V.addOnSkins = {
 	CallToArms = true,
 	Postal = true,
 	QuestPointer = true,
+	Clique = true,
 
 	Blizzard_WorldStateFrame = true,
 };
