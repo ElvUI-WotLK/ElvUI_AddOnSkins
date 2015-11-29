@@ -26,6 +26,9 @@ function addon:Clique()
 	addon:SecureHook(Clique, "CreateOptionsFrame", function()
 		SkinFrame(CliqueFrame);
 		
+		CliqueFrame:SetHeight(425);
+		CliqueFrame:SetPoint("TOPLEFT", SpellBookFrame, "TOPRIGHT", 10, -12);
+		
 		for i = 1, 10 do
 			local entry = _G["CliqueList"..i];
 		--	entry:SetTemplate("Default");
@@ -39,7 +42,10 @@ function addon:Clique()
 		
 		for i = 1,12 do
 			local entry = _G["CliqueTextList"..i];
-		--	S:HandleCheckBox(entry);
+			S:HandleCheckBox(entry);
+			entry.backdrop:Point("TOPLEFT", 6, -4);
+			entry.backdrop:Point("BOTTOMRIGHT", -4, 3);
+			entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0);
 		end
 		
 		CliqueTextListScroll:StripTextures();
@@ -49,6 +55,8 @@ function addon:Clique()
 		CliqueDropDown:SetPoint("TOPRIGHT", -1, -25);
 		
 		S:HandleCloseButton(CliqueButtonClose);
+		CliqueButtonClose:SetSize(32, 32);
+		CliqueButtonClose:SetPoint("TOPRIGHT", 5, 5);
 		
 		S:HandleButton(CliqueButtonCustom);
 		S:HandleButton(CliqueButtonFrames);
@@ -58,12 +66,31 @@ function addon:Clique()
 		S:HandleButton(CliqueButtonEdit);
 		
 		S:HandleCloseButton(CliqueTextButtonClose);
+		CliqueTextButtonClose:SetSize(32, 32);
+		CliqueTextButtonClose:SetPoint("TOPRIGHT", 5, 5);
 		
 		S:HandleButton(CliqueButtonDeleteProfile);
 		S:HandleButton(CliqueButtonSetProfile);
 		S:HandleButton(CliqueButtonNewProfile);
 		
 		SkinFrame(CliqueOptionsFrame);
+		
+		S:HandleCloseButton(CliqueOptionsButtonClose);
+		CliqueOptionsButtonClose:SetSize(32, 32);
+		CliqueOptionsButtonClose:SetPoint("TOPRIGHT", 5, 5);
+		
+		S:HandleCheckBox(CliqueOptionsSpecSwitch);
+		CliqueOptionsSpecSwitch.backdrop:Point("TOPLEFT", 6, -4);
+		CliqueOptionsSpecSwitch.backdrop:Point("BOTTOMRIGHT", -4, 3);
+		CliqueOptionsSpecSwitch.backdrop:Point("TOPRIGHT", CliqueOptionsSpecSwitch.name, "TOPLEFT", -3, 0);
+		
+		S:HandleDropDownBox(CliquePriSpecDropDown);
+		S:HandleDropDownBox(CliqueSecSpecDropDown);
+		CliquePriSpecDropDown:SetWidth(225);
+		CliqueSecSpecDropDown:SetWidth(225);
+		CliquePriSpecDropDownButton:SetSize(20, 20);
+		CliqueSecSpecDropDownButton:SetSize(20, 20);
+		
 		SkinFrame(CliqueCustomFrame);
 		
 		S:HandleButton(CliqueCustomButtonBinding);
