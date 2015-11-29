@@ -10,4 +10,6 @@
 	<Script file="postal.lua"/>
 	<Script file="questPointer.lua"/>
 	<Script file="clique.lua"/>
+	<Script file="floAspectBar.lua"/>
+	<Script file="floTotemBar.lua"/>
 </Ui>

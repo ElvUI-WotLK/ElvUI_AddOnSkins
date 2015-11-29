@@ -252,14 +252,14 @@ function addon:CallSkin(skin, func, event, ...)
 	local pass, errormsg = pcall(func, self, event, ...);
 	if(not pass) then
 		local errormessage = "%s Error: %s";
-		if(self:CheckOption("SkinDebug")) then
+		--if(self:CheckOption("SkinDebug")) then
 			if(GetCVarBool("scriptErrors")) then
-			--	LoadAddOn("Blizzard_DebugTools");
-			--	ScriptErrorsFrame_OnError(errormsg, false);
+				LoadAddOn("Blizzard_DebugTools");
+				ScriptErrorsFrame_OnError(errormsg, false);
 			else
-			--	DEFAULT_CHAT_FRAME:AddMessage(format(errormessage, skin, errormsg));
+				DEFAULT_CHAT_FRAME:AddMessage(format(errormessage, skin, errormsg));
 			end
-		end
+		--end
 	end
 end
 

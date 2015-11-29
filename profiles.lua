@@ -25,6 +25,8 @@ V.addOnSkins = {
 	Postal = true,
 	QuestPointer = true,
 	Clique = true,
+	FloAspectBar = true,
+	FloTotemBar = true,
 
 	Blizzard_WorldStateFrame = true,
 };
