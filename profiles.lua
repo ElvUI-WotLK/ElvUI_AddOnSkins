@@ -27,6 +27,7 @@ V.addOnSkins = {
 	Clique = true,
 	FloAspectBar = true,
 	FloTotemBar = true,
+	Spy = true,
 
 	Blizzard_WorldStateFrame = true,
 };
