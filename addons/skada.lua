@@ -29,6 +29,25 @@ function addon:Skada()
 			end
 		end
 	end);
+	
+	local module = E:GetModule("EmbedSystem");
+	hooksecurefunc(Skada, "CreateWindow", function()
+		if(module:CheckAddOn("Skada")) then
+			module:Skada();
+		end
+	end);
+	
+	hooksecurefunc(Skada, "DeleteWindow", function()
+		if(module:CheckAddOn("Skada")) then
+			module:Skada();
+		end
+	end);
+	
+	hooksecurefunc(Skada, "UpdateDisplay", function()
+		if(module:CheckAddOn("Skada") and not InCombatLockdown()) then
+			module:Skada();
+		end
+	end);
 end
 
 addon:RegisterSkin("Skada", addon.Skada);

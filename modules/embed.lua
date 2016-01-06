@@ -276,24 +276,6 @@ if(addon:CheckAddOn("Skada")) then
 			EmbedWindow(self.skadaWindows[2], self.right:GetWidth(), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", 0, 0);
 		end
 	end
-	
-	--[[hooksecurefunc(Skada, "CreateWindow", function()
-		if(self:CheckAddOn("Skada")) then
-			self:Skada();
-		end
-	end);
-	
-	hooksecurefunc(Skada, "DeleteWindow", function()
-		if(self:CheckAddOn("Skada")) then
-			self:Skada();
-		end
-	end);
-	
-	hooksecurefunc(Skada, "UpdateDisplay", function()
-		if(self:CheckAddOn("Skada") and not InCombatLockdown()) then
-			self:Skada();
-		end
-	end);]]
 end
 
 function module:Hooks()
