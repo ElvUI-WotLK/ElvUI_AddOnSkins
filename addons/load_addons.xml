@@ -13,4 +13,5 @@
 	<Script file="floAspectBar.lua"/>
 	<Script file="floTotemBar.lua"/>
 	<Script file="spy.lua"/>
+	<Script file="atlasLoot.lua"/>
 </Ui>
