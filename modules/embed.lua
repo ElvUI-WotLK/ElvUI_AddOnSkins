@@ -44,7 +44,7 @@ function module:Show()
 		end
 	end
 	
-	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
+	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 		module.left:Show();
 		module.right:Show();
 		if(_G[module.left.frameName]) then
@@ -65,7 +65,7 @@ function module:Hide()
 		end
 	end
 	
-	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
+	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 		module.left:Hide();
 		module.right:Hide();
 		if(_G[module.left.frameName]) then
@@ -137,134 +137,166 @@ function module:Toggle()
 	end
 end
 
-function module:Hooks()
-	if(addon:CheckAddOn("Recount")) then
-		function self:Recount()
-			local parent = self.left;
-			if(self.db.embedType == "DOUBLE") then
-				parent = self.db.right == "Recount" and self.right or self.left;
-			end
-			parent.frameName = "Recount_MainWindow";
-			
-			Recount_MainWindow:SetParent(parent);
-			Recount_MainWindow:ClearAllPoints();
-			Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 7);
-			Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 0, 0);
-			
-			Recount.db.profile.Locked = true;
-			Recount.db.profile.Scaling = 1;
-			Recount.db.profile.ClampToScreen = true;
-			Recount.db.profile.FrameStrata = "2-LOW";
-			Recount:SetStrataAndClamp();
-			Recount:LockWindows(true);
-			Recount:ResizeMainWindow();
-			Recount:FullRefreshMainWindow();
+if(addon:CheckAddOn("Recount")) then
+	function module:Recount()
+		local parent = self.left;
+		if(self.db.embedType == "DOUBLE") then
+			parent = self.db.right == "Recount" and self.right or self.left;
 		end
+		parent.frameName = "Recount_MainWindow";
+		
+		Recount_MainWindow:SetParent(parent);
+		Recount_MainWindow:ClearAllPoints();
+		Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 7);
+		Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 0, 0);
+		
+		Recount.db.profile.Locked = true;
+		Recount.db.profile.Scaling = 1;
+		Recount.db.profile.ClampToScreen = true;
+		Recount.db.profile.FrameStrata = "2-LOW";
+		Recount:SetStrataAndClamp();
+		Recount:LockWindows(true);
+		Recount:ResizeMainWindow();
+		Recount:FullRefreshMainWindow();
 	end
-	
-	if(addon:CheckAddOn("Omen")) then
-		function self:Omen()
-			local parent = self.left;
-			if(self.db.embedType == "DOUBLE") then
-				parent = self.db.right == "Omen" and self.right or self.left;
-			end
-			parent.frameName = "OmenAnchor";
-			
-			local db = Omen.db;
-			db.profile.Scale = 1;
-			db.profile.Bar.Spacing = 1;
-			db.profile.Background.EdgeSize = 1;
-			db.profile.Background.BarInset = 2;
-			db.profile.TitleBar.UseSameBG = true;
-			db.profile.ShowWith.UseShowWith = false;
-			db.profile.Locked = true;
-			db.profile.TitleBar.ShowTitleBar = true;
-			db.profile.FrameStrata = "2-LOW";
-			
-			OmenAnchor:SetParent(parent);
-			OmenAnchor:ClearAllPoints();
-			OmenAnchor:SetAllPoints();
-			
-			hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
-				if(useDB) then
-					self.Anchor:SetParent(parent);
-					self.Anchor:SetInside(parent, 0, 0);
-				end
-			end);
+end
+
+if(addon:CheckAddOn("Omen")) then
+	function module:Omen()
+		local parent = self.left;
+		if(self.db.embedType == "DOUBLE") then
+			parent = self.db.right == "Omen" and self.right or self.left;
 		end
+		parent.frameName = "OmenAnchor";
+		
+		local db = Omen.db;
+		db.profile.Scale = 1;
+		db.profile.Bar.Spacing = 1;
+		db.profile.Background.EdgeSize = 1;
+		db.profile.Background.BarInset = 2;
+		db.profile.TitleBar.UseSameBG = true;
+		db.profile.ShowWith.UseShowWith = false;
+		db.profile.Locked = true;
+		db.profile.TitleBar.ShowTitleBar = true;
+		db.profile.FrameStrata = "2-LOW";
+		
+		OmenAnchor:SetParent(parent);
+		OmenAnchor:ClearAllPoints();
+		OmenAnchor:SetAllPoints();
+		
+		hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
+			if(useDB) then
+				self.Anchor:SetParent(parent);
+				self.Anchor:SetInside(parent, 0, 0);
+			end
+		end);
 	end
-	
-	if(addon:CheckAddOn("Skada")) then
-		self["skadaWindows"] = {};
-		function module:Skada()
-			wipe(self["skadaWindows"]);
-			for k, window in pairs(Skada:GetWindows()) do
-				tinsert(self.skadaWindows, window);
+end
+
+if(addon:CheckAddOn("Omen")) then
+	function module:Omen()
+		local parent = self.left;
+		if(self.db.embedType == "DOUBLE") then
+			parent = self.db.right == "Omen" and self.right or self.left;
+		end
+		parent.frameName = "OmenAnchor";
+		
+		local db = Omen.db;
+		db.profile.Scale = 1;
+		db.profile.Bar.Spacing = 1;
+		db.profile.Background.EdgeSize = 1;
+		db.profile.Background.BarInset = 2;
+		db.profile.TitleBar.UseSameBG = true;
+		db.profile.ShowWith.UseShowWith = false;
+		db.profile.Locked = true;
+		db.profile.TitleBar.ShowTitleBar = true;
+		db.profile.FrameStrata = "2-LOW";
+		
+		OmenAnchor:SetParent(parent);
+		OmenAnchor:ClearAllPoints();
+		OmenAnchor:SetAllPoints();
+		
+		hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
+			if(useDB) then
+				self.Anchor:SetParent(parent);
+				self.Anchor:SetInside(parent, 0, 0);
 			end
-			
-			local numberToEmbed = 0;
-			if(self.db.embedType == "SINGLE") then
-				numberToEmbed = 1;
-			end
-			if(self.db.embedType == "DOUBLE") then
-				if(self.db.right == "Skada") then numberToEmbed = numberToEmbed + 1; end
-				if(self.db.left == "Skada") then numberToEmbed = numberToEmbed + 1; end
-			end
-			
-			local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
-				if(not window) then return; end
-				local barmod = Skada.displays["bar"];
-				
-				window.db.barwidth = width;
-				window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.PixelMode and 1 or 3)) - (E.PixelMode and 1 or 3);
-				
-				window.db.spark = false;
-				window.db.barslocked = true;
-				window.db.enablebackground = true;
-				
-				window.bargroup:SetParent(relativeFrame);
-				window.bargroup:ClearAllPoints();
-				window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy);
-				
-				window.bargroup:SetFrameStrata("LOW");
-				
-				barmod.ApplySettings(barmod, window);
-				
-				window.bargroup.bgframe:SetFrameStrata("LOW");
-				window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1);
-			end
-			
-			if(numberToEmbed == 1) then
-				local parent = self.left;
-				if(self.db.embedType == "DOUBLE") then
-					parent = self.db.right == "Skada" and self.right or self.left;
-				end
-				EmbedWindow(self.skadaWindows[1], parent:GetWidth(), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", 0, 0);
-			elseif(numberToEmbed == 2) then
-				EmbedWindow(self.skadaWindows[1], self.left:GetWidth(), self.left:GetHeight(), "TOPLEFT", self.left, "TOPLEFT", 0, 0);
-				EmbedWindow(self.skadaWindows[2], self.right:GetWidth(), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", 0, 0);
-			end
+		end);
+	end
+end
+
+if(addon:CheckAddOn("Skada")) then
+	module["skadaWindows"] = {};
+	function module:Skada()
+		wipe(self["skadaWindows"]);
+		for k, window in pairs(Skada:GetWindows()) do
+			tinsert(self.skadaWindows, window);
 		end
 		
-		hooksecurefunc(Skada, "CreateWindow", function()
+		local numberToEmbed = 0;
+		if(self.db.embedType == "SINGLE") then
+			numberToEmbed = 1;
+		end
+		if(self.db.embedType == "DOUBLE") then
+			if(self.db.right == "Skada") then numberToEmbed = numberToEmbed + 1; end
+			if(self.db.left == "Skada") then numberToEmbed = numberToEmbed + 1; end
+		end
+		
+		local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
+			if(not window) then return; end
+			local barmod = Skada.displays["bar"];
+			
+			window.db.barwidth = width;
+			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.PixelMode and 1 or 3)) - (E.PixelMode and 1 or 3);
+			
+			window.db.spark = false;
+			window.db.barslocked = true;
+			window.db.enablebackground = true;
+			
+			window.bargroup:SetParent(relativeFrame);
+			window.bargroup:ClearAllPoints();
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy);
+			
+			window.bargroup:SetFrameStrata("LOW");
+			
+			barmod.ApplySettings(barmod, window);
+			
+			window.bargroup.bgframe:SetFrameStrata("LOW");
+			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1);
+		end
+		
+		if(numberToEmbed == 1) then
+			local parent = self.left;
+			if(self.db.embedType == "DOUBLE") then
+				parent = self.db.right == "Skada" and self.right or self.left;
+			end
+			EmbedWindow(self.skadaWindows[1], parent:GetWidth(), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", 0, 0);
+		elseif(numberToEmbed == 2) then
+			EmbedWindow(self.skadaWindows[1], self.left:GetWidth(), self.left:GetHeight(), "TOPLEFT", self.left, "TOPLEFT", 0, 0);
+			EmbedWindow(self.skadaWindows[2], self.right:GetWidth(), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", 0, 0);
+		end
+	end
+	
+	--[[hooksecurefunc(Skada, "CreateWindow", function()
 		if(self:CheckAddOn("Skada")) then
-				self:Skada();
-			end
-		end);
-		
-		hooksecurefunc(Skada, "DeleteWindow", function()
-			if(self:CheckAddOn("Skada")) then
-				self:Skada();
-			end
-		end);
-		
-		hooksecurefunc(Skada, "UpdateDisplay", function()
-			if(self:CheckAddOn("Skada") and not InCombatLockdown()) then
-				self:Skada();
-			end
-		end);
-	end
+			self:Skada();
+		end
+	end);
 	
+	hooksecurefunc(Skada, "DeleteWindow", function()
+		if(self:CheckAddOn("Skada")) then
+			self:Skada();
+		end
+	end);
+	
+	hooksecurefunc(Skada, "UpdateDisplay", function()
+		if(self:CheckAddOn("Skada") and not InCombatLockdown()) then
+			self:Skada();
+		end
+	end);]]
+end
+
+function module:Hooks()
 	RightChatToggleButton:RegisterForClicks("AnyDown");
 	RightChatToggleButton:SetScript("OnClick", function(self, btn)
 		if(btn == "RightButton") then
@@ -370,8 +402,8 @@ function module:WindowResize()
 	end
 	
 	if(IsAddOnLoaded("ElvUI_Config")) then
-	--	E.Options.args.addOnSkins.args.embed.args.leftWidth.min = floor(self.left:GetWidth() * .25);
-	--	E.Options.args.addOnSkins.args.embed.args.leftWidth.max = floor(self.left:GetWidth() * .75);
+		E.Options.args.addOnSkins.args.embed.args.leftWidth.min = floor(chatPanel:GetWidth() * .25);
+		E.Options.args.addOnSkins.args.embed.args.leftWidth.max = floor(chatPanel:GetWidth() * .75);
 	end
 end
 
@@ -396,6 +428,8 @@ function module:Init()
 		
 		self.left:HookScript("OnShow", self.Show);
 		self.left:HookScript("OnHide", self.Hide);
+		
+		self:ToggleChatFrame(self.left:IsShown());
 	end
 end
 
