@@ -32,6 +32,21 @@ function addon:Atlas()
 	
 	S:HandleScrollBar(AtlasScrollBarScrollBar);
 	
+	S:HandleCheckBox(AtlasOptionsFrameToggleButton);
+	S:HandleCheckBox(AtlasOptionsFrameAutoSelect);
+	S:HandleCheckBox(AtlasOptionsFrameRightClick);
+	S:HandleCheckBox(AtlasOptionsFrameAcronyms);
+	S:HandleCheckBox(AtlasOptionsFrameClamped);
+	S:HandleCheckBox(AtlasOptionsFrameCtrl);
+	
+	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonPos);
+	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonRad);
+	S:HandleSliderFrame(AtlasOptionsFrameSliderAlpha);
+	S:HandleSliderFrame(AtlasOptionsFrameSliderScale);
+	
+	S:HandleDropDownBox(AtlasOptionsFrameDropDownCats);
+	
+	S:HandleButton(AtlasOptionsFrameResetPosition);
 end
 
 addon:RegisterSkin("Atlas", addon.Atlas);
