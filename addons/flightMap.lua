@@ -11,6 +11,12 @@ function addon:FlightMap()
 	
 	FlightMapTimesText:ClearAllPoints();
 	FlightMapTimesText:SetPoint("CENTER", FlightMapTimesFrame, "CENTER", 0, 0);
+	
+	local S = E:GetModule("Skins");
+	local base = "InterfaceOptionsFlightMapPanel";
+    for optid, option in pairs(FLIGHTMAP_OPTIONS) do
+		S:HandleCheckBox(_G[base .. "Option" .. optid]);
+	end
 end
 
 addon:RegisterSkin("FlightMap", addon.FlightMap);
