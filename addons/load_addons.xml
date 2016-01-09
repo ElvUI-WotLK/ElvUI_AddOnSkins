@@ -15,4 +15,5 @@
 	<Script file="spy.lua"/>
 	<Script file="atlasLoot.lua"/>
 	<Script file="atlas.lua"/>
+	<Script file="flightMap.lua"/>
 </Ui>

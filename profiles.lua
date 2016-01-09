@@ -30,6 +30,7 @@ V.addOnSkins = {
 	Spy = true,
 	AtlasLoot = true,
 	Atlas = true,
+	FlightMap = true,
 
 	Blizzard_WorldStateFrame = true,
 };
