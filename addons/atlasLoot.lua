@@ -49,6 +49,8 @@ function addon:AtlasLoot()
 	
 	S:HandleCloseButton(AtlasLootItemsFrame_CloseButton);
 	
+	S:HandleButton(AtlasLootInfoHidePanel);
+	
 	for i = 1, 30 do
 		_G["AtlasLootItem_" .. i .. "_Icon"]:SetTexCoord(unpack(E.TexCoords));
 		_G["AtlasLootItem_" .. i]:CreateBackdrop("Default");
@@ -91,6 +93,48 @@ function addon:AtlasLoot()
 	S:HandleButton(AtlasLootOptionsFrame_ResetQuicklooks);
 	S:HandleButton(AtlasLootOptionsFrame_FuBarShow);
 	S:HandleButton(AtlasLootOptionsFrame_FuBarHide);
+	
+	AtlasLootPanel:StripTextures();
+	AtlasLootPanel:SetTemplate("Transparent");
+	
+	S:HandleButton(AtlasLootPanel_WorldEvents);
+	AtlasLootPanel_WorldEvents:SetPoint("LEFT", AtlasLootPanel, "LEFT", 7, 29);
+	S:HandleButton(AtlasLootPanel_Sets);
+	AtlasLootPanel_Sets:SetPoint("LEFT", AtlasLootPanel_WorldEvents, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootPanel_Reputation);
+	AtlasLootPanel_Reputation:SetPoint("LEFT", AtlasLootPanel_Sets, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootPanel_PvP);
+	AtlasLootPanel_PvP:SetPoint("LEFT", AtlasLootPanel_Reputation, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootPanel_Crafting);
+	AtlasLootPanel_Crafting:SetPoint("LEFT", AtlasLootPanel_PvP, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootPanel_WishList);
+	AtlasLootPanel_WishList:SetPoint("LEFT", AtlasLootPanel_Crafting, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootPanel_Options);
+	S:HandleButton(AtlasLootPanel_LoadModules);
+	S:HandleButton(AtlasLootPanel_Preset1);
+	S:HandleButton(AtlasLootPanel_Preset2);
+	S:HandleButton(AtlasLootPanel_Preset3);
+	S:HandleButton(AtlasLootPanel_Preset4);
+	
+	S:HandleEditBox(AtlasLootSearchBox);
+	AtlasLootSearchBox:Height(20);
+	S:HandleButton(AtlasLootSearchButton);
+	AtlasLootSearchButton:Height(22);
+	AtlasLootSearchButton:SetPoint("LEFT", AtlasLootSearchBox, "RIGHT", 3, 0);
+	S:HandleNextPrevButton(AtlasLootSearchOptionsButton);
+	AtlasLootSearchOptionsButton:SetPoint("LEFT", AtlasLootSearchButton, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootSearchClearButton);
+	AtlasLootSearchClearButton:Height(22);
+	AtlasLootSearchClearButton:SetPoint("LEFT", AtlasLootSearchOptionsButton, "RIGHT", 2, 0);
+	S:HandleButton(AtlasLootLastResultButton);
+	AtlasLootLastResultButton:Height(22);
+	AtlasLootLastResultButton:SetPoint("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0);
+	
+	hooksecurefunc("AtlasLoot_SetupForAtlas", function()
+		AtlasLootPanel:ClearAllPoints();
+		AtlasLootPanel:SetParent(AtlasFrame);
+		AtlasLootPanel:SetPoint("TOP", "AtlasFrame", "BOTTOM", 0, -2);
+	end);
 end
 
 addon:RegisterSkin("AtlasLoot", addon.AtlasLoot);

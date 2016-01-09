@@ -29,6 +29,7 @@ V.addOnSkins = {
 	FloTotemBar = true,
 	Spy = true,
 	AtlasLoot = true,
+	Atlas = true,
 
 	Blizzard_WorldStateFrame = true,
 };
