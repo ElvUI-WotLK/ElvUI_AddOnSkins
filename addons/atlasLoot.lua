@@ -5,6 +5,19 @@ if(not addon:CheckAddOn("AtlasLoot")) then return; end
 
 function addon:AtlasLoot()
 	local S = E:GetModule("Skins");
+	
+	AtlasLootTooltip:HookScript("OnShow", function(self)
+		self:SetTemplate("Transparent");
+		
+		local iLink = select(2, self:GetItem());
+		local quality = iLink and select(3, GetItemInfo(iLink));
+		if(quality and quality >= 2) then
+			self:SetBackdropBorderColor(GetItemQualityColor(quality));
+		else
+			self:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+		end
+	end);
+	
 	AtlasLootDefaultFrame:StripTextures();
 	AtlasLootDefaultFrame:SetTemplate("Transparent");
 	
@@ -56,6 +69,28 @@ function addon:AtlasLoot()
 	S:HandleNextPrevButton(AtlasLootItemsFrame_PREV);
 	
 	AtlasLootItemsFrame_Back:SetTexture(0, 0, 0, 0);
+	
+	S:HandleCheckBox(AtlasLootOptionsFrameDefaultTT);
+	S:HandleCheckBox(AtlasLootOptionsFrameLootlinkTT);
+	S:HandleCheckBox(AtlasLootOptionsFrameItemSyncTT);
+	S:HandleCheckBox(AtlasLootOptionsFrameOpaque);
+	S:HandleCheckBox(AtlasLootOptionsFrameItemID);
+	S:HandleCheckBox(AtlasLootOptionsFrameLoDStartup);
+	S:HandleCheckBox(AtlasLootOptionsFrameSafeLinks);
+	S:HandleCheckBox(AtlasLootOptionsFrameEquipCompare);
+	S:HandleCheckBox(AtlasLootOptionsFrameItemSpam);
+	S:HandleCheckBox(AtlasLootOptionsFrameHidePanel);
+	
+	S:HandleDropDownBox(AtlasLoot_SelectLootBrowserStyle);
+	S:HandleDropDownBox(AtlasLoot_CraftingLink);
+	
+	S:HandleSliderFrame(AtlasLootOptionsFrameLootBrowserScale);
+	
+	S:HandleButton(AtlasLootOptionsFrame_ResetWishlist);
+	S:HandleButton(AtlasLootOptionsFrame_ResetAtlasLoot);
+	S:HandleButton(AtlasLootOptionsFrame_ResetQuicklooks);
+	S:HandleButton(AtlasLootOptionsFrame_FuBarShow);
+	S:HandleButton(AtlasLootOptionsFrame_FuBarHide);
 end
 
 addon:RegisterSkin("AtlasLoot", addon.AtlasLoot);
