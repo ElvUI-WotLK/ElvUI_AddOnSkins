@@ -1,5 +1,5 @@
 local addonName = ...;
-local E, L, V, P, G, _ = unpack(ElvUI);
+local E, L, V, P, G = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
 local module = E:NewModule("EmbedSystem");
 
@@ -20,7 +20,7 @@ function module:GetChatWindowInfo()
 end
 
 function module:ToggleChatFrame(hide)
-	local chatFrame = self.db.hideChat;
+	local chatFrame = E.db.addOnSkins.embed.hideChat;
 	if(chatFrame == "NONE") then return; end
 	if(hide) then
 		_G[chatFrame].originalParent = _G[chatFrame]:GetParent();
@@ -79,8 +79,8 @@ function module:Hide()
 end
 
 function module:CheckAddOn(addOn)
-	local left, right, embed = lower(self.db.left), lower(self.db.right), lower(addOn);
-	if(addon:CheckAddOn(addOn) and ((self.db.embedType == "SINGLE" and strmatch(left, embed)) or self.db.embedType == "DOUBLE" and (strmatch(left, embed) or strmatch(right, embed)))) then
+	local left, right, embed = lower(E.db.addOnSkins.embed.left), lower(E.db.addOnSkins.embed.right), lower(addOn);
+	if(addon:CheckAddOn(addOn) and ((E.db.addOnSkins.embed.embedType == "SINGLE" and strmatch(left, embed)) or E.db.addOnSkins.embed.embedType == "DOUBLE" and (strmatch(left, embed) or strmatch(right, embed)))) then
 		return true;
 	else
 		return false;
@@ -88,7 +88,7 @@ function module:CheckAddOn(addOn)
 end
 
 function module:Check()
-	if(self.db.embedType == "DISABLE") then return; end
+	if(E.db.addOnSkins.embed.embedType == "DISABLE") then return; end
 	if(not self.embedCreated) then
 		self:Init();
 	end
@@ -104,15 +104,15 @@ function module:Toggle()
 	self.left.frameName = nil;
 	self.right.frameName = nil;
 	
-	if(self.db.embedType == "SINGLE") then
-		local left = lower(self.db.left);
+	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
+		local left = lower(E.db.addOnSkins.embed.left);
 		if(left ~= "skada" and left ~= "omen" and left ~= "recount") then
 			self.left.frameName = self.db.left;
 		end
 	end
 	
-	if(self.db.embedType == "DOUBLE") then
-		local right = lower(self.db.right);
+	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
+		local right = lower(E.db.addOnSkins.embed.right);
 		if(right ~= "skada" and right ~= "omen" and right ~= "recount") then
 			self.right.frameName = self.db.right;
 		end
@@ -364,9 +364,9 @@ end
 function module:WindowResize()
 	if(not self.embedCreated) then return; end
 	
-	local chatPanel = self.db.rightChat and RightChatPanel or LeftChatPanel;
-	local chatTab = self.db.rightChat and RightChatTab or LeftChatTab;
-	local chatData = self.db.rightChat and RightChatDataPanel or LeftChatToggleButton;
+	local chatPanel = E.db.addOnSkins.embed.rightChat and RightChatPanel or LeftChatPanel;
+	local chatTab = E.db.addOnSkins.embed.rightChat and RightChatTab or LeftChatTab;
+	local chatData = E.db.addOnSkins.embed.rightChat and RightChatDataPanel or LeftChatToggleButton;
 	local topRight = chatData == RightChatDataPanel and (E.db.datatexts.rightChatPanel and "TOPLEFT" or "BOTTOMLEFT") or chatData == LeftChatToggleButton and (E.db.datatexts.leftChatPanel and "TOPLEFT" or "BOTTOMLEFT");
 	local yOffset = (chatData == RightChatDataPanel and E.db.datatexts.rightChatPanel and (E.PixelMode and 1 or 3)) or (chatData == LeftChatToggleButton and E.db.datatexts.leftChatPanel and (E.PixelMode and 1 or 3)) or 0;
 	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and chatPanel) or (E.db.chat.panelBackdrop == "LEFT" and not chatPanel) or E.db.chat.panelBackdrop == "SHOWBOTH" and 0 or (E.PixelMode and 3 or 5);
@@ -374,13 +374,13 @@ function module:WindowResize()
 	
 	self.left:SetParent(chatPanel);
 	self.left:ClearAllPoints();
-	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and self.db.leftWidth -(E.PixelMode and 1 or 3) or 0, yOffset);
-	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (self.db.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (self.db.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), self.db.embedType == "SINGLE" and xOffset or -xOffset, self.db.belowTop and -(E.PixelMode and 1 or 3) or 0);
+	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -(E.PixelMode and 1 or 3) or 0, yOffset);
+	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -(E.PixelMode and 1 or 3) or 0);
 	
 	if(isDouble) then
 		self.right:ClearAllPoints();
-		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, self.db.leftWidth, yOffset);
-		self.right:SetPoint("TOPRIGHT", chatTab, self.db.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, self.db.belowTop and -(E.PixelMode and 1 or 3) or 0);
+		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, E.db.addOnSkins.embed.leftWidth, yOffset);
+		self.right:SetPoint("TOPRIGHT", chatTab, E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, E.db.addOnSkins.embed.belowTop and -(E.PixelMode and 1 or 3) or 0);
 	end
 	
 	if(IsAddOnLoaded("ElvUI_Config")) then
@@ -406,7 +406,7 @@ function module:Init()
 		end);
 		hooksecurefunc(E:GetModule("Layout"), "ToggleChatPanels", function() module:Check(); end);
 		
-		self:Check(true);
+		self:Check();
 		
 		self.left:HookScript("OnShow", self.Show);
 		self.left:HookScript("OnHide", self.Hide);
@@ -418,7 +418,7 @@ end
 function module:Initialize()
 	self.db = E.db.addOnSkins.embed;
 	
-	if(self.db.embedType ~= "DISABLE") then
+	if(E.db.addOnSkins.embed.embedType ~= "DISABLE") then
 		self:Init();
 	end
 end

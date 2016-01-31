@@ -15,6 +15,7 @@ function addon:FloTotemBar()
 	for i = 1, 3 do
 		local countdown = _G["FloBarTRAPCountdown"..i];
 		countdown:SetStatusBarTexture(E["media"].normTex);
+		E:RegisterStatusBar(countdown);
 	end
 end
 

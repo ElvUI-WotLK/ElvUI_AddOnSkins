@@ -1,7 +1,10 @@
 ﻿local addonName = ...;
-local E, L, V, P, G, _ = unpack(ElvUI);
+local E, L, V, P, G = unpack(ElvUI);
 
 P.addOnSkins = {
+	skadaTemplate = "Default",
+	skadaTemplateGloss = false,
+	
 	embed = {
 		embedType = "DISABLE",
 		left = "Skada",

@@ -8,6 +8,7 @@ function addon:FlightMap()
 	FlightMapTimesFrame:CreateBackdrop("Default");
 	
 	FlightMapTimesFrame:SetStatusBarTexture(E.media.glossTex);
+	E:RegisterStatusBar(FlightMapTimesFrame);
 	
 	FlightMapTimesText:ClearAllPoints();
 	FlightMapTimesText:SetPoint("CENTER", FlightMapTimesFrame, "CENTER", 0, 0);

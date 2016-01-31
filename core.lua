@@ -52,8 +52,33 @@ local function getOptions()
 				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 				args = {},
 			},
-			embed = {
+			misc = {
 				order = 3,
+				type = "group",
+				name = L["Misc Options"],
+				guiInline = true,
+				get = function(info) return E.db.addOnSkins[info[#info]]; end,
+				set = function(info, value) E.db.addOnSkins[info[#info]] = value; end,
+				args = {
+					skadaTemplate = {
+						order = 1,
+						type = "select",
+						name = L["Skada Template"],
+						values = {
+							["Default"] = L["Default"],
+							["Transparent"] = L["Transparent"]
+						},
+					},
+					skadaTemplateGloss = {
+						order = 2,
+						type = "toggle",
+						name = "Skada Template Gloss",
+						disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" end,
+					},
+				},
+			},
+			embed = {
+				order = 4,
 				type = "group",
 				name = "Embed Settings",
 				get = function(info) return E.db.addOnSkins.embed[ info[#info] ] end,

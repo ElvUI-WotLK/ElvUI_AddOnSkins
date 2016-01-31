@@ -35,6 +35,7 @@ function addon:Recount()
 		self:SetupBarOriginal(bar);
 		
 		bar.StatusBar:SetStatusBarTexture(E.media.glossTex);
+		E:RegisterStatusBar(bar.StatusBar);
 		
 		bar.LeftText:FontTemplate();
 		bar.RightText:FontTemplate();
