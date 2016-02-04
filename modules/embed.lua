@@ -38,15 +38,12 @@ end
 
 function module:Show()
 	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
-		module.left:Show();
 		if(_G[module.left.frameName]) then
 			_G[module.left.frameName]:Show();
 		end
 	end
 	
 	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
-		module.left:Show();
-		module.right:Show();
 		if(_G[module.left.frameName]) then
 			_G[module.left.frameName]:Show();
 		end
@@ -59,15 +56,12 @@ end
 
 function module:Hide()
 	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
-		module.left:Hide();
 		if(_G[module.left.frameName]) then
 			_G[module.left.frameName]:Hide();
 		end
 	end
 	
 	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
-		module.left:Hide();
-		module.right:Hide();
 		if(_G[module.left.frameName]) then
 			_G[module.left.frameName]:Hide()
 		end
@@ -247,7 +241,7 @@ if(addon:CheckAddOn("Skada")) then
 			local barmod = Skada.displays["bar"];
 			
 			window.db.barwidth = width;
-			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.PixelMode and 1 or 3)) - (E.PixelMode and 1 or 3);
+			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing);
 			
 			window.db.spark = false;
 			window.db.barslocked = true;
@@ -364,23 +358,26 @@ end
 function module:WindowResize()
 	if(not self.embedCreated) then return; end
 	
+	local SPACING = E.Border + E.Spacing;
 	local chatPanel = E.db.addOnSkins.embed.rightChat and RightChatPanel or LeftChatPanel;
 	local chatTab = E.db.addOnSkins.embed.rightChat and RightChatTab or LeftChatTab;
 	local chatData = E.db.addOnSkins.embed.rightChat and RightChatDataPanel or LeftChatToggleButton;
 	local topRight = chatData == RightChatDataPanel and (E.db.datatexts.rightChatPanel and "TOPLEFT" or "BOTTOMLEFT") or chatData == LeftChatToggleButton and (E.db.datatexts.leftChatPanel and "TOPLEFT" or "BOTTOMLEFT");
-	local yOffset = (chatData == RightChatDataPanel and E.db.datatexts.rightChatPanel and (E.PixelMode and 1 or 3)) or (chatData == LeftChatToggleButton and E.db.datatexts.leftChatPanel and (E.PixelMode and 1 or 3)) or 0;
-	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and chatPanel) or (E.db.chat.panelBackdrop == "LEFT" and not chatPanel) or E.db.chat.panelBackdrop == "SHOWBOTH" and 0 or (E.PixelMode and 3 or 5);
+	local yOffset = (chatData == RightChatDataPanel and E.db.datatexts.rightChatPanel and SPACING) or (chatData == LeftChatToggleButton and E.db.datatexts.leftChatPanel and SPACING) or 0;
+	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and self.db.rightChat and 0) or (E.db.chat.panelBackdrop == "LEFT" and not self.db.rightChat and 0) or (E.db.chat.panelBackdrop == "SHOWBOTH" and 0) or E.Border*3 - E.Spacing;
 	local isDouble = self.db.embedType == "DOUBLE";
 	
 	self.left:SetParent(chatPanel);
 	self.left:ClearAllPoints();
-	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -(E.PixelMode and 1 or 3) or 0, yOffset);
-	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -(E.PixelMode and 1 or 3) or 0);
+	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -SPACING or 0, yOffset);
+	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
+	self.left:Show();
 	
 	if(isDouble) then
 		self.right:ClearAllPoints();
 		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, E.db.addOnSkins.embed.leftWidth, yOffset);
-		self.right:SetPoint("TOPRIGHT", chatTab, E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, E.db.addOnSkins.embed.belowTop and -(E.PixelMode and 1 or 3) or 0);
+		self.right:SetPoint("TOPRIGHT", chatTab, E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
+		self.right:Show();
 	end
 	
 	if(IsAddOnLoaded("ElvUI_Config")) then

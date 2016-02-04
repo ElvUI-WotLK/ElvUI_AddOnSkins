@@ -14,7 +14,7 @@ function addon:Skada()
 		end
 		
 		if(win.db.enablebackground) then
-			skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplateGloss);
+			skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false);
 			if(skada.bgframe) then
 				skada.bgframe:ClearAllPoints();
 				if(win.db.reversegrowth) then

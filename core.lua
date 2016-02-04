@@ -57,25 +57,33 @@ local function getOptions()
 				type = "group",
 				name = L["Misc Options"],
 				guiInline = true,
-				get = function(info) return E.db.addOnSkins[info[#info]]; end,
-				set = function(info, value) E.db.addOnSkins[info[#info]] = value; end,
 				args = {
-					skadaTemplate = {
+					skadaGroup = {
 						order = 1,
-						type = "select",
-						name = L["Skada Template"],
-						values = {
-							["Default"] = L["Default"],
-							["Transparent"] = L["Transparent"]
-						},
-					},
-					skadaTemplateGloss = {
-						order = 2,
-						type = "toggle",
-						name = "Skada Template Gloss",
-						disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" end,
-					},
-				},
+						type = "group",
+						name = L["Skada"],
+						get = function(info) return E.db.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; Skada:UpdateDisplay(); end,
+						disabled = function() return not addon:CheckAddOn("Skada"); end,
+						args = {
+							skadaTemplate = {
+								order = 1,
+								type = "select",
+								name = L["Skada Template"],
+								values = {
+									["Default"] = L["Default"],
+									["Transparent"] = L["Transparent"]
+								}
+							},
+							skadaTemplateGloss = {
+								order = 2,
+								type = "toggle",
+								name = L["Skada Template Gloss"],
+								disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" or not addon:CheckAddOn("Skada"); end
+							}
+						}
+					}
+				}
 			},
 			embed = {
 				order = 4,
