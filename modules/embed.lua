@@ -264,10 +264,10 @@ if(addon:CheckAddOn("Skada")) then
 			if(self.db.embedType == "DOUBLE") then
 				parent = self.db.right == "Skada" and self.right or self.left;
 			end
-			EmbedWindow(self.skadaWindows[1], parent:GetWidth(), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", 0, 0);
+			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", E.Border, -E.Border);
 		elseif(numberToEmbed == 2) then
-			EmbedWindow(self.skadaWindows[1], self.left:GetWidth(), self.left:GetHeight(), "TOPLEFT", self.left, "TOPLEFT", 0, 0);
-			EmbedWindow(self.skadaWindows[2], self.right:GetWidth(), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", 0, 0);
+			EmbedWindow(self.skadaWindows[1], self.left:GetWidth() -(E.Border*2), self.left:GetHeight(), "TOPLEFT", self.left, "TOPLEFT", E.Border, -E.Border);
+			EmbedWindow(self.skadaWindows[2], self.right:GetWidth() -(E.Border*2), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", -E.Border, -E.Border);
 		end
 	end
 end

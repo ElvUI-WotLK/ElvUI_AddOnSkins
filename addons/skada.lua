@@ -18,13 +18,13 @@ function addon:Skada()
 			if(skada.bgframe) then
 				skada.bgframe:ClearAllPoints();
 				if(win.db.reversegrowth) then
-					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", 0, 0);
-					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", 0, 0);
-					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.PixelMode and 1 or 3) or -win.db.barheight);
+					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
+					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
+					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.Border + E.Spacing) or -win.db.barheight - E.Border);
 				else
-					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", 0, 0);
-					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", 0, 0);
-					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.PixelMode and 1 or 3) or win.db.barheight);
+					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
+					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
+					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.Border + E.Spacing) or win.db.barheight + E.Border);
 				end
 			end
 		end
