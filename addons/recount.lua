@@ -1,60 +1,38 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
+local E, L, V, P, G = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
 if(not addon:CheckAddOn("Recount")) then return; end
 
 function addon:Recount()
-	local S = E:GetModule("Skins");
-	Recount_MainWindow:SetBackdrop(nil);
+	local MainWindow = Recount.MainWindow;
+	MainWindow:SetBackdrop(nil);
 	
-	local backdrop = CreateFrame("Frame", nil, Recount_MainWindow);
-	backdrop:SetFrameLevel(Recount_MainWindow:GetFrameLevel() - 1);
-	backdrop:Point("BOTTOMLEFT", Recount_MainWindow, 0, 0);
-	backdrop:Point("TOPRIGHT", Recount_MainWindow, 0, -(E.PixelMode and 30 or 32));
+	local backdrop = CreateFrame("Frame", nil, MainWindow);
+	backdrop:SetFrameLevel(MainWindow:GetFrameLevel() - 1);
+	backdrop:Point("BOTTOMLEFT", MainWindow, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0);
+	backdrop:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 32));
 	backdrop:SetTemplate("Default");
-	Recount_MainWindow.backdrop = backdrop;
+	MainWindow.backdrop = backdrop;
 	
 	local header = CreateFrame("Frame", nil, backdrop);
 	header:Height(22);
-	header:Point("TOPLEFT", Recount_MainWindow, 0, -7);
-	header:Point("TOPRIGHT", Recount_MainWindow);
+	header:Point("TOPLEFT", MainWindow, E.PixelMode and 1 or 0, -(E.PixelMode and 8 or 7));
+	header:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, 0);
 	header:SetTemplate("Default", true);
 	
-	Recount.SetupBarOriginal = Recount.SetupBar;
-	
-	function Recount:UpdateBarTextures()
-		for _, row in pairs(Recount.MainWindow.Rows) do
-			row.StatusBar:SetStatusBarTexture(E.media.glossTex);
-			
-			row.LeftText:FontTemplate();
-			row.RightText:FontTemplate();
-		end
-	end
-	
-	function Recount:SetupBar(bar)
-		self:SetupBarOriginal(bar);
-		
-		bar.StatusBar:SetStatusBarTexture(E.media.glossTex);
-		E:RegisterStatusBar(bar.StatusBar);
-		
-		bar.LeftText:FontTemplate();
-		bar.RightText:FontTemplate();
-	end
-	
-	Recount:UpdateBarTextures();
-	
-	for i = 1, Recount_MainWindow:GetNumRegions() do
-		local region = select(i, Recount_MainWindow:GetRegions());
-		if(region:GetObjectType() == "FontString") then
-			region:FontTemplate();
-			region:SetTextColor(unpack(E.media.rgbvaluecolor));
-		end
-	end
+	MainWindow.Title:ClearAllPoints();
+	MainWindow.Title:SetPoint("LEFT", header, 6, 0);
+	MainWindow.Title:FontTemplate();
+	MainWindow.Title:SetTextColor(unpack(E.media.rgbvaluecolor));
 	
 	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar);
 	
-	Recount_MainWindow.DragBottomLeft:SetNormalTexture(nil);
-	Recount_MainWindow.DragBottomRight:SetNormalTexture(nil);
+	MainWindow.DragBottomLeft:SetNormalTexture(nil);
+	MainWindow.DragBottomRight:SetNormalTexture(nil);
+	
+	MainWindow.CloseButton:ClearAllPoints();
+	MainWindow.CloseButton:SetPoint("RIGHT", header, -6, 0);
 	
 	local buttons = {
 		Recount.MainWindow.CloseButton,

@@ -141,8 +141,8 @@ if(addon:CheckAddOn("Recount")) then
 		
 		Recount_MainWindow:SetParent(parent);
 		Recount_MainWindow:ClearAllPoints();
-		Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 7);
-		Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", 0, 0);
+		Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", E.PixelMode and -1 or 0, E.PixelMode and 8 or 7);
+		Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", E.PixelMode and 1 or 0, E.PixelMode and -1 or 0);
 		
 		Recount.db.profile.Locked = true;
 		Recount.db.profile.Scaling = 1;
@@ -150,8 +150,6 @@ if(addon:CheckAddOn("Recount")) then
 		Recount.db.profile.FrameStrata = "2-LOW";
 		Recount:SetStrataAndClamp();
 		Recount:LockWindows(true);
-		Recount:ResizeMainWindow();
-		Recount:FullRefreshMainWindow();
 	end
 end
 
