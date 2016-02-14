@@ -4,8 +4,7 @@ local addon = E:GetModule("AddOnSkins");
 if(not addon:CheckAddOn("DBM-Core")) then return; end
 
 function addon:DBM(event, addonName)
-	local croprwicons = true;
-	local BarHeight;
+	local db = E.db.addOnSkins;
 	local function SkinBars(self)
 		for bar in self:GetBarIterator() do
 			if(not bar.injected) then
@@ -20,7 +19,6 @@ function addon:DBM(event, addonName)
 					if(not icon1.overlay) then
 						icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar);
 						icon1.overlay:SetTemplate("Default");
-						icon1.overlay:Size(22);
 						icon1.overlay:SetFrameLevel(1);
 						icon1.overlay:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.Border + E.Spacing), 0);
 						
@@ -33,7 +31,6 @@ function addon:DBM(event, addonName)
 					if(not icon2.overlay) then
 						icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar);
 						icon2.overlay:SetTemplate("Default");
-						icon2.overlay:Size(22);
 						icon2.overlay:SetFrameLevel(1);
 						icon2.overlay:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", (E.Border + E.Spacing), 0);
 						
@@ -43,25 +40,28 @@ function addon:DBM(event, addonName)
 						backdroptex:SetTexCoord(unpack(E.TexCoords));
 					end
 					
+					icon1.overlay:Size(db.dbmBarHeight);
 					icon1:SetTexCoord(unpack(E.TexCoords));
 					icon1:ClearAllPoints();
 					icon1:SetInside(icon1.overlay);
 					
+					icon2.overlay:Size(E.db.addOnSkins.dbmBarHeight);
 					icon2:SetTexCoord(unpack(E.TexCoords));
 					icon2:ClearAllPoints();
 					icon2:SetInside(icon2.overlay);
 					
-					BarHeight = bar.owner.options.Height
-					tbar:SetInside(frame)
+					tbar:SetInside(frame);
 					
-					frame:Height(22);
+					frame:Height(E.db.addOnSkins.dbmBarHeight);
 					frame:SetTemplate("Default");
 					
 					name:ClearAllPoints();
 					name:Point("LEFT", frame, "LEFT", 4, 0.5);
+					name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
 					
 					timer:ClearAllPoints();
 					timer:Point("RIGHT", frame, "RIGHT", -4, 0.5);
+					timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
 					
 					if(bar.owner.options.IconLeft) then icon1.overlay:Show(); else icon1.overlay:Hide(); end
 					if(bar.owner.options.IconRight) then icon2.overlay:Show(); else icon2.overlay:Hide(); end
@@ -87,7 +87,7 @@ function addon:DBM(event, addonName)
 			if not pointa then return; end
 			bar:ClearAllPoints();
 			
-			bar:Height(22);
+			bar:Height(E.db.addOnSkins.dbmBarHeight);
 			bar:SetTemplate("Transparent");
 			
 			background:SetNormalTexture(nil);
@@ -98,9 +98,11 @@ function addon:DBM(event, addonName)
 			
 			name:ClearAllPoints();
 			name:Point("LEFT", bar, "LEFT", 4, 0);
+			name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
 			
 			timer:ClearAllPoints();
 			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
+			timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
 			
 			if(DBM.Options.HealthFrameGrowUp) then
 				bar:Point(pointa, anchor, pointb, 0, count == 1 and 8 or 4);

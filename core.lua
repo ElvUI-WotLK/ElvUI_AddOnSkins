@@ -82,6 +82,47 @@ local function getOptions()
 								disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" or not addon:CheckAddOn("Skada"); end
 							}
 						}
+					},
+					dbmGroup = {
+						order = 1,
+						type = "group",
+						name = L["DBM"],
+						get = function(info) return E.db.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value;  end,
+						disabled = function() return not addon:CheckAddOn("DBM-Core"); end,
+						args = {
+							dbmBarHeight = {
+								order = 1,
+								type = "range",
+								name = "Bar Height",
+								min = 6, max = 60,
+								step = 1
+							},
+							dbmFont = {
+								order = 2,
+								type = "select",
+								dialogControl = "LSM30_Font",
+								name = L["Font"],
+								values = AceGUIWidgetLSMlists.font
+							},
+							dbmFontSize = {
+								order = 3,
+								type = "range",
+								name = L["Font Size"],
+								min = 6, max = 22, step = 1
+							},
+							dbmFontOutline = {
+								order = 4,
+								type = "select",
+								name = L["Font Outline"],
+								values = {
+									["NONE"] = L["None"],
+									["OUTLINE"] = "OUTLINE",
+									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+									["THICKOUTLINE"] = "THICKOUTLINE"
+								}
+							}
+						}
 					}
 				}
 			},
