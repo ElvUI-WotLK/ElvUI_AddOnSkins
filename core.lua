@@ -88,7 +88,7 @@ local function getOptions()
 						type = "group",
 						name = L["DBM"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value;  end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle(); DBM.BossHealth:UpdateSettings(); end,
 						disabled = function() return not addon:CheckAddOn("DBM-Core"); end,
 						args = {
 							dbmBarHeight = {
