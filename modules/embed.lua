@@ -150,6 +150,8 @@ if(addon:CheckAddOn("Recount")) then
 		Recount.db.profile.FrameStrata = "2-LOW";
 		Recount:SetStrataAndClamp();
 		Recount:LockWindows(true);
+		Recount:ResizeMainWindow();
+		Recount:FullRefreshMainWindow();
 	end
 end
 

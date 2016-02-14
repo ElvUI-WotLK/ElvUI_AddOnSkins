@@ -11,7 +11,7 @@ function addon:Recount()
 	local backdrop = CreateFrame("Frame", nil, MainWindow);
 	backdrop:SetFrameLevel(MainWindow:GetFrameLevel() - 1);
 	backdrop:Point("BOTTOMLEFT", MainWindow, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0);
-	backdrop:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 32));
+	backdrop:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30));
 	backdrop:SetTemplate("Default");
 	MainWindow.backdrop = backdrop;
 	

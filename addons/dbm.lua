@@ -3,239 +3,142 @@ local addon = E:GetModule("AddOnSkins");
 
 if(not addon:CheckAddOn("DBM-Core")) then return; end
 
-local rwiconsize = 18;
-local buttonsize = 22;
-
-local function SkinBars(self)
-	for bar in self:GetBarIterator() do
-		if ( not bar.injected ) then
-			bar.ApplyStyle = function()
-				local frame = bar.frame
-				local tbar = _G[frame:GetName().."Bar"]
-				local spark = _G[frame:GetName().."BarSpark"]
-				local texture = _G[frame:GetName().."BarTexture"]
-				local icon1 = _G[frame:GetName().."BarIcon1"]
-				local icon2 = _G[frame:GetName().."BarIcon2"]
-				local name = _G[frame:GetName().."BarName"]
-				local timer = _G[frame:GetName().."BarTimer"]
-				
-				if not (icon1.overlay) then
-					icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar)
-					icon1.overlay:SetTemplate('Default')
-					icon1.overlay:Size(buttonsize)
-					icon1.overlay:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.PixelMode and 1 or 3), 0)
+function addon:DBM(event, addonName)
+	local croprwicons = true;
+	local BarHeight;
+	local function SkinBars(self)
+		for bar in self:GetBarIterator() do
+			if(not bar.injected) then
+				hooksecurefunc(bar, "ApplyStyle", function()
+					local frame = bar.frame;
+					local tbar = _G[frame:GetName() .. "Bar"];
+					local icon1 = _G[frame:GetName() .. "BarIcon1"];
+					local icon2 = _G[frame:GetName() .. "BarIcon2"];
+					local name = _G[frame:GetName() .. "BarName"];
+					local timer = _G[frame:GetName() .. "BarTimer"];
 					
-					local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER")
-					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
-					backdroptex:SetInside(icon1.overlay)
-					backdroptex:SetTexCoord(unpack(E.TexCoords))
+					if(not icon1.overlay) then
+						icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar);
+						icon1.overlay:SetTemplate("Default");
+						icon1.overlay:Size(22);
+						icon1.overlay:SetFrameLevel(1);
+						icon1.overlay:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.Border + E.Spacing), 0);
+						
+						local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER");
+						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
+						backdroptex:SetInside(icon1.overlay);
+						backdroptex:SetTexCoord(unpack(E.TexCoords));
+					end
 					
-					icon1.overlay:SetFrameLevel(1)
-				end
-
-				if not (icon2.overlay) then
-					icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar)
-					icon2.overlay:SetTemplate('Default')
-					icon2.overlay:Size(buttonsize)
-					icon2.overlay:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", (E.PixelMode and 1 or 3), 0)
+					if(not icon2.overlay) then
+						icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar);
+						icon2.overlay:SetTemplate("Default");
+						icon2.overlay:Size(22);
+						icon2.overlay:SetFrameLevel(1);
+						icon2.overlay:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", (E.Border + E.Spacing), 0);
+						
+						local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER");
+						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
+						backdroptex:SetInside(icon2.overlay);
+						backdroptex:SetTexCoord(unpack(E.TexCoords));
+					end
 					
-					local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER")
-					backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=])
-					backdroptex:SetInside(icon2.overlay)
-					backdroptex:SetTexCoord(unpack(E.TexCoords))			
-
-					icon2.overlay:SetFrameLevel(1)
-				end
-
-				if bar.color then
-					tbar:SetStatusBarColor(bar.color.r, bar.color.g, bar.color.b)
-				else
-					tbar:SetStatusBarColor(bar.owner.options.StartColorR, bar.owner.options.StartColorG, bar.owner.options.StartColorB)
-				end
-				
-				if bar.enlarged then frame:SetWidth(bar.owner.options.HugeWidth) else frame:SetWidth(bar.owner.options.Width) end
-				if bar.enlarged then tbar:SetWidth(bar.owner.options.HugeWidth) else tbar:SetWidth(bar.owner.options.Width) end
-
-				if not frame.styled then
-					frame:SetScale(1)
-					frame.SetScale = E.noop
-					frame:SetHeight(buttonsize)
-					frame:SetTemplate("Transparent")
-					frame.styled = true
-				end
-
-				if not spark.killed then
-					spark:SetAlpha(0)
-					spark:SetTexture(nil)
-					spark.killed = true
-				end
-	
-				if not icon1.styled then
-					icon1:SetTexCoord(unpack(E.TexCoords))
-					icon1:ClearAllPoints()
-					icon1:SetInside(icon1.overlay)
-					icon1.styled = true
-				end
-				
-				if not icon2.styled then
-					icon2:SetTexCoord(unpack(E.TexCoords))
-					icon2:ClearAllPoints()
-					icon2:SetInside(icon2.overlay)
-					icon2.styled = true
-				end
-
-				if not texture.styled then
-					texture:SetTexture(E["media"].normTex)
-					texture.styled = true
-				end
-				
-				tbar:SetStatusBarTexture(E["media"].normTex)
-				if not tbar.styled then
+					icon1:SetTexCoord(unpack(E.TexCoords));
+					icon1:ClearAllPoints();
+					icon1:SetInside(icon1.overlay);
+					
+					icon2:SetTexCoord(unpack(E.TexCoords));
+					icon2:ClearAllPoints();
+					icon2:SetInside(icon2.overlay);
+					
+					BarHeight = bar.owner.options.Height
 					tbar:SetInside(frame)
 					
-					tbar.styled = true
-				end
-
-				if not name.styled then
-					name:ClearAllPoints()
-					name:Point("LEFT", frame, "LEFT", 4, 0)
-					name:SetWidth(165)
-					name:SetHeight(8)
-					name:FontTemplate(nil, 12, 'OUTLINE')
-					name:SetJustifyH("LEFT")
-					name.SetFont = E.noop
-					name.styled = true
-				end
-				
-				if not timer.styled then
-					timer:ClearAllPoints()
-					timer:Point("RIGHT", frame, "RIGHT", -4, 0)
-					timer:FontTemplate(nil, 12, 'OUTLINE')
-					timer:SetJustifyH("RIGHT")
-					timer.SetFont = E.noop
-					timer.styled = true
-				end
-
-				if bar.owner.options.IconLeft then icon1:Show() icon1.overlay:Show() else icon1:Hide() icon1.overlay:Hide() end
-				if bar.owner.options.IconRight then icon2:Show() icon2.overlay:Show() else icon2:Hide() icon2.overlay:Hide() end
-				tbar:SetAlpha(1)
-				frame:SetAlpha(1)
-				texture:SetAlpha(1)
-				frame:Show()
-				bar:Update(0)
-				bar.injected=true
-			end
-			bar:ApplyStyle()
-		end
-
-	end
-end
- 
-local SkinBossTitle = function()
-	local anchor=DBMBossHealthDropdown:GetParent()
-	if not anchor.styled then
-		local header={anchor:GetRegions()}
-			if header[1]:IsObjectType("FontString") then
-				header[1]:FontTemplate(nil, 12, 'OUTLINE')
-				header[1]:SetTextColor(1, 1, 1)
-				header[1]:SetShadowColor(0, 0, 0, 0)
-				anchor.styled=true	
-			end
-		header=nil
-	end
-	anchor=nil
-end
-
-local SkinBoss = function()
-	local count = 1
-	while (_G[format("DBM_BossHealth_Bar_%d", count)]) do
-		local bar = _G[format("DBM_BossHealth_Bar_%d", count)]
-		local background = _G[bar:GetName().."BarBorder"]
-		local progress = _G[bar:GetName().."Bar"]
-		local name = _G[bar:GetName().."BarName"]
-		local timer = _G[bar:GetName().."BarTimer"]
-		local prev = _G[format("DBM_BossHealth_Bar_%d", count-1)]	
-
-		if (count == 1) then
-			local	_, anch, _ ,_, _ = bar:GetPoint()
-			bar:ClearAllPoints()
-			if DBM_SavedOptions.HealthFrameGrowUp then
-				bar:Point("BOTTOM", anch, "TOP" , 0 , 12)
-			else
-				bar:Point("TOP", anch, "BOTTOM" , 0, -buttonsize)
-			end
-		else
-			bar:ClearAllPoints()
-			if DBM_SavedOptions.HealthFrameGrowUp then
-				bar:Point("TOPLEFT", prev, "TOPLEFT", 0, buttonsize + 4)
-			else
-				bar:Point("TOPLEFT", prev, "TOPLEFT", 0, -(buttonsize + 4))
+					frame:Height(22);
+					frame:SetTemplate("Default");
+					
+					name:ClearAllPoints();
+					name:Point("LEFT", frame, "LEFT", 4, 0.5);
+					
+					timer:ClearAllPoints();
+					timer:Point("RIGHT", frame, "RIGHT", -4, 0.5);
+					
+					if(bar.owner.options.IconLeft) then icon1.overlay:Show(); else icon1.overlay:Hide(); end
+					if(bar.owner.options.IconRight) then icon2.overlay:Show(); else icon2.overlay:Hide(); end
+					
+					bar.injected = true;
+				end);
+				bar:ApplyStyle();
 			end
 		end
-
-		if not bar.styled then
-			bar:SetHeight(buttonsize)
-			bar:SetTemplate("Transparent")
-			background:SetNormalTexture(nil)
-			bar.styled=true
-		end
-		
-		if not progress.styled then
-			progress:SetStatusBarTexture(E["media"].normTex)
-			progress.styled=true
-		end
-		progress:ClearAllPoints()
-		progress:SetInside(bar)
-
-		if not name.styled then
-			name:ClearAllPoints()
-			name:Point("LEFT", bar, "LEFT", 4, 0)
-			name:FontTemplate(nil, 12, 'OUTLINE')
-			name:SetJustifyH("LEFT")
-			name:SetShadowColor(0, 0, 0, 0)
-			name.styled=true
-		end
-		
-		if not timer.styled then
-			timer:ClearAllPoints()
-			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
-			timer:FontTemplate(nil, 12, 'OUTLINE')
-			timer:SetJustifyH("RIGHT")
-			timer:SetShadowColor(0, 0, 0, 0)
-			timer.styled=true
-		end
-		count = count + 1
 	end
-end
-
-
-function addon:DBM()
-	hooksecurefunc(DBT,"CreateBar",SkinBars)
-	hooksecurefunc(DBM.BossHealth,"Show",SkinBossTitle)
-	hooksecurefunc(DBM.BossHealth,"AddBoss",SkinBoss)
-	hooksecurefunc(DBM.BossHealth,"UpdateSettings",SkinBoss)
-	DBM.RangeCheck:Show()
-	DBM.RangeCheck:Hide()
-	DBMRangeCheck:HookScript("OnShow",function(self)
-		self:SetTemplate("Transparent")
-	end)
-
-	local RaidNotice_AddMessage_=RaidNotice_AddMessage
-	RaidNotice_AddMessage=function(noticeFrame, textString, colorInfo)
-		if textString:find(" |T") then
-			textString = string.gsub(textString,"(:12:12)",":18:18:0:0:64:64:5:59:5:59")
-		end
-		return RaidNotice_AddMessage_(noticeFrame, textString, colorInfo)
-	end
-
 	
-	DBM_SavedOptions.Enabled=true
-
-	DBT_SavedOptions["DBM"].Scale = 1
-	DBT_SavedOptions["DBM"].HugeScale = 1
-	DBT_SavedOptions["DBM"].BarXOffset = 0
-	DBT_SavedOptions["DBM"].Texture = "ElvUI Norm"
-	DBT_SavedOptions["DBM"].Font = "ElvUI Font"	
+	local SkinBoss = function()
+		local count = 1;
+		while (_G[format("DBM_BossHealth_Bar_%d", count)]) do
+			local bar = _G[format("DBM_BossHealth_Bar_%d", count)];
+			local barname = bar:GetName();
+			local background = _G[barname .. "BarBorder"];
+			local progress = _G[barname .. "Bar"];
+			local name = _G[barname .. "BarName"];
+			local timer = _G[barname .. "BarTimer"];
+			local pointa, anchor, pointb, _, _ = bar:GetPoint();
+			
+			if not pointa then return; end
+			bar:ClearAllPoints();
+			
+			bar:Height(22);
+			bar:SetTemplate("Transparent");
+			
+			background:SetNormalTexture(nil);
+			
+			progress:SetStatusBarTexture(E["media"].normTex);
+			progress:ClearAllPoints();
+			progress:SetInside(bar);
+			
+			name:ClearAllPoints();
+			name:Point("LEFT", bar, "LEFT", 4, 0);
+			
+			timer:ClearAllPoints();
+			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
+			
+			if(DBM.Options.HealthFrameGrowUp) then
+				bar:Point(pointa, anchor, pointb, 0, count == 1 and 8 or 4);
+			else
+				bar:Point(pointa, anchor, pointb, 0, -(count == 1 and 8 or 4));
+			end
+			count = count + 1;
+		end
+	end
+	
+	local function SkinRange(self, range, filter)
+		DBMRangeCheck:SetTemplate("Transparent");
+	end
+	
+	hooksecurefunc(DBT, "CreateBar", SkinBars);
+	hooksecurefunc(DBM.BossHealth, "Show", SkinBoss);
+	hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss);
+	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss);
+	hooksecurefunc(DBM.RangeCheck, "Show", SkinRange);
+	
+	local RaidNotice_AddMessage_ = RaidNotice_AddMessage;
+	RaidNotice_AddMessage = function(noticeFrame, textString, colorInfo)
+		if(textString:find(" |T")) then
+			textString = string.gsub(textString, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59");
+		end
+		return RaidNotice_AddMessage_(noticeFrame, textString, colorInfo);
+	end
+	
+	if(addonName == "DBM-GUI") then
+		DBM_GUI_OptionsFrame:HookScript("OnShow", function()
+			DBM_GUI_OptionsFrame:StripTextures();
+			DBM_GUI_OptionsFrame:SetTemplate("Transparent");
+			DBM_GUI_OptionsFrameBossMods:SetTemplate("Default");
+			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Default");
+			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Default");
+		end);
+		addon:UnregisterSkinEvent("DBM", event);
+	end
 end
 
-addon:RegisterSkin("DBM", addon.DBM);
+addon:RegisterSkin("DBM", addon.DBM, "ADDON_LOADED");
