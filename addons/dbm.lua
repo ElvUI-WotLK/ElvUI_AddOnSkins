@@ -136,18 +136,14 @@ function addon:DBM(event, addonName)
 	end
 	
 	if(addonName == "DBM-GUI") then
-		DBM_GUI_OptionsFrame:HookScript("OnShow", function()
-			DBM_GUI_OptionsFrame:StripTextures();
-			DBM_GUI_OptionsFrame:SetTemplate("Transparent");
-			
+		DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
+			self:StripTextures();
+			self:SetTemplate("Transparent");
 			DBM_GUI_OptionsFrameBossMods:StripTextures();
-			DBM_GUI_OptionsFrameBossMods:SetTemplate("Default");
-			
+			DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent");
 			DBM_GUI_OptionsFrameDBMOptions:StripTextures();
-			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Default");
-			
-			DBM_GUI_OptionsFramePanelContainer:StripTextures();
-			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Default");
+			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent");
+			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent");
 		end);
 		
 		S:HandleButton(DBM_GUI_OptionsFrameOkay);
@@ -155,8 +151,6 @@ function addon:DBM(event, addonName)
 		
 		S:HandleTab(DBM_GUI_OptionsFrameTab1);
 		S:HandleTab(DBM_GUI_OptionsFrameTab2);
-		--DBM_GUI_OptionsFrameBossMods:StripTextures();
-		--DBM_GUI_OptionsFrameBossMods:SetTemplate("Default");
 		
 		addon:UnregisterSkinEvent("DBM", event);
 	end
