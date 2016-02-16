@@ -10,6 +10,9 @@ P.addOnSkins = {
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
 	
+	weakAuraAuraBar = true,
+	weakAuraIconCooldown = true,
+	
 	embed = {
 		embedType = "DISABLE",
 		left = "Skada",

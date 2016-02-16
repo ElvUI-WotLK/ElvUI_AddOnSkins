@@ -84,7 +84,7 @@ local function getOptions()
 						}
 					},
 					dbmGroup = {
-						order = 1,
+						order = 2,
 						type = "group",
 						name = L["DBM"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -121,6 +121,26 @@ local function getOptions()
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
+							}
+						}
+					},
+					waGroup = {
+						order = 3,
+						type = "group",
+						name = L["WeakAuras"],
+						get = function(info) return E.db.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; end,
+						disabled = function() return not addon:CheckAddOn("WeakAuras"); end,
+						args = {
+							weakAuraAuraBar = {
+								order = 1,
+								type = "toggle",
+								name = L["AuraBar Backdrop"]
+							},
+							weakAuraIconCooldown = {
+								order = 2,
+								type = "toggle",
+								name = L["Icon Cooldown"]
 							}
 						}
 					}
