@@ -5,6 +5,11 @@ P.addOnSkins = {
 	skadaTemplate = "Default",
 	skadaTemplateGloss = false,
 	
+	dbmBarHeight = 22,
+	dbmFont = "ElvUI Font",
+	dbmFontSize = 12,
+	dbmFontOutline = "OUTLINE",
+	
 	embed = {
 		embedType = "DISABLE",
 		left = "Skada",
@@ -34,6 +39,7 @@ V.addOnSkins = {
 	AtlasLoot = true,
 	Atlas = true,
 	FlightMap = true,
+	WeakAuras = true,
 
 	Blizzard_WorldStateFrame = true,
 };

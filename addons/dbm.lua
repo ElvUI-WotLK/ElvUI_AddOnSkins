@@ -1,5 +1,6 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
 if(not addon:CheckAddOn("DBM-Core")) then return; end
 
@@ -15,6 +16,9 @@ function addon:DBM(event, addonName)
 					local icon2 = _G[frame:GetName() .. "BarIcon2"];
 					local name = _G[frame:GetName() .. "BarName"];
 					local timer = _G[frame:GetName() .. "BarTimer"];
+					local spark = _G[frame:GetName() .. "BarSpark"];
+					
+					spark:Kill()
 					
 					if(not icon1.overlay) then
 						icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar);
@@ -135,10 +139,25 @@ function addon:DBM(event, addonName)
 		DBM_GUI_OptionsFrame:HookScript("OnShow", function()
 			DBM_GUI_OptionsFrame:StripTextures();
 			DBM_GUI_OptionsFrame:SetTemplate("Transparent");
+			
+			DBM_GUI_OptionsFrameBossMods:StripTextures();
 			DBM_GUI_OptionsFrameBossMods:SetTemplate("Default");
+			
+			DBM_GUI_OptionsFrameDBMOptions:StripTextures();
 			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Default");
+			
+			DBM_GUI_OptionsFramePanelContainer:StripTextures();
 			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Default");
 		end);
+		
+		S:HandleButton(DBM_GUI_OptionsFrameOkay);
+		S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar);
+		
+		S:HandleTab(DBM_GUI_OptionsFrameTab1);
+		S:HandleTab(DBM_GUI_OptionsFrameTab2);
+		--DBM_GUI_OptionsFrameBossMods:StripTextures();
+		--DBM_GUI_OptionsFrameBossMods:SetTemplate("Default");
+		
 		addon:UnregisterSkinEvent("DBM", event);
 	end
 end
