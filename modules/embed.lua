@@ -134,7 +134,7 @@ end
 if(addon:CheckAddOn("Recount")) then
 	function module:Recount()
 		local parent = self.left;
-		if(self.db.embedType == "DOUBLE") then
+		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 			parent = self.db.right == "Recount" and self.right or self.left;
 		end
 		parent.frameName = "Recount_MainWindow";
@@ -150,15 +150,16 @@ if(addon:CheckAddOn("Recount")) then
 		Recount.db.profile.FrameStrata = "2-LOW";
 		Recount:SetStrataAndClamp();
 		Recount:LockWindows(true);
-		Recount:ResizeMainWindow();
-		Recount:FullRefreshMainWindow();
+		
+		Recount_MainWindow:StartSizing("BOTTOMLEFT");
+		Recount_MainWindow:StopMovingOrSizing();
 	end
 end
 
 if(addon:CheckAddOn("Omen")) then
 	function module:Omen()
 		local parent = self.left;
-		if(self.db.embedType == "DOUBLE") then
+		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 			parent = self.db.right == "Omen" and self.right or self.left;
 		end
 		parent.frameName = "OmenAnchor";
@@ -190,7 +191,7 @@ end
 if(addon:CheckAddOn("Omen")) then
 	function module:Omen()
 		local parent = self.left;
-		if(self.db.embedType == "DOUBLE") then
+		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 			parent = self.db.right == "Omen" and self.right or self.left;
 		end
 		parent.frameName = "OmenAnchor";
@@ -228,10 +229,10 @@ if(addon:CheckAddOn("Skada")) then
 		end
 		
 		local numberToEmbed = 0;
-		if(self.db.embedType == "SINGLE") then
+		if(E.db.addOnSkins.embed.embedType == "SINGLE") then
 			numberToEmbed = 1;
 		end
-		if(self.db.embedType == "DOUBLE") then
+		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 			if(self.db.right == "Skada") then numberToEmbed = numberToEmbed + 1; end
 			if(self.db.left == "Skada") then numberToEmbed = numberToEmbed + 1; end
 		end
@@ -261,7 +262,7 @@ if(addon:CheckAddOn("Skada")) then
 		
 		if(numberToEmbed == 1) then
 			local parent = self.left;
-			if(self.db.embedType == "DOUBLE") then
+			if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 				parent = self.db.right == "Skada" and self.right or self.left;
 			end
 			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", E.Border, -E.Border);
@@ -364,8 +365,8 @@ function module:WindowResize()
 	local chatData = E.db.addOnSkins.embed.rightChat and RightChatDataPanel or LeftChatToggleButton;
 	local topRight = chatData == RightChatDataPanel and (E.db.datatexts.rightChatPanel and "TOPLEFT" or "BOTTOMLEFT") or chatData == LeftChatToggleButton and (E.db.datatexts.leftChatPanel and "TOPLEFT" or "BOTTOMLEFT");
 	local yOffset = (chatData == RightChatDataPanel and E.db.datatexts.rightChatPanel and SPACING) or (chatData == LeftChatToggleButton and E.db.datatexts.leftChatPanel and SPACING) or 0;
-	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and self.db.rightChat and 0) or (E.db.chat.panelBackdrop == "LEFT" and not self.db.rightChat and 0) or (E.db.chat.panelBackdrop == "SHOWBOTH" and 0) or E.Border*3 - E.Spacing;
-	local isDouble = self.db.embedType == "DOUBLE";
+	local xOffset = (E.db.chat.panelBackdrop == "RIGHT" and E.db.addOnSkins.embed.rightChat and 0) or (E.db.chat.panelBackdrop == "LEFT" and not E.db.addOnSkins.embed.rightChat and 0) or (E.db.chat.panelBackdrop == "SHOWBOTH" and 0) or E.Border*3 - E.Spacing;
+	local isDouble = E.db.addOnSkins.embed.embedType == "DOUBLE";
 	
 	self.left:SetParent(chatPanel);
 	self.left:ClearAllPoints();

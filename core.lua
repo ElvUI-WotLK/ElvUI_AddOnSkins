@@ -129,7 +129,7 @@ local function getOptions()
 						type = "group",
 						name = L["WeakAuras"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						disabled = function() return not addon:CheckAddOn("WeakAuras"); end,
 						args = {
 							weakAuraAuraBar = {
