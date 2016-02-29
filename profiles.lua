@@ -43,6 +43,7 @@ V.addOnSkins = {
 	Atlas = true,
 	FlightMap = true,
 	WeakAuras = true,
+	Overachiever = true,
 
 	Blizzard_WorldStateFrame = true,
 };
