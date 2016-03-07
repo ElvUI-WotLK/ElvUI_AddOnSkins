@@ -135,6 +135,32 @@ function addon:AtlasLoot()
 		AtlasLootPanel:SetParent(AtlasFrame);
 		AtlasLootPanel:SetPoint("TOP", "AtlasFrame", "BOTTOM", 0, -2);
 	end);
+	
+	local function skinDewdrop()
+		local i = 1;
+		while(_G["Dewdrop20Level" .. i]) do
+			_G["Dewdrop20Level" .. i]:SetTemplate("Transparent");
+			select(1, _G["Dewdrop20Level" .. i]:GetChildren()):Hide();
+			i = i + 1;
+		end
+		
+		local i = 1;
+		while(_G["Dewdrop20Button"..i]) do
+			if(not _G["Dewdrop20Button" .. i].isHook) then
+				_G["Dewdrop20Button" .. i]:HookScript("OnEnter", function(this)
+					if(not this.disabled and this.hasArrow) then
+						skinDewdrop();
+					end
+				end);
+				_G["Dewdrop20Button" .. i].isHook = true;
+			end
+			i = i + 1;
+		end
+	end
+	
+	hooksecurefunc(LibStub("Dewdrop-2.0", true), "Open", function(parent)
+		skinDewdrop();
+	end);
 end
 
 addon:RegisterSkin("AtlasLoot", addon.AtlasLoot);

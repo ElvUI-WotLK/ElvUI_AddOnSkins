@@ -1,11 +1,10 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
+local E, L, V, P, G = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
 if(not addon:CheckAddOn("Atlas")) then return; end
 
 function addon:Atlas()
-	local S = E:GetModule("Skins");
-	
 	AtlasFrame:StripTextures();
 	AtlasFrame:SetTemplate("Transparent");
 	
