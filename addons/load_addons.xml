@@ -18,4 +18,5 @@
 	<Script file="flightMap.lua"/>
 	<Script file="weakAuras.lua"/>
 	<Script file="overachiever.lua"/>
+	<Script file="openGF.lua"/>
 </Ui>

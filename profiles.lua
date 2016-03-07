@@ -44,6 +44,7 @@ V.addOnSkins = {
 	FlightMap = true,
 	WeakAuras = true,
 	Overachiever = true,
+	OpenGF = true,
 
 	Blizzard_WorldStateFrame = true,
 };
