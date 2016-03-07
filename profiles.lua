@@ -45,6 +45,7 @@ V.addOnSkins = {
 	WeakAuras = true,
 	Overachiever = true,
 	OpenGF = true,
+	KHunterTimers = true,
 
 	Blizzard_WorldStateFrame = true,
 };

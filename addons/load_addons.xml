@@ -19,4 +19,5 @@
 	<Script file="weakAuras.lua"/>
 	<Script file="overachiever.lua"/>
 	<Script file="openGF.lua"/>
+	<Script file="kHunterTimers.lua"/>
 </Ui>
