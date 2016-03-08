@@ -69,7 +69,7 @@ function addon:Clique()
 		CliqueTextListScroll:StripTextures();
 		S:HandleScrollBar(CliqueTextListScrollScrollBar);
 		
-		S:HandleDropDownBox(CliqueDropDown);
+		S:HandleDropDownBox(CliqueDropDown, 170);
 		CliqueDropDown:SetPoint("TOPRIGHT", -1, -25);
 		
 		S:HandleCloseButton(CliqueButtonClose);
