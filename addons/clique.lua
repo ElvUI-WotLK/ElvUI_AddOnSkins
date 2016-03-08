@@ -31,8 +31,26 @@ function addon:Clique()
 		
 		for i = 1, 10 do
 			local entry = _G["CliqueList"..i];
-		--	entry:SetTemplate("Default");
+			entry:SetHeight(32);
+			entry:SetTemplate("Default");
+			entry.icon:SetPoint("LEFT", 3.5, 0);
 			entry.icon:SetTexCoord(unpack(E.TexCoords));
+			
+			entry:SetScript("OnEnter", function(self)
+				self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor));
+			end);
+			entry:SetScript("OnLeave", function(self)
+				local selected = FauxScrollFrame_GetOffset(CliqueListScroll) + self.id;
+				if(selected == self.listSelected) then
+					self:SetBackdropBorderColor(1, 1, 1);
+				else
+					self:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+				end
+			end);
+		end
+		
+		for i = 2, 10 do
+			_G["CliqueList" .. i]:SetPoint("TOP", _G["CliqueList" .. i-1], "BOTTOM", 0, -2);
 		end
 		
 		CliqueListScroll:StripTextures();
@@ -130,6 +148,26 @@ function addon:Clique()
 		
 		CliqueIconScrollFrame:StripTextures();
 		S:HandleScrollBar(CliqueIconScrollFrameScrollBar);
+	end);
+	
+	addon:SecureHook(Clique, "ListScrollUpdate", function(self)
+		if(not CliqueListScroll) then return; end
+		
+		local idx, button;
+		local clickCasts = self.sortList;
+		local offset = FauxScrollFrame_GetOffset(CliqueListScroll);
+		
+		for i = 1, 10 do
+			idx = offset + i;
+			button = _G["CliqueList" .. i];
+			if(idx <= table.getn(clickCasts)) then
+				if(idx == self.listSelected) then
+					button:SetBackdropBorderColor(1, 1, 1);
+				else
+					button:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+				end
+			end
+		end
 	end);
 end
 
