@@ -10,7 +10,12 @@ function addon:Skada()
 		skada:SetFrameLevel(5);
 		
 		if(win.db.enabletitle) then
-			skada.button:SetTemplate("Default", true);
+			skada.button:SetBackdrop(nil);
+			if(not skada.button.backdrop) then
+				skada.button:CreateBackdrop();
+				skada.button.backdrop:SetFrameLevel(skada.button:GetFrameLevel());
+			end
+			skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
 		end
 		
 		if(win.db.enablebackground) then
@@ -20,11 +25,11 @@ function addon:Skada()
 				if(win.db.reversegrowth) then
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
-					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.Border + E.Spacing) or -win.db.barheight - E.Border);
+					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.Spacing) or -win.db.barheight - E.Border);
 				else
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
-					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.Border + E.Spacing) or win.db.barheight + E.Border);
+					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.Spacing) or win.db.barheight + E.Border);
 				end
 			end
 		end

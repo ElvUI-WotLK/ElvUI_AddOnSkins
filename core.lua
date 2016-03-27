@@ -80,6 +80,26 @@ local function getOptions()
 								type = "toggle",
 								name = L["Skada Template Gloss"],
 								disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" or not addon:CheckAddOn("Skada"); end
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = ""
+							},
+							skadaTitleTemplate = {
+								order = 4,
+								type = "select",
+								name = L["Skada Title Template"],
+								values = {
+									["Default"] = L["Default"],
+									["Transparent"] = L["Transparent"]
+								}
+							},
+							skadaTitleTemplateGloss = {
+								order = 5,
+								type = "toggle",
+								name = L["Skada Title Template Gloss"],
+								disabled = function() return E.db.addOnSkins.skadaTitleTemplate == "Transparent" or not addon:CheckAddOn("Skada"); end
 							}
 						}
 					},
