@@ -48,6 +48,7 @@ V.addOnSkins = {
 	Overachiever = true,
 	OpenGF = true,
 	KHunterTimers = true,
+	TellMeWhen = true,
 
 	Blizzard_WorldStateFrame = true,
 };

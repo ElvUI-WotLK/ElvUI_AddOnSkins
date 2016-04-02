@@ -20,4 +20,5 @@
 	<Script file="overachiever.lua"/>
 	<Script file="openGF.lua"/>
 	<Script file="kHunterTimers.lua"/>
+	<Script file="tellMeWhen.lua"/>
 </Ui>
