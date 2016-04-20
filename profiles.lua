@@ -49,6 +49,12 @@ V.addOnSkins = {
 	OpenGF = true,
 	KHunterTimers = true,
 	TellMeWhen = true,
+	GearScore = true,
+	AllStats = true,
+	BlackList = true,
+	GnomishVendorShrinker = true,
+	ACP = true,
+	EveryQuest = true,
 
 	Blizzard_WorldStateFrame = true,
 };

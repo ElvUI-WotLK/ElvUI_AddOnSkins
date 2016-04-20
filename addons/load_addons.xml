@@ -21,4 +21,9 @@
 	<Script file="openGF.lua"/>
 	<Script file="kHunterTimers.lua"/>
 	<Script file="tellMeWhen.lua"/>
+	<Script file="gearScore.lua"/>
+	<Script file="allStats.lua"/>
+	<Script file="blackList.lua"/>
+	<Script file="gnomishVendorShrinker.lua"/>
+	<Script file="aCP.lua"/>
 </Ui>
