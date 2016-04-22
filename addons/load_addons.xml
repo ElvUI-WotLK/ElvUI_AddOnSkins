@@ -27,4 +27,5 @@
 	<Script file="gnomishVendorShrinker.lua"/>
 	<Script file="aCP.lua"/>
 	<Script file="everyQuest.lua"/>
+	<Script file="_NPCScan.lua"/>
 </Ui>

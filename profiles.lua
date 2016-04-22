@@ -55,6 +55,7 @@ V.addOnSkins = {
 	GnomishVendorShrinker = true,
 	ACP = true,
 	EveryQuest = true,
+	_NPCScan = true,
 
 	Blizzard_WorldStateFrame = true,
 };
