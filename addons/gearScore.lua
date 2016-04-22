@@ -127,12 +127,18 @@ function addon:GearScore()
 	hooksecurefunc("GearScore_DisplayDatabase", function()
 		if(GS_DatabaseFrame.tooltip) then
 			GS_DatabaseFrame.tooltip:SetTemplate("Default");
+			if(GS_DatabaseFrame.tooltip.slider) then
+				S:HandleSliderFrame(GS_DatabaseFrame.tooltip.slider);
+			end
 		end
 	end);
 
 	hooksecurefunc("GearScoreClassScan", function()
 		if(GS_DatabaseFrame.tooltip) then
 			GS_DatabaseFrame.tooltip:SetTemplate("Default");
+			if(GS_DatabaseFrame.tooltip.slider) then
+				S:HandleSliderFrame(GS_DatabaseFrame.tooltip.slider);
+			end
 		end
 	end);
 
