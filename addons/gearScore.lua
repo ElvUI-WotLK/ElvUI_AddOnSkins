@@ -69,6 +69,8 @@ function addon:GearScore()
 		E:RegisterStatusBar(_G["GS_XpBar" .. i]);
 	end
 
+	GS_DisplayFrameTab1:Point("TOPLEFT", 0, -448);
+	GS_DisplayFrameTab3:Point("TOPRIGHT", 0, -448);
 	for i = 1, 3 do
 		S:HandleTab(_G["GS_DisplayFrameTab" .. i]);
 	end
@@ -108,6 +110,7 @@ function addon:GearScore()
 
 	S:HandleCloseButton(GSDatabaseFrameCloseButton);
 
+	GS_DatabaseFrameTab1:Point("TOPLEFT", 0, -468);
 	for i = 1, 4 do
 		S:HandleTab(_G["GS_DatabaseFrameTab" .. i]);
 	end
@@ -117,6 +120,9 @@ function addon:GearScore()
 	S:HandleButton(GS_BackProfileButton);
 
 	S:HandleEditBox(GS_SearchXBox);
+	GS_SearchXBox:Height(22);
+	GS_SearchXBox:ClearAllPoints();
+	GS_SearchXBox:Point("RIGHT", GS_Search2Button, "LEFT", -6, 0);
 
 	for _, frame in pairs({_G["GS_DatabaseFrame"]:GetChildren()}) do
 		if(frame:GetName() == "GS_Search2Button") then
