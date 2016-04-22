@@ -27,10 +27,38 @@ function addon:GearScore()
 	GS_Model:SetTemplate("Default");
 
 	for i = 1, 18 do
-		if(_G["GS_Frame" .. i]) then
-		_G["GS_Frame" .. i]:CreateBackdrop("Default");
+		if(i ~= 4) then
+			_G["GS_Frame" .. i].texture = _G["GS_Frame" .. i]:CreateTexture(nil, "BORDER");
+			_G["GS_Frame" .. i].texture:SetInside();
+			_G["GS_Frame" .. i].texture:SetTexCoord(unpack(E.TexCoords));
 		end
 	end
+
+	hooksecurefunc("GearScore_DisplayUnit", function(Name, Auto)
+		if(GS_Data[GetRealmName()].Players[Name]) then
+			for i = 1, 18 do
+				if(i ~= 4) then
+					_G["GS_Frame" .. i]:SetTemplate("Default");
+					local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo("item:" .. GS_Data[GetRealmName()].Players[Name].Equip[i]);
+					if(ItemTexture) then
+						_G["GS_Frame" .. i].texture:SetTexture(ItemTexture);
+						_G["GS_Frame" .. i]:SetBackdropBorderColor(GetItemQualityColor(ItemRarity));
+					else
+						_G["GS_Frame" .. i].texture:SetTexture(GS_TextureFiles[i]);
+						_G["GS_Frame" .. i]:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+					end
+				end
+			end
+		else
+			for i = 1, 18 do
+				if(i ~= 4) then
+					_G["GS_Frame" .. i]:SetTemplate("Default");
+					_G["GS_Frame" .. i].texture:SetTexture(GS_TextureFiles[i]);
+					_G["GS_Frame" .. i]:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+				end
+			end
+		end
+	end);
 
 	--S:HandleEditBox(GS_NotesEditBox);
 
@@ -95,12 +123,37 @@ function addon:GearScore()
 			S:HandleButton(frame);
 		end
 	end
-	
+
 	hooksecurefunc("GearScore_DisplayDatabase", function()
 		if(GS_DatabaseFrame.tooltip) then
 			GS_DatabaseFrame.tooltip:SetTemplate("Default");
 		end
 	end);
+
+	hooksecurefunc("GearScoreClassScan", function()
+		if(GS_DatabaseFrame.tooltip) then
+			GS_DatabaseFrame.tooltip:SetTemplate("Default");
+		end
+	end);
+
+	GS_ReportFrame:SetTemplate("Transparent");
+
+	S:HandleSliderFrame(GS_Slider);
+
+	S:HandleEditBox(GSX_WhisperEditBox);
+	S:HandleEditBox(GSX_ChannelEditBox);
+
+	S:HandleButton(GSXButton1);
+	S:HandleCloseButton(GSReportFrameCloseButton);
+
+	S:HandleCheckBox(GSXSayCheck, true);
+	S:HandleCheckBox(GSXPartyCheck, true);
+	S:HandleCheckBox(GSXRaidCheck, true);
+	S:HandleCheckBox(GSXGuildCheck, true);
+	S:HandleCheckBox(GSXOfficerCheck, true);
+	S:HandleCheckBox(GSXWhisperTargetCheck, true);
+	S:HandleCheckBox(GSXWhisperCheck, true);
+	S:HandleCheckBox(GSXChannelCheck, true);
 end
 
 addon:RegisterSkin("GearScore", addon.GearScore);
