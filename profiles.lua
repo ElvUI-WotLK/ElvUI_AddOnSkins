@@ -56,6 +56,7 @@ V.addOnSkins = {
 	ACP = true,
 	EveryQuest = true,
 	_NPCScan = true,
+	MoveAnything = true,
 
 	Blizzard_WorldStateFrame = true,
 };

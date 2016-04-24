@@ -28,4 +28,5 @@
 	<Script file="aCP.lua"/>
 	<Script file="everyQuest.lua"/>
 	<Script file="_NPCScan.lua"/>
+	<Script file="moveAnything.lua"/>
 </Ui>
