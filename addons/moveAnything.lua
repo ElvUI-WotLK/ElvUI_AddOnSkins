@@ -65,6 +65,8 @@ function addon:MoveAnything()
 	S:HandleButton(MANudger_Hide);
 	S:HandleButton(MANudger_MoverPlus);
 	S:HandleButton(MANudger_MoverMinus);
+
+	S:HandleButton(GameMenuButtonMoveAnything);
 end
 
 addon:RegisterSkin("MoveAnything", addon.MoveAnything);
