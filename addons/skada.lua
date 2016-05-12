@@ -53,6 +53,32 @@ function addon:Skada()
 			module:Skada();
 		end
 	end);
+	
+	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
+		local p = self.db.profile.tooltippos;
+		if(p == "default") then
+			if(not E:HasMoverBeenMoved("TooltipMover")) then
+				if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
+					tt:SetPoint("BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18)	
+				elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
+					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "TOPRIGHT", 0, 18)		
+				else
+					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 18)
+				end
+			else
+				local point = E:GetScreenQuadrant(TooltipMover);
+				if(point == "TOPLEFT") then
+					tt:SetPoint("TOPLEFT", TooltipMover);
+				elseif(point == "TOPRIGHT") then
+					tt:SetPoint("TOPRIGHT", TooltipMover);
+				elseif(point == "BOTTOMLEFT" or point == "LEFT") then
+					tt:SetPoint("BOTTOMLEFT", TooltipMover);
+				else
+					tt:SetPoint("BOTTOMRIGHT", TooltipMover);
+				end
+			end
+	   end
+	end);
 end
 
 addon:RegisterSkin("Skada", addon.Skada);
