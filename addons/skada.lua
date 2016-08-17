@@ -15,11 +15,19 @@ function addon:Skada()
 				skada.button:CreateBackdrop();
 				skada.button.backdrop:SetFrameLevel(skada.button:GetFrameLevel());
 			end
-			skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
+			if(E.db.addOnSkins.skadaTitleTemplate == "NONE") then
+				skada.button.backdrop:SetBackdrop(nil);
+			else
+				skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
+			end
 		end
 		
 		if(win.db.enablebackground) then
-			skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false);
+			if(E.db.addOnSkins.skadaTemplate == "NONE") then
+				skada.bgframe:SetBackdrop(nil);
+			else
+				skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false);
+			end
 			if(skada.bgframe) then
 				skada.bgframe:ClearAllPoints();
 				if(win.db.reversegrowth) then
@@ -58,12 +66,12 @@ function addon:Skada()
 		local p = self.db.profile.tooltippos;
 		if(p == "default") then
 			if(not E:HasMoverBeenMoved("TooltipMover")) then
-				if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-					tt:SetPoint("BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18)	
-				elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "TOPRIGHT", 0, 18)		
+				if(ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown()) then
+					tt:SetPoint("BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18);
+				elseif(RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown()) then
+					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "TOPRIGHT", 0, 18);
 				else
-					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 18)
+					tt:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 18);
 				end
 			else
 				local point = E:GetScreenQuadrant(TooltipMover);
