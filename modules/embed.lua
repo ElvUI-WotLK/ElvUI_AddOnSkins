@@ -188,38 +188,6 @@ if(addon:CheckAddOn("Omen")) then
 	end
 end
 
-if(addon:CheckAddOn("Omen")) then
-	function module:Omen()
-		local parent = self.left;
-		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
-			parent = self.db.right == "Omen" and self.right or self.left;
-		end
-		parent.frameName = "OmenAnchor";
-		
-		local db = Omen.db;
-		db.profile.Scale = 1;
-		db.profile.Bar.Spacing = 1;
-		db.profile.Background.EdgeSize = 1;
-		db.profile.Background.BarInset = 2;
-		db.profile.TitleBar.UseSameBG = true;
-		db.profile.ShowWith.UseShowWith = false;
-		db.profile.Locked = true;
-		db.profile.TitleBar.ShowTitleBar = true;
-		db.profile.FrameStrata = "2-LOW";
-		
-		OmenAnchor:SetParent(parent);
-		OmenAnchor:ClearAllPoints();
-		OmenAnchor:SetAllPoints();
-		
-		hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
-			if(useDB) then
-				self.Anchor:SetParent(parent);
-				self.Anchor:SetInside(parent, 0, 0);
-			end
-		end);
-	end
-end
-
 if(addon:CheckAddOn("Skada")) then
 	module["skadaWindows"] = {};
 	function module:Skada()
@@ -250,7 +218,7 @@ if(addon:CheckAddOn("Skada")) then
 			
 			window.bargroup:SetParent(relativeFrame);
 			window.bargroup:ClearAllPoints();
-			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy);
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy);
 			
 			window.bargroup:SetFrameStrata("LOW");
 			
@@ -260,15 +228,19 @@ if(addon:CheckAddOn("Skada")) then
 			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1);
 		end
 		
+		local point;
 		if(numberToEmbed == 1) then
 			local parent = self.left;
 			if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 				parent = self.db.right == "Skada" and self.right or self.left;
 			end
-			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", E.Border, -E.Border);
+			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
+			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), point, parent, point, E.Border, E.Border);
 		elseif(numberToEmbed == 2) then
-			EmbedWindow(self.skadaWindows[1], self.left:GetWidth() -(E.Border*2), self.left:GetHeight(), "TOPLEFT", self.left, "TOPLEFT", E.Border, -E.Border);
-			EmbedWindow(self.skadaWindows[2], self.right:GetWidth() -(E.Border*2), self.right:GetHeight(), "TOPRIGHT", self.right, "TOPRIGHT", -E.Border, -E.Border);
+			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
+			EmbedWindow(self.skadaWindows[1], self.left:GetWidth() -(E.Border*2), self.left:GetHeight(), point, self.left, point, E.Border, E.Border);
+			point = self.skadaWindows[2].db.reversegrowth and "BOTTOMRIGHT" or "TOPRIGHT";
+			EmbedWindow(self.skadaWindows[2], self.right:GetWidth() -(E.Border*2), self.right:GetHeight(), point, self.right, point, -E.Border, E.Border);
 		end
 	end
 end
