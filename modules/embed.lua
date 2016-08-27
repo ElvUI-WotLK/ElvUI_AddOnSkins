@@ -346,6 +346,18 @@ function module:WindowResize()
 	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
 	self.left:Show();
 	
+	if(E.db.addOnSkins.embed.belowTop) then
+		self.switchButton:Show();
+		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
+		if(E.Chat.RightChatWindowID) then
+			self.switchButton:Point("LEFT", _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"] or chatTab, "RIGHT", 0, 0);
+		else
+			self.switchButton:Point("LEFT", chatTab, 12, 4);
+		end
+	else
+		self.switchButton:Hide();
+	end
+
 	if(isDouble) then
 		self.right:ClearAllPoints();
 		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, E.db.addOnSkins.embed.leftWidth, yOffset);
@@ -363,7 +375,21 @@ function module:Init()
 	if(not self.embedCreated) then
 		self.left = CreateFrame("Frame", addonName.."_Embed_LeftWindow", UIParent);
 		self.right = CreateFrame("Frame", addonName.."_Embed_RightWindow", self.left);
-		
+
+		self.switchButton = CreateFrame("Button", addonName .. "_Embed_SwitchButton", UIParent);
+		self.switchButton:Size(120, 32);
+		self.switchButton.text = self.switchButton:CreateFontString(nil, "OVERLAY");
+		self.switchButton.text:FontTemplate(E.LSM:Fetch("font", E.db.chat.tabFont), E.db.chat.tabFontSize, E.db.chat.tabFontOutline);
+		self.switchButton.text:SetTextColor(unpack(E["media"].rgbvaluecolor));
+		self.switchButton.text:SetPoint("LEFT", 0, -5);
+		self.switchButton:SetScript("OnClick", function(self, btn)
+			if(module.left:IsShown()) then
+				module.left:Hide();
+			else
+				module.left:Show();
+			end
+		end);
+
 		self.embedCreated = true;
 		
 		self:Hooks();
