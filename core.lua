@@ -69,7 +69,7 @@ local function getOptions()
 							skadaTemplate = {
 								order = 1,
 								type = "select",
-								name = L["Skada Template"],
+								name = L["Template"],
 								values = {
 									["Default"] = L["Default"],
 									["Transparent"] = L["Transparent"],
@@ -79,7 +79,7 @@ local function getOptions()
 							skadaTemplateGloss = {
 								order = 2,
 								type = "toggle",
-								name = L["Skada Template Gloss"],
+								name = L["Template Gloss"],
 								disabled = function() return E.db.addOnSkins.skadaTemplate == "Transparent" or E.db.addOnSkins.skadaTemplate == "NONE" or not addon:CheckAddOn("Skada"); end
 							},
 							spacer = {
@@ -90,7 +90,7 @@ local function getOptions()
 							skadaTitleTemplate = {
 								order = 4,
 								type = "select",
-								name = L["Skada Title Template"],
+								name = L["Title Template"],
 								values = {
 									["Default"] = L["Default"],
 									["Transparent"] = L["Transparent"],
@@ -100,7 +100,7 @@ local function getOptions()
 							skadaTitleTemplateGloss = {
 								order = 5,
 								type = "toggle",
-								name = L["Skada Title Template Gloss"],
+								name = L["Title Template Gloss"],
 								disabled = function() return E.db.addOnSkins.skadaTitleTemplate == "Transparent" or E.db.addOnSkins.skadaTitleTemplate == "NONE" or not addon:CheckAddOn("Skada"); end
 							}
 						}
@@ -215,7 +215,7 @@ local function getOptions()
 					leftWidth = {
 						type = "range",
 						order = 5,
-						name = "Embed Left Window Width",
+						name = L["Left Window Width"],
 						min = 100,
 						max = 300,
 						step = 1,

@@ -8,7 +8,7 @@ P.addOnSkins = {
 	skadaTitleTemplateGloss = true,
 	
 	dbmBarHeight = 22,
-	dbmFont = "ElvUI Font",
+	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
 	

@@ -7,8 +7,6 @@ function addon:Skada()
 	local displayBar = Skada.displays["bar"];
 	hooksecurefunc(displayBar, "ApplySettings", function(self, win)
 		local skada = win.bargroup;
-		skada:SetFrameLevel(5);
-		
 		if(win.db.enabletitle) then
 			skada.button:SetBackdrop(nil);
 			if(not skada.button.backdrop) then
@@ -21,7 +19,7 @@ function addon:Skada()
 				skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
 			end
 		end
-		
+
 		if(win.db.enablebackground) then
 			if(E.db.addOnSkins.skadaTemplate == "NONE") then
 				skada.bgframe:SetBackdrop(nil);
@@ -33,35 +31,35 @@ function addon:Skada()
 				if(win.db.reversegrowth) then
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
-					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and (E.Spacing) or -win.db.barheight - E.Border);
+					skada.bgframe:SetPoint("BOTTOM", skada.button, "TOP", 0, win.db.enabletitle and E.Spacing or -win.db.barheight - E.Border);
 				else
 					skada.bgframe:SetPoint("LEFT", skada.button, "LEFT", -E.Border, 0);
 					skada.bgframe:SetPoint("RIGHT", skada.button, "RIGHT", E.Border, 0);
-					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -(E.Spacing) or win.db.barheight + E.Border);
+					skada.bgframe:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.enabletitle and -E.Spacing or win.db.barheight + E.Border);
 				end
 			end
 		end
 	end);
-	
+
 	local module = E:GetModule("EmbedSystem");
 	hooksecurefunc(Skada, "CreateWindow", function()
 		if(module:CheckAddOn("Skada")) then
 			module:Skada();
 		end
 	end);
-	
+
 	hooksecurefunc(Skada, "DeleteWindow", function()
 		if(module:CheckAddOn("Skada")) then
 			module:Skada();
 		end
 	end);
-	
-	hooksecurefunc(Skada, "UpdateDisplay", function()
-		if(module:CheckAddOn("Skada") and not InCombatLockdown()) then
+
+	hooksecurefunc(Skada, "UpdateDisplay", function(self, force)
+		if(module:CheckAddOn("Skada") and not force) then
 			module:Skada();
 		end
 	end);
-	
+
 	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
 		local p = self.db.profile.tooltippos;
 		if(p == "default") then
