@@ -403,15 +403,16 @@ function module:Init()
 			--fTable[self.text:GetText()](self, button);
 			if(module.left:IsShown()) then
 				module.left:Hide();
+				self:SetAlpha(0.6);
 			else
 				module.left:Show();
+				self:SetAlpha(1);
 			end
 			module:UpdateSwitchButton();
 		end);
 		self.switchButton:SetScript("OnMouseDown", function(self) self.text:SetPoint("LEFT", 18, -7); end);
 		self.switchButton:SetScript("OnMouseUp", function(self) self.text:SetPoint("LEFT", 16, -5); end);
-		
-		
+
 		self.embedCreated = true;
 		
 		self:Hooks();
