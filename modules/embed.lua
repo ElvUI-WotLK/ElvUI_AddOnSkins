@@ -335,7 +335,7 @@ function module:UpdateSwitchButton()
 	if(E.db.addOnSkins.embed.belowTop) then
 		self.switchButton:Show();
 		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
-		if(E.Chat.RightChatWindowID) then
+		if(E.Chat.RightChatWindowID and _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"]:IsVisible()) then
 			self.switchButton:Point("LEFT", _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"] or chatTab, "RIGHT", 0, 0);
 		else
 			self.switchButton:Point("LEFT", chatTab, 5, 4);
@@ -379,25 +379,38 @@ function module:WindowResize()
 end
 
 function module:Init()
+	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
+	local fTable = {};
+	for name, obj in LDB:DataObjectIterator() do
+		local function OnClick(self, button)
+			obj.OnClick(self, button);
+		end
+		fTable[name] = OnClick;
+	end
+
 	if(not self.embedCreated) then
 		self.left = CreateFrame("Frame", addonName.."_Embed_LeftWindow", UIParent);
 		self.right = CreateFrame("Frame", addonName.."_Embed_RightWindow", self.left);
 
 		self.switchButton = CreateFrame("Button", addonName .. "_Embed_SwitchButton", UIParent);
+		self.switchButton:RegisterForClicks("AnyUp");
 		self.switchButton:Size(120, 32);
 		self.switchButton.text = self.switchButton:CreateFontString(nil, "OVERLAY");
 		self.switchButton.text:FontTemplate(E.LSM:Fetch("font", E.db.chat.tabFont), E.db.chat.tabFontSize, E.db.chat.tabFontOutline);
 		self.switchButton.text:SetTextColor(unpack(E["media"].rgbvaluecolor));
 		self.switchButton.text:SetPoint("LEFT", 16, -5);
-		self.switchButton:SetScript("OnClick", function(self, btn)
+		self.switchButton:SetScript("OnClick", function(self, button)
+			--fTable[self.text:GetText()](self, button);
 			if(module.left:IsShown()) then
 				module.left:Hide();
 			else
 				module.left:Show();
 			end
+			module:UpdateSwitchButton();
 		end);
 		self.switchButton:SetScript("OnMouseDown", function(self) self.text:SetPoint("LEFT", 18, -7); end);
 		self.switchButton:SetScript("OnMouseUp", function(self) self.text:SetPoint("LEFT", 16, -5); end);
+		
 		
 		self.embedCreated = true;
 		
@@ -420,6 +433,7 @@ function module:Init()
 		self.left:HookScript("OnHide", self.Hide);
 		
 		self:ToggleChatFrame(self.left:IsShown());
+		self:UpdateSwitchButton();
 	end
 end
 
