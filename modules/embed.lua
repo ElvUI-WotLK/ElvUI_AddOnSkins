@@ -328,6 +328,23 @@ function module:Hooks()
 	end
 end
 
+function module:UpdateSwitchButton()
+	local chatTab = E.db.addOnSkins.embed.rightChat and RightChatTab or LeftChatTab;
+	local isDouble = E.db.addOnSkins.embed.embedType == "DOUBLE";
+
+	if(E.db.addOnSkins.embed.belowTop) then
+		self.switchButton:Show();
+		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
+		if(E.Chat.RightChatWindowID) then
+			self.switchButton:Point("LEFT", _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"] or chatTab, "RIGHT", 0, 0);
+		else
+			self.switchButton:Point("LEFT", chatTab, 5, 4);
+		end
+	else
+		self.switchButton:Hide();
+	end
+end
+
 function module:WindowResize()
 	if(not self.embedCreated) then return; end
 	
@@ -345,18 +362,8 @@ function module:WindowResize()
 	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -SPACING or 0, yOffset);
 	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
 	self.left:Show();
-	
-	if(E.db.addOnSkins.embed.belowTop) then
-		self.switchButton:Show();
-		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
-		if(E.Chat.RightChatWindowID) then
-			self.switchButton:Point("LEFT", _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"] or chatTab, "RIGHT", 0, 0);
-		else
-			self.switchButton:Point("LEFT", chatTab, 12, 4);
-		end
-	else
-		self.switchButton:Hide();
-	end
+
+	self:UpdateSwitchButton();
 
 	if(isDouble) then
 		self.right:ClearAllPoints();
@@ -381,7 +388,7 @@ function module:Init()
 		self.switchButton.text = self.switchButton:CreateFontString(nil, "OVERLAY");
 		self.switchButton.text:FontTemplate(E.LSM:Fetch("font", E.db.chat.tabFont), E.db.chat.tabFontSize, E.db.chat.tabFontOutline);
 		self.switchButton.text:SetTextColor(unpack(E["media"].rgbvaluecolor));
-		self.switchButton.text:SetPoint("LEFT", 0, -5);
+		self.switchButton.text:SetPoint("LEFT", 16, -5);
 		self.switchButton:SetScript("OnClick", function(self, btn)
 			if(module.left:IsShown()) then
 				module.left:Hide();
@@ -389,12 +396,17 @@ function module:Init()
 				module.left:Show();
 			end
 		end);
-
+		self.switchButton:SetScript("OnMouseDown", function(self) self.text:SetPoint("LEFT", 18, -7); end);
+		self.switchButton:SetScript("OnMouseUp", function(self) self.text:SetPoint("LEFT", 16, -5); end);
+		
 		self.embedCreated = true;
 		
 		self:Hooks();
 		self:WindowResize();
 		
+		hooksecurefunc("FCF_SavePositionAndDimensions", function()
+			module:UpdateSwitchButton();
+		end);
 		hooksecurefunc(E:GetModule("Chat"), "PositionChat", function(self, override)
 			if(override) then
 				module:Check();
