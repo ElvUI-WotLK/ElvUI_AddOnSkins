@@ -57,6 +57,7 @@ V.addOnSkins = {
 	EveryQuest = true,
 	_NPCScan = true,
 	MoveAnything = true,
+	VanasKoS = true,
 
 	Blizzard_WorldStateFrame = true,
 };

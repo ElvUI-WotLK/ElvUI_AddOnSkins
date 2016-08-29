@@ -237,9 +237,9 @@ if(addon:CheckAddOn("Skada")) then
 			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
 			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), point, parent, point, E.Border, E.Border);
 		elseif(numberToEmbed == 2) then
-			if(not self.skadaWindows[2]) then E:Print("Please Create Skada Windows 2"); return; end
 			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
 			EmbedWindow(self.skadaWindows[1], self.left:GetWidth() -(E.Border*2), self.left:GetHeight(), point, self.left, point, E.Border, E.Border);
+			if(not self.skadaWindows[2]) then E:Print("Please Create Skada Windows 2"); return; end
 			point = self.skadaWindows[2].db.reversegrowth and "BOTTOMRIGHT" or "TOPRIGHT";
 			EmbedWindow(self.skadaWindows[2], self.right:GetWidth() -(E.Border*2), self.right:GetHeight(), point, self.right, point, -E.Border, E.Border);
 		end
