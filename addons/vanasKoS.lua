@@ -18,7 +18,7 @@ function addon:VanasKoS()
 	S:HandleCheckBox(VanasKoSListFrameCheckBox);
 
 	S:HandleButton(VanasKoSListFrameAddButton);
-	VanasKoSListFrameAddButton:SetPoint("BOTTOMRIGHT", VanasKoSListFrame, "BOTTOMRIGHT", -39, 79);
+	VanasKoSListFrameAddButton:SetPoint("BOTTOMRIGHT", VanasKoSListFrame, "BOTTOMRIGHT", -39, 82);
 	S:HandleButton(VanasKoSListFrameRemoveButton);
 	VanasKoSListFrameRemoveButton:SetPoint("RIGHT", VanasKoSListFrameAddButton, "LEFT", -2, 0);
 	S:HandleButton(VanasKoSListFrameChangeButton);
@@ -26,13 +26,17 @@ function addon:VanasKoS()
 	S:HandleButton(VanasKoSListFrameConfigurationButton);
 	VanasKoSListFrameConfigurationButton:SetPoint("BOTTOM", VanasKoSListFrameAddButton, "TOP", 0, 2);
 
+	VanasKoSListTooltip:StripTextures();
+	VanasKoSListTooltip:CreateBackdrop("Transparent");
+
 	for i = 1, 9 do
 		_G["VanasKoSListFrameColButton" .. i]:StripTextures();
+		_G["VanasKoSListFrameColButton" .. i]:StyleButton();
 	end
 
 	VanasKoSListFrameToggleRightButton:Size(27);
 	S:HandleNextPrevButton(VanasKoSListFrameToggleRightButton);
-	VanasKoSListFrameToggleRightButton:SetPoint("BOTTOMRIGHT", VanasKoSListFrame, "BOTTOMRIGHT", -39, 127);
+	VanasKoSListFrameToggleRightButton:SetPoint("BOTTOMRIGHT", VanasKoSListFrame, "BOTTOMRIGHT", -39, 130);
 	VanasKoSListFrameToggleLeftButton:Size(27);
 	S:HandleNextPrevButton(VanasKoSListFrameToggleLeftButton);
 
@@ -43,7 +47,7 @@ function addon:VanasKoS()
 
 	VanasKoSListFrameSearchBox:SetSize(215, 20);
 	S:HandleEditBox(VanasKoSListFrameSearchBox);
-	VanasKoSListFrameSearchBox:SetPoint("BOTTOMLEFT", VanasKoSListFrame, "BOTTOMLEFT", 17, 104);
+	VanasKoSListFrameSearchBox:SetPoint("BOTTOMLEFT", VanasKoSListFrame, "BOTTOMLEFT", 17, 107);
 
 	VanasKoSFrame:StripTextures(true);
 	VanasKoSFrame:CreateBackdrop("Transparent");
@@ -51,8 +55,10 @@ function addon:VanasKoS()
 	VanasKoSFrame.backdrop:Point("BOTTOMRIGHT", -34, 75);
 
 	S:HandleCloseButton(VanasKosFrameCloseButton);
-	
+
 	S:HandleTab(FriendsFrameTab6);
+	FriendsFrameTab6:ClearAllPoints();
+	FriendsFrameTab6:SetPoint("TOPLEFT", FriendsFrameTab5, "TOPRIGHT", -15, 0);
 
 	S:HandleDropDownBox(VanasKoSPvPStatsCharacterDropDown, 90);
 	VanasKoSPvPStatsCharacterDropDown:SetPoint("RIGHT", VanasKoSListFrameToggleLeftButton, "LEFT", 6, -4);
