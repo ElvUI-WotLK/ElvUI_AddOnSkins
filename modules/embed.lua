@@ -52,6 +52,7 @@ function module:Show()
 		end
 	end
 	module:ToggleChatFrame(true);
+	module.switchButton:SetAlpha(1);
 end
 
 function module:Hide()
@@ -70,6 +71,7 @@ function module:Hide()
 		end
 	end
 	module:ToggleChatFrame(false);
+	module.switchButton:SetAlpha(0.6);
 end
 
 function module:CheckAddOn(addOn)
@@ -247,6 +249,19 @@ if(addon:CheckAddOn("Skada")) then
 end
 
 function module:Hooks()
+	local function ChatPanelLeft_OnFade(self)
+		LeftChatPanel:Hide();
+		_G[addonName .. "_Embed_SwitchButton"]:Hide();
+	end
+
+	local function ChatPanelRight_OnFade(self)
+		RightChatPanel:Hide();
+		_G[addonName .. "_Embed_SwitchButton"]:Hide();
+	end
+
+	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade;
+	RightChatPanel.fadeFunc = ChatPanelRight_OnFade;
+
 	RightChatToggleButton:RegisterForClicks("AnyDown");
 	RightChatToggleButton:SetScript("OnClick", function(self, btn)
 		if(btn == "RightButton") then
@@ -264,6 +279,7 @@ function module:Hooks()
 				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1);
 				if(E.db.addOnSkins.embed.rightChat) then
 					module.left:Show();
+					module:UpdateSwitchButton();
 				end
 			else
 				E.db[self.parent:GetName().."Faded"] = true;
@@ -278,6 +294,7 @@ function module:Hooks()
 		if(E.db.addOnSkins.embed.rightChat) then
 			GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Embedded Addon"], 1, 1, 1);
 			GameTooltip:Show();
+			module:UpdateSwitchButton();
 		end
 	end);
 
@@ -298,6 +315,7 @@ function module:Hooks()
 				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1);
 				if(not E.db.addOnSkins.embed.rightChat) then
 					module.left:Show();
+					module:UpdateSwitchButton();
 				end
 			else
 				E.db[self.parent:GetName().."Faded"] = true;
@@ -312,6 +330,7 @@ function module:Hooks()
 		if(not E.db.addOnSkins.embed.rightChat) then
 			GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Embedded Addon"], 1, 1, 1);
 			GameTooltip:Show();
+			module:UpdateSwitchButton();
 		end
 	end);
 
@@ -330,10 +349,13 @@ function module:Hooks()
 end
 
 function module:UpdateSwitchButton()
+	local chatPanel = E.db.addOnSkins.embed.rightChat and RightChatPanel or LeftChatPanel;
 	local chatTab = E.db.addOnSkins.embed.rightChat and RightChatTab or LeftChatTab;
 	local isDouble = E.db.addOnSkins.embed.embedType == "DOUBLE";
 
-	if(E.db.addOnSkins.embed.belowTop) then
+	self.switchButton:SetParent(chatPanel);
+
+	if(E.db.addOnSkins.embed.belowTop and chatPanel:IsShown()) then
 		self.switchButton:Show();
 		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
 		self.switchButton:ClearAllPoints();
@@ -363,7 +385,7 @@ function module:WindowResize()
 	self.left:ClearAllPoints();
 	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -SPACING or 0, yOffset);
 	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
-	self.left:Show();
+	--self.left:Show();
 
 	self:UpdateSwitchButton();
 
@@ -371,7 +393,7 @@ function module:WindowResize()
 		self.right:ClearAllPoints();
 		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, E.db.addOnSkins.embed.leftWidth, yOffset);
 		self.right:SetPoint("TOPRIGHT", chatTab, E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
-		self.right:Show();
+	--	self.right:Show();
 	end
 
 	if(IsAddOnLoaded("ElvUI_Config")) then
