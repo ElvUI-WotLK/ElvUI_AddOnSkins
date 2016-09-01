@@ -53,6 +53,7 @@ function module:Show()
 	end
 	module:ToggleChatFrame(true);
 	module.switchButton:SetAlpha(1);
+	E.db.embedHiden = false;
 end
 
 function module:Hide()
@@ -72,6 +73,7 @@ function module:Hide()
 	end
 	module:ToggleChatFrame(false);
 	module.switchButton:SetAlpha(0.6);
+	E.db.embedHiden = true;
 end
 
 function module:CheckAddOn(addOn)
@@ -89,6 +91,15 @@ function module:Check()
 		self:Init();
 	end
 	self:Toggle();
+
+	if(E.db.embedHiden) then
+		self.left:Hide();
+		self:Hide();
+	else
+		self.left:Show();
+		self:Show();
+	end
+
 	self:WindowResize();
 
 	if(self:CheckAddOn("Omen")) then self:Omen(); end
@@ -277,10 +288,6 @@ function module:Hooks()
 				E.db[self.parent:GetName().."Faded"] = nil;
 				UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1);
 				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1);
-				if(E.db.addOnSkins.embed.rightChat) then
-					module.left:Show();
-					module:UpdateSwitchButton();
-				end
 			else
 				E.db[self.parent:GetName().."Faded"] = true;
 				UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0);
@@ -288,6 +295,7 @@ function module:Hooks()
 				self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc;
 			end
 		end
+		module:UpdateSwitchButton();
 	end);
 
 	RightChatToggleButton:HookScript("OnEnter", function(self, ...)
@@ -313,10 +321,6 @@ function module:Hooks()
 				E.db[self.parent:GetName().."Faded"] = nil;
 				UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1);
 				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1);
-				if(not E.db.addOnSkins.embed.rightChat) then
-					module.left:Show();
-					module:UpdateSwitchButton();
-				end
 			else
 				E.db[self.parent:GetName().."Faded"] = true;
 				UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0);
@@ -324,6 +328,7 @@ function module:Hooks()
 				self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc;
 			end
 		end
+		module:UpdateSwitchButton();
 	end);
 
 	LeftChatToggleButton:HookScript("OnEnter", function(self, ...)
@@ -454,7 +459,7 @@ function module:Init()
 		end);
 		hooksecurefunc(E:GetModule("Layout"), "ToggleChatPanels", function() module:Check(); end);
 
-		self:ToggleChatFrame(self.left:IsShown());
+		self:ToggleChatFrame(false);
 		self:Check();
 
 		self.left:SetScript("OnShow", self.Show);
