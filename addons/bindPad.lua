@@ -4,10 +4,12 @@ local addon = E:GetModule("AddOnSkins");
 if(not addon:CheckAddOn("BindPad")) then return; end
 
 function addon:BindPad()
+	local S = E:GetModule("Skins");
+
 	BindPadFrame:StripTextures(true);
 	BindPadFrame:CreateBackdrop("Transparent");
 	BindPadFrame.backdrop:Point("TOPLEFT", 10, -11);
-	BindPadFrame.backdrop:Point("BOTTOMRIGHT", -33, 71);
+	BindPadFrame.backdrop:Point("BOTTOMRIGHT", -31, 71);
 
 	for i = 1, 42 do
 		local slot = _G["BindPadSlot" .. i];
@@ -36,6 +38,13 @@ function addon:BindPad()
 		slotAddButton.Text:SetText("+");
 	end
 	
+	for i = 1, 4 do
+		local tab = _G["BindPadFrameTab" .. i];
+		S:HandleTab(tab);
+		tab.backdrop:Point("TOPLEFT", 3, -8);
+		tab.backdrop:Point("BOTTOMRIGHT", -3, -1);
+	end
+	
 	for i = 1, 5 do
 		local tab = _G["BindPadProfileTab" .. i];
 		local tabSubIcon = _G["BindPadProfileTab" .. i .. "SubIcon"];
@@ -49,6 +58,14 @@ function addon:BindPad()
 		
 		tabSubIcon:SetTexCoord(unpack(E.TexCoords));
 	end
+
+	S:HandleCloseButton(BindPadFrameCloseButton);
+
+	S:HandleCheckBox(BindPadFrameCharacterButton);
+	S:HandleCheckBox(BindPadFrameShowHotkeysButton);
+	S:HandleCheckBox(BindPadFrameTriggerOnKeydownButton);
+
+	S:HandleButton(BindPadFrameExitButton);
 end
 
 addon:RegisterSkin("BindPad", addon.BindPad);
