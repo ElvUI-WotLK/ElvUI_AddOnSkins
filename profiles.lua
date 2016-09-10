@@ -58,6 +58,7 @@ V.addOnSkins = {
 	_NPCScan = true,
 	MoveAnything = true,
 	VanasKoS = true,
+	BindPad = true,
 
 	Blizzard_WorldStateFrame = true,
 };

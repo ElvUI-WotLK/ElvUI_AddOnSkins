@@ -30,4 +30,5 @@
 	<Script file="_NPCScan.lua"/>
 	<Script file="moveAnything.lua"/>
 	<Script file="vanasKoS.lua"/>
+	<Script file="bindPad.lua"/>
 </Ui>

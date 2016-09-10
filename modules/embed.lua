@@ -91,15 +91,6 @@ function module:Check()
 		self:Init();
 	end
 	self:Toggle();
-
-	if(E.db.embedHiden) then
-		self.left:Hide();
-		self:Hide();
-	else
-		self.left:Show();
-		self:Show();
-	end
-
 	self:WindowResize();
 
 	if(self:CheckAddOn("Omen")) then self:Omen(); end
@@ -141,6 +132,14 @@ function module:Toggle()
 			frame:SetParent(self.right);
 			frame:SetInside(self.right, 0, 0);
 		end
+	end
+
+	if(E.db.embedHiden) then
+		self.left:Hide();
+		self:Hide();
+	else
+		self.left:Show();
+		self:Show();
 	end
 end
 
