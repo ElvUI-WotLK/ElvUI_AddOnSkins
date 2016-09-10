@@ -66,6 +66,55 @@ function addon:BindPad()
 	S:HandleCheckBox(BindPadFrameTriggerOnKeydownButton);
 
 	S:HandleButton(BindPadFrameExitButton);
+
+	BindPadMacroPopupFrame:StripTextures();
+	BindPadMacroPopupFrame:CreateBackdrop("Transparent");
+	BindPadMacroPopupFrame.backdrop:Point("TOPLEFT", 10, -9);
+	BindPadMacroPopupFrame.backdrop:Point("BOTTOMRIGHT", -7, 9);
+
+	BindPadMacroPopupNameLeft:SetTexture(nil);
+	BindPadMacroPopupNameMiddle:SetTexture(nil);
+	BindPadMacroPopupNameRight:SetTexture(nil);
+	S:HandleEditBox(BindPadMacroPopupEditBox);
+
+	BindPadMacroPopupScrollFrame:StripTextures();
+	S:HandleScrollBar(BindPadMacroPopupScrollFrameScrollBar);
+
+	for i = 1, 20 do
+		local button = _G["BindPadMacroPopupButton" .. i];
+		local buttonIcon = _G["BindPadMacroPopupButton" .. i .. "Icon"];
+
+		button:StripTextures();
+		button:StyleButton(nil, true);
+		button:SetTemplate("Default", true);
+
+		buttonIcon:SetInside();
+		buttonIcon:SetTexCoord(unpack(E.TexCoords));
+	end
+
+	S:HandleButton(BindPadMacroPopupCancelButton);
+	S:HandleButton(BindPadMacroPopupOkayButton);
+
+	BindPadMacroTextFrame:StripTextures(true);
+	BindPadMacroTextFrame:CreateBackdrop("Transparent");
+	BindPadMacroTextFrame.backdrop:Point("TOPLEFT", 10, -11);
+	BindPadMacroTextFrame.backdrop:Point("BOTTOMRIGHT", -31, 71);
+
+	BindPadMacroTextFrameSelectedMacroButton:StripTextures();
+	BindPadMacroTextFrameSelectedMacroButton:SetTemplate("Defaylt", true);
+	BindPadMacroTextFrameSelectedMacroButtonIcon:SetInside();
+	BindPadMacroTextFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords));
+
+	S:HandleScrollBar(BindPadMacroTextFrameScrollFrameScrollBar);
+
+	BindPadMacroTextFrameTextBackground:SetTemplate("Defaylt");
+
+	S:HandleButton(BindPadMacroTextFrameEditButton);
+	S:HandleButton(BindPadMacroTextFrameTestButton);
+	S:HandleButton(BindPadMacroTextFrameExitButton);
+	S:HandleButton(BindPadMacroDeleteButton);
+
+	S:HandleCloseButton(BindPadMacroTextFrameCloseButton);
 end
 
 addon:RegisterSkin("BindPad", addon.BindPad);
