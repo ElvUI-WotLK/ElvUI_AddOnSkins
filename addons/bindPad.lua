@@ -4,6 +4,31 @@ local addon = E:GetModule("AddOnSkins");
 if(not addon:CheckAddOn("BindPad")) then return; end
 
 function addon:BindPad()
+	local function HandleMicroButton(button)
+		local pushed = button:GetPushedTexture();
+		local normal = button:GetNormalTexture();
+		local disabled = button:GetDisabledTexture();
+
+		button:GetHighlightTexture():Kill();
+
+		local f = CreateFrame("Frame", nil, button);
+		f:SetPoint("BOTTOMLEFT", button, "BOTTOMLEFT", 2, 0);
+		f:SetPoint("TOPRIGHT", button, "TOPRIGHT", -2, -28);
+		f:SetTemplate("Default");
+		f:SetFrameLevel(button:GetFrameLevel() - 1);
+
+		pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908);
+		pushed:SetInside(f);
+
+		normal:SetTexCoord(0.17, 0.87, 0.5, 0.908);
+		normal:SetInside(f);
+
+		if(disabled) then
+			disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908);
+			disabled:SetInside(f);
+		end
+	end
+
 	local S = E:GetModule("Skins");
 
 	BindPadFrame:StripTextures(true);
@@ -66,6 +91,20 @@ function addon:BindPad()
 	S:HandleCheckBox(BindPadFrameTriggerOnKeydownButton);
 
 	S:HandleButton(BindPadFrameExitButton);
+
+	HandleMicroButton(BindPadFrameOpenSpellBookButton);
+	HandleMicroButton(BindPadFrameOpenMacroButton);
+	HandleMicroButton(BindPadFrameOpenBagButton);
+
+	BindPadBindFrame:StripTextures(true);
+	BindPadBindFrame:SetTemplate("Transparent")
+
+	S:HandleCloseButton(BindPadBindFrameCloseButton);
+
+	S:HandleButton(BindPadBindFrameExitButton);
+	S:HandleButton(BindPadBindFrameUnbindButton);
+
+	S:HandleCheckBox(BindPadBindFrameFastTriggerButton);
 
 	BindPadMacroPopupFrame:StripTextures();
 	BindPadMacroPopupFrame:CreateBackdrop("Transparent");
