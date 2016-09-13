@@ -9,9 +9,22 @@ function addon:Atlas()
 	AtlasFrame:SetTemplate("Transparent");
 	
 	AtlasMap:SetDrawLayer("BORDER")
-	
-	--S:HandleButton(AtlasFrameCloseButton);
-	--S:HandleButton(AtlasFrameLockButton);
+
+	AtlasFrameCloseButton:Point("TOPRIGHT", AtlasFrame, "TOPRIGHT", -5, -7);
+	AtlasFrameLockButton:Point("RIGHT", AtlasFrameCloseButton, "LEFT", 12, 0);
+	S:HandleCloseButton(AtlasFrameCloseButton);
+	S:HandleCloseButton(AtlasFrameLockButton, nil, " ");
+
+	AtlasLockNorm:SetTexCoord(.36, .65, .32, .73);
+	AtlasLockNorm:SetInside(AtlasFrameLockButton, 10, 10);
+	AtlasLockPush:SetTexCoord(.36, .60, .38, .76)
+	AtlasLockPush:SetInside(AtlasFrameLockButton, 10, 10)
+
+	S:SecureHook("Atlas_UpdateLock", function()
+		AtlasLockNorm:SetDesaturated(true);
+		AtlasLockPush:SetDesaturated(true);
+	end);
+	Atlas_UpdateLock();
 	
 	S:HandleDropDownBox(AtlasFrameDropDownType);
 	S:HandleDropDownBox(AtlasFrameDropDown);
