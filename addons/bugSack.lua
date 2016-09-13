@@ -24,7 +24,8 @@ function addon:BugSack()
 			BugSackSendButton:SetPoint("RIGHT", BugSackNextButton, "LEFT", -(E.PixelMode and 1 or 3), 0);
 		end
 		
-		S:HandleScrollBar(BugSackFrameScrollScrollBar);
+		local scrollBar = BugSackScrollScrollBar and BugSackScrollScrollBar or BugSackFrameScrollScrollBar
+		S:HandleScrollBar(scrollBar);
 		S:HandleTab(BugSackTabAll);
 		BugSackTabAll:SetPoint("TOPLEFT", BugSackFrame, "BOTTOMLEFT", 0, 2);
 		S:HandleTab(BugSackTabSession);

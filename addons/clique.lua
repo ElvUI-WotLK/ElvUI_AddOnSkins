@@ -92,11 +92,19 @@ function addon:Clique()
 		S:HandleButton(CliqueButtonNewProfile);
 		
 		SkinFrame(CliqueOptionsFrame);
+		CliqueOptionsFrame:SetHeight(125)
+		CliqueOptionsFrame:SetPoint("TOPLEFT", CliqueFrame, "TOPRIGHT", 0, 0)
 		
 		S:HandleCloseButton(CliqueOptionsButtonClose);
 		CliqueOptionsButtonClose:SetSize(32, 32);
 		CliqueOptionsButtonClose:SetPoint("TOPRIGHT", 5, 5);
 		
+		if CliqueOptionsAnyDown then
+			S:HandleCheckBox(CliqueOptionsAnyDown);
+			CliqueOptionsAnyDown.backdrop:Point("TOPLEFT", 6, -4);
+			CliqueOptionsAnyDown.backdrop:Point("BOTTOMRIGHT", -4, 3);
+			CliqueOptionsAnyDown.backdrop:Point("TOPRIGHT", CliqueOptionsAnyDown.name, "TOPLEFT", -3, 0);
+		end
 		S:HandleCheckBox(CliqueOptionsSpecSwitch);
 		CliqueOptionsSpecSwitch.backdrop:Point("TOPLEFT", 6, -4);
 		CliqueOptionsSpecSwitch.backdrop:Point("BOTTOMRIGHT", -4, 3);
