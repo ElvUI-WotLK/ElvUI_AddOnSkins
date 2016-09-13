@@ -9,13 +9,13 @@ function addon:BugSack()
 		if(BugSackFrame.isSkinned) then return; end
 		BugSackFrame:StripTextures();
 		BugSackFrame:SetTemplate("Transparent");
-		
+
 		for _, child in pairs({BugSackFrame:GetChildren()}) do
 			if(child:IsObjectType("Button") and child:GetScript("OnClick") == BugSack.CloseSack) then
 				S:HandleCloseButton(child);
 			end
 		end
-		
+
 		S:HandleButton(BugSackNextButton);
 		S:HandleButton(BugSackPrevButton);
 		if(BugSack.Serialize) then
@@ -23,14 +23,14 @@ function addon:BugSack()
 			BugSackSendButton:SetPoint("LEFT", BugSackPrevButton, "RIGHT", E.PixelMode and 1 or 3, 0);
 			BugSackSendButton:SetPoint("RIGHT", BugSackNextButton, "LEFT", -(E.PixelMode and 1 or 3), 0);
 		end
-		
+
 		local scrollBar = BugSackScrollScrollBar and BugSackScrollScrollBar or BugSackFrameScrollScrollBar
 		S:HandleScrollBar(scrollBar);
 		S:HandleTab(BugSackTabAll);
 		BugSackTabAll:SetPoint("TOPLEFT", BugSackFrame, "BOTTOMLEFT", 0, 2);
 		S:HandleTab(BugSackTabSession);
 		S:HandleTab(BugSackTabLast);
-		
+
 		BugSackFrame.isSkinned = true;
 	end
 	hooksecurefunc(BugSack, "OpenSack", BugSack_OpenSack);

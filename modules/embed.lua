@@ -25,7 +25,7 @@ function module:ToggleChatFrame(hide)
 	if(hide) then
 		_G[chatFrame].originalParent = _G[chatFrame]:GetParent();
 		_G[chatFrame]:SetParent(E.HiddenFrame);
-		
+
 		_G[chatFrame.."Tab"].originalParent = _G[chatFrame.."Tab"]:GetParent();
 		_G[chatFrame.."Tab"]:SetParent(E.HiddenFrame);
 	else
@@ -53,7 +53,7 @@ function module:Show()
 	end
 	module:ToggleChatFrame(true);
 	module.switchButton:SetAlpha(1);
-	E.db.embedHiden = false;
+	E.db.addOnSkins.embed.embedHiden = false;
 end
 
 function module:Hide()
@@ -73,7 +73,7 @@ function module:Hide()
 	end
 	module:ToggleChatFrame(false);
 	module.switchButton:SetAlpha(0.6);
-	E.db.embedHiden = true;
+	E.db.addOnSkins.embed.embedHiden = true;
 end
 
 function module:CheckAddOn(addOn)
@@ -134,7 +134,7 @@ function module:Toggle()
 		end
 	end
 
-	if(E.db.embedHiden) then
+	if(E.db.addOnSkins.embed.embedHiden) then
 		self.left:Hide();
 		self:Hide();
 	else

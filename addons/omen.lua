@@ -9,12 +9,12 @@ function addon:Omen()
 	Omen.db.profile.Background.BarInset = 2;
 	Omen.db.profile.TitleBar.UseSameBG = true;
 	Omen.db.profile.TitleBar.Height = 22;
-	
+
 	addon:SecureHook(Omen, "UpdateBackdrop", function(self)
 		self.Title:SetTemplate("Default", true);
 		self.BarList:SetTemplate("Default");
 	end);
-	
+
 	addon:SecureHook(Omen, "UpdateTitleBar", function(self)
 		self.BarList:ClearAllPoints();
 		if(not Omen.db.profile.TitleBar.ShowTitleBar) then

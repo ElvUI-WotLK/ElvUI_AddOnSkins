@@ -5,7 +5,7 @@ if(not addon:CheckAddOn("FloAspectBar")) then return; end
 
 function addon:FloAspectBar()
 	local AB = E:GetModule("ActionBars");
-	
+
 	FloAspectBar:SetTemplate();
 	for i = 1, 10 do
 		local button = _G["FloAspectBarButton"..i];

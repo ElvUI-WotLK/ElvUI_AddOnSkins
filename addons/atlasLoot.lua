@@ -5,10 +5,10 @@ if(not addon:CheckAddOn("AtlasLoot")) then return; end
 
 function addon:AtlasLoot()
 	local S = E:GetModule("Skins");
-	
+
 	AtlasLootTooltip:HookScript("OnShow", function(self)
 		self:SetTemplate("Transparent");
-		
+
 		local iLink = select(2, self:GetItem());
 		local quality = iLink and select(3, GetItemInfo(iLink));
 		if(quality and quality >= 2) then
@@ -17,10 +17,10 @@ function addon:AtlasLoot()
 			self:SetBackdropBorderColor(unpack(E["media"].bordercolor));
 		end
 	end);
-	
+
 	AtlasLootDefaultFrame:StripTextures();
 	AtlasLootDefaultFrame:SetTemplate("Transparent");
-	
+
 	S:HandleCloseButton(AtlasLootDefaultFrame_CloseButton);
 	S:HandleButton(AtlasLootDefaultFrame_LoadModules);
 	S:HandleButton(AtlasLootDefaultFrame_Options);
@@ -46,21 +46,21 @@ function addon:AtlasLoot()
 	AtlasLootDefaultFrameLastResultButton:SetPoint("LEFT", AtlasLootDefaultFrameSearchClearButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootDefaultFrameWishListButton);
 	AtlasLootDefaultFrameWishListButton:SetPoint("RIGHT", AtlasLootDefaultFrameSearchBox, "LEFT", -2, 0);
-	
+
 	S:HandleCloseButton(AtlasLootItemsFrame_CloseButton);
-	
+
 	S:HandleButton(AtlasLootInfoHidePanel);
-	
+
 	for i = 1, 30 do
 		_G["AtlasLootItem_" .. i .. "_Icon"]:SetTexCoord(unpack(E.TexCoords));
 		_G["AtlasLootItem_" .. i]:CreateBackdrop("Default");
 		_G["AtlasLootItem_" .. i].backdrop:SetOutside(_G["AtlasLootItem_" .. i .. "_Icon"]);
-		
+
 		_G["AtlasLootMenuItem_" .. i .. "_Icon"]:SetTexCoord(unpack(E.TexCoords));
 		_G["AtlasLootMenuItem_" .. i]:CreateBackdrop("Default");
 		_G["AtlasLootMenuItem_" .. i].backdrop:SetOutside(_G["AtlasLootMenuItem_" .. i .. "_Icon"]);
 	end
-	
+
 	S:HandleButton(AtlasLoot10Man25ManSwitch);
 	S:HandleCheckBox(AtlasLootItemsFrame_Heroic);
 	S:HandleButton(AtlasLootItemsFrame_BACK);
@@ -69,9 +69,9 @@ function addon:AtlasLoot()
 	S:HandleNextPrevButton(AtlasLootQuickLooksButton);
 	S:HandleCheckBox(AtlasLootFilterCheck);
 	S:HandleNextPrevButton(AtlasLootItemsFrame_PREV);
-	
+
 	AtlasLootItemsFrame_Back:SetTexture(0, 0, 0, 0);
-	
+
 	S:HandleCheckBox(AtlasLootOptionsFrameDefaultTT);
 	S:HandleCheckBox(AtlasLootOptionsFrameLootlinkTT);
 	S:HandleCheckBox(AtlasLootOptionsFrameItemSyncTT);
@@ -82,21 +82,21 @@ function addon:AtlasLoot()
 	S:HandleCheckBox(AtlasLootOptionsFrameEquipCompare);
 	S:HandleCheckBox(AtlasLootOptionsFrameItemSpam);
 	S:HandleCheckBox(AtlasLootOptionsFrameHidePanel);
-	
+
 	S:HandleDropDownBox(AtlasLoot_SelectLootBrowserStyle);
 	S:HandleDropDownBox(AtlasLoot_CraftingLink);
-	
+
 	S:HandleSliderFrame(AtlasLootOptionsFrameLootBrowserScale);
-	
+
 	S:HandleButton(AtlasLootOptionsFrame_ResetWishlist);
 	S:HandleButton(AtlasLootOptionsFrame_ResetAtlasLoot);
 	S:HandleButton(AtlasLootOptionsFrame_ResetQuicklooks);
 	S:HandleButton(AtlasLootOptionsFrame_FuBarShow);
 	S:HandleButton(AtlasLootOptionsFrame_FuBarHide);
-	
+
 	AtlasLootPanel:StripTextures();
 	AtlasLootPanel:SetTemplate("Transparent");
-	
+
 	S:HandleButton(AtlasLootPanel_WorldEvents);
 	AtlasLootPanel_WorldEvents:SetPoint("LEFT", AtlasLootPanel, "LEFT", 7, 29);
 	S:HandleButton(AtlasLootPanel_Sets);
@@ -115,7 +115,7 @@ function addon:AtlasLoot()
 	S:HandleButton(AtlasLootPanel_Preset2);
 	S:HandleButton(AtlasLootPanel_Preset3);
 	S:HandleButton(AtlasLootPanel_Preset4);
-	
+
 	S:HandleEditBox(AtlasLootSearchBox);
 	AtlasLootSearchBox:Height(20);
 	S:HandleButton(AtlasLootSearchButton);
@@ -129,13 +129,13 @@ function addon:AtlasLoot()
 	S:HandleButton(AtlasLootLastResultButton);
 	AtlasLootLastResultButton:Height(22);
 	AtlasLootLastResultButton:SetPoint("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0);
-	
+
 	hooksecurefunc("AtlasLoot_SetupForAtlas", function()
 		AtlasLootPanel:ClearAllPoints();
 		AtlasLootPanel:SetParent(AtlasFrame);
 		AtlasLootPanel:SetPoint("TOP", "AtlasFrame", "BOTTOM", 0, -2);
 	end);
-	
+
 	local function skinDewdrop()
 		local i = 1;
 		while(_G["Dewdrop20Level" .. i]) do
@@ -143,7 +143,7 @@ function addon:AtlasLoot()
 			select(1, _G["Dewdrop20Level" .. i]:GetChildren()):Hide();
 			i = i + 1;
 		end
-		
+
 		local i = 1;
 		while(_G["Dewdrop20Button"..i]) do
 			if(not _G["Dewdrop20Button" .. i].isHook) then

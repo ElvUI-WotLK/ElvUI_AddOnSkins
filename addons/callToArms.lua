@@ -77,19 +77,19 @@ function addon:CallToArms()
 	S:HandleNextPrevButton(CTA_LogUpButton)
 	S:HandleNextPrevButton(CTA_LogDownButton, true)
 	S:HandleNextPrevButton(CTA_LogBottomButton, true)
-	
+
 	local callToArmsTabs = {
 		"CTA_ShowSearchButton",
 		"CTA_ShowMyRaidButton",
 		"CTA_ShowMFFButton",
 		"CTA_ShowLFGButton"
 	};
-	
+
 	for i = 1, getn(callToArmsTabs) do
 		S:HandleTab(_G[callToArmsTabs[i]]);
 		_G[callToArmsTabs[i].."Text"]:SetPoint("CENTER", 0, 1);
 	end
-	
+
 	S:HandleButton(CTA_ShowResultsButton);
 	S:HandleButton(CTA_ShowOptionsButton);
 	S:HandleButton(CTA_SearchButton);

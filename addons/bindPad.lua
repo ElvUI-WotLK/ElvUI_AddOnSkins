@@ -62,25 +62,25 @@ function addon:BindPad()
 		slotAddButton.Text:Point("CENTER", 0, 0);
 		slotAddButton.Text:SetText("+");
 	end
-	
+
 	for i = 1, 4 do
 		local tab = _G["BindPadFrameTab" .. i];
 		S:HandleTab(tab);
 		tab.backdrop:Point("TOPLEFT", 3, -8);
 		tab.backdrop:Point("BOTTOMRIGHT", -3, -1);
 	end
-	
+
 	for i = 1, 5 do
 		local tab = _G["BindPadProfileTab" .. i];
 		local tabSubIcon = _G["BindPadProfileTab" .. i .. "SubIcon"];
 		tab:StripTextures();
 		tab:SetTemplate("Defaylt", true);
 		tab:StyleButton(nil, true);
-		
+
 		tab:GetNormalTexture():SetInside();
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords));
 		tab:GetNormalTexture():SetDrawLayer("ARTWORK");
-		
+
 		tabSubIcon:SetTexCoord(unpack(E.TexCoords));
 	end
 

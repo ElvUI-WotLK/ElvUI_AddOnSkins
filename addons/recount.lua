@@ -7,33 +7,33 @@ if(not addon:CheckAddOn("Recount")) then return; end
 function addon:Recount()
 	local MainWindow = Recount.MainWindow;
 	MainWindow:SetBackdrop(nil);
-	
+
 	local backdrop = CreateFrame("Frame", nil, MainWindow);
 	backdrop:SetFrameLevel(MainWindow:GetFrameLevel() - 1);
 	backdrop:Point("BOTTOMLEFT", MainWindow, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0);
 	backdrop:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30));
 	backdrop:SetTemplate("Default");
 	MainWindow.backdrop = backdrop;
-	
+
 	local header = CreateFrame("Frame", nil, backdrop);
 	header:Height(E.PixelMode and 22 or 20);
 	header:Point("TOPLEFT", MainWindow, E.PixelMode and 1 or 0, -(E.PixelMode and 8 or 7));
 	header:Point("TOPRIGHT", MainWindow, E.PixelMode and -1 or 0, 0);
 	header:SetTemplate("Default", true);
-	
+
 	MainWindow.Title:ClearAllPoints();
 	MainWindow.Title:SetPoint("LEFT", header, 6, 0);
 	MainWindow.Title:FontTemplate();
 	MainWindow.Title:SetTextColor(unpack(E.media.rgbvaluecolor));
-	
+
 	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar);
-	
+
 	MainWindow.DragBottomLeft:SetNormalTexture(nil);
 	MainWindow.DragBottomRight:SetNormalTexture(nil);
-	
+
 	MainWindow.CloseButton:ClearAllPoints();
 	MainWindow.CloseButton:SetPoint("RIGHT", header, -6, 0);
-	
+
 	local buttons = {
 		Recount.MainWindow.CloseButton,
 		Recount.MainWindow.RightButton,
@@ -43,7 +43,7 @@ function addon:Recount()
 		Recount.MainWindow.ConfigButton,
 		Recount.MainWindow.ReportButton
 	};
-	
+
 	for i = 1, getn(buttons) do
 		local button = buttons[i];
 		if(button) then

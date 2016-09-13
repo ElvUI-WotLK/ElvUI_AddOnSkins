@@ -9,7 +9,7 @@ function addon:Overachiever(event, name)
 		for i = 3, 5 do
 			S:HandleTab(_G["AchievementFrameTab" .. i]);
 		end
-		
+
 		local leftFrame = _G["Overachiever_LeftFrame"];
 		for _, childFrame in pairs({leftFrame:GetChildren()}) do
 			for _, component in pairs({childFrame:GetChildren()}) do
@@ -25,7 +25,7 @@ function addon:Overachiever(event, name)
 				end
 			end
 		end
-		
+
 		local containers = {
 			"Overachiever_SearchFrame",
 			"Overachiever_SuggestionsFrame",
@@ -43,7 +43,7 @@ function addon:Overachiever(event, name)
 			scrollFrame.backdrop:Point("BOTTOMRIGHT", -3, -3);
 			S:HandleScrollBar(scrollBar);
 		end
-		
+
 		addon:UnregisterSkinEvent("Overachiever", "ADDON_LOADED");
 	end
 end

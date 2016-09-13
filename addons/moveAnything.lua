@@ -47,7 +47,7 @@ function addon:MoveAnything()
 	MAScrollFrame:Size(380, 442 + (16*SPACING));
 	S:HandleScrollBar(MAScrollFrameScrollBar);
 	MAScrollBorder:StripTextures();
-	
+
 	MANudger:SetTemplate("Transparent");
 	S:HandleButton(MANudger_NudgeUp);
 	MANudger_NudgeUp:Point("CENTER", 0, 24 + SPACING);

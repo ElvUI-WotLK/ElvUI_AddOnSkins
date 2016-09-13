@@ -1,4 +1,4 @@
-﻿local addonName = ...;
+local addonName = ...;
 local E, L, V, P, G, _ = unpack(ElvUI);
 local EP = LibStub("LibElvUIPlugin-1.0", true);
 local addon = E:NewModule("AddOnSkins", "AceHook-3.0", "AceEvent-3.0");
@@ -28,7 +28,7 @@ local function getOptions()
 		};
 		return options;
 	end
-	
+
 	local options = {
 		order = 100,
 		type = "group",
@@ -241,7 +241,7 @@ local function getOptions()
 			},
 		},
 	}
-	
+
 	local order, blizzorder = 0, 0;
 	for skinName, _ in addon:OrderedPairs(addon.register) do
 		if(find(skinName, "Blizzard_")) then
@@ -252,7 +252,7 @@ local function getOptions()
 			order = order + 1;
 		end
 	end
-	
+
 	E.Options.args.addOnSkins = options;
 end
 
@@ -309,7 +309,7 @@ function addon:RegisterSkin(skinName, skinFunc, ...)
 		if(not event) then
 			break;
 		end
-		
+
 		if(type(event) == "number") then
 			priority = event;
 		else
@@ -346,12 +346,12 @@ function addon:RegisteredSkin(skinName, priority, func, events)
 			end
 		end
 	end
-	
+
 	if(not self.skins[skinName]) then
 		self.skins[skinName] = {};
 	end
 	self.skins[skinName][priority] = func;
-	
+
 	for event, _ in pairs(events) do
 		if(not find(event, "%[")) then
 			if(not self.events[event]) then
@@ -397,13 +397,13 @@ end
 
 function addon:Initialize()
 	EP:RegisterPlugin(addonName, getOptions);
-	
+
 	for skin, alldata in pairs(self.register) do
 		for _, data in pairs(alldata) do
 			self:RegisteredSkin(skin, data.priority, data.func, data.events);
 		end
 	end
-	
+
 	for skin, funcs in pairs(self.skins) do
 		if self:CheckOption(skin) then
 			for _, func in ipairs(funcs) do

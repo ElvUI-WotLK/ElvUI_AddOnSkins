@@ -17,66 +17,66 @@ function addon:DBM(event, addonName)
 					local name = _G[frame:GetName() .. "BarName"];
 					local timer = _G[frame:GetName() .. "BarTimer"];
 					local spark = _G[frame:GetName() .. "BarSpark"];
-					
+
 					spark:Kill()
-					
+
 					if(not icon1.overlay) then
 						icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar);
 						icon1.overlay:SetTemplate("Default");
 						icon1.overlay:SetFrameLevel(1);
 						icon1.overlay:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.Border + E.Spacing), 0);
-						
+
 						local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER");
 						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
 						backdroptex:SetInside(icon1.overlay);
 						backdroptex:SetTexCoord(unpack(E.TexCoords));
 					end
-					
+
 					if(not icon2.overlay) then
 						icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar);
 						icon2.overlay:SetTemplate("Default");
 						icon2.overlay:SetFrameLevel(1);
 						icon2.overlay:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", (E.Border + E.Spacing), 0);
-						
+
 						local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER");
 						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
 						backdroptex:SetInside(icon2.overlay);
 						backdroptex:SetTexCoord(unpack(E.TexCoords));
 					end
-					
+
 					icon1.overlay:Size(db.dbmBarHeight);
 					icon1:SetTexCoord(unpack(E.TexCoords));
 					icon1:ClearAllPoints();
 					icon1:SetInside(icon1.overlay);
-					
+
 					icon2.overlay:Size(E.db.addOnSkins.dbmBarHeight);
 					icon2:SetTexCoord(unpack(E.TexCoords));
 					icon2:ClearAllPoints();
 					icon2:SetInside(icon2.overlay);
-					
+
 					tbar:SetInside(frame);
-					
+
 					frame:Height(E.db.addOnSkins.dbmBarHeight);
 					frame:SetTemplate("Default");
-					
+
 					name:ClearAllPoints();
 					name:Point("LEFT", frame, "LEFT", 4, 0.5);
 					name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-					
+
 					timer:ClearAllPoints();
 					timer:Point("RIGHT", frame, "RIGHT", -4, 0.5);
 					timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-					
+
 					if(bar.owner.options.IconLeft) then icon1.overlay:Show(); else icon1.overlay:Hide(); end
 					if(bar.owner.options.IconRight) then icon2.overlay:Show(); else icon2.overlay:Hide(); end
-					
+
 					bar.injected = true;
 				end);
 				bar:ApplyStyle();
 			end
 		end
 	end
-	
+
 	local SkinBoss = function()
 		local count = 1;
 		while (_G[format("DBM_BossHealth_Bar_%d", count)]) do
@@ -87,27 +87,27 @@ function addon:DBM(event, addonName)
 			local name = _G[barname .. "BarName"];
 			local timer = _G[barname .. "BarTimer"];
 			local pointa, anchor, pointb, _, _ = bar:GetPoint();
-			
+
 			if not pointa then return; end
 			bar:ClearAllPoints();
-			
+
 			bar:Height(E.db.addOnSkins.dbmBarHeight);
 			bar:SetTemplate("Transparent");
-			
+
 			background:SetNormalTexture(nil);
-			
+
 			progress:SetStatusBarTexture(E["media"].normTex);
 			progress:ClearAllPoints();
 			progress:SetInside(bar);
-			
+
 			name:ClearAllPoints();
 			name:Point("LEFT", bar, "LEFT", 4, 0);
 			name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-			
+
 			timer:ClearAllPoints();
 			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
 			timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-			
+
 			if(DBM.Options.HealthFrameGrowUp) then
 				bar:Point(pointa, anchor, pointb, 0, count == 1 and 8 or 4);
 			else
@@ -116,17 +116,17 @@ function addon:DBM(event, addonName)
 			count = count + 1;
 		end
 	end
-	
+
 	local function SkinRange(self, range, filter)
 		DBMRangeCheck:SetTemplate("Transparent");
 	end
-	
+
 	hooksecurefunc(DBT, "CreateBar", SkinBars);
 	hooksecurefunc(DBM.BossHealth, "Show", SkinBoss);
 	hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss);
 	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss);
 	hooksecurefunc(DBM.RangeCheck, "Show", SkinRange);
-	
+
 	local RaidNotice_AddMessage_ = RaidNotice_AddMessage;
 	RaidNotice_AddMessage = function(noticeFrame, textString, colorInfo)
 		if(textString:find(" |T")) then
@@ -134,7 +134,7 @@ function addon:DBM(event, addonName)
 		end
 		return RaidNotice_AddMessage_(noticeFrame, textString, colorInfo);
 	end
-	
+
 	if(addonName == "DBM-GUI") then
 		DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
 			self:StripTextures();
@@ -145,13 +145,13 @@ function addon:DBM(event, addonName)
 			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent");
 			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent");
 		end);
-		
+
 		S:HandleButton(DBM_GUI_OptionsFrameOkay);
 		S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar);
-		
+
 		S:HandleTab(DBM_GUI_OptionsFrameTab1);
 		S:HandleTab(DBM_GUI_OptionsFrameTab2);
-		
+
 		addon:UnregisterSkinEvent("DBM", event);
 	end
 end

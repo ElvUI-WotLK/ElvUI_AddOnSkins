@@ -1,4 +1,4 @@
-﻿local addonName = ...;
+local addonName = ...;
 local E, L, V, P, G = unpack(ElvUI);
 
 P.addOnSkins = {
@@ -6,16 +6,17 @@ P.addOnSkins = {
 	skadaTemplateGloss = false,
 	skadaTitleTemplate = "Default",
 	skadaTitleTemplateGloss = true,
-	
+
 	dbmBarHeight = 22,
 	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
-	
+
 	weakAuraAuraBar = true,
 	weakAuraIconCooldown = true,
-	
+
 	embed = {
+		embedHiden = false,
 		embedType = "DISABLE",
 		left = "Skada",
 		right = "Skada",

@@ -6,12 +6,12 @@ if(not addon:CheckAddOn("GearScore")) then return; end
 
 function addon:GearScore()
 	GS_DisplayFrame:SetTemplate("Transparent");
-	
+
 	S:HandleEditBox(GS_EditBox1);
 	GS_EditBox1:Height(22);
 	GS_EditBox1:ClearAllPoints();
 	GS_EditBox1:Point("RIGHT", GS_SearchButton, "LEFT", -6, 0);
-	
+
 	S:HandleButton(GS_SearchButton);
 	S:HandleButton(GS_GroupButton);
 	S:HandleButton(GS_DeleteButton);
