@@ -31,4 +31,6 @@
 	<Script file="moveAnything.lua"/>
 	<Script file="vanasKoS.lua"/>
 	<Script file="bindPad.lua"/>
+	<Script file="zygorGuidesViewer.lua"/>
+	<Script file="zygorTalentAdvisor.lua"/>
 </Ui>
