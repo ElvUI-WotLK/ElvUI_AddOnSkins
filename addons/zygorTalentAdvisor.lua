@@ -14,16 +14,23 @@ function addon:ZygorTalentAdvisor()
     ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3);
     ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetAllPoints();
 
-    ZygorTalentAdvisorPopout:StripTextures()
-    ZygorTalentAdvisorPopout:CreateBackdrop('Transparent')
-    ZygorTalentAdvisorPopout.backdrop:Point('TOPLEFT', 6, -2)
-    ZygorTalentAdvisorPopout.backdrop:Point('BOTTOMRIGHT', -1, 4)
-
     ZygorTalentAdvisorPopout:StripTextures();
+    ZygorTalentAdvisorPopout:CreateBackdrop('Transparent');
+    ZygorTalentAdvisorPopout.backdrop:Point('TOPLEFT', 6, -2);
+    ZygorTalentAdvisorPopout.backdrop:Point('BOTTOMRIGHT', -1, 4);
+
+    ZygorTalentAdvisorPopoutScrollChild:StripTextures();
+    ZygorTalentAdvisorPopoutScroll:StripTextures();
+    ZygorTalentAdvisorPopoutScroll:CreateBackdrop('Transparent');
 
     S:HandleCloseButton(ZygorTalentAdvisorPopoutCloseButton);
 
+    S:HandleScrollBar(ZygorTalentAdvisorPopoutScrollScrollBar);
+
+    ZygorTalentAdvisorPopoutAcceptButton:StripTextures();
     S:HandleButton(ZygorTalentAdvisorPopoutConfigureButton);
+    S:HandleButton(ZygorTalentAdvisorPopoutPreviewButton);
+    S:HandleButton(ZygorTalentAdvisorPopoutAcceptButton);
 end
 
 addon:RegisterSkin("ZygorTalentAdvisor", addon.ZygorTalentAdvisor);
