@@ -16,7 +16,6 @@ P.addOnSkins = {
 	weakAuraIconCooldown = true,
 
 	embed = {
-		embedHiden = false,
 		embedType = "DISABLE",
 		left = "Skada",
 		right = "Skada",
@@ -60,6 +59,8 @@ V.addOnSkins = {
 	MoveAnything = true,
 	VanasKoS = true,
 	BindPad = true,
+  ZygorGuidesViewer = true,
+  ZygorTalentAdvisor = true,
 
 	Blizzard_WorldStateFrame = true,
 };
