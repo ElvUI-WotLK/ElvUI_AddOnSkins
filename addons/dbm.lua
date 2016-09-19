@@ -7,6 +7,7 @@ if(not addon:CheckAddOn("DBM-Core")) then return; end
 function addon:DBM(event, addonName)
 	local db = E.db.addOnSkins;
 	local function SkinBars(self)
+		if(not db) then return; end
 		for bar in self:GetBarIterator() do
 			if(not bar.injected) then
 				hooksecurefunc(bar, "ApplyStyle", function()
@@ -44,19 +45,23 @@ function addon:DBM(event, addonName)
 						backdroptex:SetTexCoord(unpack(E.TexCoords));
 					end
 
-					icon1.overlay:Size(db.dbmBarHeight);
-					icon1:SetTexCoord(unpack(E.TexCoords));
-					icon1:ClearAllPoints();
-					icon1:SetInside(icon1.overlay);
+					if(icon1.overlay) then
+						icon1.overlay:Size(db.dbmBarHeight);
+						icon1:SetTexCoord(unpack(E.TexCoords));
+						icon1:ClearAllPoints();
+						icon1:SetInside(icon1.overlay);
+					end
 
-					icon2.overlay:Size(E.db.addOnSkins.dbmBarHeight);
-					icon2:SetTexCoord(unpack(E.TexCoords));
-					icon2:ClearAllPoints();
-					icon2:SetInside(icon2.overlay);
+					if(icon2.overlay) then
+						icon2.overlay:Size(db.dbmBarHeight);
+						icon2:SetTexCoord(unpack(E.TexCoords));
+						icon2:ClearAllPoints();
+						icon2:SetInside(icon2.overlay);
+					end
 
 					tbar:SetInside(frame);
 
-					frame:Height(E.db.addOnSkins.dbmBarHeight);
+					frame:Height(db.dbmBarHeight);
 					frame:SetTemplate("Default");
 
 					name:ClearAllPoints();
