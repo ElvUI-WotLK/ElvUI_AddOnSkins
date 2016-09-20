@@ -158,16 +158,15 @@ function addon:AtlasLoot()
 		end
 	end
 
-	local function skinTablet()
-		_G["Tablet20Frame"]:SetTemplate("Transparent");
-	end
-
 	hooksecurefunc(LibStub("Dewdrop-2.0", true), "Open", function(parent)
 		skinDewdrop();
 	end);
-	hooksecurefunc(LibStub("Tablet-2.0", true), "Open", function(fakeParent, parent)
-		skinTablet();
-	end);
+
+	if(addon:CheckAddOn("AtlasLootFu")) then
+		hooksecurefunc(LibStub("Tablet-2.0", true), "Open", function(fakeParent, parent)
+			_G["Tablet20Frame"]:SetTemplate("Transparent");
+		end);
+	end
 end
 
 addon:RegisterSkin("AtlasLoot", addon.AtlasLoot);
