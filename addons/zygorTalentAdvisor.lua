@@ -4,33 +4,38 @@ local addon = E:GetModule("AddOnSkins");
 if(not addon:CheckAddOn("ZygorTalentAdvisor")) then return; end
 
 function addon:ZygorTalentAdvisor()
-  local S = E:GetModule("Skins");
+	local S = E:GetModule("Skins");
 
-    _G['ZygorTalentAdvisorPopoutButton']:Size(26, 32);
-    _G['ZygorTalentAdvisorPopoutButton']:CreateBackdrop('Default');
+	ZygorTalentAdvisorPopoutButton:Size(26, 32);
+	ZygorTalentAdvisorPopoutButton:SetTemplate("Default");
+	ZygorTalentAdvisorPopoutButton:GetNormalTexture():SetTexCoord(0.1875, 0.796875, 0.125, 0.890625);
+	ZygorTalentAdvisorPopoutButton:GetNormalTexture():SetInside();
+	ZygorTalentAdvisorPopoutButton:GetPushedTexture():SetTexCoord(0.1875, 0.796875, 0.125, 0.890625);
+	ZygorTalentAdvisorPopoutButton:GetPushedTexture():SetInside();
+	ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3);
+	ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetInside();
 
-    ZygorTalentAdvisorPopoutButton:GetNormalTexture():SetTexCoord(0.1875, 0.796875, 0.125, 0.890625);
-    ZygorTalentAdvisorPopoutButton:GetPushedTexture():SetTexCoord(0.1875, 0.796875, 0.125, 0.890625);
-    ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetTexture(1, 1, 1, 0.3);
-    ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetAllPoints();
+	ZygorTalentAdvisorPopout:StripTextures();
+	ZygorTalentAdvisorPopout:CreateBackdrop('Transparent');
+	ZygorTalentAdvisorPopout.backdrop:Point('TOPLEFT', 6, -2);
+	ZygorTalentAdvisorPopout.backdrop:Point('BOTTOMRIGHT', -1, 4);
 
-    ZygorTalentAdvisorPopout:StripTextures();
-    ZygorTalentAdvisorPopout:CreateBackdrop('Transparent');
-    ZygorTalentAdvisorPopout.backdrop:Point('TOPLEFT', 6, -2);
-    ZygorTalentAdvisorPopout.backdrop:Point('BOTTOMRIGHT', -1, 4);
+	for i = 1, ZygorTalentAdvisorPopoutScroll:GetNumChildren() do
+		local child = select(i, ZygorTalentAdvisorPopoutScroll:GetChildren());
+		if(child:IsObjectType("Frame") and not child:GetName()) then
+			child:SetBackdrop(nil);
+			child:CreateBackdrop("Default");
+		end
+	end
 
-    ZygorTalentAdvisorPopoutScrollChild:StripTextures();
-    ZygorTalentAdvisorPopoutScroll:StripTextures();
-    ZygorTalentAdvisorPopoutScroll:CreateBackdrop('Transparent');
+	S:HandleCloseButton(ZygorTalentAdvisorPopoutCloseButton);
 
-    S:HandleCloseButton(ZygorTalentAdvisorPopoutCloseButton);
+	S:HandleScrollBar(ZygorTalentAdvisorPopoutScrollScrollBar);
 
-    S:HandleScrollBar(ZygorTalentAdvisorPopoutScrollScrollBar);
-
-    ZygorTalentAdvisorPopoutAcceptButton:StripTextures();
-    S:HandleButton(ZygorTalentAdvisorPopoutConfigureButton);
-    S:HandleButton(ZygorTalentAdvisorPopoutPreviewButton);
-    S:HandleButton(ZygorTalentAdvisorPopoutAcceptButton);
+	ZygorTalentAdvisorPopoutAcceptButton:StripTextures();
+	S:HandleButton(ZygorTalentAdvisorPopoutConfigureButton);
+	S:HandleButton(ZygorTalentAdvisorPopoutPreviewButton);
+	S:HandleButton(ZygorTalentAdvisorPopoutAcceptButton);
 end
 
 addon:RegisterSkin("ZygorTalentAdvisor", addon.ZygorTalentAdvisor);
