@@ -54,11 +54,12 @@ function addon:Skada()
 		end
 	end);
 
-	hooksecurefunc(Skada, "UpdateDisplay", function(self, force)
-		if(module:CheckAddOn("Skada") and not force) then
+	--[[hooksecurefunc(Skada, "UpdateDisplay", function(self, force)
+		if(module:CheckAddOn("Skada") and force) then
+			print("UpdateDisplay")
 			module:Skada();
 		end
-	end);
+	end);]]
 
 	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
 		local p = self.db.profile.tooltippos;
