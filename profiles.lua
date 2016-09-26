@@ -61,6 +61,7 @@ V.addOnSkins = {
 	BindPad = true,
 	ZygorGuidesViewer = true,
 	ZygorTalentAdvisor = true,
+	WowLua = true,
 
 	Blizzard_WorldStateFrame = true,
 };

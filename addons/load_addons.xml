@@ -33,4 +33,5 @@
 	<Script file="bindPad.lua"/>
 	<Script file="zygorGuidesViewer.lua"/>
 	<Script file="zygorTalentAdvisor.lua"/>
+	<Script file="wowLua.lua"/>
 </Ui>
