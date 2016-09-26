@@ -59,8 +59,8 @@ V.addOnSkins = {
 	MoveAnything = true,
 	VanasKoS = true,
 	BindPad = true,
-  ZygorGuidesViewer = true,
-  ZygorTalentAdvisor = true,
+	ZygorGuidesViewer = true,
+	ZygorTalentAdvisor = true,
 
 	Blizzard_WorldStateFrame = true,
 };
