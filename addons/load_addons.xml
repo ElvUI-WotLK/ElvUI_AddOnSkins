@@ -34,4 +34,5 @@
 	<Script file="zygorGuidesViewer.lua"/>
 	<Script file="zygorTalentAdvisor.lua"/>
 	<Script file="wowLua.lua"/>
+	<Script file="chatBar.lua"/>
 </Ui>
