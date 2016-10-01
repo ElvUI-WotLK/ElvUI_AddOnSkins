@@ -56,6 +56,7 @@ function addon:ChatBar()
 			end
 		end
 	end);
+	ChatBar_UpdateButtonOrientation();
 
 	TT:HookScript(ChatBarFrameTooltip, "OnShow", "SetStyle");
 end
