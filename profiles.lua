@@ -18,8 +18,8 @@ P.addOnSkins = {
 	chatBarSize = 16,
 	chatBarSpacing = 1,
 	chatBarTextPoint = "LEFT",
-	chatBarTextXOffset = 1,
-	chatBarTextYOffset = 1,
+	chatBarTextXOffset = 16,
+	chatBarTextYOffset = 0,
 
 	embed = {
 		embedType = "DISABLE",
