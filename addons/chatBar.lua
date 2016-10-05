@@ -5,38 +5,58 @@ local TT = E:GetModule("Tooltip");
 if(not addon:CheckAddOn("ChatBar")) then return; end
 
 function addon:ChatBar()
+	local spacing = (E.Border + E.Spacing);
+
 	ChatBarFrameBackground:SetOutside();
 	ChatBarFrameBackground:SetTemplate("Transparent");
 
 	for i = 1, 20 do
 		local button = _G["ChatBarFrameButton" .. i];
-		button:StripTextures(true);
+		local higliht = _G["ChatBarFrameButton" .. i .. "Highlight"];
+		button:StripTextures();
 		button:SetTemplate("Default", true, true);
 
 		button:GetNormalTexture():SetTexture("");
 		button:GetPushedTexture():SetTexture("");
-		button:GetHighlightTexture():SetTexture("");
+		button:SetHighlightTexture(1, 1, 1, 0.3);
+		button:StyleButton(true);
 		button:GetNormalTexture().SetTexture = E.noop;
 		button:GetPushedTexture().SetTexture = E.noop;
-		button:GetHighlightTexture().SetTexture = E.noop;
+
+		higliht:SetInside();
+		higliht:SetTexture(1, 1, 1, 0.3);
 	end
 
 	addon:SecureHook("ChatBar_UpdateButtonOrientation", function()
-		local button;
+		local button = ChatBarFrameButton1;
+		button:ClearAllPoints();
+		if(ChatBar_VerticalDisplay) then
+			if(ChatBar_AlternateOrientation) then
+				button:SetPoint("TOP", "ChatBarFrame", "TOP", 0, -spacing);
+			else
+				button:SetPoint("BOTTOM", "ChatBarFrame", "BOTTOM", 0, spacing);
+			end
+		else
+			if(ChatBar_AlternateOrientation) then
+				button:SetPoint("RIGHT", "ChatBarFrame", "RIGHT", -spacing, 0);
+			else
+				button:SetPoint("LEFT", "ChatBarFrame", "LEFT", spacing, 0);
+			end
+		end
 		for i = 2, CHAT_BAR_MAX_BUTTONS do
 			button = _G["ChatBarFrameButton"..i];
 			button:ClearAllPoints();
 			if(ChatBar_VerticalDisplay) then
 				if(ChatBar_AlternateOrientation) then
-					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -(E.Border + E.Spacing));
+					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -spacing);
 				else
-					button:SetPoint("BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, E.Border + E.Spacing);
+					button:SetPoint("BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, spacing);
 				end
 			else
 				if(ChatBar_AlternateOrientation) then
-					button:SetPoint("RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -(E.Border + E.Spacing), 0);
+					button:SetPoint("RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -spacing, 0);
 				else
-					button:SetPoint("LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", E.Border + E.Spacing, 0);
+					button:SetPoint("LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", spacing, 0);
 				end
 			end
 		end
@@ -55,8 +75,15 @@ function addon:ChatBar()
 				i = i + 1;
 			end
 		end
+
+		if(ChatBar_VerticalDisplay) then
+			ChatBarFrame:SetWidth(16 + (spacing * 2));
+		else
+			ChatBarFrame:SetHeight(16 + (spacing * 2));
+		end
 	end);
 	ChatBar_UpdateButtonOrientation();
+	ChatBar_UpdateArt = E.noop;
 
 	TT:HookScript(ChatBarFrameTooltip, "OnShow", "SetStyle");
 end
