@@ -165,6 +165,23 @@ local function getOptions()
 								name = L["Icon Cooldown"]
 							}
 						}
+					},
+					chatBarGroup = {
+						order = 4,
+						type = "group",
+						name = L["ChatBar"],
+						get = function(info) return E.db.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; ChatBar_UpdateButtonOrientation(); ChatBar_UpdateButtons(); end,
+						disabled = function() return not addon:CheckAddOn("ChatBar"); end,
+						args = {
+							chatBarSpacing = {
+								order = 1,
+								type = "range",
+								name = "Button Spacing",
+								min = 0, max = 60,
+								step = 1
+							}
+						}
 					}
 				}
 			},

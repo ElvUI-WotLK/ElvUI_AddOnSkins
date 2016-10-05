@@ -15,6 +15,8 @@ P.addOnSkins = {
 	weakAuraAuraBar = true,
 	weakAuraIconCooldown = true,
 
+	chatBarSpacing = 1,
+
 	embed = {
 		embedType = "DISABLE",
 		left = "Skada",

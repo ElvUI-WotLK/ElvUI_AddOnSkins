@@ -5,8 +5,6 @@ local TT = E:GetModule("Tooltip");
 if(not addon:CheckAddOn("ChatBar")) then return; end
 
 function addon:ChatBar()
-	local spacing = (E.Border + E.Spacing);
-
 	ChatBarFrameBackground:SetOutside();
 	ChatBarFrameBackground:SetTemplate("Transparent");
 
@@ -32,15 +30,15 @@ function addon:ChatBar()
 		button:ClearAllPoints();
 		if(ChatBar_VerticalDisplay) then
 			if(ChatBar_AlternateOrientation) then
-				button:SetPoint("TOP", "ChatBarFrame", "TOP", 0, -spacing);
+				button:SetPoint("TOP", "ChatBarFrame", "TOP", 0, -E.db.addOnSkins.chatBarSpacing);
 			else
-				button:SetPoint("BOTTOM", "ChatBarFrame", "BOTTOM", 0, spacing);
+				button:SetPoint("BOTTOM", "ChatBarFrame", "BOTTOM", 0, E.db.addOnSkins.chatBarSpacing);
 			end
 		else
 			if(ChatBar_AlternateOrientation) then
-				button:SetPoint("RIGHT", "ChatBarFrame", "RIGHT", -spacing, 0);
+				button:SetPoint("RIGHT", "ChatBarFrame", "RIGHT", -E.db.addOnSkins.chatBarSpacing, 0);
 			else
-				button:SetPoint("LEFT", "ChatBarFrame", "LEFT", spacing, 0);
+				button:SetPoint("LEFT", "ChatBarFrame", "LEFT", E.db.addOnSkins.chatBarSpacing, 0);
 			end
 		end
 		for i = 2, CHAT_BAR_MAX_BUTTONS do
@@ -48,15 +46,15 @@ function addon:ChatBar()
 			button:ClearAllPoints();
 			if(ChatBar_VerticalDisplay) then
 				if(ChatBar_AlternateOrientation) then
-					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -spacing);
+					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -E.db.addOnSkins.chatBarSpacing);
 				else
-					button:SetPoint("BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, spacing);
+					button:SetPoint("BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, E.db.addOnSkins.chatBarSpacing);
 				end
 			else
 				if(ChatBar_AlternateOrientation) then
-					button:SetPoint("RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -spacing, 0);
+					button:SetPoint("RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -E.db.addOnSkins.chatBarSpacing, 0);
 				else
-					button:SetPoint("LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", spacing, 0);
+					button:SetPoint("LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", E.db.addOnSkins.chatBarSpacing, 0);
 				end
 			end
 		end
@@ -77,9 +75,9 @@ function addon:ChatBar()
 		end
 
 		if(ChatBar_VerticalDisplay) then
-			ChatBarFrame:SetWidth(16 + (spacing * 2));
+			ChatBarFrame:SetWidth(16 + (E.db.addOnSkins.chatBarSpacing * 2));
 		else
-			ChatBarFrame:SetHeight(16 + (spacing * 2));
+			ChatBarFrame:SetHeight(16 + (E.db.addOnSkins.chatBarSpacing * 2));
 		end
 	end);
 	ChatBar_UpdateButtonOrientation();
