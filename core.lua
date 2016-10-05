@@ -17,6 +17,18 @@ for i = 1, GetNumAddOns() do
 	addon.addOns[strlower(name)] = enabled ~= nil;
 end
 
+local positionValues = {
+	TOPLEFT = "TOPLEFT",
+	LEFT = "LEFT",
+	BOTTOMLEFT = "BOTTOMLEFT",
+	RIGHT = "RIGHT",
+	TOPRIGHT = "TOPRIGHT",
+	BOTTOMRIGHT = "BOTTOMRIGHT",
+	CENTER = "CENTER",
+	TOP = "TOP",
+	BOTTOM = "BOTTOM"
+};
+
 local function getOptions()
 	local function GenerateOptionTable(skinName, order)
 		local text = trim(skinName:gsub("^Blizzard_(.+)","%1"):gsub("(%l)(%u%l)","%1 %2"));
@@ -174,12 +186,39 @@ local function getOptions()
 						set = function(info, value) E.db.addOnSkins[info[#info]] = value; ChatBar_UpdateButtonOrientation(); ChatBar_UpdateButtons(); end,
 						disabled = function() return not addon:CheckAddOn("ChatBar"); end,
 						args = {
-							chatBarSpacing = {
+							chatBarSize = {
 								order = 1,
+								type = "range",
+								name = "Button Size",
+								min = 0, max = 60,
+								step = 1
+							},
+							chatBarSpacing = {
+								order = 2,
 								type = "range",
 								name = "Button Spacing",
 								min = 0, max = 60,
 								step = 1
+							},
+							chatBarTextPoint = {
+								order = 3,
+								type = "select",
+								name = L["Text Position"],
+								values = positionValues
+							},
+							chatBarTextXOffset = {
+								order = 4,
+								type = "range",
+								name = L["Text xOffset"],
+								desc = L["Offset position for text."],
+								min = -300, max = 300, step = 1
+							},
+							chatBarTextYOffset = {
+								order = 5,
+								type = "range",
+								name = L["Text yOffset"],
+								desc = L["Offset position for text."],
+								min = -300, max = 300, step = 1
 							}
 						}
 					}

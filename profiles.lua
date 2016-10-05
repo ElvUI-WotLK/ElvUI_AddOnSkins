@@ -15,7 +15,11 @@ P.addOnSkins = {
 	weakAuraAuraBar = true,
 	weakAuraIconCooldown = true,
 
+	chatBarSize = 16,
 	chatBarSpacing = 1,
+	chatBarTextPoint = "LEFT",
+	chatBarTextXOffset = 1,
+	chatBarTextYOffset = 1,
 
 	embed = {
 		embedType = "DISABLE",
