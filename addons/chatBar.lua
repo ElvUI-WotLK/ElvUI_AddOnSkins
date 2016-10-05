@@ -56,7 +56,7 @@ function addon:ChatBar()
 			local frame;
 			for i = 1, CHAT_BAR_MAX_BUTTONS do
 				frame = _G["ChatBarFrameButton" .. i];
-				if(currSize >= (i * (E.db.addOnSkins.chatBarSize + E.db.addOnSkins.chatBarSpacing))) then
+				if(currSize >= (i * (E.db.addOnSkins.chatBarSize + E.db.addOnSkins.chatBarSpacing)) - E.db.addOnSkins.chatBarSpacing) then
 					frame:Show();
 				else
 					frame:Hide();
