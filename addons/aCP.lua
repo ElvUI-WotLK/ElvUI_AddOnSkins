@@ -5,6 +5,7 @@ if(not addon:CheckAddOn("ACP")) then return; end
 
 function addon:ACP()
 	local S = E:GetModule("Skins");
+--[[
 	local function cbResize(self, event, ...)
 		for i = 1, 20, 1 do
 			local checkbox = _G["ACP_AddonListEntry" .. i .. "Enabled"]
@@ -18,6 +19,7 @@ function addon:ACP()
 			end
 		end
 	end
+]]
 
 	ACP_AddonList:StripTextures();
 	ACP_AddonList:SetTemplate("Transparent");

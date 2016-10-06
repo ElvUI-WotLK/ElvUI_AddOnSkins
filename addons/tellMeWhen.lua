@@ -10,7 +10,6 @@ function addon:TellMeWhen()
 		if(TELLMEWHEN_VERSION == "1.2.4") then
 			local currentSpec = TellmeWhen_GetActiveTalentGroup();
 			local groupName = "TellMeWhen_Group" .. groupID;
-			local group = _G[groupName];
 
 			local genabled = TellMeWhen_Settings["Groups"][groupID]["Enabled"];
 			local rows = TellMeWhen_Settings["Groups"][groupID]["Rows"];

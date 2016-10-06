@@ -13,7 +13,7 @@ addon.register = {};
 addon.addOns = {};
 
 for i = 1, GetNumAddOns() do
-	local name, title, notes, enabled = GetAddOnInfo(i);
+	local name, _, _, enabled = GetAddOnInfo(i);
 	addon.addOns[strlower(name)] = enabled ~= nil;
 end
 

@@ -39,7 +39,7 @@ function addon:GearScore()
 			for i = 1, 18 do
 				if(i ~= 4) then
 					_G["GS_Frame" .. i]:SetTemplate("Default");
-					local ItemName, ItemLink, ItemRarity, ItemLevel, ItemMinLevel, ItemType, ItemSubType, ItemStackCount, ItemEquipLoc, ItemTexture = GetItemInfo("item:" .. GS_Data[GetRealmName()].Players[Name].Equip[i]);
+					local _, _, ItemRarity, _, _, _, _, _, _, ItemTexture = GetItemInfo("item:" .. GS_Data[GetRealmName()].Players[Name].Equip[i]);
 					if(ItemTexture) then
 						_G["GS_Frame" .. i].texture:SetTexture(ItemTexture);
 						_G["GS_Frame" .. i]:SetBackdropBorderColor(GetItemQualityColor(ItemRarity));

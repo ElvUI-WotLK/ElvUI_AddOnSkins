@@ -1,4 +1,3 @@
-local addonName = ...;
 local E, L, V, P, G = unpack(ElvUI);
 
 P.addOnSkins = {
