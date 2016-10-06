@@ -428,9 +428,9 @@ function module:Init()
 		self.switchButton.text:SetTextColor(unpack(E["media"].rgbvaluecolor));
 		self.switchButton.text:SetPoint("LEFT", 16, -5);
 		self.switchButton:SetScript("OnClick", function(self, button)
-			--if(fTable[self.text:GetText()]) then
-			--	fTable[self.text:GetText()](self, button);
-			--else
+		--	if(fTable[self.text:GetText()]) then
+		--		fTable[self.text:GetText()](self, button);
+		--	else
 				if(module.left:IsShown()) then
 					module.left:Hide();
 					self:SetAlpha(0.6);
@@ -439,7 +439,7 @@ function module:Init()
 					self:SetAlpha(1);
 				end
 				module:UpdateSwitchButton();
-			--end
+		--	end
 		end);
 		self.switchButton:SetScript("OnMouseDown", function(self) self.text:SetPoint("LEFT", 18, -7); end);
 		self.switchButton:SetScript("OnMouseUp", function(self) self.text:SetPoint("LEFT", 16, -5); end);
