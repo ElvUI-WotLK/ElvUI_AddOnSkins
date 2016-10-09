@@ -1,10 +1,8 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("Clique")) then return; end
-
-function addon:Clique()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.Clique) then return; end
 
 	CliquePulloutTab:StyleButton(nil, true);
 	CliquePulloutTab:SetTemplate("Default", true);
@@ -23,7 +21,7 @@ function addon:Clique()
 		frame.titleBar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0);
 	end
 
-	addon:SecureHook(Clique, "CreateOptionsFrame", function()
+	hooksecurefunc(Clique, "CreateOptionsFrame", function()
 		SkinFrame(CliqueFrame);
 
 		CliqueFrame:SetHeight(425);
@@ -158,7 +156,7 @@ function addon:Clique()
 		S:HandleScrollBar(CliqueIconScrollFrameScrollBar);
 	end);
 
-	addon:SecureHook(Clique, "ListScrollUpdate", function(self)
+	hooksecurefunc(Clique, "ListScrollUpdate", function(self)
 		if(not CliqueListScroll) then return; end
 
 		local idx, button;
@@ -179,4 +177,4 @@ function addon:Clique()
 	end);
 end
 
-addon:RegisterSkin("Clique", addon.Clique);
+S:AddCallbackForAddon("Clique", "Clique", LoadSkin);

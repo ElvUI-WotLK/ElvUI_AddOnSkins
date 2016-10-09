@@ -1,9 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("BindPad")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.BindPad) then return; end
 
-function addon:BindPad()
 	local function HandleMicroButton(button)
 		local pushed = button:GetPushedTexture();
 		local normal = button:GetNormalTexture();
@@ -28,8 +28,6 @@ function addon:BindPad()
 			disabled:SetInside(f);
 		end
 	end
-
-	local S = E:GetModule("Skins");
 
 	BindPadFrame:StripTextures(true);
 	BindPadFrame:CreateBackdrop("Transparent");
@@ -156,4 +154,4 @@ function addon:BindPad()
 	S:HandleCloseButton(BindPadMacroTextFrameCloseButton);
 end
 
-addon:RegisterSkin("BindPad", addon.BindPad);
+S:AddCallbackForAddon("BindPad", "BindPad", LoadSkin);

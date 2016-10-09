@@ -1,11 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("Auctionator")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.Auctionator) then return; end
 
-function addon:Auctionator(event)
-	local S = E:GetModule("Skins");
-	hooksecurefunc("Atr_SetTextureButton", function(elementName, count, itemlink)
+	hooksecurefunc("Atr_SetTextureButton", function(elementName, _, itemlink)
 		local texture = GetItemIcon(itemlink);
 		local textureElement = getglobal(elementName);
 
@@ -79,7 +78,7 @@ function addon:Auctionator(event)
 	S:HandleButton(Atr_StackingOptionsFrame_Edit)
 	S:HandleButton(Atr_StackingOptionsFrame_New)
 
-	if(event == "AUCTION_HOUSE_SHOW") then
+	hooksecurefunc("Atr_OnAuctionHouseShow", function()
 		S:HandleDropDownBox(Atr_DropDown1);
 		S:HandleDropDownBox(Atr_DropDownSL);
 
@@ -177,7 +176,7 @@ function addon:Auctionator(event)
 		for i = 1, AuctionFrame.numTabs do
 			S:HandleTab(_G["AuctionFrameTab"..i])
 		end
-	end
+	end);
 end
 
-addon:RegisterSkin("Auctionator", addon.Auctionator, "AUCTION_HOUSE_SHOW");
+S:AddCallbackForAddon("Auctionator", "Auctionator", LoadSkin);

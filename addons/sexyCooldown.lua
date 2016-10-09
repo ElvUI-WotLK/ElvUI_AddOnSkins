@@ -1,10 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("SexyCooldown")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.SexyCooldown) then return; end
 
-function addon:SexyCooldown()
-	local function SkinSexyCooldownIcon(bar, icon)
+	local function SkinSexyCooldownIcon(_, icon)
 		icon:SetTemplate("Default", true);
 		icon.overlay:SetTemplate("Default", true);
 		icon.overlay.tex:SetInside();
@@ -37,4 +37,4 @@ function addon:SexyCooldown()
 	end);
 end
 
-addon:RegisterSkin("SexyCooldown", addon.SexyCooldown);
+S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", LoadSkin);

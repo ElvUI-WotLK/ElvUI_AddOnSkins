@@ -259,12 +259,12 @@ if(addon:CheckAddOn("Skada")) then
 end
 
 function module:Hooks()
-	local function ChatPanelLeft_OnFade(self)
+	local function ChatPanelLeft_OnFade()
 		LeftChatPanel:Hide();
 		_G[addonName .. "_Embed_SwitchButton"]:Hide();
 	end
 
-	local function ChatPanelRight_OnFade(self)
+	local function ChatPanelRight_OnFade()
 		RightChatPanel:Hide();
 		_G[addonName .. "_Embed_SwitchButton"]:Hide();
 	end
@@ -297,7 +297,7 @@ function module:Hooks()
 		module:UpdateSwitchButton();
 	end);
 
-	RightChatToggleButton:HookScript("OnEnter", function(self, ...)
+	RightChatToggleButton:HookScript("OnEnter", function()
 		if(E.db.addOnSkins.embed.rightChat) then
 			GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Embedded Addon"], 1, 1, 1);
 			GameTooltip:Show();
@@ -330,7 +330,7 @@ function module:Hooks()
 		module:UpdateSwitchButton();
 	end);
 
-	LeftChatToggleButton:HookScript("OnEnter", function(self, ...)
+	LeftChatToggleButton:HookScript("OnEnter", function()
 		if(not E.db.addOnSkins.embed.rightChat) then
 			GameTooltip:AddDoubleLine(L["Right Click:"], L["Toggle Embedded Addon"], 1, 1, 1);
 			GameTooltip:Show();

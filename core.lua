@@ -7,9 +7,6 @@ local find = string.find;
 local match = string.match;
 local trim = string.trim;
 
-addon.skins = {};
-addon.events = {};
-addon.register = {};
 addon.addOns = {};
 
 for i = 1, GetNumAddOns() do
@@ -53,7 +50,224 @@ local function getOptions()
 				guiInline = true,
 				get = function(info) return E.private.addOnSkins[info[#info]]; end,
 				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-				args = {},
+				args = {
+					_NPCScan = {
+						type = "toggle",
+						name = "_NPCScan",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("_NPCScan"); end
+					},
+					ACP = {
+						type = "toggle",
+						name = "ACP",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("ACP"); end
+					},
+					Omen = {
+						type = "toggle",
+						name = "Omen",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Omen"); end
+					},
+					Recount = {
+						type = "toggle",
+						name = "Recount",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Recount"); end
+					},
+					SexyCooldown = {
+						type = "toggle",
+						name = "SexyCooldown",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("SexyCooldown"); end
+					},
+					Skada = {
+						type = "toggle",
+						name = "Skada",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Skada"); end
+					},
+					Auctionator = {
+						type = "toggle",
+						name = "Auctionator",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Auctionator"); end
+					},
+					BugSack = {
+						type = "toggle",
+						name = "BugSack",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("BugSack"); end
+					},
+					CallToArms = {
+						type = "toggle",
+						name = "CallToArms",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("CallToArms"); end
+					},
+					Postal = {
+						type = "toggle",
+						name = "Postal",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Postal"); end
+					},
+					QuestPointer = {
+						type = "toggle",
+						name = "QuestPointer",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("QuestPointer"); end
+					},
+					Clique = {
+						type = "toggle",
+						name = "Clique",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Clique"); end
+					},
+					DBM = {
+						type = "toggle",
+						name = "DBM",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("DBM-Core"); end
+					},
+					FloAspectBar = {
+						type = "toggle",
+						name = "FloAspectBar",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("FloAspectBar"); end
+					},
+					FloTotemBar = {
+						type = "toggle",
+						name = "FloTotemBar",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("FloTotemBar"); end
+					},
+					Spy = {
+						type = "toggle",
+						name = "Spy",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Spy"); end
+					},
+					AtlasLoot = {
+						type = "toggle",
+						name = "AtlasLoot",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("AtlasLoot"); end
+					},
+					Atlas = {
+						type = "toggle",
+						name = "Atlas",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Atlas"); end
+					},
+					FlightMap = {
+						type = "toggle",
+						name = "FlightMap",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("FlightMap"); end
+					},
+					WeakAuras = {
+						type = "toggle",
+						name = "WeakAuras",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("WeakAuras"); end
+					},
+					Overachiever = {
+						type = "toggle",
+						name = "Overachiever",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Overachiever"); end
+					},
+					OpenGF = {
+						type = "toggle",
+						name = "OpenGF",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("OpenGF"); end
+					},
+					KHunterTimers = {
+						type = "toggle",
+						name = "KHunterTimers",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("KHunterTimers"); end
+					},
+					TellMeWhen = {
+						type = "toggle",
+						name = "TellMeWhen",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("TellMeWhen"); end
+					},
+					GearScore = {
+						type = "toggle",
+						name = "GearScore",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("GearScore"); end
+					},
+					AllStats = {
+						type = "toggle",
+						name = "AllStats",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("AllStats"); end
+					},
+					BlackList = {
+						type = "toggle",
+						name = "BlackList",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("BlackList"); end
+					},
+					GnomishVendorShrinker = {
+						type = "toggle",
+						name = "GnomishVendorShrinker",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("GnomishVendorShrinker"); end
+					},
+					EveryQuest = {
+						type = "toggle",
+						name = "EveryQuest",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("EveryQuest"); end
+					},
+					MoveAnything = {
+						type = "toggle",
+						name = "MoveAnything",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("MoveAnything"); end
+					},
+					VanasKoS = {
+						type = "toggle",
+						name = "VanasKoS",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("VanasKoS"); end
+					},
+					BindPad = {
+						type = "toggle",
+						name = "BindPad",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("BindPad"); end
+					},
+					ZygorGuidesViewer = {
+						type = "toggle",
+						name = "ZygorGuidesViewer",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("ZygorGuidesViewer"); end
+					},
+					ZygorTalentAdvisor = {
+						type = "toggle",
+						name = "ZygorTalentAdvisor",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("ZygorTalentAdvisor"); end
+					},
+					WowLua = {
+						type = "toggle",
+						name = "WowLua",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("WowLua"); end
+					},
+					ChatBar = {
+						type = "toggle",
+						name = "ChatBar",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("ChatBar"); end
+					},
+				}
 			},
 			blizzard = {
 				order = 2,
@@ -62,7 +276,13 @@ local function getOptions()
 				guiInline = true,
 				get = function(info) return E.private.addOnSkins[info[#info]]; end,
 				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-				args = {},
+				args = {
+					Blizzard_WorldStateFrame = {
+						type = "toggle",
+						name = "WorldStateFrame",
+						desc = L["TOGGLESKIN_DESC"],
+					},
+				},
 			},
 			misc = {
 				order = 3,
@@ -298,175 +518,15 @@ local function getOptions()
 		},
 	}
 
-	local order, blizzorder = 0, 0;
-	for skinName, _ in addon:OrderedPairs(addon.register) do
-		if(find(skinName, "Blizzard_")) then
-			options.args.blizzard.args[skinName] = GenerateOptionTable(skinName, blizzorder);
-			blizzorder = blizzorder + 1;
-		else
-			options.args.addOns.args[skinName] = GenerateOptionTable(skinName, order);
-			order = order + 1;
-		end
-	end
-
 	E.Options.args.addOnSkins = options;
-end
-
-function addon:CheckOption(optionName, ...)
-	for i = 1, select("#", ...) do
-		local addon = select(i, ...);
-		if(not addon) then break; end
-		if(not IsAddOnLoaded(addon)) then return false; end
-	end
-	return E.private.addOnSkins[optionName];
-end
-
-function addon:SetOption(optionName, value)
-	E.private.addOnSkins[optionName] = value;
-end
-
-function addon:DisableOption(optionName)
-	addon:SetOption(optionName, false);
-end
-
-function addon:EnableOption(optionName)
-	addon:SetOption(optionName, true);
-end
-
-function addon:ToggleOption(optionName)
-	E.private.addOnSkins[optionName] = not E.private.addOnSkins[optionName];
 end
 
 function addon:CheckAddOn(addon)
 	return self.addOns[strlower(addon)] or false;
 end
 
-function addon:OrderedPairs(t, f)
-	local a = {};
-	for n in pairs(t) do tinsert(a, n); end
-	sort(a, f);
-	local i = 0;
-	local iter = function()
-		i = i + 1;
-		if(a[i] == nil) then
-			return nil;
-		else
-			return a[i], t[a[i]];
-		end
-	end
-	return iter;
-end
-
-function addon:RegisterSkin(skinName, skinFunc, ...)
-	local events = {};
-	local priority = 1;
-	for i = 1, select("#", ...) do
-		local event = select(i, ...);
-		if(not event) then
-			break;
-		end
-
-		if(type(event) == "number") then
-			priority = event;
-		else
-			events[event] = true;
-		end
-	end
-	local registerMe = {func = skinFunc, events = events, priority = priority};
-	if(not self.register[skinName]) then
-		self.register[skinName] = {};
-	end
-	self.register[skinName][skinFunc] = registerMe;
-end
-
-function addon:GenerateEventFunction(event)
-	local eventHandler = function(self, event, ...)
-		for skin, funcs in pairs(self.skins) do
-			if(self:CheckOption(skin) and self.events[event][skin]) then
-				for _, func in ipairs(funcs) do
-					self:CallSkin(skin, func, event, ...);
-				end
-			end
-		end
-	end
-	return eventHandler;
-end
-
-function addon:RegisteredSkin(skinName, priority, func, events)
-	local events = events;
-	for c, _ in pairs(events) do
-		if(find(c, "%[")) then
-			local conflict = match(c, "%[([!%w_]+)%]");
-			if(self:CheckAddOn(conflict)) then
-				return;
-			end
-		end
-	end
-
-	if(not self.skins[skinName]) then
-		self.skins[skinName] = {};
-	end
-	self.skins[skinName][priority] = func;
-
-	for event, _ in pairs(events) do
-		if(not find(event, "%[")) then
-			if(not self.events[event]) then
-				self[event] = self:GenerateEventFunction(event);
-				self:RegisterEvent(event);
-				self.events[event] = {};
-			end
-			self.events[event][skinName] = true;
-		end
-	end
-end
-
-function addon:CallSkin(skin, func, event, ...)
-	local pass, errormsg = pcall(func, self, event, ...);
-	if(not pass) then
-		local errormessage = "%s Error: %s";
-		--if(self:CheckOption("SkinDebug")) then
-			if(GetCVarBool("scriptErrors")) then
-				LoadAddOn("Blizzard_DebugTools");
-				ScriptErrorsFrame_OnError(errormsg, false);
-			else
-				DEFAULT_CHAT_FRAME:AddMessage(format(errormessage, skin, errormsg));
-			end
-		--end
-	end
-end
-
-function addon:UnregisterSkinEvent(skinName, event)
-	if(not addon.events[event]) then return; end
-	if(not addon.events[event][skinName]) then return; end
-	addon.events[event][skinName] = nil;
-	local found = false;
-	for skin,_ in pairs(addon.events[event]) do
-		if(skin) then
-			found = true;
-			break;
-		end
-	end
-	if(not found) then
-		addon:UnregisterEvent(event);
-	end
-end
-
 function addon:Initialize()
 	EP:RegisterPlugin(addonName, getOptions);
-
-	for skin, alldata in pairs(self.register) do
-		for _, data in pairs(alldata) do
-			self:RegisteredSkin(skin, data.priority, data.func, data.events);
-		end
-	end
-
-	for skin, funcs in pairs(self.skins) do
-		if self:CheckOption(skin) then
-			for _, func in ipairs(funcs) do
-				self:CallSkin(skin, func, event);
-			end
-		end
-	end
 end
 
 E:RegisterModule(addon:GetName());

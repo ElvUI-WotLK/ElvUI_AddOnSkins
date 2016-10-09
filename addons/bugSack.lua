@@ -1,10 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("BugSack")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.BugSack) then return; end
 
-function addon:BugSack()
-	local S = E:GetModule("Skins");
 	local function BugSack_OpenSack()
 		if(BugSackFrame.isSkinned) then return; end
 		BugSackFrame:StripTextures();
@@ -24,7 +23,7 @@ function addon:BugSack()
 			BugSackSendButton:SetPoint("RIGHT", BugSackNextButton, "LEFT", -(E.PixelMode and 1 or 3), 0);
 		end
 
-		local scrollBar = BugSackScrollScrollBar and BugSackScrollScrollBar or BugSackFrameScrollScrollBar
+		local scrollBar = BugSackScrollScrollBar and BugSackScrollScrollBar or BugSackFrameScrollScrollBar;
 		S:HandleScrollBar(scrollBar);
 		S:HandleTab(BugSackTabAll);
 		BugSackTabAll:SetPoint("TOPLEFT", BugSackFrame, "BOTTOMLEFT", 0, 2);
@@ -36,4 +35,4 @@ function addon:BugSack()
 	hooksecurefunc(BugSack, "OpenSack", BugSack_OpenSack);
 end
 
-addon:RegisterSkin("BugSack", addon.BugSack);
+S:AddCallbackForAddon("BugSack", "BugSack", LoadSkin);

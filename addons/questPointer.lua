@@ -1,11 +1,11 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("QuestPointer")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.QuestPointer) then return; end
 
-function addon:QuestPointer()
 	QuestPointerTooltip:StripTextures();
-	QuestPointerTooltip:CreateBackdrop('Transparent');
+	QuestPointerTooltip:CreateBackdrop("Transparent");
 end
 
-addon:RegisterSkin("QuestPointer", addon.QuestPointer);
+S:AddCallbackForAddon("QuestPointer", "QuestPointer", LoadSkin);

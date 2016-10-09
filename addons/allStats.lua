@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("AllStats")) then return; end
-
-function addon:AllStats()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.AllStats) then return; end
 
 	AllStatsFrame:StripTextures();
 	AllStatsFrame:SetTemplate("Transparent");
@@ -13,4 +11,4 @@ function addon:AllStats()
 	S:HandleButton(AllStatsButtonShowFrame);
 end
 
-addon:RegisterSkin("AllStats", addon.AllStats);
+S:AddCallbackForAddon("AllStats", "AllStats", LoadSkin);

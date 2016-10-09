@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("MoveAnything")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.MoveAnything) then return; end
 
-function addon:MoveAnything()
-	local S = E:GetModule("Skins");
 	local SPACING = 1 + (E.Spacing*2);
 
 	for i = 1, 20 do
@@ -69,4 +68,4 @@ function addon:MoveAnything()
 	S:HandleButton(GameMenuButtonMoveAnything);
 end
 
-addon:RegisterSkin("MoveAnything", addon.MoveAnything);
+S:AddCallbackForAddon("MoveAnything", "MoveAnything", LoadSkin);

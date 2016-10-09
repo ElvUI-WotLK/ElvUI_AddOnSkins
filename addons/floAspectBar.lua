@@ -1,16 +1,15 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local AB = E:GetModule("ActionBars");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("FloAspectBar")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.FloAspectBar) then return; end
 
-function addon:FloAspectBar()
-	local AB = E:GetModule("ActionBars");
-
-	FloAspectBar:SetTemplate();
+	FloAspectBar:SetTemplate("Default");
 	for i = 1, 10 do
-		local button = _G["FloAspectBarButton"..i];
+		local button = _G["FloAspectBarButton" .. i];
 		AB:StyleButton(button);
 	end
 end
 
-addon:RegisterSkin("FloAspectBar", addon.FloAspectBar);
+S:AddCallbackForAddon("FloAspectBar", "FloAspectBar", LoadSkin);

@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("VanasKoS")) then return; end
-
-function addon:VanasKoS()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.VanasKoS) then return; end
 
 	VanasKoS_WarnFrame:SetTemplate("Transparent", nil, true);
 	VanasKoS_WarnFrame.SetBackdropBorderColor = E.noop;
@@ -66,4 +64,4 @@ function addon:VanasKoS()
 	VanasKoSPvPStatsTimeSpanDropDown:SetPoint("RIGHT", VanasKoSPvPStatsCharacterDropDown, "LEFT", 26, 0);
 end
 
-addon:RegisterSkin("VanasKoS", addon.VanasKoS);
+S:AddCallbackForAddon("VanasKoS", "VanasKoS", LoadSkin);

@@ -1,9 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("WeakAuras")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.WeakAuras) then return; end
 
-function addon:WeakAuras()
 	local function Skin_WeakAuras(frame, ftype)
 		if(not frame.backdrop) then
 			frame:CreateBackdrop("Transparent");
@@ -57,4 +57,4 @@ function addon:WeakAuras()
 	end
 end
 
-addon:RegisterSkin("WeakAuras", addon.WeakAuras);
+S:AddCallbackForAddon("WeakAuras", "WeakAuras", LoadSkin);

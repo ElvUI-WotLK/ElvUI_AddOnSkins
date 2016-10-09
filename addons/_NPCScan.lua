@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("_NPCScan")) then return; end
-
-function addon:_NPCScan()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins._NPCScan) then return; end
 
 	_NPCScanButton:SetScale(1);
 	_NPCScanButton.SetScale = E.noop;
@@ -30,4 +28,4 @@ function addon:_NPCScan()
 	NPCFoundText:SetShadowOffset(1, -1);
 end
 
-addon:RegisterSkin("_NPCScan", addon._NPCScan);
+S:AddCallbackForAddon("_NPCScan", "_NPCScan", LoadSkin);

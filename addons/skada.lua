@@ -1,11 +1,11 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("Skada")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.Skada) then return; end
 
-function addon:Skada()
 	local displayBar = Skada.displays["bar"];
-	hooksecurefunc(displayBar, "ApplySettings", function(self, win)
+	hooksecurefunc(displayBar, "ApplySettings", function(_, win)
 		local skada = win.bargroup;
 		if(win.db.enabletitle) then
 			skada.button:SetBackdrop(nil);
@@ -88,4 +88,4 @@ function addon:Skada()
 	end);
 end
 
-addon:RegisterSkin("Skada", addon.Skada);
+S:AddCallbackForAddon("Skada", "Skada", LoadSkin);

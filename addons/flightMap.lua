@@ -1,9 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("FlightMap")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.FlightMap) then return; end
 
-function addon:FlightMap()
 	FlightMapTimesFrame:StripTextures();
 	FlightMapTimesFrame:CreateBackdrop("Default");
 
@@ -11,13 +11,12 @@ function addon:FlightMap()
 	E:RegisterStatusBar(FlightMapTimesFrame);
 
 	FlightMapTimesText:ClearAllPoints();
-	FlightMapTimesText:SetPoint("CENTER", FlightMapTimesFrame, "CENTER", 0, 0);
+	FlightMapTimesText:Point("CENTER", FlightMapTimesFrame, "CENTER", 0, 0);
 
-	local S = E:GetModule("Skins");
 	local base = "InterfaceOptionsFlightMapPanel";
 	for optid, option in pairs(FLIGHTMAP_OPTIONS) do
 		S:HandleCheckBox(_G[base .. "Option" .. optid]);
 	end
 end
 
-addon:RegisterSkin("FlightMap", addon.FlightMap);
+S:AddCallbackForAddon("FlightMap", "FlightMap", LoadSkin);

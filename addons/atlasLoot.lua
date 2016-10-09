@@ -1,10 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("AtlasLoot")) then return; end
-
-function addon:AtlasLoot()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.AtlasLoot) then return; end
 
 	AtlasLootTooltip:HookScript("OnShow", function(self)
 		self:SetTemplate("Transparent");
@@ -33,19 +32,19 @@ function addon:AtlasLoot()
 	S:HandleButton(AtlasLootDefaultFrame_Preset3);
 	S:HandleButton(AtlasLootDefaultFrame_Preset4);
 	S:HandleEditBox(AtlasLootDefaultFrameSearchBox);
-	AtlasLootDefaultFrameSearchBox:SetPoint("BOTTOM", AtlasLootDefaultFrame, "BOTTOM", -78, 30);
+	AtlasLootDefaultFrameSearchBox:Point("BOTTOM", AtlasLootDefaultFrame, "BOTTOM", -78, 30);
 	AtlasLootDefaultFrameSearchBox:Height(22);
 	S:HandleButton(AtlasLootDefaultFrameSearchButton);
-	AtlasLootDefaultFrameSearchButton:SetPoint("LEFT", AtlasLootDefaultFrameSearchBox, "RIGHT", 3, 0);
+	AtlasLootDefaultFrameSearchButton:Point("LEFT", AtlasLootDefaultFrameSearchBox, "RIGHT", 3, 0);
 	S:HandleNextPrevButton(AtlasLootDefaultFrameSearchOptionsButton);
-	AtlasLootDefaultFrameSearchOptionsButton:SetPoint("LEFT", AtlasLootDefaultFrameSearchButton, "RIGHT", 2, 0);
+	AtlasLootDefaultFrameSearchOptionsButton:Point("LEFT", AtlasLootDefaultFrameSearchButton, "RIGHT", 2, 0);
 	AtlasLootDefaultFrameSearchOptionsButton:SetSize(24, 24);
 	S:HandleButton(AtlasLootDefaultFrameSearchClearButton);
-	AtlasLootDefaultFrameSearchClearButton:SetPoint("LEFT", AtlasLootDefaultFrameSearchOptionsButton, "RIGHT", 2, 0);
+	AtlasLootDefaultFrameSearchClearButton:Point("LEFT", AtlasLootDefaultFrameSearchOptionsButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootDefaultFrameLastResultButton);
-	AtlasLootDefaultFrameLastResultButton:SetPoint("LEFT", AtlasLootDefaultFrameSearchClearButton, "RIGHT", 2, 0);
+	AtlasLootDefaultFrameLastResultButton:Point("LEFT", AtlasLootDefaultFrameSearchClearButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootDefaultFrameWishListButton);
-	AtlasLootDefaultFrameWishListButton:SetPoint("RIGHT", AtlasLootDefaultFrameSearchBox, "LEFT", -2, 0);
+	AtlasLootDefaultFrameWishListButton:Point("RIGHT", AtlasLootDefaultFrameSearchBox, "LEFT", -2, 0);
 
 	S:HandleCloseButton(AtlasLootItemsFrame_CloseButton);
 
@@ -98,17 +97,17 @@ function addon:AtlasLoot()
 	AtlasLootPanel:SetTemplate("Transparent");
 
 	S:HandleButton(AtlasLootPanel_WorldEvents);
-	AtlasLootPanel_WorldEvents:SetPoint("LEFT", AtlasLootPanel, "LEFT", 7, 29);
+	AtlasLootPanel_WorldEvents:Point("LEFT", AtlasLootPanel, "LEFT", 7, 29);
 	S:HandleButton(AtlasLootPanel_Sets);
-	AtlasLootPanel_Sets:SetPoint("LEFT", AtlasLootPanel_WorldEvents, "RIGHT", 2, 0);
+	AtlasLootPanel_Sets:Point("LEFT", AtlasLootPanel_WorldEvents, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootPanel_Reputation);
-	AtlasLootPanel_Reputation:SetPoint("LEFT", AtlasLootPanel_Sets, "RIGHT", 2, 0);
+	AtlasLootPanel_Reputation:Point("LEFT", AtlasLootPanel_Sets, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootPanel_PvP);
-	AtlasLootPanel_PvP:SetPoint("LEFT", AtlasLootPanel_Reputation, "RIGHT", 2, 0);
+	AtlasLootPanel_PvP:Point("LEFT", AtlasLootPanel_Reputation, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootPanel_Crafting);
-	AtlasLootPanel_Crafting:SetPoint("LEFT", AtlasLootPanel_PvP, "RIGHT", 2, 0);
+	AtlasLootPanel_Crafting:Point("LEFT", AtlasLootPanel_PvP, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootPanel_WishList);
-	AtlasLootPanel_WishList:SetPoint("LEFT", AtlasLootPanel_Crafting, "RIGHT", 2, 0);
+	AtlasLootPanel_WishList:Point("LEFT", AtlasLootPanel_Crafting, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootPanel_Options);
 	S:HandleButton(AtlasLootPanel_LoadModules);
 	S:HandleButton(AtlasLootPanel_Preset1);
@@ -120,20 +119,20 @@ function addon:AtlasLoot()
 	AtlasLootSearchBox:Height(20);
 	S:HandleButton(AtlasLootSearchButton);
 	AtlasLootSearchButton:Height(22);
-	AtlasLootSearchButton:SetPoint("LEFT", AtlasLootSearchBox, "RIGHT", 3, 0);
+	AtlasLootSearchButton:Point("LEFT", AtlasLootSearchBox, "RIGHT", 3, 0);
 	S:HandleNextPrevButton(AtlasLootSearchOptionsButton);
-	AtlasLootSearchOptionsButton:SetPoint("LEFT", AtlasLootSearchButton, "RIGHT", 2, 0);
+	AtlasLootSearchOptionsButton:Point("LEFT", AtlasLootSearchButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootSearchClearButton);
 	AtlasLootSearchClearButton:Height(22);
-	AtlasLootSearchClearButton:SetPoint("LEFT", AtlasLootSearchOptionsButton, "RIGHT", 2, 0);
+	AtlasLootSearchClearButton:Point("LEFT", AtlasLootSearchOptionsButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasLootLastResultButton);
 	AtlasLootLastResultButton:Height(22);
-	AtlasLootLastResultButton:SetPoint("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0);
+	AtlasLootLastResultButton:Point("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0);
 
 	hooksecurefunc("AtlasLoot_SetupForAtlas", function()
 		AtlasLootPanel:ClearAllPoints();
 		AtlasLootPanel:SetParent(AtlasFrame);
-		AtlasLootPanel:SetPoint("TOP", "AtlasFrame", "BOTTOM", 0, -2);
+		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2);
 	end);
 
 	local function skinDewdrop()
@@ -158,15 +157,15 @@ function addon:AtlasLoot()
 		end
 	end
 
-	hooksecurefunc(LibStub("Dewdrop-2.0", true), "Open", function(parent)
+	hooksecurefunc(LibStub("Dewdrop-2.0", true), "Open", function()
 		skinDewdrop();
 	end);
 
 	if(addon:CheckAddOn("AtlasLootFu")) then
-		hooksecurefunc(LibStub("Tablet-2.0", true), "Open", function(fakeParent, parent)
+		hooksecurefunc(LibStub("Tablet-2.0", true), "Open", function()
 			_G["Tablet20Frame"]:SetTemplate("Transparent");
 		end);
 	end
 end
 
-addon:RegisterSkin("AtlasLoot", addon.AtlasLoot);
+S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", LoadSkin);

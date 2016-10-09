@@ -1,10 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local TT = E:GetModule("Tooltip");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("ChatBar")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.ChatBar) then return; end
 
-function addon:ChatBar()
 	ChatBarFrameBackground:SetOutside();
 	ChatBarFrameBackground:SetTemplate("Transparent");
 
@@ -73,7 +73,7 @@ function addon:ChatBar()
 		end
 	end);
 
-	addon:SecureHook("ChatBar_UpdateButtonOrientation", function()
+	hooksecurefunc("ChatBar_UpdateButtonOrientation", function()
 		local button = ChatBarFrameButton1;
 		button:ClearAllPoints();
 		button.Text:ClearAllPoints();
@@ -112,7 +112,7 @@ function addon:ChatBar()
 		end
 	end);
 
-	addon:SecureHook("ChatBar_UpdateButtons", function()
+	hooksecurefunc("ChatBar_UpdateButtons", function()
 		local i = 1;
 		local buttonIndex = 1;
 		if(not ChatBar_HideAllButtons) then
@@ -152,4 +152,4 @@ function addon:ChatBar()
 	TT:HookScript(ChatBarFrameTooltip, "OnShow", "SetStyle");
 end
 
-addon:RegisterSkin("ChatBar", addon.ChatBar);
+S:AddCallbackForAddon("ChatBar", "ChatBar", LoadSkin);

@@ -1,10 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("KHunterTimers")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.KHunterTimers) then return; end
 
-function addon:KHunterTimers()
 	KHunterTimersAnchor:StripTextures();
 	KHunterTimersAnchor:SetTemplate("Transparent");
 	KHunterTimersFrame:StripTextures();
@@ -36,12 +35,11 @@ function addon:KHunterTimers()
 	S:HandleSliderFrame(KHunterTimersOptionsBarsSlider7Slider);
 
 	KHunterTimersOptionsBarsEditBox1:StripTextures();
-	KHunterTimersOptionsBarsEditBox1:SetHeight(22);
+	KHunterTimersOptionsBarsEditBox1:Height(22);
 	KHunterTimersOptionsBarsEditBox2:StripTextures();
-	KHunterTimersOptionsBarsEditBox2:SetHeight(22);
+	KHunterTimersOptionsBarsEditBox2:Height(22);
 	S:HandleEditBox(KHunterTimersOptionsBarsEditBox1);
 	S:HandleEditBox(KHunterTimersOptionsBarsEditBox2);
-
 
 	local kHunterTimersCheck = {
 		"KHunterTimersOptionsBarsCheckButtonOn",
@@ -152,8 +150,8 @@ function addon:KHunterTimers()
 
 	for i = 1, getn(kHunterTimersTabs) do
 		S:HandleTab(_G[kHunterTimersTabs[i]]);
-		_G[kHunterTimersTabs[i].."Text"]:SetPoint("CENTER", 0, 1);
+		_G[kHunterTimersTabs[i] .. "Text"]:Point("CENTER", 0, 1);
 	end
 end
 
-addon:RegisterSkin("KHunterTimers", addon.KHunterTimers);
+S:AddCallbackForAddon("KHunterTimers", "KHunterTimers", LoadSkin);

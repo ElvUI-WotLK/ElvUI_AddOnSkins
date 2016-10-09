@@ -1,10 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("OpenGF")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.OpenGF) then return; end
 
-function addon:OpenGF()
 	ogf_OpenGF_MainFrame:StripTextures();
 	ogf_playerList:StripTextures();
 	ogf_plyContextMenu:StripTextures();
@@ -20,12 +19,12 @@ function addon:OpenGF()
 	S:HandleDropDownBox(ogf_wotlkInstances);
 	S:HandleDropDownBox(ogf_wotlkHeroic);
 
-	ogf_categorySelect:SetWidth(200);
-	ogf_vanInstances:SetWidth(200);
-	ogf_tbcInstances:SetWidth(200);
-	ogf_tbcHeroic:SetWidth(200);
-	ogf_wotlkInstances:SetWidth(200);
-	ogf_wotlkHeroic:SetWidth(200);
+	ogf_categorySelect:Width(200);
+	ogf_vanInstances:Width(200);
+	ogf_tbcInstances:Width(200);
+	ogf_tbcHeroic:Width(200);
+	ogf_wotlkInstances:Width(200);
+	ogf_wotlkHeroic:Width(200);
 
 	ogf_searchButton:Point("LEFT", ogf_vanInstances, "RIGHT")
 
@@ -49,4 +48,4 @@ function addon:OpenGF()
 	end
 end
 
-addon:RegisterSkin("OpenGF", addon.OpenGF);
+S:AddCallbackForAddon("OpenGF", "OpenGF", LoadSkin);

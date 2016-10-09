@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("GearScore")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.GearScore) then return; end
 
-function addon:GearScore()
 	GS_DisplayFrame:SetTemplate("Transparent");
 
 	S:HandleEditBox(GS_EditBox1);
@@ -34,7 +33,7 @@ function addon:GearScore()
 		end
 	end
 
-	hooksecurefunc("GearScore_DisplayUnit", function(Name, Auto)
+	hooksecurefunc("GearScore_DisplayUnit", function(Name)
 		if(GS_Data[GetRealmName()].Players[Name]) then
 			for i = 1, 18 do
 				if(i ~= 4) then
@@ -168,4 +167,4 @@ function addon:GearScore()
 	S:HandleCheckBox(GSXChannelCheck, true);
 end
 
-addon:RegisterSkin("GearScore", addon.GearScore);
+S:AddCallbackForAddon("GearScore", "GearScore", LoadSkin);

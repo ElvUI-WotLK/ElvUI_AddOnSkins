@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("Atlas")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.Atlas) then return; end
 
-function addon:Atlas()
 	AtlasFrame:StripTextures();
 	AtlasFrame:SetTemplate("Transparent");
 
@@ -36,10 +35,10 @@ function addon:Atlas()
 	AtlasSwitchButton:Height(24);
 	S:HandleButton(AtlasSearchButton);
 	AtlasSearchButton:Height(24);
-	AtlasSearchButton:SetPoint("LEFT", AtlasSearchEditBox, "RIGHT", 3, 0);
+	AtlasSearchButton:Point("LEFT", AtlasSearchEditBox, "RIGHT", 3, 0);
 	S:HandleButton(AtlasSearchClearButton);
 	AtlasSearchClearButton:Height(24);
-	AtlasSearchClearButton:SetPoint("LEFT", AtlasSearchButton, "RIGHT", 2, 0);
+	AtlasSearchClearButton:Point("LEFT", AtlasSearchButton, "RIGHT", 2, 0);
 	S:HandleButton(AtlasFrameOptionsButton);
 
 	S:HandleScrollBar(AtlasScrollBarScrollBar);
@@ -61,4 +60,4 @@ function addon:Atlas()
 	S:HandleButton(AtlasOptionsFrameResetPosition);
 end
 
-addon:RegisterSkin("Atlas", addon.Atlas);
+S:AddCallbackForAddon("Atlas", "Atlas", LoadSkin);

@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("Recount")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.Recount) then return; end
 
-function addon:Recount()
 	local MainWindow = Recount.MainWindow;
 	MainWindow:SetBackdrop(nil);
 
@@ -53,4 +52,4 @@ function addon:Recount()
 	end
 end
 
-addon:RegisterSkin("Recount", addon.Recount);
+S:AddCallbackForAddon("Recount", "Recount", LoadSkin);

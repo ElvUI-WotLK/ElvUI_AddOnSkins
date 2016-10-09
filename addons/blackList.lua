@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("BlackList")) then return; end
-
-function addon:BlackList()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.BlackList) then return; end
 
 	S:HandleButton(FriendsFrameOptionsButton);
 	S:HandleButton(FriendsFrameShareListButton);
@@ -51,4 +49,4 @@ function addon:BlackList()
 	S:HandleButton(BlackListOptionsFrameClose);
 end
 
-addon:RegisterSkin("BlackList", addon.BlackList);
+S:AddCallbackForAddon("BlackList", "BlackList", LoadSkin);

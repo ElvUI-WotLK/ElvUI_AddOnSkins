@@ -1,10 +1,8 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("ZygorTalentAdvisor")) then return; end
-
-function addon:ZygorTalentAdvisor()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.ZygorTalentAdvisor) then return; end
 
 	ZygorTalentAdvisorPopoutButton:Size(26, 32);
 	ZygorTalentAdvisorPopoutButton:SetTemplate("Default");
@@ -38,4 +36,4 @@ function addon:ZygorTalentAdvisor()
 	S:HandleButton(ZygorTalentAdvisorPopoutAcceptButton);
 end
 
-addon:RegisterSkin("ZygorTalentAdvisor", addon.ZygorTalentAdvisor);
+S:AddCallbackForAddon("ZygorTalentAdvisor", "ZygorTalentAdvisor", LoadSkin);

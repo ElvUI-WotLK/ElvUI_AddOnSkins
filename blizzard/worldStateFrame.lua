@@ -1,8 +1,8 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
 local captureBarCreate, captureBarUpdate;
-function addon:Blizzard_WorldStateFrame(...)
+local function LoadSkin()
 	captureBarCreate = function(id)
 		local bar = _G["WorldStateCaptureBar"..id];
 		bar:SetSize(173, 16);
@@ -74,4 +74,4 @@ function addon:Blizzard_WorldStateFrame(...)
 	hooksecurefunc(ExtendedUI["CAPTUREPOINT"], "update", captureBarUpdate);
 end
 
-addon:RegisterSkin("Blizzard_WorldStateFrame", addon.Blizzard_WorldStateFrame);
+S:RegisterSkin("WorldStateFrame", LoadSkin);

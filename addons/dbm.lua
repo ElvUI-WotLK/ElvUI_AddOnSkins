@@ -1,10 +1,9 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("DBM-Core")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.DBM) then return; end
 
-function addon:DBM(event, addonName)
 	local db = E.db.addOnSkins;
 	local function SkinBars(self)
 		if(not db) then return; end
@@ -122,7 +121,7 @@ function addon:DBM(event, addonName)
 		end
 	end
 
-	local function SkinRange(self, range, filter)
+	local function SkinRange()
 		DBMRangeCheck:SetTemplate("Transparent");
 	end
 
@@ -139,26 +138,28 @@ function addon:DBM(event, addonName)
 		end
 		return RaidNotice_AddMessage_(noticeFrame, textString, colorInfo);
 	end
-
-	if(addonName == "DBM-GUI") then
-		DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
-			self:StripTextures();
-			self:SetTemplate("Transparent");
-			DBM_GUI_OptionsFrameBossMods:StripTextures();
-			DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent");
-			DBM_GUI_OptionsFrameDBMOptions:StripTextures();
-			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent");
-			DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent");
-		end);
-
-		S:HandleButton(DBM_GUI_OptionsFrameOkay);
-		S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar);
-
-		S:HandleTab(DBM_GUI_OptionsFrameTab1);
-		S:HandleTab(DBM_GUI_OptionsFrameTab2);
-
-		addon:UnregisterSkinEvent("DBM", event);
-	end
 end
 
-addon:RegisterSkin("DBM", addon.DBM, "ADDON_LOADED");
+S:AddCallbackForAddon("DBM-Core", "DBM-Core", LoadSkin);
+
+local function LoadSkin2()
+	if(not E.private.addOnSkins.DBM) then return; end
+
+	DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
+		self:StripTextures();
+		self:SetTemplate("Transparent");
+		DBM_GUI_OptionsFrameBossMods:StripTextures();
+		DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent");
+		DBM_GUI_OptionsFrameDBMOptions:StripTextures();
+		DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent");
+		DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent");
+	end);
+
+	S:HandleButton(DBM_GUI_OptionsFrameOkay);
+	S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar);
+
+	S:HandleTab(DBM_GUI_OptionsFrameTab1);
+	S:HandleTab(DBM_GUI_OptionsFrameTab2);
+end
+
+S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", LoadSkin2);

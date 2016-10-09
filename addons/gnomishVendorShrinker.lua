@@ -1,16 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("GnomishVendorShrinker")) then return; end
-
-function addon:GnomishVendorShrinker()
-	local S = E:GetModule("Skins");
+local function LoadSkin()
+	if(not E.private.addOnSkins.GnomishVendorShrinker) then return; end
 
 	GVSEditBox:StripTextures();
 	S:HandleEditBox(GVSEditBox);
-	GVSEditBox:SetWidth(135);
-	GVSEditBox:SetHeight(19);
-	GVSEditBox:SetScale(1.07);
+	GVSEditBox:Width(135);
+	GVSEditBox:Height(19);
+	GVSEditBox:SetScale(1);
 	GVSMerchantFrame:CreateBackdrop("Transparent");
 	S:HandleButton(GVSScrollButton1);
 	S:HandleButton(GVSScrollButton2);
@@ -18,4 +16,4 @@ function addon:GnomishVendorShrinker()
 	S:HandleSliderFrame(GVSScrollBar);
 end
 
-addon:RegisterSkin("GnomishVendorShrinker", addon.GnomishVendorShrinker);
+S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", LoadSkin);

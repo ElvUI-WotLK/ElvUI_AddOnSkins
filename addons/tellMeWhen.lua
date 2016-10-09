@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
+local S = E:GetModule("Skins");
 
-if(not addon:CheckAddOn("TellMeWhen")) then return; end
+local function LoadSkin()
+	if(not E.private.addOnSkins.TellMeWhen) then return; end
 
-function addon:TellMeWhen()
 	TELLMEWHEN_ICONSPACING = E.Border;
 
 	hooksecurefunc("TellMeWhen_Group_Update", function(groupID)
@@ -75,4 +75,4 @@ function addon:TellMeWhen()
 	end);
 end
 
-addon:RegisterSkin("TellMeWhen", addon.TellMeWhen);
+S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", LoadSkin);
