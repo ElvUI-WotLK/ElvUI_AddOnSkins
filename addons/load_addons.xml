@@ -35,4 +35,5 @@
 	<Script file="zygorTalentAdvisor.lua"/>
 	<Script file="wowLua.lua"/>
 	<Script file="chatBar.lua"/>
+	<Script file="skillet.lua"/>
 </Ui>

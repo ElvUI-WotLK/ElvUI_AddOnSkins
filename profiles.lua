@@ -68,6 +68,7 @@ V.addOnSkins = {
 	ZygorTalentAdvisor = true,
 	WowLua = true,
 	ChatBar = true,
+	Skillet = true,
 
 	Blizzard_WorldStateFrame = true,
 };
