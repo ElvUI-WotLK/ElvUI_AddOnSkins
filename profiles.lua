@@ -69,6 +69,7 @@ V.addOnSkins = {
 	WowLua = true,
 	ChatBar = true,
 	Skillet = true,
+	TotemTimers = true,
 
 	Blizzard_WorldStateFrame = true,
 };

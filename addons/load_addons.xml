@@ -36,4 +36,5 @@
 	<Script file="wowLua.lua"/>
 	<Script file="chatBar.lua"/>
 	<Script file="skillet.lua"/>
+	<Script file="totemTimers.lua"/>
 </Ui>
