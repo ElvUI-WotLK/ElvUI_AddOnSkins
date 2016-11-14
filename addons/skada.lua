@@ -13,19 +13,11 @@ local function LoadSkin()
 				skada.button:CreateBackdrop();
 				skada.button.backdrop:SetFrameLevel(skada.button:GetFrameLevel());
 			end
-			if(E.db.addOnSkins.skadaTitleTemplate == "NONE") then
-				skada.button.backdrop:SetBackdrop(nil);
-			else
-				skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
-			end
+			skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false);
 		end
 
 		if(win.db.enablebackground) then
-			if(E.db.addOnSkins.skadaTemplate == "NONE") then
-				skada.bgframe:SetBackdrop(nil);
-			else
-				skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false);
-			end
+			skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false);
 			if(skada.bgframe) then
 				skada.bgframe:ClearAllPoints();
 				if(win.db.reversegrowth) then
