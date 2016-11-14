@@ -54,13 +54,6 @@ local function LoadSkin()
 		end
 	end);
 
-	--[[hooksecurefunc(Skada, "UpdateDisplay", function(self, force)
-		if(module:CheckAddOn("Skada") and force) then
-			print("UpdateDisplay")
-			module:Skada();
-		end
-	end);]]
-
 	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
 		local p = self.db.profile.tooltippos;
 		if(p == "default") then

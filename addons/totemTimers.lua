@@ -81,6 +81,13 @@ local function LoadSkin()
 			button.icons[2]:SetTexCoord(0.5, .92, .08, .92);
 		end
 	end);
+
+	hooksecurefunc(XiTimers, "ShowTimerBar", function(self, nr)
+		self.timerbars[nr]:GetStatusBarTexture():ClearAllPoints();
+		if(self.visibleTimerBars) then
+			self.timerbars[nr].background:SetTemplate("Default");
+		end
+	end);
 end
 
 S:AddCallbackForAddon("TotemTimers", "TotemTimers", LoadSkin);

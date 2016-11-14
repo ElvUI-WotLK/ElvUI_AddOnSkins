@@ -53,7 +53,7 @@ function module:Show()
 	end
 	module:ToggleChatFrame(true);
 	module.switchButton:SetAlpha(1);
-	E.db.addOnSkins.embed.embedHiden = false;
+	E.db.addOnSkins.embed.isShow = true;
 end
 
 function module:Hide()
@@ -73,7 +73,7 @@ function module:Hide()
 	end
 	module:ToggleChatFrame(false);
 	module.switchButton:SetAlpha(0.6);
-	E.db.addOnSkins.embed.embedHiden = true;
+	E.db.addOnSkins.embed.isShow = false;
 end
 
 function module:CheckAddOn(addOn)
@@ -134,12 +134,12 @@ function module:Toggle()
 		end
 	end
 
-	if(E.db.addOnSkins.embed.embedHiden) then
-		self.left:Hide();
-		self:Hide();
-	else
+	if(E.db.addOnSkins.embed.isShow) then
 		self.left:Show();
 		self:Show();
+	else
+		self.left:Hide();
+		self:Hide();
 	end
 end
 

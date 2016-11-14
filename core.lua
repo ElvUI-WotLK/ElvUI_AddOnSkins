@@ -295,7 +295,7 @@ local function getOptions()
 						type = "group",
 						name = L["Skada"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; Skada:UpdateDisplay(); end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; Skada:ApplySettings(); end,
 						disabled = function() return not addon:CheckAddOn("Skada"); end,
 						args = {
 							skadaTemplate = {

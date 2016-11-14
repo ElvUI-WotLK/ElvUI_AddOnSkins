@@ -28,6 +28,7 @@ P.addOnSkins = {
 		leftWidth = 200,
 		belowTop = false,
 		hideChat = "NONE",
+		isShow = true,
 	}
 };
 
