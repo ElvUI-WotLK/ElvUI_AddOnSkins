@@ -67,11 +67,15 @@ local function LoadSkin()
 			middleBar:SetWidth(neutralPercent/100*barSize);
 		end
 		bar.oldValue = position;
-		_G["WorldStateCaptureBar"..id].spark:SetPoint("CENTER", "WorldStateCaptureBar"..id, "LEFT", position, 0);
+		if(bar.spark) then
+			bar.spark:SetPoint("CENTER", "WorldStateCaptureBar"..id, "LEFT", position, 0);
+		else
+			captureBarCreate(id);
+		end
 	end
 
 	hooksecurefunc(ExtendedUI["CAPTUREPOINT"], "create", captureBarCreate);
 	hooksecurefunc(ExtendedUI["CAPTUREPOINT"], "update", captureBarUpdate);
 end
 
-S:RegisterSkin("WorldStateFrame", LoadSkin);
+S:AddCallback("WorldStateFrame", LoadSkin);
