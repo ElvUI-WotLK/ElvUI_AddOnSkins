@@ -37,4 +37,5 @@
 	<Script file="chatBar.lua"/>
 	<Script file="skillet.lua"/>
 	<Script file="totemTimers.lua"/>
+	<Script file="plateBuffs.lua"/>
 </Ui>

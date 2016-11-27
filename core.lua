@@ -267,6 +267,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("ChatBar"); end
 					},
+					PlateBuffs = {
+						type = "toggle",
+						name = "PlateBuffs",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("PlateBuffs"); end
+					},
 				}
 			},
 			blizzard = {
