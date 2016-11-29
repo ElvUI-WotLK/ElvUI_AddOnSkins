@@ -4,6 +4,11 @@ local S = E:GetModule("Skins");
 local function LoadSkin()
 	if(not E.private.addOnSkins.Omen) then return; end
 
+	hooksecurefunc(Omen, "UpdateBars", function(self)
+		self.TitleText:Width(self.Title:GetWidth() - 16);
+		self.TitleText:Height(16);
+	end);
+
 	hooksecurefunc(Omen, "UpdateBackdrop", function(self)
 		self.Title:SetTemplate("Default", true);
 		self.BarList:SetTemplate("Default");
