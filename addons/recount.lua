@@ -50,6 +50,21 @@ local function LoadSkin()
 			button:GetHighlightTexture():SetDesaturated(true);
 		end
 	end
+
+	hooksecurefunc(Recount, "HideScrollbarElements", function(self, name)
+		_G[name .. "ScrollBar"].trackbg:Hide();
+		_G[name .. "ScrollBar"].thumbbg:Hide();
+	end);
+	hooksecurefunc(Recount, "ShowScrollbarElements", function(self, name)
+		_G[name .. "ScrollBar"].trackbg:Show();
+		_G[name .. "ScrollBar"].thumbbg:Show();
+	end);
+
+	if(Recount.db.profile.MainWindow.ShowScrollbar) then
+		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar");
+	else
+		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar");
+	end
 end
 
 S:AddCallbackForAddon("Recount", "Recount", LoadSkin);
