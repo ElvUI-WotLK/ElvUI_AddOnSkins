@@ -273,6 +273,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("PlateBuffs"); end
 					},
+					MageNuggets = {
+						type = "toggle",
+						name = "MageNuggets",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("MageNuggets"); end
+					},
 				}
 			},
 			blizzard = {

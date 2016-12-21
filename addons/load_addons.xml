@@ -38,4 +38,5 @@
 	<Script file="skillet.lua"/>
 	<Script file="totemTimers.lua"/>
 	<Script file="plateBuffs.lua"/>
+	<Script file="mageNuggets.lua"/>
 </Ui>
