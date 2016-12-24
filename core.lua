@@ -279,6 +279,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("MageNuggets"); end
 					},
+					InspectEquip = {
+						type = "toggle",
+						name = "InspectEquip",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("InspectEquip"); end
+					},
 				}
 			},
 			blizzard = {

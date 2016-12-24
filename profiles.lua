@@ -73,6 +73,7 @@ V.addOnSkins = {
 	TotemTimers = true,
 	PlateBuffs = true,
 	MageNuggets = true,
+	InspectEquip = true,
 
 	Blizzard_WorldStateFrame = true,
 };
