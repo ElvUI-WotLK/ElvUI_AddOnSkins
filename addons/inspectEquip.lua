@@ -7,9 +7,9 @@ local function LoadSkin()
 	InspectEquip_InfoWindow:SetTemplate("Transparent")
 	S:HandleCloseButton(InspectEquip_InfoWindow_CloseButton)
 
-	S:SecureHook(InspectEquip_InfoWindow, "Show", function(self, ...)
+	S:SecureHook(InspectEquip, "SetParent", function(self, frame)
 		InspectEquip_InfoWindow:ClearAllPoints()
-		InspectEquip_InfoWindow:Point("TOPLEFT", CharacterFrameCloseButton, "TOPRIGHT", 0, -3)
+		InspectEquip_InfoWindow:Point("TOPLEFT", _G[frame:GetName() .. "CloseButton"], "TOPRIGHT", 0, -3)
 	end)
 end
 
