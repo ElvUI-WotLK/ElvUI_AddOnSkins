@@ -60,6 +60,7 @@ local function LoadSkin()
 	MageNugScorch_Frame_Bar:Point("TOP", MageNugScorch_Frame, "BOTTOM", 0, -E.Spacing*3);
 
 	MageNugAB_Frame:SetTemplate("Default");
+	MageNugAB_FrameText:SetDrawLayer("OVERLAY", 1);
 	MageNugAB_FrameTexture:SetDrawLayer("OVERLAY");
 	MageNugAB_FrameTexture:SetTexCoord(unpack(E.TexCoords));
 	MageNugAB_FrameTexture:SetInside();
