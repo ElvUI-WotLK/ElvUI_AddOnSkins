@@ -17,7 +17,7 @@ P.addOnSkins = {
 	chatBarSize = 16,
 	chatBarSpacing = 1,
 	chatBarTextPoint = "LEFT",
-	chatBarTextXOffset = 16,
+	chatBarTextXOffset = -3,
 	chatBarTextYOffset = 0,
 
 	embed = {
