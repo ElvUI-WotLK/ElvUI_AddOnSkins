@@ -361,7 +361,7 @@ function module:UpdateSwitchButton()
 
 	if(E.db.addOnSkins.embed.belowTop and chatPanel:IsShown()) then
 		self.switchButton:Show();
-		self.switchButton.text:SetText(isDouble and self.db.left .. " / " .. self.db.right or self.db.left);
+		self.switchButton.text:SetText(isDouble and E.db.addOnSkins.embed.left .. " / " .. E.db.addOnSkins.embed.right or E.db.addOnSkins.embed.left);
 		self.switchButton:ClearAllPoints();
 		if(E.Chat.RightChatWindowID and _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"]:IsVisible()) then
 			self.switchButton:Point("LEFT", _G["ChatFrame" .. E.Chat.RightChatWindowID .. "Tab"], "RIGHT", 0, 0);
