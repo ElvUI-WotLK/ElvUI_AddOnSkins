@@ -11,6 +11,16 @@ local function LoadSkin()
 		InspectEquip_InfoWindow:ClearAllPoints()
 		InspectEquip_InfoWindow:Point("TOPLEFT", _G[frame:GetName() .. "CloseButton"], "TOPRIGHT", 0, -3)
 	end)
+
+	GearManagerDialogPopup:HookScript("OnShow", function()
+		InspectEquip_InfoWindow:Hide()
+	end)
+
+	GearManagerDialogPopup:HookScript("OnHide", function()
+		if not GearManagerDialog:IsShown() then
+			InspectEquip_InfoWindow:Show()
+		end
+	end)
 end
 
 S:AddCallbackForAddon("InspectEquip", "InspectEquip", LoadSkin)
