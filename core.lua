@@ -285,6 +285,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("InspectEquip"); end
 					},
+					AdvancedTradeSkillWindow = {
+						type = "toggle",
+						name = "AdvancedTradeSkillWindow",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("AdvancedTradeSkillWindow"); end
+					},
 				}
 			},
 			blizzard = {

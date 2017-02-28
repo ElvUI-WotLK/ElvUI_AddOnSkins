@@ -74,6 +74,7 @@ V.addOnSkins = {
 	PlateBuffs = true,
 	MageNuggets = true,
 	InspectEquip = true,
+	AdvancedTradeSkillWindow = true,
 
 	Blizzard_WorldStateFrame = true,
 };

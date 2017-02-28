@@ -40,4 +40,5 @@
 	<Script file="plateBuffs.lua"/>
 	<Script file="mageNuggets.lua"/>
 	<Script file="inspectEquip.lua"/>
+	<Script file="advancedTradeSkillWindow.lua"/>
 </Ui>
