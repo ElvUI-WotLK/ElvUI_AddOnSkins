@@ -124,8 +124,7 @@ local function LoadSkin()
 	ATSWScanDelayFrame:StripTextures()
 	ATSWScanDelayFrame:SetTemplate("Transparent")
 
-	ATSWOptionsFrame:ClearAllPoints()
-	ATSWOptionsFrame:Point("CENTER", UIParent, "CENTER", 0, 0)
+	ATSWOptionsFrame:SetParent(E.UIParent);
 	ATSWOptionsFrame:StripTextures()
 	ATSWOptionsFrame:SetTemplate("Transparent")
 
