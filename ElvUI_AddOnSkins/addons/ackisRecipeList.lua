@@ -11,9 +11,7 @@ local function LoadSkin()
 	if(not E.private.addOnSkins.AckisRecipeList) then return; end
 
 	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List")
-	if addon then
-		S:HandleButton(addon.scan_button)
-	end
+	if not addon then return end
 
 	local function HandleScrollBar(frame)
 		local UpButton = select(1, frame:GetChildren());
@@ -67,6 +65,8 @@ local function LoadSkin()
 			select(1, self:GetRegions()):SetDesaturated(state);
 		end);
 	end
+
+	S:HandleButton(addon.scan_button)
 
 	hooksecurefunc(addon, "Scan", function(self)
 		if self.isSkinned then return end
