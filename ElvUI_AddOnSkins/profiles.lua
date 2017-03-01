@@ -75,6 +75,7 @@ V.addOnSkins = {
 	MageNuggets = true,
 	InspectEquip = true,
 	AdvancedTradeSkillWindow = true,
+	AtlasQuest = true,
 
 	Blizzard_WorldStateFrame = true,
 };

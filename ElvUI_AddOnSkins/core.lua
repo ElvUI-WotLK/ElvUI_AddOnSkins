@@ -291,6 +291,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("AdvancedTradeSkillWindow"); end
 					},
+					AtlasQuest = {
+						type = "toggle",
+						name = "AtlasQuest",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("AtlasQuest"); end
+					},
 				}
 			},
 			blizzard = {
