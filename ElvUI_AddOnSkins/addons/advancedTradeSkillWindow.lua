@@ -96,7 +96,6 @@ local function LoadSkin()
 
 	for _, scrollBar in ipairs(scrollBars) do
 		_G[scrollBar]:GetParent():StripTextures()
-	--	_G[scrollBar]:GetParent():SetTemplate("Transparent")
 		S:HandleScrollBar(_G[scrollBar])
 	end
 	for _, button in ipairs(buttons) do
