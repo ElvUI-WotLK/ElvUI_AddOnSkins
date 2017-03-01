@@ -42,4 +42,5 @@
 	<Script file="inspectEquip.lua"/>
 	<Script file="advancedTradeSkillWindow.lua"/>
 	<Script file="atlasQuest.lua"/>
+	<Script file="ackisRecipeList.lua"/>
 </Ui>

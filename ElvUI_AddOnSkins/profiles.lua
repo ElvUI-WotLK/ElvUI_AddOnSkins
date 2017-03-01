@@ -76,6 +76,7 @@ V.addOnSkins = {
 	InspectEquip = true,
 	AdvancedTradeSkillWindow = true,
 	AtlasQuest = true,
+	AckisRecipeList = true,
 
 	Blizzard_WorldStateFrame = true,
 };

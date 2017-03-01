@@ -297,6 +297,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("AtlasQuest"); end
 					},
+					AckisRecipeList = {
+						type = "toggle",
+						name = "AckisRecipeList",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("AckisRecipeList"); end
+					},
 				}
 			},
 			blizzard = {
