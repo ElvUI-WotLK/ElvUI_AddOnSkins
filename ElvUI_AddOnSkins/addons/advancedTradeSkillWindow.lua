@@ -3,6 +3,7 @@ local S = E:GetModule("Skins")
 
 local _G = _G
 local ipairs = ipairs
+local find = string.find
 
 -- AdvancedTradeSkillWindow 0.7.8
 
@@ -154,7 +155,51 @@ local function LoadSkin()
 
 	ATSWFramePortrait:Kill()
 
+	for i = 1, 23 do
+		local button = _G["ATSWSkill" .. i]
+
+		button:SetNormalTexture("")
+		button.SetNormalTexture = E.noop
+		button:GetHighlightTexture():SetAlpha(0)
+		button:SetDisabledTexture("")
+		button.SetDisabledTexture = E.noop
+
+		button.Text = button:CreateFontString(nil, "OVERLAY")
+		button.Text:FontTemplate(nil, 22)
+		button.Text:Point("LEFT", 3, 0)
+		button.Text:SetText("+")
+
+		hooksecurefunc(button, "SetNormalTexture", function(self, texture)
+			if find(texture, "MinusButton") then
+				self.Text:SetText("-")
+			elseif find(texture, "PlusButton") then
+				self.Text:SetText("+")
+			else
+				self.Text:SetText("")
+			end
+		end);
+	end
+
 	ATSWExpandButtonFrame:StripTextures()
+
+	ATSWCollapseAllButton:SetNormalTexture("")
+	ATSWCollapseAllButton.SetNormalTexture = E.noop
+	ATSWCollapseAllButton:GetHighlightTexture():SetAlpha(0)
+	ATSWCollapseAllButton:SetDisabledTexture("")
+	ATSWCollapseAllButton.SetDisabledTexture = E.noop
+
+	ATSWCollapseAllButton.Text = ATSWCollapseAllButton:CreateFontString(nil, "OVERLAY")
+	ATSWCollapseAllButton.Text:FontTemplate(nil, 22)
+	ATSWCollapseAllButton.Text:Point("LEFT", 3, 0)
+	ATSWCollapseAllButton.Text:SetText("-")
+
+	ATSWCollapseAllButton:HookScript("OnClick", function(self)
+		if self.collapsed then
+			self.Text:SetText("+")
+		else
+			self.Text:SetText("-")
+		end
+	end);
 
 	ATSWRankFrameBorder:StripTextures()
 	ATSWRankFrameBorder:Hide()
