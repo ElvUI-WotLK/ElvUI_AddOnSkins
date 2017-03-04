@@ -303,6 +303,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("AckisRecipeList"); end
 					},
+					LightHeaded = {
+						type = "toggle",
+						name = "LightHeaded",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("LightHeaded"); end
+					},
 				}
 			},
 			blizzard = {

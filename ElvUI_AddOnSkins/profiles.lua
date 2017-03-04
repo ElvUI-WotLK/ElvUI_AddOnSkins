@@ -77,6 +77,7 @@ V.addOnSkins = {
 	AdvancedTradeSkillWindow = true,
 	AtlasQuest = true,
 	AckisRecipeList = true,
+	LightHeaded = true,
 
 	Blizzard_WorldStateFrame = true,
 };
