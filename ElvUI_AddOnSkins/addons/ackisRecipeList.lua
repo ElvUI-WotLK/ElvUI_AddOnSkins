@@ -201,7 +201,7 @@ local function LoadSkin()
 
 		ARL_MainPanel.close_button:Height(22)
 		ARL_MainPanel.close_button:Point("LEFT", ARL_MainPanel.progress_bar, "RIGHT", 3, 0)
-		SkinButton(ARL_MainPanel.close_button)
+		SkinButton(ARL_MainPanel.close_button, true)
 
 		for i, tab in ipairs(ARL_MainPanel.tabs) do
 			tab:StripTextures()
@@ -219,6 +219,19 @@ local function LoadSkin()
 				local p1, frame, p2, x, y = tab:GetPoint()
 				tab:Point(p1, frame, p2, x, y - 5)
 			end
+		end
+
+		if not (TipTac and TipTac.AddModifiedTip) then
+			AckisRecipeList_SpellTooltip:HookScript("OnShow", function(self)
+				E:GetModule("Tooltip"):SetStyle(self)
+			end)
+
+			hooksecurefunc(LibStub("LibQTip-1.0"), "Acquire", function(self, key)
+				local tooltip = self.activeTooltips[key]
+				if tooltip then
+					E:GetModule("Tooltip"):SetStyle(tooltip)
+				end
+			end)
 		end
 
 		hooksecurefunc(ARL_MainPanel, "ToggleState", function(self)
@@ -240,7 +253,7 @@ local function LoadSkin()
 			ARL_MainPanel.filter_menu:Point("TOPRIGHT", ARL_MainPanel, "TOPRIGHT", -115, -75)
 
 			ARL_MainPanel.filter_reset:Point("BOTTOMRIGHT", ARL_MainPanel, "BOTTOMRIGHT", -95, 78)
-			SkinButton(ARL_MainPanel.filter_reset)
+			SkinButton(ARL_MainPanel.filter_reset, true)
 
 			local menuIcons = {
 				"menu_toggle_general",
