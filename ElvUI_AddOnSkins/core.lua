@@ -327,6 +327,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("FishingBuddy"); end
 					},
+					Talented = {
+						type = "toggle",
+						name = "Talented",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Talented"); end
+					},
 				}
 			},
 			blizzard = {
