@@ -79,6 +79,7 @@ V.addOnSkins = {
 	AckisRecipeList = true,
 	LightHeaded = true,
 	Carbonite = true,
+	Enchantrix = true,
 
 	Blizzard_WorldStateFrame = true,
 };

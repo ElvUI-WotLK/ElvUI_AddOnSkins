@@ -315,6 +315,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("Carbonite"); end
 					},
+					Enchantrix = {
+						type = "toggle",
+						name = "Enchantrix",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Enchantrix"); end
+					},
 				}
 			},
 			blizzard = {

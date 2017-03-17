@@ -45,4 +45,5 @@
 	<Script file="ackisRecipeList.lua"/>
 	<Script file="lightHeaded.lua"/>
 	<Script file="carbonite.lua"/>
+	<Script file="enchantrix.lua"/>
 </Ui>
