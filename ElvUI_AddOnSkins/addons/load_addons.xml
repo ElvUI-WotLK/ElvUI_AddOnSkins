@@ -48,4 +48,5 @@
 	<Script file="enchantrix.lua"/>
 	<Script file="fishingBuddy.lua"/>
 	<Script file="talanted.lua"/>
+	<Script file="tinyPad.lua"/>
 </Ui>

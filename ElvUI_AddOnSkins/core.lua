@@ -333,6 +333,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("Talented"); end
 					},
+					TinyPad = {
+						type = "toggle",
+						name = "TinyPad",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("TinyPad"); end
+					},
 				}
 			},
 			blizzard = {

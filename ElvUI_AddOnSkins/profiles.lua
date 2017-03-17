@@ -82,6 +82,7 @@ V.addOnSkins = {
 	Enchantrix = true,
 	FishingBuddy = true,
 	Talented = true,
+	TinyPad = true,
 
 	Blizzard_WorldStateFrame = true,
 };
