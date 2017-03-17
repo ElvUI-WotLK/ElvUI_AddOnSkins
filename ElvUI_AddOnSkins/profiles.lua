@@ -78,6 +78,7 @@ V.addOnSkins = {
 	AtlasQuest = true,
 	AckisRecipeList = true,
 	LightHeaded = true,
+	Carbonite = true,
 
 	Blizzard_WorldStateFrame = true,
 };

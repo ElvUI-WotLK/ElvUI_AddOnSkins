@@ -44,4 +44,5 @@
 	<Script file="atlasQuest.lua"/>
 	<Script file="ackisRecipeList.lua"/>
 	<Script file="lightHeaded.lua"/>
+	<Script file="carbonite.lua"/>
 </Ui>

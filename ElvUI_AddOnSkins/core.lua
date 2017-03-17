@@ -309,6 +309,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("LightHeaded"); end
 					},
+					Carbonite = {
+						type = "toggle",
+						name = "Carbonite",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("Carbonite"); end
+					},
 				}
 			},
 			blizzard = {
