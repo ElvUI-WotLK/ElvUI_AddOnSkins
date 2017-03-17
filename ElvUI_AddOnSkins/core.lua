@@ -321,6 +321,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("Enchantrix"); end
 					},
+					FishingBuddy = {
+						type = "toggle",
+						name = "FishingBuddy",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("FishingBuddy"); end
+					},
 				}
 			},
 			blizzard = {

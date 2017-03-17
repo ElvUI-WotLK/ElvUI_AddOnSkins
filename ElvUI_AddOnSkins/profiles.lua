@@ -80,6 +80,7 @@ V.addOnSkins = {
 	LightHeaded = true,
 	Carbonite = true,
 	Enchantrix = true,
+	FishingBuddy = true,
 
 	Blizzard_WorldStateFrame = true,
 };
