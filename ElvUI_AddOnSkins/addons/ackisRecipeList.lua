@@ -68,6 +68,12 @@ local function LoadSkin()
 
 	S:HandleButton(addon.scan_button)
 
+	hooksecurefunc(addon, "TRADE_SKILL_SHOW", function(self)
+		if self.scan_button:GetParent() == TradeSkillFrame then
+			self.scan_button:SetFrameLevel(TradeSkillFrame:GetFrameLevel() + 10)
+		end
+	end)
+
 	hooksecurefunc(addon, "Scan", function(self)
 		if self.isSkinned then return end
 		self.isSkinned = true
