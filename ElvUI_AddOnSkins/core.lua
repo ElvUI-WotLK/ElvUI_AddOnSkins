@@ -339,6 +339,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("TinyPad"); end
 					},
+					ZOMGBuffs = {
+						type = "toggle",
+						name = "ZOMGBuffs",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("ZOMGBuffs"); end
+					},
 				}
 			},
 			blizzard = {

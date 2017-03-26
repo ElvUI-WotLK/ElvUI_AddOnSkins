@@ -83,6 +83,7 @@ V.addOnSkins = {
 	FishingBuddy = true,
 	Talented = true,
 	TinyPad = true,
+	ZOMGBuffs = true,
 
 	Blizzard_WorldStateFrame = true,
 };
