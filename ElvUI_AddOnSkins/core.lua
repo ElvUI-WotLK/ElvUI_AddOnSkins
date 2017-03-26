@@ -345,6 +345,12 @@ local function getOptions()
 						desc = L["TOGGLESKIN_DESC"],
 						hidden = function() return not addon:CheckAddOn("ZOMGBuffs"); end
 					},
+					BuyEmAll = {
+						type = "toggle",
+						name = "BuyEmAll",
+						desc = L["TOGGLESKIN_DESC"],
+						hidden = function() return not addon:CheckAddOn("BuyEmAll"); end
+					},
 				}
 			},
 			blizzard = {

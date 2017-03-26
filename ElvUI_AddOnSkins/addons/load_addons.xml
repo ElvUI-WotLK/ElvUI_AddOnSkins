@@ -50,4 +50,5 @@
 	<Script file="talanted.lua"/>
 	<Script file="tinyPad.lua"/>
 	<Script file="ZOMGBuffs.lua"/>
+	<Script file="buyEmAll.lua"/>
 </Ui>

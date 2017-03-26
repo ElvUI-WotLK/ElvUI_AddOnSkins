@@ -84,6 +84,7 @@ V.addOnSkins = {
 	Talented = true,
 	TinyPad = true,
 	ZOMGBuffs = true,
+	BuyEmAll = true,
 
 	Blizzard_WorldStateFrame = true,
 };
