@@ -144,7 +144,7 @@ local function LoadSkin()
 	end
 
 	local LibExtraTip = LibStub("LibExtraTip-1")
-	if LibExtraTip then
+	if LibExtraTip and not S:IsHooked(LibExtraTip, "GetFreeExtraTipObject") then
 		S:RawHook(LibExtraTip, "GetFreeExtraTipObject", function(self)
 			local tooltip = S.hooks[LibExtraTip].GetFreeExtraTipObject(self)
 

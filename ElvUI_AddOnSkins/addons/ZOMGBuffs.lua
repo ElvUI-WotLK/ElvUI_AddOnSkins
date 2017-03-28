@@ -73,14 +73,21 @@ local function LoadSkin()
 			i = i + 1
 		end
 	end
-	hooksecurefunc(LibStub("Dewdrop-2.0", true), "Open", SkinDewdrop)
 
-	hooksecurefunc(LibStub("Tablet-2.0", true), "Open", function()
-		_G["Tablet20Frame"]:SetTemplate("Transparent")
-	end)
+	local Dewdrop = LibStub("Dewdrop-2.0", true)
+	if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
+		S:SecureHook(Dewdrop, "Open", SkinDewdrop)
+	end
+
+	local Tablet = LibStub("Tablet-2.0", true)
+	if Tablet and not S:IsHooked(Tablet, "Open") then
+		S:SecureHook(Tablet, "Open", function()
+			_G["Tablet20Frame"]:SetTemplate("Transparent")
+		end)
+	end
 
 	local LZF = LibStub:GetLibrary("ZFrame-1.0", true)
-	if LZF then
+	if LZF and not S:IsHooked(LZF, "Create") then
 		S:RawHook(LZF, "Create", function(self, ...)
 			local frame = S.hooks[self].Create(self, ...)
 
@@ -93,7 +100,7 @@ local function LoadSkin()
 	end
 
 	local AceAddon = LibStub("AceAddon-2.0", true)
-	if AceAddon then
+	if AceAddon and not S:IsHooked(AceAddon.prototype, "OpenDonationFrame") then
 		S:SecureHook(AceAddon.prototype, "OpenDonationFrame", function()
 			AceAddon20Frame:SetTemplate("Transparent")
 			S:HandleScrollBar(AceAddon20FrameScrollFrameScrollBar)

@@ -232,12 +232,15 @@ local function LoadSkin()
 				E:GetModule("Tooltip"):SetStyle(self)
 			end)
 
-			hooksecurefunc(LibStub("LibQTip-1.0"), "Acquire", function(self, key)
-				local tooltip = self.activeTooltips[key]
-				if tooltip then
-					E:GetModule("Tooltip"):SetStyle(tooltip)
-				end
-			end)
+			local LibQTip = LibStub("LibQTip-1.0")
+			if LibQTip and not S:IsHooked(LibQTip, "Acquire") then
+				S:RawHook(LibQTip, "Acquire", function(self, key)
+					local tooltip = self.activeTooltips[key]
+					if tooltip then
+						E:GetModule("Tooltip"):SetStyle(tooltip)
+					end
+				end)
+			end
 		end
 
 		hooksecurefunc(ARL_MainPanel, "ToggleState", function(self)

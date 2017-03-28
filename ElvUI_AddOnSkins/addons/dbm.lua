@@ -131,13 +131,13 @@ local function LoadSkin()
 	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss);
 	hooksecurefunc(DBM.RangeCheck, "Show", SkinRange);
 
-	local RaidNotice_AddMessage_ = RaidNotice_AddMessage;
-	RaidNotice_AddMessage = function(noticeFrame, textString, colorInfo)
-		if(textString:find(" |T")) then
+	S:RawHook("RaidNotice_AddMessage", function(noticeFrame, textString, colorInfo)
+		if(string.find(textString, " |T")) then
 			textString = string.gsub(textString, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59");
 		end
-		return RaidNotice_AddMessage_(noticeFrame, textString, colorInfo);
-	end
+
+		return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
+	end, true)
 end
 
 S:AddCallbackForAddon("DBM-Core", "DBM-Core", LoadSkin);
