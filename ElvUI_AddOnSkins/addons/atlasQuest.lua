@@ -69,7 +69,7 @@ local function LoadSkin()
 		_G["AtlasQuestItemframe"..i.."_Icon"]:SetTexCoord(unpack(E.TexCoords));
 	end
 
-	function AQ_AtlasOrAlphamap()
+	AQ_AtlasOrAlphamap = function()
 		if AtlasFrame and AtlasFrame:IsVisible() then
 			AtlasORAlphaMap = "Atlas"
 			AtlasQuestFrame:SetParent(AtlasFrame)

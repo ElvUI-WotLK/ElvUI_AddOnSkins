@@ -1,10 +1,10 @@
-local addonName = ...;
 local E, L, V, P, G, _ = unpack(ElvUI);
 local EP = LibStub("LibElvUIPlugin-1.0", true);
-local AS = E:NewModule("AddOnSkins", "AceHook-3.0", "AceEvent-3.0");
+local AS = E:NewModule("AddOnSkins");
+
+local AddOnName = ...;
 
 local find, lower, match, trim = string.find, string.lower, string.match, string.trim
-local tinsert = table.insert
 
 local GetAddOnInfo = GetAddOnInfo
 
@@ -99,7 +99,7 @@ local positionValues = {
 
 local function getOptions()
 	local options = {
-		order = 100,
+		order = 50,
 		type = "group",
 		name = L["AddOn Skins"],
 		args = {
@@ -369,7 +369,7 @@ local function getOptions()
 end
 
 function AS:Initialize()
-	EP:RegisterPlugin(addonName, getOptions);
+	EP:RegisterPlugin(AddOnName, getOptions);
 end
 
 E:RegisterModule(AS:GetName());

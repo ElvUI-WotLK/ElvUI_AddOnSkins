@@ -48,7 +48,7 @@ local function LoadSkin()
 		end
 
 		for i = 2, 10 do
-			_G["CliqueList" .. i]:SetPoint("TOP", _G["CliqueList" .. i-1], "BOTTOM", 0, -2);
+			_G["CliqueList" .. i]:SetPoint("TOP", _G["CliqueList" .. i - 1], "BOTTOM", 0, -2);
 		end
 
 		CliqueListScroll:StripTextures();
@@ -56,7 +56,7 @@ local function LoadSkin()
 
 		SkinFrame(CliqueTextListFrame);
 
-		for i = 1,12 do
+		for i = 1, 12 do
 			local entry = _G["CliqueTextList"..i];
 			S:HandleCheckBox(entry);
 			entry.backdrop:Point("TOPLEFT", 6, -4);
