@@ -122,13 +122,8 @@ local function LoadSkin()
 		S:Unhook(Enchantrix_Manifest, "ShowMessage")
 	end)
 
-	local auto_de_prompt
-	if _G["AutoDEPromptYes"] then
-		auto_de_prompt = _G["AutoDEPromptYes"]:GetParent()
-	end
-
-	if auto_de_prompt then
-		auto_de_prompt:SetTemplate("Transparent")
+	local function SkinAutoDePrompt(frame)
+		frame:SetTemplate("Transparent")
 
 		S:HandleItemButton(AutoDisenchantPromptItem, true)
 		AutoDisenchantPromptItem:GetNormalTexture():SetInside(AutoDisenchantPromptItem.backdrop)
@@ -137,6 +132,15 @@ local function LoadSkin()
 		S:HandleButton(AutoDEPromptYes)
 		S:HandleButton(AutoDEPromptNo)
 		S:HandleButton(AutoDEPromptIgnore)
+	end
+
+	if _G["AutoDEPromptYes"] then
+		SkinAutoDePrompt(AutoDEPromptYes:GetParent())
+	else
+		S:SecureHook(Enchantrix.AutoDisenchant, "AddonLoaded", function()
+			SkinAutoDePrompt(AutoDEPromptYes:GetParent())
+			S:Unhook(Enchantrix.AutoDisenchant, "AddonLoaded")
+		end)
 	end
 
 	local LibExtraTip = LibStub("LibExtraTip-1")
