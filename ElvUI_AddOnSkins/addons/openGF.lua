@@ -43,7 +43,7 @@ local function LoadSkin()
 		"ogf_healCheck",
 	};
 
-	for i = 1, getn(OpenGFConfigCheck) do
+	for i = 1, #OpenGFConfigCheck do
 		S:HandleCheckBox(_G[OpenGFConfigCheck[i]]);
 	end
 end

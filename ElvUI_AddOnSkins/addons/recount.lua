@@ -43,7 +43,7 @@ local function LoadSkin()
 		Recount.MainWindow.ReportButton
 	};
 
-	for i = 1, getn(buttons) do
+	for i = 1, #buttons do
 		local button = buttons[i];
 		if(button) then
 			button:GetNormalTexture():SetDesaturated(true);

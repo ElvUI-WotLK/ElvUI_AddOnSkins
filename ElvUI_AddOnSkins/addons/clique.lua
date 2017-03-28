@@ -166,7 +166,7 @@ local function LoadSkin()
 		for i = 1, 10 do
 			idx = offset + i;
 			button = _G["CliqueList" .. i];
-			if(idx <= table.getn(clickCasts)) then
+			if(idx <= #clickCasts) then
 				if(idx == self.listSelected) then
 					button:SetBackdropBorderColor(1, 1, 1);
 				else

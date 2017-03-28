@@ -83,7 +83,7 @@ local function LoadSkin()
 		"CTA_ShowLFGButton"
 	};
 
-	for i = 1, getn(callToArmsTabs) do
+	for i = 1, #callToArmsTabs do
 		S:HandleTab(_G[callToArmsTabs[i]]);
 		_G[callToArmsTabs[i].."Text"]:SetPoint("CENTER", 0, 1);
 	end
@@ -169,7 +169,7 @@ local function LoadSkin()
 		"CTA_AcidClassCheckButton10"
 	};
 
-	for i = 1, getn(callToArmsConfigCheck) do
+	for i = 1, #callToArmsConfigCheck do
 		S:HandleCheckBox(_G[callToArmsConfigCheck[i]]);
 	end
 end

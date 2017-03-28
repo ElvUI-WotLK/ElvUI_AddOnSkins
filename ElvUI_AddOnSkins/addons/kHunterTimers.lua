@@ -135,7 +135,7 @@ local function LoadSkin()
 		"KHunterTimersOptionsTimers6CheckButton13",
 	};
 
-	for i = 1, getn(kHunterTimersCheck) do
+	for i = 1, #kHunterTimersCheck do
 		S:HandleCheckBox(_G[kHunterTimersCheck[i]]);
 	end
 
@@ -148,7 +148,7 @@ local function LoadSkin()
 		"KHunterTimersOptionsTimersTab6",
 	};
 
-	for i = 1, getn(kHunterTimersTabs) do
+	for i = 1, #kHunterTimersTabs do
 		S:HandleTab(_G[kHunterTimersTabs[i]]);
 		_G[kHunterTimersTabs[i] .. "Text"]:Point("CENTER", 0, 1);
 	end
