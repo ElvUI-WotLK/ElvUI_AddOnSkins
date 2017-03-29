@@ -63,6 +63,7 @@ local addonList = {
 	"BuyEmAll",
 	"Doom_CooldownPulse",
 	"AdiBags",
+	"PallyPower",
 }
 
 AS.addOns = {};

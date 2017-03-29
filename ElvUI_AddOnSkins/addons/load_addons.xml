@@ -53,4 +53,5 @@
 	<Script file="buyEmAll.lua"/>
 	<Script file="doom_CooldownPulse.lua"/>
 	<Script file="adiBags.lua"/>
+	<Script file="pallyPower.lua"/>
 </Ui>
