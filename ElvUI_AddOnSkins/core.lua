@@ -62,6 +62,7 @@ local addonList = {
 	"ZOMGBuffs",
 	"BuyEmAll",
 	"Doom_CooldownPulse",
+	"AdiBags",
 }
 
 AS.addOns = {};

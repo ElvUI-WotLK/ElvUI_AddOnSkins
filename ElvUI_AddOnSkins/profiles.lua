@@ -86,6 +86,7 @@ V.addOnSkins = {
 	ZOMGBuffs = true,
 	BuyEmAll = true,
 	Doom_CooldownPulse = true,
+	AdiBags = true,
 
 	Blizzard_WorldStateFrame = true,
 };
