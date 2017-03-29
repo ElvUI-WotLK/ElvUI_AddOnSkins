@@ -112,16 +112,14 @@ local function LoadSkin()
 	end)
 
 	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight")
-	if AdiBags_SearchHighlight then
-		hooksecurefunc(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
-			local text = self.widget:GetText()
-			text = text:lower():trim()
-			local name = button.itemId and GetItemInfo(button.itemId)
-			if name and not name:lower():match(text) then
-				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			end
-		end)
-	end
+	hooksecurefunc(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
+		local text = self.widget:GetText()
+		text = text:lower():trim()
+		local name = button.itemId and GetItemInfo(button.itemId)
+		if name and not name:lower():match(text) then
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end
+	end)
 end
 
 S:AddCallbackForAddon("AdiBags", "AdiBags", LoadSkin);
