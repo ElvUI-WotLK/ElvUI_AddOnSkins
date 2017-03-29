@@ -8,6 +8,7 @@
 locales\load_locales.xml
 profiles.lua
 core.lua
+utils.lua
 addons\load_addons.xml
 blizzard\load_blizzard.xml
 modules\load_modules.xml
