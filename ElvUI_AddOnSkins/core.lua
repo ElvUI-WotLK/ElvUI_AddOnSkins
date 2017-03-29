@@ -61,6 +61,7 @@ local addonList = {
 	"TinyPad",
 	"ZOMGBuffs",
 	"BuyEmAll",
+	"Doom_CooldownPulse",
 }
 
 AS.addOns = {};

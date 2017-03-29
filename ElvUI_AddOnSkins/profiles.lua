@@ -85,6 +85,7 @@ V.addOnSkins = {
 	TinyPad = true,
 	ZOMGBuffs = true,
 	BuyEmAll = true,
+	Doom_CooldownPulse = true,
 
 	Blizzard_WorldStateFrame = true,
 };

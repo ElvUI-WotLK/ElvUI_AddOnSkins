@@ -51,4 +51,5 @@
 	<Script file="tinyPad.lua"/>
 	<Script file="ZOMGBuffs.lua"/>
 	<Script file="buyEmAll.lua"/>
+	<Script file="doom_CooldownPulse.lua"/>
 </Ui>
