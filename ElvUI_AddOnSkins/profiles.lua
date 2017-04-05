@@ -89,6 +89,7 @@ V.addOnSkins = {
 	AdiBags = true,
 	PallyPower = true,
 	KarniCrap = true,
+	TradeskillInfo = true,
 
 	Blizzard_WorldStateFrame = true,
 };
