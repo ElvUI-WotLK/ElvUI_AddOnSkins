@@ -88,6 +88,7 @@ V.addOnSkins = {
 	Doom_CooldownPulse = true,
 	AdiBags = true,
 	PallyPower = true,
+	KarniCrap = true,
 
 	Blizzard_WorldStateFrame = true,
 };

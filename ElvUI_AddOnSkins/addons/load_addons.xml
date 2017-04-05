@@ -54,4 +54,5 @@
 	<Script file="doom_CooldownPulse.lua"/>
 	<Script file="adiBags.lua"/>
 	<Script file="pallyPower.lua"/>
+	<Script file="karniCrap.lua"/>
 </Ui>
