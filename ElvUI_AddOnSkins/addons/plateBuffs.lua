@@ -40,7 +40,7 @@ local function LoadSkin()
 		end
 
 		local prevFrame = buffFrames[plate][total];
-		for i = 2, self.db.profile.iconsPerBar do 
+		for i = 2, self.db.profile.iconsPerBar do
 			total = total + 1;
 			if(buffFrames[plate][total]) then
 				StyleAuraIcon(buffFrames[plate][total]);
@@ -51,8 +51,8 @@ local function LoadSkin()
 		end
 
 		if(self.db.profile.numBars > 1) then
-			for r = 2, self.db.profile.numBars do 
-				for i = 1, self.db.profile.iconsPerBar do 
+			for r = 2, self.db.profile.numBars do
+				for i = 1, self.db.profile.iconsPerBar do
 					total = total + 1;
 					if(buffFrames[plate][total]) then
 						StyleAuraIcon(buffFrames[plate][total]);

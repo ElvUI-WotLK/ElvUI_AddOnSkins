@@ -51,7 +51,7 @@ local function LoadSkin()
 
 	for weakAura, _ in pairs(WeakAuras.regions) do
 		if(WeakAuras.regions[weakAura].regionType == "icon"
-		   or WeakAuras.regions[weakAura].regionType == "aurabar") then
+		or WeakAuras.regions[weakAura].regionType == "aurabar") then
 			Skin_WeakAuras(WeakAuras.regions[weakAura].region, WeakAuras.regions[weakAura].regionType);
 		end
 	end

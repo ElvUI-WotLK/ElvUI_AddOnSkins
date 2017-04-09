@@ -69,7 +69,7 @@ local function LoadSkin()
 					tt:SetPoint("BOTTOMRIGHT", TooltipMover);
 				end
 			end
-	   end
+		end
 	end);
 end
 

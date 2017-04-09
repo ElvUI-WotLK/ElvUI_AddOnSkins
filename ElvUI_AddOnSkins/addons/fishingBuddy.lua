@@ -49,7 +49,6 @@ local function LoadSkin()
 		S:Unhook(FishingOptionsFrame, "OnShow")
 	end)
 
-
 	local optionTabs = {
 		FishingBuddyOptionTab1,
 		FishingBuddyOptionTab2,

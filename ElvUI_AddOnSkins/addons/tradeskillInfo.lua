@@ -85,13 +85,13 @@ local function LoadSkin()
 				hooksecurefunc(c, "SetNormalTexture", function(self, texture)
 					if(string.find(texture, "MinusButton")) then
 						self.Text:SetText("-")
-					elseif string.find(texture, "PlusButton") then 
+					elseif string.find(texture, "PlusButton") then
 						self.Text:SetText("+")
 					else
 						self.Text:SetText("")
 					end
 				end)
-				
+
 				c.isHooked = true
 			end
 		end
