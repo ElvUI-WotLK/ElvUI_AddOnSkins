@@ -104,21 +104,49 @@ local function LoadSkin()
 end
 
 local function LoadGlyphSkin()
-	TalentedGlyphs:CreateBackdrop("Transparent")
-	TalentedGlyphs.backdrop:Point("TOPLEFT", 14, -38)
-	TalentedGlyphs.backdrop:Point("BOTTOMRIGHT", -32, 74)
+	if(not E.private.addOnSkins.Talented) then return end
+
+	TalentedGlyphs:Size(350, 420)
+	TalentedGlyphs:SetTemplate("Transparent")
 
 	TalentedGlyphs.title:ClearAllPoints()
-	TalentedGlyphs.title:Point("TOP", TalentedGlyphs.backdrop, 0, -8)
+	TalentedGlyphs.title:Point("TOP", TalentedGlyphs, 0, -8)
 
 	TalentedGlyphs.portrait:Kill()
 	TalentedGlyphs.background:Kill()
 
-	S:HandleCloseButton(TalentedGlyphs.close, TalentedGlyphs.backdrop)
-	S:HandleCheckBox(TalentedGlyphs.checkbox)
+	TalentedGlyphs:CreateBackdrop("Transparent")
+	TalentedGlyphs.backdrop:SetFrameLevel(TalentedGlyphs:GetFrameLevel())
+	TalentedGlyphs.backdrop:Size(338, 364)
+	TalentedGlyphs.backdrop:ClearAllPoints()
+	TalentedGlyphs.backdrop:Point("TOPLEFT", TalentedGlyphs, 6, -28)
 
+	TalentedGlyphs.texture = TalentedGlyphs.backdrop:CreateTexture(nil, "OVERLAY")
+	TalentedGlyphs.texture:SetTexture("Interface\\Spellbook\\UI-GlyphFrame")
+	TalentedGlyphs.texture:SetTexCoord(0.0390625, 0.65625, 0.140625, 0.8046875)
+	TalentedGlyphs.texture:SetInside()
+
+	local glyphPositions = {
+		{"CENTER", 0, 125},
+		{"CENTER", 0, -128},
+		{"TOPLEFT", 7, -64},
+		{"BOTTOMRIGHT", -21, 81},
+		{"TOPRIGHT", -7, -64},
+		{"BOTTOMLEFT", 21, 81}
+	}
+
+	for glyphID in pairs(TalentedGlyphs.glyphs) do
+		TalentedGlyphs.glyphs[glyphID]:SetScale(1.063291)
+		TalentedGlyphs.glyphs[glyphID]:SetParent(TalentedGlyphs.backdrop)
+		TalentedGlyphs.glyphs[glyphID]:SetPoint(unpack(glyphPositions[glyphID]))
+	end
+
+	S:HandleCloseButton(TalentedGlyphs.close, TalentedGlyphs)
+	TalentedGlyphs.close:SetFrameLevel(TalentedGlyphs.close:GetFrameLevel() + 1)
+
+	S:HandleCheckBox(TalentedGlyphs.checkbox)
 	TalentedGlyphs.checkbox:ClearAllPoints()
-	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", TalentedGlyphs.backdrop, 10, 5)
+	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", TalentedGlyphs, 10, 5)
 end
 
 S:AddCallbackForAddon("Talented", "Talented", LoadSkin);
