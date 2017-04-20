@@ -18,6 +18,12 @@ local function LoadSkin()
 	frame.icon:SetInside()
 	frame.icon:SetTexCoord(unpack(E.TexCoords))
 
+	hooksecurefunc(frame.icon, "SetTexture", function(self)
+		if not self:GetTexture() then
+			self:GetParent():SetAlpha(0)
+		end
+	end)
+
 	hooksecurefunc(frame, "CreateOptionsFrame", function()
 		DCP_OptionsFrame:SetScale(GetCVar("uiScale"))
 
