@@ -377,4 +377,8 @@ function AS:Initialize()
 	EP:RegisterPlugin(AddOnName, getOptions);
 end
 
-E:RegisterModule(AS:GetName());
+local function InitializeCallback()
+	AS:Initialize()
+end
+
+E:RegisterModule(AS:GetName(), InitializeCallback)
