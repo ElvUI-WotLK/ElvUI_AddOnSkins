@@ -66,6 +66,7 @@ local addonList = {
 	"PallyPower",
 	"KarniCrap",
 	"TradeskillInfo",
+	"PAB",
 }
 
 AS.addOns = {};

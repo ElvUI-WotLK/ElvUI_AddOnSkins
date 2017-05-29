@@ -56,4 +56,5 @@
 	<Script file="pallyPower.lua"/>
 	<Script file="karniCrap.lua"/>
 	<Script file="tradeskillInfo.lua"/>
+	<Script file="pab.lua"/>
 </Ui>
