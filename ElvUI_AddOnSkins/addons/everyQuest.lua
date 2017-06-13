@@ -6,7 +6,7 @@ local S = E:GetModule("Skins");
 local function LoadSkin()
 	if(not E.private.addOnSkins.EveryQuest) then return; end
 
-	local addon = LibStub("AceAddon-3.0"):GetAddon("EveryQuest");
+	local addon = LibStub("AceAddon-3.0"):GetAddon("EveryQuest", true);
 	if not addon then return end
 
 	EveryQuestFrame:StripTextures();

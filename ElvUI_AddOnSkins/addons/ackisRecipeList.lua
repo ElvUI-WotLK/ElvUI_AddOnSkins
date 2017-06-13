@@ -10,7 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if(not E.private.addOnSkins.AckisRecipeList) then return; end
 
-	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List")
+	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not addon then return end
 
 	local function HandleScrollBar(frame)

@@ -9,7 +9,8 @@ local hooksecurefunc = hooksecurefunc;
 local function LoadSkin()
 	if(not E.private.addOnSkins.PlateBuffs) then return; end
 
-	local core = LibStub("AceAddon-3.0"):GetAddon("PlateBuffs");
+	local core = LibStub("AceAddon-3.0"):GetAddon("PlateBuffs", true);
+	if not core then return end
 
 	local buffBars = core.buffBars;
 	local buffFrames = core.buffFrames;

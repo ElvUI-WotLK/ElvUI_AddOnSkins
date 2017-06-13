@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
 local S = E:GetModule("Skins");
 
+-- GearScore 3.1.17
+
 local function LoadSkin()
 	if(not E.private.addOnSkins.GearScore) then return; end
 

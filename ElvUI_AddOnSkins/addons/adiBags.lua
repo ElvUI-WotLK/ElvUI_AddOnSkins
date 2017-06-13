@@ -6,7 +6,7 @@ local S = E:GetModule("Skins");
 local function LoadSkin()
 	if(not E.private.addOnSkins.AdiBags) then return; end
 
-	local AdiBags = LibStub("AceAddon-3.0"):GetAddon("AdiBags")
+	local AdiBags = LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 	if not AdiBags then return end
 
 	hooksecurefunc(AdiBags, "ResetBagPositions", function(self)
