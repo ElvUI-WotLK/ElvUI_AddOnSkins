@@ -91,6 +91,8 @@ V.addOnSkins = {
 	KarniCrap = true,
 	TradeskillInfo = true,
 	PAB = true,
+	EPGP = true,
+	EPGP_LootMaster = true,
 
 	Blizzard_WorldStateFrame = true,
 };

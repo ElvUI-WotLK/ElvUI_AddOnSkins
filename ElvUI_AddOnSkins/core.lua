@@ -67,6 +67,8 @@ local addonList = {
 	"KarniCrap",
 	"TradeskillInfo",
 	"PAB",
+	"EPGP",
+	"EPGP_LootMaster",
 }
 
 AS.addOns = {};
