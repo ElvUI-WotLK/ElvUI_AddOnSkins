@@ -59,4 +59,5 @@
 	<Script file="pab.lua"/>
 	<Script file="epgp.lua"/>
 	<Script file="epgp_lootmaster.lua"/>
+	<Script file="raidRoll.lua"/>
 </Ui>

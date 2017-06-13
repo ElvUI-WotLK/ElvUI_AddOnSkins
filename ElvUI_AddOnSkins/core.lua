@@ -69,6 +69,7 @@ local addonList = {
 	"PAB",
 	"EPGP",
 	"EPGP_LootMaster",
+	"RaidRoll",
 }
 
 AS.addOns = {};
