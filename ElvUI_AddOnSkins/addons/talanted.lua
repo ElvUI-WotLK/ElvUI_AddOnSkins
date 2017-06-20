@@ -135,10 +135,12 @@ local function LoadGlyphSkin()
 		{"BOTTOMLEFT", 21, 81}
 	}
 
+	local point, x, y
 	for glyphID in pairs(TalentedGlyphs.glyphs) do
+		point, x, y = unpack(glyphPositions[glyphID])
 		TalentedGlyphs.glyphs[glyphID]:SetScale(1.063291)
-		TalentedGlyphs.glyphs[glyphID]:SetParent(TalentedGlyphs.backdrop)
-		TalentedGlyphs.glyphs[glyphID]:SetPoint(unpack(glyphPositions[glyphID]))
+		TalentedGlyphs.glyphs[glyphID]:ClearAllPoints()
+		TalentedGlyphs.glyphs[glyphID]:SetPoint(point, TalentedGlyphs.backdrop, point, x, y)
 	end
 
 	S:HandleCloseButton(TalentedGlyphs.close, TalentedGlyphs)
