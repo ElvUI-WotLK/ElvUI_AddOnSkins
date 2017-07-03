@@ -47,7 +47,7 @@
 	<Script file="carbonite.lua"/>
 	<Script file="enchantrix.lua"/>
 	<Script file="fishingBuddy.lua"/>
-	<Script file="talanted.lua"/>
+	<Script file="talented.lua"/>
 	<Script file="tinyPad.lua"/>
 	<Script file="ZOMGBuffs.lua"/>
 	<Script file="buyEmAll.lua"/>

@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI);
 local S = E:GetModule("Skins");
 
--- Talanted r660
+-- Talented r660
 
 local function LoadSkin()
 	if(not E.private.addOnSkins.Talented) then return end
