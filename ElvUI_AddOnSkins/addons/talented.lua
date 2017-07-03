@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 -- Talented r660
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Talented) then return end
+	if not E.private.addOnSkins.Talented then return end
 
 	local function SkinButton(button)
 		S:HandleButton(button, true)
@@ -13,63 +13,18 @@ local function LoadSkin()
 		button.right:Kill()
 	end
 
-	local specButtons = {
-		"spec1",
-		"spec2",
-		"petspec1"
-	}
-
 	local function SkinTabs()
-		if Talented.tabs then
-			local tabName
-			for _, tab in pairs(specButtons) do
-				tabName = Talented.tabs[tab]
-				if tabName then
-					tabName:SetTemplate("Default")
-					tabName:StyleButton()
-					tabName:DisableDrawLayer("BACKGROUND")
-					tabName:GetNormalTexture():SetInside(tabName.backdrop)
-					tabName:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-				end
-			end
-		end
-	end
+		if not Talented.tabs then return end
 
-	local function SkinResetButtons()
-		local resetButton
-		for i = 1, 3 do
-			resetButton = TalentedFrame.view.elements[i].clear
-			resetButton:GetNormalTexture():SetDesaturated(true)
-			resetButton:GetPushedTexture():SetDesaturated(true)
-			resetButton:GetHighlightTexture():SetDesaturated(true)
-		end
-	end
-
-	local function SkinTalantButtons()
-		local icon, rank
-		local talantButtons = TalentedFrame.view.elements
-
-		for talentID, talent in pairs(talantButtons) do
-			if talantButtons[talentID].id and talent:IsObjectType("Button") then
-				icon = talent.texture
-				rank = talent.rank
-
-				if talent then
-					talent:SetTemplate("Default")
-					talent:StyleButton()
-
-					talent:DisableDrawLayer("BACKGROUND")
-					talent:SetNormalTexture(nil)
-					talent.SetNormalTexture = E.noop
-
-					icon:SetInside(talent)
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetDrawLayer("ARTWORK")
-
-					rank:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
-					rank:Point("CENTER", talent, "BOTTOMRIGHT", 2, 0)
-					rank.texture:Kill()
-				end
+		local tabName
+		for _, tab in pairs({"spec1", "spec2", "petspec1"}) do
+			tabName = Talented.tabs[tab]
+			if tabName then
+				tabName:SetTemplate("Default")
+				tabName:StyleButton()
+				tabName:DisableDrawLayer("BACKGROUND")
+				tabName:GetNormalTexture():SetInside(tabName.backdrop)
+				tabName:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			end
 		end
 	end
@@ -93,18 +48,71 @@ local function LoadSkin()
 
 		S:HandleCheckBox(TalentedFrame.checkbox)
 
-		E:Delay(0.01, function()
-			SkinTabs()
-			SkinResetButtons()
-			SkinTalantButtons()
-		end)
+		if E:GetModule("AddOnSkins"):CheckAddOn("Talented_SpecTabs") then
+			E:Delay(0.01, SkinTabs)
+		end
 
 		S:Unhook(Talented, "CreateBaseFrame")
 	end)
+
+	S:RawHook(Talented, "MakeButton", function(self, parent)
+		local button = S.hooks[self].MakeButton(self, parent)
+
+		if not button.isSkinned then
+			button:SetTemplate("Default")
+			button:StyleButton()
+
+			button:DisableDrawLayer("BACKGROUND")
+			button:SetNormalTexture(nil)
+			button.SetNormalTexture = E.noop
+
+			button.texture:SetInside(button)
+			button.texture:SetTexCoord(unpack(E.TexCoords))
+			button.texture:SetDrawLayer("ARTWORK")
+
+			button.rank:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			button.rank:Point("CENTER", button, "BOTTOMRIGHT", 2, 0)
+			button.rank.texture:Kill()
+
+			button.isSkinned = true
+		end
+
+		return button
+	end)
+
+	S:RawHook(Talented, "GetButtonTarget", function(self, button)
+		local target = S.hooks[self].GetButtonTarget(self, button)
+
+		if not target.isSkinned then
+			target:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			target:Point("CENTER", button, "TOPRIGHT", 2, 0)
+			target.texture:Kill()
+
+			target.isSkinned = true
+		end
+
+		return target
+	end)
+
+	S:RawHook(Talented, "MakeTalentFrame", function(self, parent, width, height)
+		local tree = S.hooks[self].MakeTalentFrame(self, parent, width, height)
+
+		if not tree.isSkinned then
+			tree.clear:GetNormalTexture():SetDesaturated(true)
+			tree.clear:GetPushedTexture():SetDesaturated(true)
+			tree.clear:GetHighlightTexture():SetDesaturated(true)
+
+			tree.isSkinned = true
+		end
+
+		return tree
+	end)
+
+	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 end
 
 local function LoadGlyphSkin()
-	if(not E.private.addOnSkins.Talented) then return end
+	if not E.private.addOnSkins.Talented then return end
 
 	TalentedGlyphs:Size(350, 420)
 	TalentedGlyphs:SetTemplate("Transparent")
@@ -151,5 +159,5 @@ local function LoadGlyphSkin()
 	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", TalentedGlyphs, 10, 5)
 end
 
-S:AddCallbackForAddon("Talented", "Talented", LoadSkin);
-S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", LoadGlyphSkin);
+S:AddCallbackForAddon("Talented", "Talented", LoadSkin)
+S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", LoadGlyphSkin)
