@@ -169,18 +169,10 @@ local function LoadSkin()
 		end
 	end
 
-	local Dewdrop = LibStub("Dewdrop-2.0", true)
-	if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
-		S:SecureHook(Dewdrop, "Open", SkinDewdrop)
-	end
+	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 
-	if(E:GetModule("AddOnSkins"):CheckAddOn("AtlasLootFu")) then
-		local Tablet = LibStub("Tablet-2.0", true)
-		if Tablet and not S:IsHooked(Tablet, "Open") then
-			S:SecureHook(Tablet, "Open", function()
-				_G["Tablet20Frame"]:SetTemplate("Transparent")
-			end)
-		end
+	if E:GetModule("AddOnSkins"):CheckAddOn("AtlasLootFu") then
+		E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 	end
 end
 

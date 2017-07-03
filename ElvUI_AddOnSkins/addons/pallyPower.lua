@@ -65,56 +65,8 @@ local function LoadSkin()
 		end
 	end
 
-	local function SkinDewdrop()
-		local frame
-		local i = 1
-
-		while _G["Dewdrop20Level" .. i] do
-			frame = _G["Dewdrop20Level" .. i]
-
-			if not frame.isSkinned then
-				frame:SetTemplate("Transparent")
-
-				select(1, frame:GetChildren()):Hide()
-				frame.SetBackdropColor = E.noop
-				frame.SetBackdropBorderColor = E.noop
-
-				frame.isSkinned = true
-			end
-
-			i = i + 1
-		end
-
-		i = 1
-		while _G["Dewdrop20Button"..i] do
-			if not _G["Dewdrop20Button" .. i].isHook then
-				_G["Dewdrop20Button" .. i]:HookScript("OnEnter", function(self)
-					if not self.disabled and self.hasArrow then
-						SkinDewdrop()
-					end
-				end)
-				_G["Dewdrop20Button" .. i].isHook = true
-			end
-
-			i = i + 1
-		end
-	end
-
-	local Dewdrop = LibStub("Dewdrop-2.0", true)
-	if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
-		S:SecureHook(Dewdrop, "Open", SkinDewdrop)
-	end
-
-	local AceAddon = LibStub("AceAddon-2.0", true)
-	if AceAddon and not S:IsHooked(AceAddon.prototype, "PrintAddonInfo") then
-		S:SecureHook(AceAddon.prototype, "PrintAddonInfo", function()
-			AceAddon20AboutFrame:SetTemplate("Transparent")
-			S:HandleButton(AceAddon20AboutFrameButton)
-			S:HandleButton(AceAddon20AboutFrameDonateButton)
-
-			S:Unhook(AceAddon.prototype, "PrintAddonInfo")
-		end)
-	end
+	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
+	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 end
 
 S:AddCallbackForAddon("PallyPower", "PallyPower", LoadSkin);

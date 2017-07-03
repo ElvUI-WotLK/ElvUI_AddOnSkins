@@ -143,19 +143,7 @@ local function LoadSkin()
 		end)
 	end
 
-	local LibExtraTip = LibStub("LibExtraTip-1")
-	if LibExtraTip and not S:IsHooked(LibExtraTip, "GetFreeExtraTipObject") then
-		S:RawHook(LibExtraTip, "GetFreeExtraTipObject", function(self)
-			local tooltip = S.hooks[LibExtraTip].GetFreeExtraTipObject(self)
-
-			if not tooltip.isSkinned then
-				tooltip:SetTemplate("Transparent")
-				tooltip.isSkinned = true
-			end
-
-			return tooltip
-		end)
-	end
+	E:GetModule("AddOnSkins"):SkinLibrary("LibExtraTip-1")
 end
 
 S:AddCallbackForAddon("Enchantrix", "Enchantrix", LoadSkin)
