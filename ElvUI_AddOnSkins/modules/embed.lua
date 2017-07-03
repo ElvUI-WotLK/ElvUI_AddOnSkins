@@ -1,7 +1,6 @@
-local addonName = ...;
 local E, L, V, P, G = unpack(ElvUI);
-local addon = E:GetModule("AddOnSkins");
 local module = E:NewModule("EmbedSystem");
+local addon = E:GetModule("AddOnSkins");
 
 local _G = _G;
 local pairs, tonumber = pairs, tonumber;
@@ -12,7 +11,7 @@ local hooksecurefunc = hooksecurefunc;
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS;
 
 function module:GetChatWindowInfo()
-	local chatTabInfo = { ["NONE"] = NONE };
+	local chatTabInfo = {["NONE"] = NONE};
 	for i = 1, NUM_CHAT_WINDOWS do
 		chatTabInfo["ChatFrame"..i] = _G["ChatFrame"..i.."Tab"]:GetText();
 	end
@@ -165,6 +164,7 @@ if(addon:CheckAddOn("Recount")) then
 
 		Recount_MainWindow:StartSizing("BOTTOMLEFT");
 		Recount_MainWindow:StopMovingOrSizing();
+		Recount:ResizeMainWindow()
 	end
 end
 
@@ -261,12 +261,12 @@ end
 function module:Hooks()
 	local function ChatPanelLeft_OnFade()
 		LeftChatPanel:Hide();
-		_G[addonName .. "_Embed_SwitchButton"]:Hide();
+		_G["ElvUI_AddOnSkins_Embed_SwitchButton"]:Hide();
 	end
 
 	local function ChatPanelRight_OnFade()
 		RightChatPanel:Hide();
-		_G[addonName .. "_Embed_SwitchButton"]:Hide();
+		_G["ElvUI_AddOnSkins_Embed_SwitchButton"]:Hide();
 	end
 
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade;
@@ -389,7 +389,6 @@ function module:WindowResize()
 	self.left:ClearAllPoints();
 	self.left:SetPoint(isDouble and "BOTTOMRIGHT" or "BOTTOMLEFT", chatData, topRight, isDouble and E.db.addOnSkins.embed.leftWidth -SPACING or 0, yOffset);
 	self.left:SetPoint(isDouble and "TOPLEFT" or "TOPRIGHT", chatTab, isDouble and (E.db.addOnSkins.embed.belowTop and "BOTTOMLEFT" or "TOPLEFT") or (E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT"), E.db.addOnSkins.embed.embedType == "SINGLE" and xOffset or -xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
-	--self.left:Show();
 
 	self:UpdateSwitchButton();
 
@@ -397,7 +396,6 @@ function module:WindowResize()
 		self.right:ClearAllPoints();
 		self.right:SetPoint("BOTTOMLEFT", chatData, topRight, E.db.addOnSkins.embed.leftWidth, yOffset);
 		self.right:SetPoint("TOPRIGHT", chatTab, E.db.addOnSkins.embed.belowTop and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, E.db.addOnSkins.embed.belowTop and -SPACING or 0);
-	--	self.right:Show();
 	end
 
 	if(IsAddOnLoaded("ElvUI_Config")) then
@@ -407,20 +405,11 @@ function module:WindowResize()
 end
 
 function module:Init()
-	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
-	local fTable = {};
-	for name, obj in LDB:DataObjectIterator() do
-		local function OnClick(self, button)
-			obj.OnClick(self, button);
-		end
-		fTable[name] = OnClick;
-	end
-
 	if(not self.embedCreated) then
-		self.left = CreateFrame("Frame", addonName.."_Embed_LeftWindow", UIParent);
-		self.right = CreateFrame("Frame", addonName.."_Embed_RightWindow", self.left);
+		self.left = CreateFrame("Frame", "ElvUI_AddOnSkins_Embed_LeftWindow", UIParent);
+		self.right = CreateFrame("Frame", "ElvUI_AddOnSkins_Embed_RightWindow", self.left);
 
-		self.switchButton = CreateFrame("Button", addonName .. "_Embed_SwitchButton", UIParent);
+		self.switchButton = CreateFrame("Button", "ElvUI_AddOnSkins_Embed_SwitchButton", UIParent);
 		self.switchButton:RegisterForClicks("AnyUp");
 		self.switchButton:Size(120, 32);
 		self.switchButton.text = self.switchButton:CreateFontString(nil, "OVERLAY");
@@ -428,18 +417,14 @@ function module:Init()
 		self.switchButton.text:SetTextColor(unpack(E["media"].rgbvaluecolor));
 		self.switchButton.text:SetPoint("LEFT", 16, -5);
 		self.switchButton:SetScript("OnClick", function(self, button)
-		--	if(fTable[self.text:GetText()]) then
-		--		fTable[self.text:GetText()](self, button);
-		--	else
-				if(module.left:IsShown()) then
-					module.left:Hide();
-					self:SetAlpha(0.6);
-				else
-					module.left:Show();
-					self:SetAlpha(1);
-				end
-				module:UpdateSwitchButton();
-		--	end
+			if(module.left:IsShown()) then
+				module.left:Hide();
+				self:SetAlpha(0.6);
+			else
+				module.left:Show();
+				self:SetAlpha(1);
+			end
+			module:UpdateSwitchButton();
 		end);
 		self.switchButton:SetScript("OnMouseDown", function(self) self.text:SetPoint("LEFT", 18, -7); end);
 		self.switchButton:SetScript("OnMouseUp", function(self) self.text:SetPoint("LEFT", 16, -5); end);
