@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
 local S = E:GetModule("Skins");
 
+-- Auctionator 2.6.3
+
 local function LoadSkin()
 	if(not E.private.addOnSkins.Auctionator) then return; end
 
@@ -78,8 +80,9 @@ local function LoadSkin()
 	S:HandleButton(Atr_StackingOptionsFrame_Edit)
 	S:HandleButton(Atr_StackingOptionsFrame_New)
 
+	local isSkinned
 	hooksecurefunc("Atr_OnAuctionHouseShow", function()
-		if IsSkinned then return end
+		if isSkinned then return end
 
 		S:HandleDropDownBox(Atr_DropDown1);
 		S:HandleDropDownBox(Atr_DropDownSL);
@@ -179,7 +182,7 @@ local function LoadSkin()
 			S:HandleTab(_G["AuctionFrameTab"..i])
 		end
 
-		IsSkinned = true
+		isSkinned = true
 	end);
 end
 
