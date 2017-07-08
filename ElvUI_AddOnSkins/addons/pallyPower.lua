@@ -57,7 +57,7 @@ local function LoadSkin()
 		_G["PallyPowerConfigFramePlayer"..i.."Aura1Icon"]:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	for i = 1, 11 do
+	for i = 1, PALLYPOWER_MAXCLASSES do
 		_G["PallyPowerConfigFrameClassGroup"..i.."ClassButtonIcon"]:SetTexCoord(unpack(E.TexCoords))
 
 		for j = 1, 8 do

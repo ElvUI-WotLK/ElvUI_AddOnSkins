@@ -172,6 +172,7 @@ local function LoadSkin()
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 
 	if E:GetModule("AddOnSkins"):CheckAddOn("AtlasLootFu") then
+		E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
 		E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 	end
 end
