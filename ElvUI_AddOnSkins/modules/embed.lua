@@ -72,7 +72,10 @@ function module:Hide()
 	end
 	module:ToggleChatFrame(false);
 	module.switchButton:SetAlpha(0.6);
-	E.db.addOnSkins.embed.isShow = false;
+
+	if not E.global.afkEnabled then
+		E.db.addOnSkins.embed.isShow = false
+	end
 end
 
 function module:CheckAddOn(addOn)
@@ -134,11 +137,9 @@ function module:Toggle()
 	end
 
 	if(E.db.addOnSkins.embed.isShow) then
-		self.left:Show();
-		self:Show();
+--		self.left:Show();
 	else
-		self.left:Hide();
-		self:Hide();
+--		self.left:Hide();
 	end
 end
 
