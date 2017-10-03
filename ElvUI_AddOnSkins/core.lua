@@ -1,8 +1,8 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
-local EP = LibStub("LibElvUIPlugin-1.0", true);
-local AS = E:NewModule("AddOnSkins");
+local E, L, V, P, G, _ = unpack(ElvUI)
+local EP = LibStub("LibElvUIPlugin-1.0", true)
+local AS = E:NewModule("AddOnSkins")
 
-local AddOnName = ...;
+local AddOnName = ...
 
 local find, lower, match, trim = string.find, string.lower, string.match, string.trim
 
@@ -73,26 +73,34 @@ local addonList = {
 	"RaidCooldowns",
 }
 
-AS.addOns = {};
+AS.addOns = {}
 
 for i = 1, GetNumAddOns() do
-	local name, _, _, enabled = GetAddOnInfo(i);
-	AS.addOns[lower(name)] = enabled ~= nil;
+	local name, _, _, enabled = GetAddOnInfo(i)
+	AS.addOns[lower(name)] = enabled ~= nil
 end
 
 function AS:CheckAddOn(addon)
-	return self.addOns[lower(addon)] or false;
+	return self.addOns[lower(addon)] or false
+end
+
+function AS:IsAddonExist(addon)
+	return self.addOns[lower(addon)] ~= nil
 end
 
 function AS:RegisterAddonOption(AddonName, options)
 	if select(6, GetAddOnInfo(AddonName)) == "MISSING" then return end
 
-	options.args.addOns.args[AddonName] = {
+	options.args.skins.args.addOns.args[AddonName] = {
 		type = "toggle",
 		name = AddonName,
 		desc = L["TOGGLESKIN_DESC"],
 		hidden = function() return not self:CheckAddOn(AddonName) end
 	}
+end
+
+local function ColorizeSettingName(settingName)
+	return format("|cff1784d1%s|r", settingName)
 end
 
 local positionValues = {
@@ -105,51 +113,79 @@ local positionValues = {
 	CENTER = "CENTER",
 	TOP = "TOP",
 	BOTTOM = "BOTTOM"
-};
+}
 
 local function getOptions()
 	local options = {
 		order = 50,
 		type = "group",
-		name = L["AddOn Skins"],
+		name = ColorizeSettingName(L["AddOn Skins"]),
+		childGroups = "tab",
 		args = {
-			addOns = {
+			skins = {
 				order = 1,
 				type = "group",
-				name = L["AddOn Skins"],
-				guiInline = true,
-				get = function(info) return E.private.addOnSkins[info[#info]]; end,
-				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-				args = {}
-			},
-			blizzard = {
-				order = 2,
-				type = "group",
-				name = L["Blizzard Skins"],
-				guiInline = true,
-				get = function(info) return E.private.addOnSkins[info[#info]]; end,
-				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+				name = L["Skins"],
+				childGroups = "tab",
 				args = {
-					Blizzard_WorldStateFrame = {
-						type = "toggle",
-						name = "WorldStateFrame",
-						desc = L["TOGGLESKIN_DESC"],
+					header = {
+						order = 1,
+						type = "header",
+						name = L["Skins"]
 					},
-				},
-			},
-			misc = {
-				order = 3,
-				type = "group",
-				name = L["Misc Options"],
-				guiInline = true,
-				args = {
-					skadaGroup = {
+					addOns = {
 						order = 1,
 						type = "group",
+						name = L["AddOn Skins"],
+						get = function(info) return E.private.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						args = {
+							header = {
+								order = 1,
+								type = "header",
+								name = L["AddOn Skins"]
+							}
+						}
+					},
+					blizzard = {
+						order = 2,
+						type = "group",
+						name = L["Blizzard Skins"],
+						get = function(info) return E.private.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						args = {
+							header = {
+								order = 1,
+								type = "header",
+								name = L["Blizzard Skins"]
+							},
+							Blizzard_WorldStateFrame = {
+								type = "toggle",
+								name = "WorldStateFrame",
+								desc = L["TOGGLESKIN_DESC"],
+							}
+						}
+					}
+				}
+			},
+			misc = {
+				order = 2,
+				type = "group",
+				name = L["Misc Options"],
+				childGroups = "tab",
+				args = {
+					header = {
+						order = 1,
+						type = "header",
+						name = L["Misc Options"],
+					},
+					skadaGroup = {
+						order = 2,
+						type = "group",
 						name = L["Skada"],
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; Skada:ApplySettings(); end,
-						disabled = function() return not AS:CheckAddOn("Skada"); end,
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value Skada:ApplySettings() end,
+						disabled = function() return not AS:CheckAddOn("Skada") end,
 						args = {
 							skadaTemplate = {
 								order = 1,
@@ -165,7 +201,7 @@ local function getOptions()
 								order = 2,
 								type = "toggle",
 								name = L["Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTemplate ~= "Default" or not AS:CheckAddOn("Skada"); end
+								disabled = function() return E.db.addOnSkins.skadaTemplate ~= "Default" or not AS:CheckAddOn("Skada") end
 							},
 							spacer = {
 								order = 3,
@@ -186,17 +222,17 @@ local function getOptions()
 								order = 5,
 								type = "toggle",
 								name = L["Title Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTitleTemplate ~= "Default" or not AS:CheckAddOn("Skada"); end
+								disabled = function() return E.db.addOnSkins.skadaTitleTemplate ~= "Default" or not AS:CheckAddOn("Skada") end
 							}
 						}
 					},
 					dbmGroup = {
-						order = 2,
+						order = 3,
 						type = "group",
 						name = L["DBM"],
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle(); DBM.BossHealth:UpdateSettings(); end,
-						disabled = function() return not AS:CheckAddOn("DBM-Core"); end,
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value DBM.Bars:ApplyStyle() DBM.BossHealth:UpdateSettings() end,
+						disabled = function() return not AS:CheckAddOn("DBM-Core") end,
 						args = {
 							dbmBarHeight = {
 								order = 1,
@@ -232,12 +268,12 @@ local function getOptions()
 						}
 					},
 					waGroup = {
-						order = 3,
+						order = 4,
 						type = "group",
 						name = L["WeakAuras"],
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-						disabled = function() return not AS:CheckAddOn("WeakAuras"); end,
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value E:StaticPopup_Show("PRIVATE_RL") end,
+						disabled = function() return not AS:CheckAddOn("WeakAuras") end,
 						args = {
 							weakAuraAuraBar = {
 								order = 1,
@@ -252,12 +288,12 @@ local function getOptions()
 						}
 					},
 					chatBarGroup = {
-						order = 4,
+						order = 5,
 						type = "group",
 						name = L["ChatBar"],
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; ChatBar_UpdateButtonOrientation(); ChatBar_UpdateButtons(); end,
-						disabled = function() return not AS:CheckAddOn("ChatBar"); end,
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value ChatBar_UpdateButtonOrientation() ChatBar_UpdateButtons() end,
+						disabled = function() return not AS:CheckAddOn("ChatBar") end,
 						args = {
 							chatBarSize = {
 								order = 1,
@@ -298,11 +334,11 @@ local function getOptions()
 				}
 			},
 			embed = {
-				order = 4,
+				order = 3,
 				type = "group",
 				name = "Embed Settings",
 				get = function(info) return E.db.addOnSkins.embed[info[#info]] end,
-				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value; E:GetModule("EmbedSystem"):Check() end,
+				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value E:GetModule("EmbedSystem"):Check() end,
 				args = {
 					desc = {
 						order = 1,
@@ -375,11 +411,11 @@ local function getOptions()
 		AS:RegisterAddonOption(addonName, options)
 	end
 
-	E.Options.args.addOnSkins = options;
+	E.Options.args.addOnSkins = options
 end
 
 function AS:Initialize()
-	EP:RegisterPlugin(AddOnName, getOptions);
+	EP:RegisterPlugin(AddOnName, getOptions)
 end
 
 local function InitializeCallback()
