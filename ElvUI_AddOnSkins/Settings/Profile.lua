@@ -22,12 +22,11 @@ P.addOnSkins = {
 
 	embed = {
 		embedType = "DISABLE",
-		left = "Skada",
-		right = "Skada",
-		rightChat = true,
-		leftWidth = 200,
-		belowTop = false,
+		leftWindow = "Omen",
+		rightWindow = "Recount",
+		rightChatPanel = true,
+		leftWindowWidth = 203,
+		belowTopTab = false,
 		hideChat = "NONE",
-		isShow = true,
 	}
 }

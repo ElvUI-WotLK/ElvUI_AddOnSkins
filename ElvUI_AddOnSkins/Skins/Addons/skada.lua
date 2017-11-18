@@ -33,16 +33,16 @@ local function LoadSkin()
 		end
 	end);
 
-	local module = E:GetModule("EmbedSystem");
+	local EMB = E:GetModule("EmbedSystem")
 	hooksecurefunc(Skada, "CreateWindow", function()
-		if(module:CheckAddOn("Skada")) then
-			module:Skada();
+		if EMB:CheckEmbed("Skada") then
+			EMB:EmbedSkada()
 		end
 	end);
 
 	hooksecurefunc(Skada, "DeleteWindow", function()
-		if(module:CheckAddOn("Skada")) then
-			module:Skada();
+		if EMB:CheckEmbed("Skada") then
+			EMB:EmbedSkada()
 		end
 	end);
 
