@@ -40,29 +40,6 @@ local function LoadSkin()
 
 	SkinFrame(Recount.MainWindow)
 
-	S:HandleCloseButton(Recount.MainWindow.CloseButton)
-	Recount.MainWindow.CloseButton:Size(32)
-	Recount.MainWindow.CloseButton:Point("TOPRIGHT", 4, -3)
-
-	S:HandleNextPrevButton(Recount.MainWindow.RightButton)
-	S:SquareButton_SetIcon(Recount.MainWindow.RightButton, "RIGHT")
-	Recount.MainWindow.RightButton:Size(15)
-	Recount.MainWindow.RightButton:Point("TOPRIGHT", Recount.MainWindow.CloseButton, "TOPLEFT", 3, -8)
-
-	S:HandleNextPrevButton(Recount.MainWindow.LeftButton)
-	S:SquareButton_SetIcon(Recount.MainWindow.LeftButton, "LEFT")
-	Recount.MainWindow.LeftButton:Size(15)
-	Recount.MainWindow.LeftButton:Point("TOPRIGHT", Recount.MainWindow.RightButton, "TOPLEFT", -3, 0)
-
-	S:HandleNextPrevButton(Recount.MainWindow.ResetButton)
-	S:SquareButton_SetIcon(Recount.MainWindow.ResetButton, "DELETE")
-	Recount.MainWindow.ResetButton:Size(15)
-	Recount.MainWindow.ResetButton:Point("TOPRIGHT", Recount.MainWindow.LeftButton, "TOPLEFT", -3, 0)
-
-	Recount.MainWindow.FileButton:Point("RIGHT", Recount.MainWindow.ResetButton, "LEFT", -3, 0)
-
-
-
 	local buttons = {
 		Recount.MainWindow.RightButton,
 		Recount.MainWindow.LeftButton,
