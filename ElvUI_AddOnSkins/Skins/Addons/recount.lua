@@ -35,7 +35,10 @@ local function LoadSkin()
 		frame.Title:SetTextColor(unpack(E.media.rgbvaluecolor))
 
 		frame.CloseButton:ClearAllPoints()
-		frame.CloseButton:SetPoint("RIGHT", header, -6, 0)
+		S:HandleCloseButton(frame.CloseButton)
+		frame.CloseButton.backdrop:SetInside()
+		frame.CloseButton:Size(18)
+		frame.CloseButton:Point("TOPRIGHT", header, -2, -2)
 	end
 
 	SkinFrame(Recount.MainWindow)
@@ -53,6 +56,7 @@ local function LoadSkin()
 		local button = buttons[i]
 		if button then
 			AS:Desaturate(button)
+			button:StyleButton(nil, true)
 		end
 	end
 
@@ -83,8 +87,6 @@ local function LoadSkin()
 			S:HandleButton(Recount_ReportWindow.ReportButton)
 			S:HandleSliderFrame(Recount_ReportWindow_Slider)
 
-			AS:Desaturate(Recount_ReportWindow.CloseButton)
-
 			Recount_ReportWindow.Whisper:StripTextures(true)
 			S:HandleEditBox(Recount_ReportWindow.Whisper)
 			Recount_ReportWindow.Whisper:Height(16)
@@ -101,10 +103,6 @@ local function LoadSkin()
 
 			Recount.ConfigWindow.backdrop:StripTextures()
 			Recount.ConfigWindow.backdrop:SetTemplate("Transparent")
-
-			S:HandleCloseButton(Recount.ConfigWindow.CloseButton)
-			Recount.ConfigWindow.CloseButton:Size(32)
-			Recount.ConfigWindow.CloseButton:Point("TOPRIGHT", 4, -3)
 
 			S:HandleSliderFrame(Recount_ConfigWindow_Scaling_Slider)
 			S:HandleSliderFrame(Recount_ConfigWindow_RowHeight_Slider)
