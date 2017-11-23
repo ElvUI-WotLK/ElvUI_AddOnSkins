@@ -27,8 +27,6 @@ local function LoadSkin()
 
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
-		frame.Title:FontTemplate()
-		frame.Title:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 
 	SkinFrame(Recount.MainWindow)
@@ -121,13 +119,14 @@ local function LoadSkin()
 	hooksecurefunc(Recount, "AddWindow", function(self, window)
 		if window.YesButton and not window.isSkinned then
 			SkinFrame(window)
-			window.Text:FontTemplate()
 			window.Text:SetPoint("TOP", window.backdrop, 0, -3)
 
 			S:HandleButton(window.YesButton)
 			window.YesButton:SetPoint("BOTTOMRIGHT", window, "BOTTOM", -3, 5)
 			S:HandleButton(window.NoButton)
 			window.NoButton:SetPoint("BOTTOMLEFT", window, "BOTTOM", 3, 5)
+
+			window.isSkinned = true
 		end
 	end)
 end
