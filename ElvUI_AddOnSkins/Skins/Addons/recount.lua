@@ -27,6 +27,13 @@ local function LoadSkin()
 
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
+
+		if frame ~= Recount.MainWindow then
+			S:HandleCloseButton(frame.CloseButton)
+			frame.CloseButton.backdrop:SetInside()
+			frame.CloseButton:Size(18)
+			frame.CloseButton:Point("TOPRIGHT", header, -2, -2)
+		end
 	end
 
 	SkinFrame(Recount.MainWindow)
@@ -55,19 +62,33 @@ local function LoadSkin()
 	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar)
 
 	hooksecurefunc(Recount, "HideScrollbarElements", function(self, name)
-		_G[name.."ScrollBar"].trackbg:Hide();
-		_G[name.."ScrollBar"].thumbbg:Hide();
-	end);
+		_G[name.."ScrollBar"].trackbg:Hide()
+		_G[name.."ScrollBar"].thumbbg:Hide()
+	end)
 	hooksecurefunc(Recount, "ShowScrollbarElements", function(self, name)
-		_G[name.."ScrollBar"].trackbg:Show();
-		_G[name.."ScrollBar"].thumbbg:Show();
-	end);
+		_G[name.."ScrollBar"].trackbg:Show()
+		_G[name.."ScrollBar"].thumbbg:Show()
+	end)
 
 	if(Recount.db.profile.MainWindow.ShowScrollbar) then
-		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar");
+		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar")
 	else
-		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar");
+		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")
 	end
+
+	hooksecurefunc(Recount, "AddWindow", function(self, window)
+		if window.YesButton and not window.isSkinned then
+			SkinFrame(window)
+			window.Text:SetPoint("TOP", window.backdrop, 0, -3)
+
+			S:HandleButton(window.YesButton)
+			window.YesButton:SetPoint("BOTTOMRIGHT", window, "BOTTOM", -3, 5)
+			S:HandleButton(window.NoButton)
+			window.NoButton:SetPoint("BOTTOMLEFT", window, "BOTTOM", 3, 5)
+
+			window.isSkinned = true
+		end
+	end)
 
 	hooksecurefunc(Recount, "ShowReport", function()
 		if not Recount_ReportWindow.isSkinned then
@@ -98,35 +119,6 @@ local function LoadSkin()
 			S:HandleSliderFrame(Recount_ConfigWindow_RowSpacing_Slider)
 
 			Recount.ConfigWindow.isSkinned = true
-		end
-	end)
-
-	hooksecurefunc(Recount, "HideScrollbarElements", function(self, name)
-		_G[name.."ScrollBar"].trackbg:Hide()
-		_G[name.."ScrollBar"].thumbbg:Hide()
-	end)
-	hooksecurefunc(Recount, "ShowScrollbarElements", function(self, name)
-		_G[name.."ScrollBar"].trackbg:Show()
-		_G[name.."ScrollBar"].thumbbg:Show()
-	end)
-
-	if(Recount.db.profile.MainWindow.ShowScrollbar) then
-		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar")
-	else
-		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")
-	end
-
-	hooksecurefunc(Recount, "AddWindow", function(self, window)
-		if window.YesButton and not window.isSkinned then
-			SkinFrame(window)
-			window.Text:SetPoint("TOP", window.backdrop, 0, -3)
-
-			S:HandleButton(window.YesButton)
-			window.YesButton:SetPoint("BOTTOMRIGHT", window, "BOTTOM", -3, 5)
-			S:HandleButton(window.NoButton)
-			window.NoButton:SetPoint("BOTTOMLEFT", window, "BOTTOM", 3, 5)
-
-			window.isSkinned = true
 		end
 	end)
 end
