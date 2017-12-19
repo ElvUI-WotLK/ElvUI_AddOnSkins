@@ -249,7 +249,7 @@ function EMB:WindowResize()
 	if isDouble then
 		self.leftFrame:ClearAllPoints()
 		self.leftFrame:Point("TOPLEFT", self.mainFrame)
-		self.leftFrame:Point("BOTTOMRIGHT", self.mainFrame, "BOTTOMRIGHT", -(self.db.leftWindowWidth + SPACING), 0)
+		self.leftFrame:Point("BOTTOMRIGHT", self.mainFrame, "BOTTOMRIGHT", -(self.mainFrame:GetWidth() - self.db.leftWindowWidth  + SPACING), 0)
 
 		self.rightFrame:ClearAllPoints()
 		self.rightFrame:Point("TOPLEFT", self.leftFrame, "TOPRIGHT", SPACING, 0)
