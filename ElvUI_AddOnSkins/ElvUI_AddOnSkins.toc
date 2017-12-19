@@ -9,6 +9,4 @@ Locales\Load_Locales.xml
 Settings\Load_Settings.xml
 Core.lua
 Skins\Load_Skins.xml
-Addons\Load_Addons.xml
-Blizzard\Load_Blizzard.xml
 Modules\Load_Modules.xml
