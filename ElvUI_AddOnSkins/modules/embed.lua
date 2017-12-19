@@ -333,8 +333,8 @@ end
 if AS:CheckAddOn("Recount") then
 	function EMB:EmbedRecount()
 		local parent = self.leftFrame
-		if E.db.addOnSkins.embed.embedType == "DOUBLE" then
-			parent = self.db.rightWindow == "Recount" and self.rightWindow or self.leftFrame
+		if self.db.embedType == "DOUBLE" then
+			parent = self.db.rightWindow == "Recount" and self.rightFrame or self.leftFrame
 		end
 		parent.frameName = "Recount_MainWindow"
 
@@ -359,8 +359,8 @@ end
 if AS:CheckAddOn("Omen") then
 	function EMB:EmbedOmen()
 		local parent = self.leftFrame
-		if E.db.addOnSkins.embed.embedType == "DOUBLE" then
-			parent = self.db.rightWindow == "Omen" and self.rightWindow or self.leftFrame
+		if self.db.embedType == "DOUBLE" then
+			parent = self.db.rightWindow == "Omen" and self.rightFrame or self.leftFrame
 		end
 		parent.frameName = "OmenAnchor"
 
@@ -421,10 +421,9 @@ if AS:CheckAddOn("Skada") then
 		end
 
 		local numberToEmbed = 0
-		if E.db.addOnSkins.embed.embedType == "SINGLE" then
+		if self.db.embedType == "SINGLE" then
 			numberToEmbed = 1
-		end
-		if E.db.addOnSkins.embed.embedType == "DOUBLE" then
+		elseif self.db.embedType == "DOUBLE" then
 			if self.db.rightWindow == "Skada" then numberToEmbed = numberToEmbed + 1 end
 			if self.db.leftWindow == "Skada" then numberToEmbed = numberToEmbed + 1 end
 		end
@@ -432,7 +431,7 @@ if AS:CheckAddOn("Skada") then
 		local point
 		if numberToEmbed == 1 then
 			local parent = self.leftFrame
-			if E.db.addOnSkins.embed.embedType == "DOUBLE" then
+			if self.db.embedType == "DOUBLE" then
 				parent = self.db.rightWindow == "Skada" and self.rightWindow or self.leftFrame
 			end
 			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT"
