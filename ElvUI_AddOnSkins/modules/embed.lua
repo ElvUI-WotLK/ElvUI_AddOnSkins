@@ -84,47 +84,11 @@ function EMB:EmbedUpdate()
 		self:EmbedCreate()
 	end
 
-	self:EmbedToggle()
 	self:WindowResize()
 
 	if self:CheckEmbed("Omen") then self:EmbedOmen() end
 	if self:CheckEmbed("Recount") then self:EmbedRecount() end
 	if self:CheckEmbed("Skada") then self:EmbedSkada() end
-end
-
-function EMB:EmbedToggle()
-	self.leftFrame.frameName = nil
-	self.rightFrame.frameName = nil
-
-	local left = lower(self.db.leftWindow)
-	if left ~= "omen" and left ~= "recount" and left ~= "skada" then
-		self.leftFrame.frameName = self.db.leftWindow
-	end
-
-	if self.db.embedType == "DOUBLE" then
-		local right = lower(self.db.rightWindow)
-		if right ~= "omen" and right ~= "recount" and left ~= "skada" then
-			self.rightFrame.frameName = self.db.rightWindow
-		end
-	end
-
-	if self.leftFrame.frameName then
-		local frame = _G[self.leftFrame.frameName]
-		if frame and frame:IsObjectType("Frame") and not frame:IsProtected() then
-			frame:ClearAllPoints()
-			frame:SetParent(self.leftFrame)
-			frame:SetInside(self.leftFrame, 0, 0)
-		end
-	end
-
-	if self.rightFrame.frameName then
-		local frame = _G[self.rightFrame.frameName]
-		if frame and frame:IsObjectType("Frame") and not frame:IsProtected() then
-			frame:ClearAllPoints()
-			frame:SetParent(self.rightFrame)
-			frame:SetInside(self.rightFrame, 0, 0)
-		end
-	end
 end
 
 function EMB:SetHooks()
