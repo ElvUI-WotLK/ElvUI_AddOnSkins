@@ -396,14 +396,20 @@ if AS:CheckAddOn("Skada") then
 		if numberToEmbed == 1 then
 			local parent = self.leftFrame
 			if self.db.embedType == "DOUBLE" then
-				parent = self.db.rightWindow == "Skada" and self.rightWindow or self.leftFrame
+				parent = self.db.rightWindow == "Skada" and self.rightFrame or self.leftFrame
 			end
+
 			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT"
-			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), point, parent, point, E.Border, E.Border);
+			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), point, parent, point, E.Border, E.Border)
 		elseif numberToEmbed == 2 then
 			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT"
 			EmbedWindow(self.skadaWindows[1], self.leftFrame:GetWidth() -(E.Border*2), self.leftFrame:GetHeight(), point, self.leftFrame, point, E.Border, E.Border)
-			if not self.skadaWindows[2] then E:Print("Please Create Skada Windows 2") return end
+
+			if not self.skadaWindows[2] then
+				E:Print("Please Create Skada Windows 2")
+				return
+			end
+
 			point = self.skadaWindows[2].db.reversegrowth and "BOTTOMRIGHT" or "TOPRIGHT"
 			EmbedWindow(self.skadaWindows[2], self.rightFrame:GetWidth() -(E.Border*2), self.rightFrame:GetHeight(), point, self.rightFrame, point, -E.Border, E.Border)
 		end
