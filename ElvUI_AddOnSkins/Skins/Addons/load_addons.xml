@@ -61,4 +61,5 @@
 	<Script file="epgp_lootmaster.lua"/>
 	<Script file="raidRoll.lua"/>
 	<Script file="raidCooldowns.lua"/>
+	<Script file="eventAlert.lua"/>
 </Ui>

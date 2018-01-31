@@ -71,6 +71,7 @@ local addonList = {
 	"EPGP_LootMaster",
 	"RaidRoll",
 	"RaidCooldowns",
+	"EventAlert",
 }
 
 AS.addOns = {}

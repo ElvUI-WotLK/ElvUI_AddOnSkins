@@ -63,6 +63,7 @@ V.addOnSkins = {
 	EPGP_LootMaster = true,
 	RaidRoll = true,
 	RaidCooldowns = true,
+	EventAlert = true,
 
 	Blizzard_WorldStateFrame = true,
 };
