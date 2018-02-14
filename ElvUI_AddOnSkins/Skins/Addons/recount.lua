@@ -28,15 +28,46 @@ local function LoadSkin()
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
 
-		if frame ~= Recount.MainWindow then
-			S:HandleCloseButton(frame.CloseButton)
-			frame.CloseButton.backdrop:SetInside()
-			frame.CloseButton:Size(18)
-			frame.CloseButton:Point("TOPRIGHT", header, -2, -2)
+		if frame.CloseButton then
+			frame.CloseButton:ClearAllPoints()
+			if frame ~= Recount.MainWindow then
+				S:HandleCloseButton(frame.CloseButton)
+				frame.CloseButton:Size(32)
+				frame.CloseButton:Point("RIGHT", header, 4, 0)
+			else
+				frame.CloseButton:Point("RIGHT", header, -6, 0)
+			end
 		end
 	end
 
 	SkinFrame(Recount.MainWindow)
+
+	Recount.MainWindow.RightButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.RightButton:GetNormalTexture():SetTexCoord(0.421, 0.234, 0.015, 0.203)
+	Recount.MainWindow.RightButton:GetNormalTexture():Point("TOPLEFT", 2, -4)
+	Recount.MainWindow.RightButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 4)
+	Recount.MainWindow.RightButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.RightButton:GetPushedTexture():SetTexCoord(0.421, 0.234, 0.015, 0.203)
+	Recount.MainWindow.RightButton:GetPushedTexture():Point("TOPLEFT", 2, -4)
+	Recount.MainWindow.RightButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, 4)
+
+	Recount.MainWindow.LeftButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.LeftButton:GetNormalTexture():SetTexCoord(0.234, 0.421, 0.015, 0.203)
+	Recount.MainWindow.LeftButton:GetNormalTexture():Point("TOPLEFT", 2, -4)
+	Recount.MainWindow.LeftButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 4)
+	Recount.MainWindow.LeftButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.LeftButton:GetPushedTexture():SetTexCoord(0.234, 0.421, 0.015, 0.203)
+	Recount.MainWindow.LeftButton:GetPushedTexture():Point("TOPLEFT", 2, -4)
+	Recount.MainWindow.LeftButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, 4)
+
+	Recount.MainWindow.ResetButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.ResetButton:GetNormalTexture():SetTexCoord(0.015, 0.203, 0.015, 0.203)
+	Recount.MainWindow.ResetButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
+	Recount.MainWindow.ResetButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+	Recount.MainWindow.ResetButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.ResetButton:GetPushedTexture():SetTexCoord(0.015, 0.203, 0.015, 0.203)
+	Recount.MainWindow.ResetButton:GetPushedTexture():Point("TOPLEFT", 2, -2)
+	Recount.MainWindow.ResetButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, -2)
 
 	local buttons = {
 		Recount.MainWindow.CloseButton,
