@@ -65,6 +65,7 @@ V.addOnSkins = {
 	RaidCooldowns = true,
 	EventAlert = true,
 	WIM = true,
+	BigWigs = true,
 
 	Blizzard_WorldStateFrame = true,
 }
