@@ -5,7 +5,13 @@ local function LoadSkin()
 	if not E.private.addOnSkins.BigWigs then return end
 
 	local db = E.db.addOnSkins
+
 	local offset = E:Scale(E.PixelMode and 1 or 3)
+	local function SetPoint(self, point, attachTo, anchorPoint, xOffset, yOffset)
+		if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
+			self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
+		end
+	end
 
 	local function SetScale(bar)
 		local scale = bar:GetScale()
@@ -32,11 +38,7 @@ local function LoadSkin()
 
 		self:CreateBackdrop("Transparent")
 
-		hooksecurefunc(self, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
-			if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
-				self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
-			end
-		end)
+		hooksecurefunc(self, "SetPoint", SetPoint)
 
 		self.IsSkinned = true
 	end)
