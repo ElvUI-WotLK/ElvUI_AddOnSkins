@@ -4,6 +4,7 @@ local S = E:GetModule("Skins")
 local function LoadSkin()
 	if not E.private.addOnSkins.BigWigs then return end
 
+	local db = E.db.addOnSkins
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 
 	local function SetScale(bar)
@@ -14,13 +15,13 @@ local function LoadSkin()
 		if bar.candyBarIconFrame:GetTexture() then
 			bar.candyBarIconFrame:SetWidth(bar.height * scale)
 		end
-		bar.candyBarLabel:SetFont(bar.candyBarLabel:GetFont(), 10 * scale)
-		bar.candyBarDuration:SetFont(bar.candyBarLabel:GetFont(), 10 * scale)
+		bar.candyBarLabel:SetFont(bar.candyBarLabel:GetFont(), db.bigwigsFontSize * scale, db.bigwigsFontOutline)
+		bar.candyBarDuration:SetFont(bar.candyBarLabel:GetFont(), db.bigwigsFontSize * scale, db.bigwigsFontOutline)
 	end
 
 	local candy = LibStub("LibCandyBar-3.0")
 	hooksecurefunc(candy.barPrototype, "Start", function(self)
-		self.height = E.db.addOnSkins.bigwigsBarHeight
+		self.height = db.bigwigsBarHeight
 	
 		if not self.num then self.num = 0 end
 		self.num = self.num + 1

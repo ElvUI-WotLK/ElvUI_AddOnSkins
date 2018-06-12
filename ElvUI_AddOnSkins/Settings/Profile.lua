@@ -21,6 +21,8 @@ P.addOnSkins = {
 	chatBarTextYOffset = 0,
 
 	bigwigsBarHeight = 14,
+	bigwigsFontSize = 10,
+	bigwigsFontOutline = "NONE",
 
 	embed = {
 		embedType = "DISABLE",
