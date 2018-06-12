@@ -20,6 +20,8 @@ local function LoadSkin()
 
 	local candy = LibStub("LibCandyBar-3.0")
 	hooksecurefunc(candy.barPrototype, "Start", function(self)
+		self.height = E.db.addOnSkins.bigwigsBarHeight
+	
 		if not self.num then self.num = 0 end
 		self.num = self.num + 1
 

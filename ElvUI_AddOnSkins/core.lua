@@ -333,6 +333,22 @@ local function getOptions()
 								min = -300, max = 300, step = 1
 							}
 						}
+					},
+					bwGroup = {
+						order = 6,
+						type = "group",
+						name = "BigWigs",
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value end,
+						disabled = function() return not AS:CheckAddOn("BigWigs") end,
+						args = {
+							bigwigsBarHeight = {
+								order = 1,
+								type = "range",
+								name = "Bar Height",
+								min = 10, max = 40, step = 1
+							}
+						}
 					}
 				}
 			},

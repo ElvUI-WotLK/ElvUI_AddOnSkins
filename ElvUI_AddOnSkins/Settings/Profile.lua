@@ -20,6 +20,8 @@ P.addOnSkins = {
 	chatBarTextXOffset = -3,
 	chatBarTextYOffset = 0,
 
+	bigwigsBarHeight = 14,
+
 	embed = {
 		embedType = "DISABLE",
 		leftWindow = "Omen",
