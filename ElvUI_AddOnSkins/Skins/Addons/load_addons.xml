@@ -64,6 +64,9 @@
 	<Script file="raidCooldowns.lua"/>
 	<Script file="eventAlert.lua"/>
 	<Script file="WIM.lua"/>
+	<Script file="trinketMenu.lua"/>
+	<Script file="chocolateBar.lua"/>
+	<Script file="stalker.lua"/>
 	<Script file="outfitter.lua"/>
 	<Script file="poisoner.lua"/>
 	<Script file="trinketMenu.lua"/>
