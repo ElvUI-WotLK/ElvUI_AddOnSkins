@@ -37,18 +37,15 @@ local function LoadSkin()
 	Spy_MainWindow.CloseButton:Size(32)
 	Spy_MainWindow.CloseButton:Point("TOPRIGHT", 2, -6)
 
-	S:HandleNextPrevButton(Spy_MainWindow.RightButton)
-	S:SquareButton_SetIcon(Spy_MainWindow.RightButton, "RIGHT")
+	S:HandleNextPrevButton(Spy_MainWindow.RightButton, "right")
 	Spy_MainWindow.RightButton:Size(16)
 	Spy_MainWindow.RightButton:Point("TOPRIGHT", -27, -14)
 
-	S:HandleNextPrevButton(Spy_MainWindow.LeftButton)
-	S:SquareButton_SetIcon(Spy_MainWindow.LeftButton, "LEFT")
+	S:HandleNextPrevButton(Spy_MainWindow.LeftButton, "left")
 	Spy_MainWindow.LeftButton:Size(16)
 	Spy_MainWindow.LeftButton:Point("RIGHT", Spy_MainWindow.RightButton, "LEFT", -3, 0)
 
-	S:HandleNextPrevButton(Spy_MainWindow.ClearButton)
-	S:SquareButton_SetIcon(Spy_MainWindow.ClearButton, "DELETE")
+--	S:HandleNextPrevButton(Spy_MainWindow.ClearButton)
 	Spy_MainWindow.ClearButton:Size(16)
 	Spy_MainWindow.ClearButton:Point("RIGHT", Spy_MainWindow.LeftButton, "LEFT", -3, 0)
 
