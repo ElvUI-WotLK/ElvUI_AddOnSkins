@@ -81,13 +81,11 @@ local function epgp()
 
 		parentFrame.incButton:SetPoint("RIGHT", parentFrame.decButton, "LEFT", -4, 0)
 
-		S:HandleNextPrevButton(parentFrame.decButton)
+		S:HandleNextPrevButton(parentFrame.decButton, "down")
 		parentFrame.decButton:Size(14)
-		S:SquareButton_SetIcon(parentFrame.decButton, "DOWN")
 
-		S:HandleNextPrevButton(parentFrame.incButton)
+		S:HandleNextPrevButton(parentFrame.incButton, "down")
 		parentFrame.incButton:Size(14)
-		S:SquareButton_SetIcon(parentFrame.incButton, "UP")
 
 		-- Log Frame
 		EPGPLogFrame:StripTextures()

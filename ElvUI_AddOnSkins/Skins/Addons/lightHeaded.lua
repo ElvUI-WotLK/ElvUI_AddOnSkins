@@ -28,9 +28,8 @@ local function LoadSkin()
 	LightHeadedFrameSub.scroll:ClearAllPoints()
 	LightHeadedFrameSub.scroll:Point("TOPLEFT", LightHeadedFrameSub, "TOPLEFT", 21, -75)
 
-	S:HandleNextPrevButton(LightHeadedFrameSub.next)
-	S:HandleNextPrevButton(LightHeadedFrameSub.prev)
-	S:SquareButton_SetIcon(LightHeadedFrameSub.prev, "LEFT")
+	S:HandleNextPrevButton(LightHeadedFrameSub.next, "right")
+	S:HandleNextPrevButton(LightHeadedFrameSub.prev, "left")
 
 	S:HandleScrollBar(LightHeadedScrollFrameScrollBar)
 

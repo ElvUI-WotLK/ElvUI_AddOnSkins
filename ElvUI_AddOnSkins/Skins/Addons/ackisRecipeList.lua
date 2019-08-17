@@ -17,13 +17,11 @@ local function LoadSkin()
 		local UpButton = select(1, frame:GetChildren());
 		local DownButton = select(2, frame:GetChildren());
 
-		S:HandleNextPrevButton(UpButton);
+		S:HandleNextPrevButton(UpButton, "up");
 		UpButton:Size(20, 18);
-		S:SquareButton_SetIcon(UpButton, "UP");
 
 		S:HandleNextPrevButton(DownButton);
 		DownButton:Size(20, 18);
-		S:SquareButton_SetIcon(DownButton, "DOWN");
 
 		frame.trackbg = CreateFrame("Frame", nil, frame);
 		frame.trackbg:Point("TOPLEFT", UpButton, "BOTTOMLEFT", 0, -1);
@@ -151,14 +149,18 @@ local function LoadSkin()
 
 		S:HandleCloseButton(ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
 
-		S:HandleNextPrevButton(ARL_MainPanel.sort_button, true)
-		S:SquareButton_SetIcon(ARL_MainPanel.sort_button, "DOWN")
+		S:HandleNextPrevButton(ARL_MainPanel.sort_button)
 
 		ARL_MainPanel.sort_button.SetTextures = function(self)
+			local Normal, Disabled, Pushed = self:GetNormalTexture(), self:GetDisabledTexture(), self:GetPushedTexture()
 			if addon.db.profile.sorting == "Ascending" then
-				S:SquareButton_SetIcon(self, "DOWN")
+				Normal:SetRotation(S.ArrowRotation.down)
+				Pushed:SetRotation(S.ArrowRotation.down)
+				Disabled:SetRotation(S.ArrowRotation.down)
 			else
-				S:SquareButton_SetIcon(self, "UP")
+				Normal:SetRotation(S.ArrowRotation.up)
+				Pushed:SetRotation(S.ArrowRotation.up)
+				Disabled:SetRotation(S.ArrowRotation.up)
 			end
 		end
 
@@ -195,10 +197,15 @@ local function LoadSkin()
 		S:HandleNextPrevButton(ARL_MainPanel.filter_toggle)
 
 		ARL_MainPanel.filter_toggle.SetTextures = function(self)
-			if ARL_MainPanel.is_expanded then
-				S:SquareButton_SetIcon(self, "LEFT")
+			local Normal, Disabled, Pushed = self:GetNormalTexture(), self:GetDisabledTexture(), self:GetPushedTexture()
+			if addon.db.profile.sorting == "Ascending" then
+				Normal:SetRotation(S.ArrowRotation.left)
+				Pushed:SetRotation(S.ArrowRotation.left)
+				Disabled:SetRotation(S.ArrowRotation.left)
 			else
-				S:SquareButton_SetIcon(self, "RIGHT")
+				Normal:SetRotation(S.ArrowRotation.right)
+				Pushed:SetRotation(S.ArrowRotation.right)
+				Disabled:SetRotation(S.ArrowRotation.right)
 			end
 
 			self:HookScript("OnEnter", S.SetModifiedBackdrop);

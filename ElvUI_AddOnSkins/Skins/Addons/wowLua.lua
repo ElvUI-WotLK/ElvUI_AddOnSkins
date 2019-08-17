@@ -49,12 +49,10 @@ local function LoadSkin()
 		object:StyleButton(nil, true);
 	end
 
-	S:HandleNextPrevButton(WowLuaFrameOutputUpButton);
-	S:SquareButton_SetIcon(WowLuaFrameOutputUpButton, "UP");
+	S:HandleNextPrevButton(WowLuaFrameOutputUpButton, "up");
 	WowLuaFrameOutputUpButton:Size(18);
 
 	S:HandleNextPrevButton(WowLuaFrameOutputDownButton);
-	S:SquareButton_SetIcon(WowLuaFrameOutputDownButton, "DOWN");
 	WowLuaFrameOutputDownButton:Size(18);
 end
 

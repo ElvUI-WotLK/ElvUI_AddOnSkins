@@ -6,8 +6,6 @@ local S = E:GetModule("Skins")
 
 local _G = _G
 
-local SquareButton_SetIcon = SquareButton_SetIcon
-
 local function LoadSkin()
 	if(not E.private.addOnSkins.Spy) then return end
 

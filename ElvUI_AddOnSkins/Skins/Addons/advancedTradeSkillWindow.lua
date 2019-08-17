@@ -254,10 +254,8 @@ local function LoadSkin()
 		buttonDown:Size(24)
 
 		S:HandleButton(buttonDelete)
-		S:HandleNextPrevButton(buttonUp, "UP")
-		S:SquareButton_SetIcon(buttonUp, "UP")
-		S:HandleNextPrevButton(buttonDown, "DOWN")
-		S:SquareButton_SetIcon(buttonDown, "DOWN")
+		S:HandleNextPrevButton(buttonUp, "up")
+		S:HandleNextPrevButton(buttonDown, "down")
 	end
 
 	ATSWRankFrame:Size(282, 15)
