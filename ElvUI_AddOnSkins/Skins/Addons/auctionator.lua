@@ -84,7 +84,7 @@ local function LoadSkin()
 	hooksecurefunc("Atr_OnAuctionHouseShow", function()
 		if isSkinned then return end
 
-		S:HandleDropDownBox(Atr_DropDown1);
+		S:HandleDropDownBox(Atr_DropDown1, 180);
 		S:HandleDropDownBox(Atr_DropDownSL);
 
 		Atr_CheckActiveButton:SetWidth(195);
@@ -95,6 +95,8 @@ local function LoadSkin()
 		S:HandleButton(Atr_Adv_Search_Button);
 		S:HandleButton(Auctionator1Button);
 		S:HandleButton(Atr_FullScanButton);
+		S:HandleButton(Atr_FullScanButton);
+		Atr_FullScanButton:Width(132)
 		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar);
 
 		Atr_Hlist:StripTextures();
@@ -146,8 +148,8 @@ local function LoadSkin()
 		Atr_Hilite1:SetTemplate("Default", true, true);
 		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0);
 
-		S:HandleDropDownBox(Atr_ASDD_Class)
-		S:HandleDropDownBox(Atr_ASDD_Subclass)
+		S:HandleDropDownBox(Atr_ASDD_Class, 180)
+		S:HandleDropDownBox(Atr_ASDD_Subclass, 180)
 
 		S:HandleButton(Atr_Back_Button)
 
