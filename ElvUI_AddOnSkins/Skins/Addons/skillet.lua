@@ -27,7 +27,6 @@ local function LoadSkin()
 	S:HandleButton(SkilletCreateButton);
 
 	S:HandleSliderFrame(SkilletCreateCountSlider);
-	SkilletCreateCountSlider.backdrop:SetFrameLevel(SkilletCreateCountSlider:GetFrameLevel());
 
 	S:HandleEditBox(SkilletItemCountInputBox);
 
