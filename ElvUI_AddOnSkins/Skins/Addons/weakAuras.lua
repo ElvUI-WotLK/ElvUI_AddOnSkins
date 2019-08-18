@@ -20,7 +20,15 @@ local function LoadSkin()
 		end
 
 		if(ftype == "icon") then
-			if(E.db.addOnSkins.weakAuraIconCooldown) then E:RegisterCooldown(frame.cooldown); end
+			if(E.db.addOnSkins.weakAuraIconCooldown) then
+				frame.cooldown.CooldownSettings = {
+					font = E.LSM:Fetch("font", E.db.cooldown.fonts.font),
+					fontSize = E.db.cooldown.fonts.fontSize,
+					fontOutline = E.db.cooldown.fonts.fontOutline
+				}
+
+				E:RegisterCooldown(frame.cooldown);
+			end
 		end
 	end
 
