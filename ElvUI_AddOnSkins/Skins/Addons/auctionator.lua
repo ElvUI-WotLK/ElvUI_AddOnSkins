@@ -95,7 +95,6 @@ local function LoadSkin()
 		S:HandleButton(Atr_Adv_Search_Button);
 		S:HandleButton(Auctionator1Button);
 		S:HandleButton(Atr_FullScanButton);
-		S:HandleButton(Atr_FullScanButton);
 		Atr_FullScanButton:Width(132)
 		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar);
 
