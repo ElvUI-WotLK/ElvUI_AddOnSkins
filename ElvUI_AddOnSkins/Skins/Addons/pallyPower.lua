@@ -15,6 +15,9 @@ local function LoadSkin()
 	PallyPower.opt.configscale = 1
 	PallyPower.opt.buffscale = 1
 
+	PallyPower.options.args.buffscale.hidden = true
+	PallyPower.options.args.configscale.hidden = true
+
 	local backdrop = E["media"].backdropfadecolor
 	PallyPower.db.profile.cBuffGood = {r = backdrop[1], g = backdrop[2], b = backdrop[3], t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedAll = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}
