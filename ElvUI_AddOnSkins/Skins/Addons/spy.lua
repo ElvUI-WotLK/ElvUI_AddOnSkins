@@ -20,15 +20,6 @@ local function LoadSkin()
 	Spy_MainWindow:StripTextures()
 	Spy_MainWindow:SetTemplate("Transparent")
 
-	for i = 1, 5 do
-		local bar = _G["Spy_MainWindow_Bar"..i]
-
-		bar:StyleButton()
-		bar.StatusBar:SetStatusBarTexture(E["media"].normTex)
-		bar.LeftText:FontTemplate(nil, 12)
-		bar.RightText:FontTemplate(nil, 12)
-	end
-
 	Spy.MainWindow.Title:FontTemplate(nil, 12)
 
 	S:HandleCloseButton(Spy_MainWindow.CloseButton)
@@ -49,6 +40,21 @@ local function LoadSkin()
 
 	Spy_MainWindow.DragBottomLeft:SetNormalTexture(nil)
 	Spy_MainWindow.DragBottomRight:SetNormalTexture(nil)
+
+	local function SkinBar(bar)
+		bar:StyleButton()
+		bar.StatusBar:SetStatusBarTexture(E["media"].normTex)
+		bar.LeftText:FontTemplate(nil, 12)
+		bar.RightText:FontTemplate(nil, 12)
+	end
+
+	for i = 1, 5 do
+		SkinBar(_G["Spy_MainWindow_Bar"..i])
+	end
+
+	hooksecurefunc(Spy, "CreateRow", function(self, num)
+		SkinBar(Spy.MainWindow.Rows[num])
+	end)
 
 	hooksecurefunc(Spy, "ShowMapTooltip", function()
 		if(Spy.MapTooltip) then
