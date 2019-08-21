@@ -46,7 +46,6 @@ function AS:FindChildFrameBySize(parent, objType, width, height)
 			if not objType or (objType and child:IsObjectType(objType)) then
 				if E:Round(child:GetWidth()) == width and E:Round(child:GetHeight()) == width then
 					return child, id
-					break
 				end
 			end
 		end
