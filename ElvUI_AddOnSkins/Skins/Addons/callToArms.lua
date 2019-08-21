@@ -73,8 +73,8 @@ local function LoadSkin()
 	S:HandleNextPrevButton(CTA_GreyListFramePrev)
 	S:HandleNextPrevButton(CTA_GreyListFrameNext)
 	S:HandleNextPrevButton(CTA_LogUpButton)
-	S:HandleNextPrevButton(CTA_LogDownButton, true)
-	S:HandleNextPrevButton(CTA_LogBottomButton, true)
+	S:HandleNextPrevButton(CTA_LogDownButton)
+	S:HandleNextPrevButton(CTA_LogBottomButton)
 
 	local callToArmsTabs = {
 		"CTA_ShowSearchButton",

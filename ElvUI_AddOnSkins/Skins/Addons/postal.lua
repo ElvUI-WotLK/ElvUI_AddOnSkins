@@ -22,7 +22,7 @@ local function LoadSkin()
 	end
 
 	if Postal_OpenAllMenuButton then
-		S:HandleNextPrevButton(Postal_OpenAllMenuButton, true);
+		S:HandleNextPrevButton(Postal_OpenAllMenuButton);
 	end
 
 	if PostalOpenAllButton then
@@ -34,12 +34,12 @@ local function LoadSkin()
 	end
 
 	if Postal_ModuleMenuButton then
-		S:HandleNextPrevButton(Postal_ModuleMenuButton, true);
+		S:HandleNextPrevButton(Postal_ModuleMenuButton);
 		Postal_ModuleMenuButton:SetPoint("TOPRIGHT", MailFrame, -60, -16);
 	end
 
 	if Postal_BlackBookButton then
-		S:HandleNextPrevButton(Postal_BlackBookButton, true);
+		S:HandleNextPrevButton(Postal_BlackBookButton);
 	end
 
 	hooksecurefunc(Postal, "CreateAboutFrame", function()

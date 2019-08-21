@@ -117,7 +117,7 @@ local function SkinRockConfig(lib)
 
 		self.base.addonChooser.text:Height(20)
 		self.base.addonChooser.text:SetTemplate("Transparent")
-		S:HandleNextPrevButton(self.base.addonChooser.button, true)
+		S:HandleNextPrevButton(self.base.addonChooser.button)
 		
 		local pullout = _G[self.base.mainPane:GetName().."_ChoicePullout"]
 		if pullout then
