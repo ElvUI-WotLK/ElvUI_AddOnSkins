@@ -286,8 +286,19 @@ local function LoadSkin()
 		}
 	}
 
-	WIM.db.skin.selected = "WIM ElvUI"
-	WIM.RegisterSkin(WIM_Elvui)
+	local function ApplySkin(self)
+		WIM.db.skin.selected = "WIM ElvUI"
+		WIM.RegisterSkin(WIM_Elvui)
+	end
+
+	if WIM.db then
+		ApplySkin(self)
+	else
+		hooksecurefunc(WIM, "VARIABLES_LOADED", function(self)
+			ApplySkin(self)
+		end)
+	end
+	
 
 	hooksecurefunc("TutorialFrame_Update", function()
 		TutorialFrame:StripTextures()
