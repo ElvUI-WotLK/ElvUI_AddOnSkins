@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local EP = LibStub("LibElvUIPlugin-1.0", true)
 local AS = E:NewModule("AddOnSkins")
-AS.LSM = LibStub("LibSharedMedia-3.0")
 
 local AddOnName = ...
 
@@ -92,17 +91,6 @@ end
 
 function AS:CheckAddOn(addon)
 	return self.addOns[lower(addon)] or false
-end
-
-local IsAddOnLoaded, C_Timer = IsAddOnLoaded, C_Timer
-function AS:CheckOption(optionName, ...)
-	for i = 1, select('#', ...) do
-		local addon = select(i, ...)
-		if not addon then break end
-		if not IsAddOnLoaded(addon) then return false end
-	end
-
-	return E.db.addOnSkins[optionName]
 end
 
 function AS:IsAddonExist(addon)
@@ -487,28 +475,8 @@ local function getOptions()
 	E.Options.args.addOnSkins = options
 end
 
-function AS:UpdateMedia()
-	AS.Blank = AS.LSM:Fetch('background', 'ElvUI Blank')
-	AS.Font = AS.LSM:Fetch('font', E.db.general.font)
-	AS.ActionBarFont = AS.LSM:Fetch('font', 'Arial')
-	AS.PixelFont = AS.LSM:Fetch('font', 'ElvUI Pixel')
-	AS.NormTex = AS.LSM:Fetch('statusbar', E.private.general.normTex)
-	AS.BackdropColor = E['media'].backdropcolor
-	AS.BorderColor = E['media'].bordercolor
-	AS.PixelPerfect = E.PixelMode
-	AS.ValueColor = E["media"].rgbvaluecolor
-	AS.HideShadows = false
-	AS.TexCoords = E.TexCoords
-
-	E:GetModule('DataTexts'):RegisterLDB()
-	E:GetModule('DataTexts'):LoadDataTexts()
-	E:UpdateMedia()
-end
-
 function AS:Initialize()
 	EP:RegisterPlugin(AddOnName, getOptions)
-
-	AS:UpdateMedia()
 end
 
 local function InitializeCallback()
