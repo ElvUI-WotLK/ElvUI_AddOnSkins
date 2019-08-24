@@ -64,4 +64,5 @@
 	<Script file="raidCooldowns.lua"/>
 	<Script file="eventAlert.lua"/>
 	<Script file="WIM.lua"/>
+	<Script file="outfitter.lua"/>
 </Ui>

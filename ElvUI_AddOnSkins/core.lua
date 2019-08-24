@@ -74,6 +74,7 @@ local addonList = {
 	"EventAlert",
 	"WIM",
 	"BigWigs",
+	"Outfitter",
 }
 
 AS.addOns = {}

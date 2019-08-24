@@ -66,6 +66,7 @@ V.addOnSkins = {
 	EventAlert = true,
 	WIM = true,
 	BigWigs = true,
+	Outfitter = true,
 
 	Blizzard_WorldStateFrame = true,
 }
