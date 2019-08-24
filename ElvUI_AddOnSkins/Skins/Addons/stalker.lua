@@ -1,15 +1,11 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- Repository: https://wow.curseforge.com/projects/Stalker/files/442604
--- Version: 1.2
-
-local _G = _G
-
-local SquareButton_SetIcon = SquareButton_SetIcon
+-- Stalker 1.2
+-- https://wow.curseforge.com/projects/Stalker/files/442604
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Stalker) then return end
+	if not E.private.addOnSkins.Stalker then return end
 
 	Stalker_AlertWindow:StripTextures()
 	Stalker_AlertWindow:SetTemplate("Transparent")
@@ -38,17 +34,17 @@ local function LoadSkin()
 	Stalker_MainWindow.CloseButton:Point("TOPRIGHT", 2, -6)
 
 	S:HandleNextPrevButton(Stalker_MainWindow.RightButton)
-	S:SquareButton_SetIcon(Stalker_MainWindow.RightButton, "RIGHT")
+	S:SetNextPrevButtonDirection(Stalker_MainWindow.RightButton, "right")
 	Stalker_MainWindow.RightButton:Size(16)
 	Stalker_MainWindow.RightButton:Point("TOPRIGHT", -27, -14)
 
 	S:HandleNextPrevButton(Stalker_MainWindow.LeftButton)
-	S:SquareButton_SetIcon(Stalker_MainWindow.LeftButton, "LEFT")
+	S:SetNextPrevButtonDirection(Stalker_MainWindow.LeftButton, "left")
 	Stalker_MainWindow.LeftButton:Size(16)
 	Stalker_MainWindow.LeftButton:Point("RIGHT", Stalker_MainWindow.RightButton, "LEFT", -3, 0)
 
 	S:HandleNextPrevButton(Stalker_MainWindow.ClearButton)
-	S:SquareButton_SetIcon(Stalker_MainWindow.ClearButton, "DELETE")
+	S:SetNextPrevButtonDirection(Stalker_MainWindow.ClearButton, "down")
 	Stalker_MainWindow.ClearButton:Size(16)
 	Stalker_MainWindow.ClearButton:Point("RIGHT", Stalker_MainWindow.LeftButton, "LEFT", -3, 0)
 
@@ -56,7 +52,7 @@ local function LoadSkin()
 	Stalker_MainWindow.DragBottomRight:SetNormalTexture(nil)
 
 	hooksecurefunc(Stalker, "ShowMapTooltip", function()
-		if(Stalker.MapTooltip) then
+		if Stalker.MapTooltip then
 			Stalker.MapTooltip:SetTemplate("Transparent")
 		end
 	end)
