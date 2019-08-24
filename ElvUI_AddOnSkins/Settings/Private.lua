@@ -67,6 +67,7 @@ V.addOnSkins = {
 	WIM = true,
 	BigWigs = true,
 	Outfitter = true,
+	Poisoner = true,
 
 	Blizzard_WorldStateFrame = true,
 }

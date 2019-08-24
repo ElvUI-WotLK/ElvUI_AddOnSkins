@@ -65,4 +65,5 @@
 	<Script file="eventAlert.lua"/>
 	<Script file="WIM.lua"/>
 	<Script file="outfitter.lua"/>
+	<Script file="poisoner.lua"/>
 </Ui>
