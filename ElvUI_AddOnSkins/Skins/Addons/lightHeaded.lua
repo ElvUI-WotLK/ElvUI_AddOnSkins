@@ -6,7 +6,7 @@ local cos, pi = math.cos, math.pi
 -- LightHeaded r310
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.LightHeaded) then return end
+	if not E.private.addOnSkins.LightHeaded then return end
 
 	LightHeadedFrame:StripTextures()
 	LightHeadedFrame:SetTemplate("Transparent")

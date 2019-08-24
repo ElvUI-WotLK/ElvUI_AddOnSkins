@@ -5,10 +5,12 @@ local _G = _G
 local ipairs = ipairs
 local find = string.find
 
+local hooksecurefunc = hooksecurefunc
+
 -- AdvancedTradeSkillWindow 0.7.8
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.AdvancedTradeSkillWindow) then return; end
+	if not E.private.addOnSkins.AdvancedTradeSkillWindow then return end
 
 	local scrollBars = {
 		-- Main Frame
@@ -97,9 +99,12 @@ local function LoadSkin()
 		"ATSWRankFrame",
 	}
 
+	local frame
+
 	for _, scrollBar in ipairs(scrollBars) do
-		_G[scrollBar]:GetParent():StripTextures()
-		S:HandleScrollBar(_G[scrollBar])
+		frame = _G[scrollBar]
+		frame:GetParent():StripTextures()
+		S:HandleScrollBar(frame)
 	end
 	for _, button in ipairs(buttons) do
 		S:HandleButton(_G[button])
@@ -114,19 +119,21 @@ local function LoadSkin()
 		S:HandleDropDownBox(_G[dropDownBox])
 	end
 	for _, closeButton in ipairs(closeButtons) do
-		S:HandleCloseButton(_G[closeButton], _G[closeButton]:GetParent().backdrop)
+		frame = _G[closeButton]
+		S:HandleCloseButton(frame, frame:GetParent().backdrop)
 	end
 	for _, statusBar in ipairs(statusBars) do
-		_G[statusBar]:StripTextures()
-		_G[statusBar]:CreateBackdrop()
-		_G[statusBar]:SetStatusBarTexture(E["media"].normTex)
-		E:RegisterStatusBar(_G[statusBar])
+		frame = _G[statusBar]
+		frame:StripTextures()
+		frame:CreateBackdrop()
+		frame:SetStatusBarTexture(E["media"].normTex)
+		E:RegisterStatusBar(frame)
 	end
 
 	ATSWScanDelayFrame:StripTextures()
 	ATSWScanDelayFrame:SetTemplate("Transparent")
 
-	ATSWOptionsFrame:SetParent(E.UIParent);
+	ATSWOptionsFrame:SetParent(E.UIParent)
 	ATSWOptionsFrame:StripTextures()
 	ATSWOptionsFrame:SetTemplate("Transparent")
 
@@ -179,7 +186,7 @@ local function LoadSkin()
 			else
 				self.Text:SetText("")
 			end
-		end);
+		end)
 	end
 
 	ATSWExpandButtonFrame:StripTextures()
@@ -201,7 +208,7 @@ local function LoadSkin()
 		else
 			self.Text:SetText("-")
 		end
-	end);
+	end)
 
 	ATSWRankFrameBorder:StripTextures()
 	ATSWRankFrameBorder:Hide()
@@ -316,7 +323,7 @@ local function LoadSkin()
 	-- ChatLink fix
 	ATSWTradeSkillLinkButton:SetScript("OnClick", function()
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		if (not ChatFrameEditBox:IsShown()) then
+		if not ChatFrameEditBox:IsShown() then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
 

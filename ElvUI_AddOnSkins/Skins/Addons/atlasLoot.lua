@@ -1,5 +1,8 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+
+local select = select
+local unpack = unpack
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AtlasLoot then return end

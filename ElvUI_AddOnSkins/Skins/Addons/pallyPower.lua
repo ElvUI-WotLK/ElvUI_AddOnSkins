@@ -1,12 +1,12 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 local unpack = unpack
 
 -- PallyPower 3.2.20
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.PallyPower) then return; end
+	if not E.private.addOnSkins.PallyPower then return end
 
 	PallyPower.BuffScale = E.noop
 	PallyPower.ConfigScale = E.noop
@@ -72,4 +72,4 @@ local function LoadSkin()
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 end
 
-S:AddCallbackForAddon("PallyPower", "PallyPower", LoadSkin);
+S:AddCallbackForAddon("PallyPower", "PallyPower", LoadSkin)

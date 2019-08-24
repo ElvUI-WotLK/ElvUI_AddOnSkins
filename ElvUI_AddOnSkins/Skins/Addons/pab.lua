@@ -47,7 +47,7 @@ local function LoadSkin()
 		PABIcons:SetScale(1)
 
 		for i = 1, 4 do
-			for j, iconFrame in pairs(_G["PABAnchor"..i].icons) do
+			for _, iconFrame in pairs(_G["PABAnchor"..i].icons) do
 				iconFrame:Size(iconSize * scale)
 			end
 		end

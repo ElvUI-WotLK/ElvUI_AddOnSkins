@@ -1,10 +1,13 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+local _G = _G
+local find = string.find
 
 -- TradeskillInfo r365
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.TradeskillInfo) then return; end
+	if not E.private.addOnSkins.TradeskillInfo then return end
 
 	TradeskillInfoFrame:SetTemplate("Transparent")
 
@@ -83,9 +86,9 @@ local function LoadSkin()
 				c.Text:SetText("")
 
 				hooksecurefunc(c, "SetNormalTexture", function(self, texture)
-					if(string.find(texture, "MinusButton")) then
+					if find(texture, "MinusButton") then
 						self.Text:SetText("-")
-					elseif string.find(texture, "PlusButton") then
+					elseif find(texture, "PlusButton") then
 						self.Text:SetText("+")
 					else
 						self.Text:SetText("")
@@ -98,4 +101,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("TradeskillInfoUI", "TradeskillInfoUI", LoadSkin);
+S:AddCallbackForAddon("TradeskillInfoUI", "TradeskillInfoUI", LoadSkin)

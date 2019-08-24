@@ -1,8 +1,8 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.InspectEquip) then return; end
+	if not E.private.addOnSkins.InspectEquip then return end
 
 	InspectEquip_InfoWindow:SetTemplate("Transparent")
 	S:HandleCloseButton(InspectEquip_InfoWindow_CloseButton)

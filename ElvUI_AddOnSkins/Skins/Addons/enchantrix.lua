@@ -1,13 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
-local floor = math.floor
+local _G = _G
 local select = select
 
 -- Enchantrix 5.8.4723
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Enchantrix) then return end
+	if not E.private.addOnSkins.Enchantrix then return end
 
 	local function SkinEditBox(obj)
 		if not obj then return end
@@ -81,7 +81,7 @@ local function LoadSkin()
 		S:HandleButton(GUI.Done)
 
 		local tab
-		for tabID, _ in pairs(GUI.tabs) do
+		for tabID in pairs(GUI.tabs) do
 			if type(tabID) == "number" then
 				tab = GUI.tabs[tabID]
 

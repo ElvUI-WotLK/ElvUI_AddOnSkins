@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
-local AS = E:GetModule("AddOnSkins")
 local S = E:GetModule("Skins")
+
+local _G = _G
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Recount then return end
 
-	local function SkinFrame(frame)
+	local function skinFrame(frame)
 		frame:SetBackdrop(nil)
 
 		local backdrop = CreateFrame("Frame", nil, frame)
@@ -40,7 +41,7 @@ local function LoadSkin()
 		end
 	end
 
-	SkinFrame(Recount.MainWindow)
+	skinFrame(Recount.MainWindow)
 
 	S:HandleCloseButton(Recount.MainWindow.CloseButton)
 	Recount.MainWindow.CloseButton.Texture:Size(10)
@@ -81,7 +82,7 @@ local function LoadSkin()
 		_G[name.."ScrollBar"]:GetThumbTexture().backdrop:Show()
 	end)
 
-	if(Recount.db.profile.MainWindow.ShowScrollbar) then
+	if Recount.db.profile.MainWindow.ShowScrollbar then
 		Recount:ShowScrollbarElements("Recount_MainWindow_ScrollBar")
 	else
 		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")

@@ -66,4 +66,5 @@
 	<Script file="WIM.lua"/>
 	<Script file="outfitter.lua"/>
 	<Script file="poisoner.lua"/>
+	<Script file="trinketMenu.lua"/>
 </Ui>

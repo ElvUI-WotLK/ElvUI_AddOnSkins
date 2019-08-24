@@ -1,6 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local ipairs = ipairs
+local select = select
+local unpack = unpack
+
+local GetItemQualityColor = GetItemQualityColor
+
 -- EPGP LootMaster 0.4.9
 
 local function LoadSkin()
@@ -69,6 +75,7 @@ local function LoadSkin()
 				frame.btnNote:HookScript("OnLeave", S.SetOriginalBackdrop)
 				frame.btnNote:SetHighlightTexture(nil)
 				frame.btnNote:DisableDrawLayer("OVERLAY")
+
 				local btnNoteIcon = frame.btnNote:GetRegions()
 				btnNoteIcon:SetDrawLayer("ARTWORK")
 				btnNoteIcon:Point("CENTER", btnNote)

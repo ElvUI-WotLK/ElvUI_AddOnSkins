@@ -1,10 +1,12 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+local _G = _G
 
 -- KarniCrap 3.02
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.KarniCrap) then return; end
+	if not E.private.addOnSkins.KarniCrap then return end
 
 	KarniCrap:StripTextures()
 	KarniCrap:SetTemplate("Transparent")
@@ -137,17 +139,21 @@ local function LoadSkin()
 		_G[frame]:StripTextures()
 		_G[frame]:SetTemplate("Transparent")
 	end
+
 	for _, scrollBar in ipairs(scrollBars) do
 		_G[scrollBar]:GetParent():StripTextures()
 		S:HandleScrollBar(_G[scrollBar])
 	end
+
 	for _, button in ipairs(buttons) do
 		S:HandleButton(_G[button])
 	end
+
 	for _, checkBox in ipairs(checkBoxes) do
 		_G[checkBox]:StripTextures()
 		S:HandleCheckBox(_G[checkBox])
 	end
+
 	for _, editBox in ipairs(editBoxes) do
 		if _G[editBox.."Disabled"] then
 			_G[editBox.."Disabled"]:StripTextures()
@@ -156,6 +162,7 @@ local function LoadSkin()
 		_G[editBox]:Size(32, 16)
 		S:HandleEditBox(_G[editBox])
 	end
+
 	for _, tab in ipairs(tabs) do
 		S:HandleTab(_G[tab])
 	end
@@ -166,4 +173,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("KarniCrap", "KarniCrap", LoadSkin);
+S:AddCallbackForAddon("KarniCrap", "KarniCrap", LoadSkin)

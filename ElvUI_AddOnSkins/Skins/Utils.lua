@@ -1,25 +1,28 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local AS = E:GetModule("AddOnSkins")
 
-local select = select
-local pairs = pairs
+local ipairs = ipairs
+local floor = math.floor
 
 local EnumerateFrames = EnumerateFrames
+
+local function round(x)
+	return floor(x + 0.5)
+end
 
 function AS:FindChildFrameByPoint(parent, objType, point1, relativeTo, point2, x, y)
 	if not parent then return end
 
 	local childPoint1, childParent, childPoint2, childX, childY
-	local childs = {parent:GetChildren()}
 
-	x = E:Round(x)
-	y = E:Round(y)
+	x = round(x)
+	y = round(y)
 
-	for id, child in pairs(childs) do
+	for id, child in ipairs({parent:GetChildren()}) do
 		if not child:GetName() and (not objType or (objType and child:IsObjectType(objType))) then
 			childPoint1, childParent, childPoint2, childX, childY = child:GetPoint()
-			childX = childX and E:Round(childX) or 0
-			childY = childY and E:Round(childY) or 0
+			childX = childX and round(childX) or 0
+			childY = childY and round(childY) or 0
 
 			if childPoint1 == point1
 			and childParent == relativeTo
@@ -36,15 +39,13 @@ end
 function AS:FindChildFrameBySize(parent, objType, width, height)
 	if not parent then return end
 
-	local childs = {parent:GetChildren()}
+	width = round(width)
+	height = round(height)
 
-	width = E:Round(width)
-	height = E:Round(height)
-
-	for id, child in pairs(childs) do
+	for id, child in ipairs({parent:GetChildren()}) do
 		if not child:GetName() then
 			if not objType or (objType and child:IsObjectType(objType)) then
-				if E:Round(child:GetWidth()) == width and E:Round(child:GetHeight()) == width then
+				if round(child:GetWidth()) == width and round(child:GetHeight()) == width and round(obj:GetHeight()) == height then
 					return child, id
 				end
 			end
@@ -58,12 +59,12 @@ function AS:FindFrameBySizeChild(childTypes, width, height)
 	local singleChild = type(childTypes) == "string"
 	local obj = EnumerateFrames()
 
-	width = E:Round(width)
-	height = E:Round(height)
+	width = round(width)
+	height = round(height)
 
 	while obj do
 		if obj.IsObjectType and obj:IsObjectType("Frame") and (not (obj:GetName() and obj:GetParent())) then
-			if E:Round(obj:GetWidth()) == width and E:Round(obj:GetHeight()) == height then
+			if round(obj:GetWidth()) == width and round(obj:GetHeight()) == height then
 				local childs = {}
 
 				for _, child in pairs({obj:GetChildren()}) do
@@ -71,14 +72,14 @@ function AS:FindFrameBySizeChild(childTypes, width, height)
 				end
 
 				local matched = 0
-				for _, cType1 in pairs(childs) do
+				for _, cType1 in ipairs(childs) do
 					if not singleChild then
-						for _, cType2 in pairs(childTypes) do
+						for _, cType2 in ipairs(childTypes) do
 							if cType1 == cType2 then
 								matched = matched + 1
 							end
 						end
-					else
+					elseif cType1 == childTypes then
 						return obj
 					end
 				end
@@ -104,14 +105,14 @@ function AS:FindFrameByPoint(point1, relativeTo, point2, x, y, multipleFrames)
 	local childPoint1, childParent, childPoint2, childX, childY
 	local obj = EnumerateFrames()
 
-	x = E:Round(x)
-	y = E:Round(y)
+	x = round(x)
+	y = round(y)
 
 	while obj do
 		if obj.IsObjectType and obj:IsObjectType("Frame") and (not (obj:GetName() and obj:GetParent())) then
 			childPoint1, childParent, childPoint2, childX, childY = obj:GetPoint()
-			childX = childX and E:Round(childX) or 0
-			childY = childY and E:Round(childY) or 0
+			childX = childX and round(childX) or 0
+			childY = childY and round(childY) or 0
 
 			if childPoint1 == point1
 			and childParent == relativeTo

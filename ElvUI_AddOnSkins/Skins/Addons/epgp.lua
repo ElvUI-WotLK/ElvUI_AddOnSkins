@@ -59,7 +59,7 @@ local function epgp()
 		S:HandleEditBox(EPGPSideFrameEPControlOtherEditBox)
 		S:HandleEditBox(EPGPSideFrameEPControlEditBox)
 
-		local parentFrame = EPGPSideFrameGPControlEditBox:GetParent()
+		parentFrame = EPGPSideFrameGPControlEditBox:GetParent()
 		S:HandleButton(parentFrame.button)
 		parentFrame = EPGPSideFrameEPControlEditBox:GetParent()
 		S:HandleButton(parentFrame.button)

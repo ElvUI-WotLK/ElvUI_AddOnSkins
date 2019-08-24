@@ -1,76 +1,80 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+local _G = _G
+local unpack = unpack
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Skillet) then return; end
+	if not E.private.addOnSkins.Skillet then return end
 
-	S:HandleCloseButton(SkilletFrameCloseButton);
+	S:HandleCloseButton(SkilletFrameCloseButton)
 
-	S:HandleScrollBar(SkilletSkillListScrollBar);
+	S:HandleScrollBar(SkilletSkillListScrollBar)
 
-	S:HandleDropDownBox(SkilletSortDropdown);
+	S:HandleDropDownBox(SkilletSortDropdown)
 
-	S:HandleEditBox(SkilletFilterBox);
+	S:HandleEditBox(SkilletFilterBox)
 
-	S:HandleCheckBox(SkilletHideUncraftableRecipes);
-	SkilletHideUncraftableRecipes.backdrop:SetFrameLevel(SkilletHideUncraftableRecipes:GetFrameLevel());
-	S:HandleCheckBox(SkilletHideTrivialRecipes);
-	SkilletHideTrivialRecipes.backdrop:SetFrameLevel(SkilletHideTrivialRecipes:GetFrameLevel());
+	S:HandleCheckBox(SkilletHideUncraftableRecipes)
+	SkilletHideUncraftableRecipes.backdrop:SetFrameLevel(SkilletHideUncraftableRecipes:GetFrameLevel())
 
-	S:HandleButton(SkilletShowOptionsButton);
-	S:HandleButton(SkilletRescanButton);
-	S:HandleButton(SkilletRecipeNotesButton);
+	S:HandleCheckBox(SkilletHideTrivialRecipes)
+	SkilletHideTrivialRecipes.backdrop:SetFrameLevel(SkilletHideTrivialRecipes:GetFrameLevel())
 
-	S:HandleButton(SkilletQueueAllButton);
-	S:HandleButton(SkilletCreateAllButton);
-	S:HandleButton(SkilletQueueButton);
-	S:HandleButton(SkilletCreateButton);
+	S:HandleButton(SkilletShowOptionsButton)
+	S:HandleButton(SkilletRescanButton)
+	S:HandleButton(SkilletRecipeNotesButton)
 
-	S:HandleSliderFrame(SkilletCreateCountSlider);
+	S:HandleButton(SkilletQueueAllButton)
+	S:HandleButton(SkilletCreateAllButton)
+	S:HandleButton(SkilletQueueButton)
+	S:HandleButton(SkilletCreateButton)
 
-	S:HandleEditBox(SkilletItemCountInputBox);
+	S:HandleSliderFrame(SkilletCreateCountSlider)
 
-	S:HandleScrollBar(SkilletQueueListScrollBar);
+	S:HandleEditBox(SkilletItemCountInputBox)
 
-	S:HandleButton(SkilletStartQueueButton);
-	S:HandleButton(SkilletEmptyQueueButton);
-	S:HandleButton(SkilletShoppingListButton);
+	S:HandleScrollBar(SkilletQueueListScrollBar)
 
-	S:HandleCloseButton(SkilletNotesCloseButton);
+	S:HandleButton(SkilletStartQueueButton)
+	S:HandleButton(SkilletEmptyQueueButton)
+	S:HandleButton(SkilletShoppingListButton)
 
-	S:HandleScrollBar(SkilletNotesListScrollBar);
+	S:HandleCloseButton(SkilletNotesCloseButton)
+
+	S:HandleScrollBar(SkilletNotesListScrollBar)
 
 	for i = 1, 7 do
-		local buttonIcon = _G["SkilletNotesButton" .. i .. "Icon"];
-		buttonIcon:SetTemplate("Default");
+		local buttonIcon = _G["SkilletNotesButton" .. i .. "Icon"]
+		buttonIcon:SetTemplate("Default")
 	end
 
 	hooksecurefunc(Skillet, "CreateTradeSkillWindow", function()
-		SkilletFrame:StripTextures();
+		SkilletFrame:StripTextures()
 
-		SkilletFrame:SetTemplate("Transparent");
+		SkilletFrame:SetTemplate("Transparent")
 
-		SkilletSkillListParent:SetTemplate("Default");
-		SkilletSkillListParent:Point("TOPLEFT", 8, -100);
-		SkilletSkillListParent:Point("BOTTOM", 0, 8);
-		SkilletReagentParent:SetTemplate("Default");
-		SkilletReagentParent:Point("TOPRIGHT", -8, -75);
-		SkilletQueueParent:SetTemplate("Default");
-		SkilletQueueParent:Point("TOP", SkilletCreateButton, "BOTTOM", 0, -3);
-		SkilletQueueParent:Point("BOTTOMRIGHT", SkilletFrame, "BOTTOMRIGHT", -8, 32);
+		SkilletSkillListParent:SetTemplate("Default")
+		SkilletSkillListParent:Point("TOPLEFT", 8, -100)
+		SkilletSkillListParent:Point("BOTTOM", 0, 8)
+		SkilletReagentParent:SetTemplate("Default")
+		SkilletReagentParent:Point("TOPRIGHT", -8, -75)
+		SkilletQueueParent:SetTemplate("Default")
+		SkilletQueueParent:Point("TOP", SkilletCreateButton, "BOTTOM", 0, -3)
+		SkilletQueueParent:Point("BOTTOMRIGHT", SkilletFrame, "BOTTOMRIGHT", -8, 32)
 
-		SkilletRecipeNotesFrame:SetTemplate("Transparent");
-	end);
+		SkilletRecipeNotesFrame:SetTemplate("Transparent")
+	end)
 
 	hooksecurefunc(Skillet, "UpdateNotesWindow", function()
 		for i = 1, 7 do
-			local buttonIcon = _G["SkilletNotesButton" .. i .. "Icon"];
-			if(buttonIcon:GetNormalTexture()) then
-				buttonIcon:GetNormalTexture():SetInside();
-				buttonIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords));
+			local buttonIcon = _G["SkilletNotesButton" .. i .. "Icon"]
+			if buttonIcon:GetNormalTexture() then
+				buttonIcon:GetNormalTexture():SetInside()
+				buttonIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			end
 		end
-	end);
+	end)
 end
 
-S:AddCallbackForAddon("Skillet", "Skillet", LoadSkin);
+S:AddCallbackForAddon("Skillet", "Skillet", LoadSkin)

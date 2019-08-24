@@ -1,10 +1,11 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local EP = LibStub("LibElvUIPlugin-1.0", true)
 local AS = E:NewModule("AddOnSkins")
 
 local AddOnName = ...
 
-local find, lower, match, trim = string.find, string.lower, string.match, string.trim
+local select = select
+local lower = string.lower
 
 local GetAddOnInfo = GetAddOnInfo
 
@@ -93,19 +94,19 @@ function AS:IsAddonExist(addon)
 	return self.addOns[lower(addon)] ~= nil
 end
 
-function AS:RegisterAddonOption(AddonName, options)
-	if select(6, GetAddOnInfo(AddonName)) == "MISSING" then return end
+function AS:RegisterAddonOption(addonName, options)
+	if select(6, GetAddOnInfo(addonName)) == "MISSING" then return end
 
-	options.args.skins.args.addOns.args[AddonName] = {
+	options.args.skins.args.addOns.args[addonName] = {
 		type = "toggle",
-		name = AddonName,
+		name = addonName,
 		desc = L["TOGGLESKIN_DESC"],
-		hidden = function() return not self:CheckAddOn(AddonName) end
+		hidden = function() return not self:CheckAddOn(addonName) end
 	}
 end
 
 local function ColorizeSettingName(settingName)
-	return format("|cff1784d1%s|r", settingName)
+	return string.format("|cff1784d1%s|r", settingName)
 end
 
 local positionValues = {
@@ -124,14 +125,14 @@ local function getOptions()
 	local options = {
 		order = 50,
 		type = "group",
-		name = ColorizeSettingName(L["AddOn Skins"]),
 		childGroups = "tab",
+		name = ColorizeSettingName(L["AddOn Skins"]),
 		args = {
 			skins = {
 				order = 1,
 				type = "group",
-				name = L["Skins"],
 				childGroups = "tab",
+				name = L["Skins"],
 				args = {
 					header = {
 						order = 1,
@@ -142,8 +143,11 @@ local function getOptions()
 						order = 1,
 						type = "group",
 						name = L["AddOn Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						get = function(info) return E.private.addOnSkins[info[#info]] end,
+						set = function(info, value)
+							E.private.addOnSkins[info[#info]] = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
 						args = {
 							header = {
 								order = 1,
@@ -156,8 +160,11 @@ local function getOptions()
 						order = 2,
 						type = "group",
 						name = L["Blizzard Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						get = function(info) return E.private.addOnSkins[info[#info]] end,
+						set = function(info, value)
+							E.private.addOnSkins[info[#info]] = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
 						args = {
 							header = {
 								order = 1,
@@ -165,6 +172,7 @@ local function getOptions()
 								name = L["Blizzard Skins"]
 							},
 							Blizzard_WorldStateFrame = {
+								order = 2,
 								type = "toggle",
 								name = "WorldStateFrame",
 								desc = L["TOGGLESKIN_DESC"],
@@ -176,8 +184,8 @@ local function getOptions()
 			misc = {
 				order = 2,
 				type = "group",
-				name = L["Misc Options"],
 				childGroups = "tab",
+				name = L["Misc Options"],
 				args = {
 					header = {
 						order = 1,
@@ -189,7 +197,10 @@ local function getOptions()
 						type = "group",
 						name = "Skada",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value Skada:ApplySettings() end,
+						set = function(info, value)
+							E.db.addOnSkins[info[#info]] = value
+							Skada:ApplySettings()
+						end,
 						disabled = function() return not AS:CheckAddOn("Skada") end,
 						args = {
 							skadaTemplate = {
@@ -236,15 +247,18 @@ local function getOptions()
 						type = "group",
 						name = "DBM",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value DBM.Bars:ApplyStyle() DBM.BossHealth:UpdateSettings() end,
+						set = function(info, value)
+							E.db.addOnSkins[info[#info]] = value
+							DBM.Bars:ApplyStyle()
+							DBM.BossHealth:UpdateSettings()
+						end,
 						disabled = function() return not AS:CheckAddOn("DBM-Core") end,
 						args = {
 							dbmBarHeight = {
 								order = 1,
 								type = "range",
-								name = "Bar Height",
-								min = 6, max = 60,
-								step = 1
+								min = 6, max = 60, step = 1,
+								name = "Bar Height"
 							},
 							dbmFont = {
 								order = 2,
@@ -256,8 +270,8 @@ local function getOptions()
 							dbmFontSize = {
 								order = 3,
 								type = "range",
-								name = L["Font Size"],
-								min = 6, max = 22, step = 1
+								min = 6, max = 22, step = 1,
+								name = L["Font Size"]
 							},
 							dbmFontOutline = {
 								order = 4,
@@ -277,7 +291,10 @@ local function getOptions()
 						type = "group",
 						name = "WeakAuras",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value E:StaticPopup_Show("PRIVATE_RL") end,
+						set = function(info, value)
+							E.db.addOnSkins[info[#info]] = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
 						disabled = function() return not AS:CheckAddOn("WeakAuras") end,
 						args = {
 							weakAuraAuraBar = {
@@ -297,22 +314,24 @@ local function getOptions()
 						type = "group",
 						name = "ChatBar",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value ChatBar_UpdateButtonOrientation() ChatBar_UpdateButtons() end,
+						set = function(info, value)
+							E.db.addOnSkins[info[#info]] = value
+							ChatBar_UpdateButtonOrientation()
+							ChatBar_UpdateButtons()
+						end,
 						disabled = function() return not AS:CheckAddOn("ChatBar") end,
 						args = {
 							chatBarSize = {
 								order = 1,
 								type = "range",
-								name = "Button Size",
-								min = 0, max = 60,
-								step = 1
+								min = 0, max = 60, step = 1,
+								name = "Button Size"
 							},
 							chatBarSpacing = {
 								order = 2,
 								type = "range",
-								name = "Button Spacing",
-								min = 0, max = 60,
-								step = 1
+								min = 0, max = 60, step = 1,
+								name = "Button Spacing"
 							},
 							chatBarTextPoint = {
 								order = 3,
@@ -323,16 +342,16 @@ local function getOptions()
 							chatBarTextXOffset = {
 								order = 4,
 								type = "range",
+								min = -300, max = 300, step = 1,
 								name = L["Text xOffset"],
-								desc = L["Offset position for text."],
-								min = -300, max = 300, step = 1
+								desc = L["Offset position for text."]
 							},
 							chatBarTextYOffset = {
 								order = 5,
 								type = "range",
+								min = -300, max = 300, step = 1,
 								name = L["Text yOffset"],
-								desc = L["Offset position for text."],
-								min = -300, max = 300, step = 1
+								desc = L["Offset position for text."]
 							}
 						}
 					},
@@ -347,14 +366,14 @@ local function getOptions()
 							bigwigsBarHeight = {
 								order = 1,
 								type = "range",
-								name = "Bar Height",
-								min = 10, max = 40, step = 1
+								min = 10, max = 40, step = 1,
+								name = "Bar Height"
 							},
 							bigwigsFontSize = {
 								order = 2,
 								type = "range",
-								name = L["Font Size"],
-								min = 6, max = 22, step = 1
+								min = 6, max = 22, step = 1,
+								name = L["Font Size"]
 							},
 							bigwigsFontOutline = {
 								order = 3,
@@ -376,7 +395,10 @@ local function getOptions()
 				type = "group",
 				name = "Embed Settings",
 				get = function(info) return E.db.addOnSkins.embed[info[#info]] end,
-				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value E:GetModule("EmbedSystem"):EmbedUpdate() end,
+				set = function(info, value)
+					E.db.addOnSkins.embed[info[#info]] = value
+					E:GetModule("EmbedSystem"):EmbedUpdate()
+				end,
 				args = {
 					desc = {
 						order = 1,
@@ -402,7 +424,7 @@ local function getOptions()
 							["Omen"] = "Omen",
 							["Skada"] = "Skada"
 						},
-						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
 					rightWindow = {
 						order = 4,
@@ -413,39 +435,37 @@ local function getOptions()
 							["Omen"] = "Omen",
 							["Skada"] = "Skada"
 						},
-						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end
 					},
 					leftWindowWidth = {
-						type = "range",
 						order = 5,
-						name = L["Left Window Width"],
-						min = 100,
-						max = 300,
-						step = 1,
+						type = "range",
+						min = 100, max = 300, step = 1,
+						name = L["Left Window Width"]
 					},
 					hideChat = {
-						name = "Hide Chat Frame",
 						order = 6,
 						type = "select",
+						name = "Hide Chat Frame",
 						values = E:GetModule("EmbedSystem"):GetChatWindowInfo(),
-						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
 					rightChatPanel = {
-						type = "toggle",
-						name = "Embed into Right Chat Panel",
 						order = 7,
+						type = "toggle",
+						name = "Embed into Right Chat Panel"
 					},
 					belowTopTab = {
-						type = "toggle",
-						name = "Embed Below Top Tab",
 						order = 8,
-					},
-				},
-			},
-		},
+						type = "toggle",
+						name = "Embed Below Top Tab"
+					}
+				}
+			}
+		}
 	}
 
-	for _, addonName in pairs(addonList) do
+	for _, addonName in ipairs(addonList) do
 		AS:RegisterAddonOption(addonName, options)
 	end
 
@@ -454,28 +474,6 @@ end
 
 function AS:Initialize()
 	EP:RegisterPlugin(AddOnName, getOptions)
-
-	if E.db.addOnSkins.embed.left then
-		E.db.addOnSkins.embed.leftWindow = E.db.addOnSkins.embed.left
-		E.db.addOnSkins.embed.left = nil
-	end
-	if E.db.addOnSkins.embed.right then
-		E.db.addOnSkins.embed.rightWindow = E.db.addOnSkins.embed.right
-		E.db.addOnSkins.embed.right = nil
-	end
-	if E.db.addOnSkins.embed.leftWidth then
-		E.db.addOnSkins.embed.leftWindowWidth = E.db.addOnSkins.embed.leftWidth
-		E.db.addOnSkins.embed.leftWidth = nil
-	end
-	if type(E.db.addOnSkins.embed.rightChat) == "boolean" then
-		E.db.addOnSkins.embed.rightChatPanel = E.db.addOnSkins.embed.rightChat
-		E.db.addOnSkins.embed.rightChat = nil
-	end
-	if type(E.db.addOnSkins.embed.belowTop) == "boolean" then
-		E.db.addOnSkins.embed.belowTopTab = E.db.addOnSkins.embed.belowTop
-		E.db.addOnSkins.embed.belowTop = nil
-	end
-	E.db.addOnSkins.embed.isShow = nil
 end
 
 local function InitializeCallback()

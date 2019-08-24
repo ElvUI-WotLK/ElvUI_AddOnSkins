@@ -298,7 +298,6 @@ local function LoadSkin()
 			ApplySkin(self)
 		end)
 	end
-	
 
 	hooksecurefunc("TutorialFrame_Update", function()
 		TutorialFrame:StripTextures()

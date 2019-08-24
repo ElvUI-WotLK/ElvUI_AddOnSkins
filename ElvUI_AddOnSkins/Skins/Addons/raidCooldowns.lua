@@ -32,13 +32,13 @@ local function LoadSkin()
 				bar:CreateBackdrop("Transparent")
 				bar.bgtexture:Hide()
 				S:HandleIcon(bar.icon)
-				
+
 				bar.iconButton = CreateFrame("Button", nil, bar)
 				bar.iconButton:Point("TOPLEFT", bar.icon, "TOPLEFT")
 				bar.iconButton:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
 				bar.iconButton:RegisterForClicks("LeftButtonUp")
 				bar.iconButton:SetScript("OnClick", onClick)
-				
+
 				bar.spark:Kill()
 
 				bar.isSkinned = true

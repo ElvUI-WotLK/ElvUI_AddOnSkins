@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local _G = _G
-local pairs, ipairs = pairs, ipairs
+local pairs = pairs
 
 -- Poisoner 3.01
 -- https://www.curseforge.com/wow/addons/poisoner/files/301731

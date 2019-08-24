@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- Repository: https://wow.curseforge.com/projects/spy/files/442604
@@ -7,7 +7,7 @@ local S = E:GetModule("Skins")
 local _G = _G
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Spy) then return end
+	if not E.private.addOnSkins.Spy then return end
 
 	Spy_AlertWindow:StripTextures()
 	Spy_AlertWindow:SetTemplate("Transparent")
@@ -57,7 +57,7 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(Spy, "ShowMapTooltip", function()
-		if(Spy.MapTooltip) then
+		if Spy.MapTooltip then
 			Spy.MapTooltip:SetTemplate("Transparent")
 		end
 	end)

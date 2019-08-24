@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 -- BuyEmAll 2.9.2
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.BuyEmAll) then return; end
+	if not E.private.addOnSkins.BuyEmAll then return end
 
 	BuyEmAllFrame:StripTextures()
 	BuyEmAllFrame:SetTemplate("Transparent")
@@ -26,4 +26,4 @@ local function LoadSkin()
 	S:HandleButton(BuyEmAllMaxButton)
 end
 
-S:AddCallbackForAddon("BuyEmAll", "BuyEmAll", LoadSkin);
+S:AddCallbackForAddon("BuyEmAll", "BuyEmAll", LoadSkin)

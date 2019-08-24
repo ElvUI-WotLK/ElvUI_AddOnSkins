@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 -- TinyPad 1.6.2
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.TinyPad) then return end
+	if not E.private.addOnSkins.TinyPad then return end
 
 --[[
 	local buttons = {

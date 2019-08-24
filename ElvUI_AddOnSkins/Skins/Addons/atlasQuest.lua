@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 -- AtlasQuest 4.4.3
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.AtlasQuest) then return end
+	if not E.private.addOnSkins.AtlasQuest then return end
 
 	local buttons = {
 		STORYbutton,
@@ -66,7 +66,7 @@ local function LoadSkin()
 	AtlasQuestTooltip:SetTemplate("Transparent")
 
 	for i = 1, 6 do
-		_G["AtlasQuestItemframe"..i.."_Icon"]:SetTexCoord(unpack(E.TexCoords));
+		_G["AtlasQuestItemframe"..i.."_Icon"]:SetTexCoord(unpack(E.TexCoords))
 	end
 
 	AQ_AtlasOrAlphamap = function()

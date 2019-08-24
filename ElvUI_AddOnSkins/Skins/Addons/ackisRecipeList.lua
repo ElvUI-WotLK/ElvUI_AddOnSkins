@@ -1,41 +1,43 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 local ipairs = ipairs
 local select = select
+local unpack = unpack
+
 local hooksecurefunc = hooksecurefunc
 
 -- AckisRecipeList 2.01.14
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.AckisRecipeList) then return; end
+	if not E.private.addOnSkins.AckisRecipeList then return end
 
 	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not addon then return end
 
 	local function HandleScrollBar(frame)
-		local UpButton = select(1, frame:GetChildren());
-		local DownButton = select(2, frame:GetChildren());
+		local UpButton = select(1, frame:GetChildren())
+		local DownButton = select(2, frame:GetChildren())
 
-		S:HandleNextPrevButton(UpButton, "up");
-		UpButton:Size(20, 18);
+		S:HandleNextPrevButton(UpButton, "up")
+		UpButton:Size(20, 18)
 
-		S:HandleNextPrevButton(DownButton);
-		DownButton:Size(20, 18);
+		S:HandleNextPrevButton(DownButton)
+		DownButton:Size(20, 18)
 
-		frame.trackbg = CreateFrame("Frame", nil, frame);
-		frame.trackbg:Point("TOPLEFT", UpButton, "BOTTOMLEFT", 0, -1);
-		frame.trackbg:Point("BOTTOMRIGHT", DownButton, "TOPRIGHT", 0, 1);
-		frame.trackbg:SetTemplate("Transparent");
+		frame.trackbg = CreateFrame("Frame", nil, frame)
+		frame.trackbg:Point("TOPLEFT", UpButton, "BOTTOMLEFT", 0, -1)
+		frame.trackbg:Point("BOTTOMRIGHT", DownButton, "TOPRIGHT", 0, 1)
+		frame.trackbg:SetTemplate("Transparent")
 
-		frame:GetThumbTexture():SetAlpha(0);
+		frame:GetThumbTexture():SetAlpha(0)
 
-		frame.thumbbg = CreateFrame("Frame", nil, frame);
-		frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 8, -7);
-		frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -8, 7);
-		frame.thumbbg:SetTemplate("Default", true, true);
-		frame.thumbbg:SetBackdropColor(0.6, 0.6, 0.6);
-		frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel() + 1);
+		frame.thumbbg = CreateFrame("Frame", nil, frame)
+		frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 8, -7)
+		frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -8, 7)
+		frame.thumbbg:SetTemplate("Default", true, true)
+		frame.thumbbg:SetBackdropColor(0.6, 0.6, 0.6)
+		frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel() + 1)
 	end
 
 	local function SkinButton(button, strip)
@@ -48,20 +50,20 @@ local function LoadSkin()
 	end
 
 	local function ChangeTexture(texture)
-		texture:SetInside();
-		texture:SetTexCoord(0.22, 0.78, 0.22, 0.78);
+		texture:SetInside()
+		texture:SetTexCoord(0.22, 0.78, 0.22, 0.78)
 	end
 
 	local function ExpansionButton(button)
-		select(1, button:GetRegions()):SetDesaturated(true);
+		select(1, button:GetRegions()):SetDesaturated(true)
 
-		button:GetPushedTexture():SetTexture("");
-		button:GetHighlightTexture():SetTexture("");
-		button:GetCheckedTexture():SetTexture("");
+		button:GetPushedTexture():SetTexture(nil)
+		button:GetHighlightTexture():SetTexture(nil)
+		button:GetCheckedTexture():SetTexture(nil)
 
 		hooksecurefunc(button, "SetChecked", function(self, state)
-			select(1, self:GetRegions()):SetDesaturated(state);
-		end);
+			select(1, self:GetRegions()):SetDesaturated(state)
+		end)
 	end
 
 	S:HandleButton(addon.scan_button)
@@ -91,17 +93,17 @@ local function LoadSkin()
 		ARL_MainPanel.prof_button:Size(48)
 		ARL_MainPanel.prof_button:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 10, -12)
 		ARL_MainPanel.prof_button:SetTemplate()
-		ARL_MainPanel.prof_button:GetHighlightTexture():SetInside();
+		ARL_MainPanel.prof_button:GetHighlightTexture():SetInside()
 		ARL_MainPanel.prof_button:GetHighlightTexture():SetTexture(1, 1, 1, 0.3)
 
-		ChangeTexture(ARL_MainPanel.prof_button._normal);
-		ChangeTexture(ARL_MainPanel.prof_button._pushed);
-		ChangeTexture(ARL_MainPanel.prof_button._disabled);
+		ChangeTexture(ARL_MainPanel.prof_button._normal)
+		ChangeTexture(ARL_MainPanel.prof_button._pushed)
+		ChangeTexture(ARL_MainPanel.prof_button._disabled)
 
 		hooksecurefunc(ARL_MainPanel.prof_button, "ChangeTexture", function(self, texture)
-			ChangeTexture(self._normal);
-			ChangeTexture(self._pushed);
-			ChangeTexture(self._disabled);
+			ChangeTexture(self._normal)
+			ChangeTexture(self._pushed)
+			ChangeTexture(self._disabled)
 		end)
 
 		ARL_MainPanel.list_frame:SetBackdrop(nil)
@@ -145,7 +147,7 @@ local function LoadSkin()
 		ARL_MainPanel.progress_bar:SetStatusBarColor(0.13, 0.35, 0.80)
 		E:RegisterStatusBar(ARL_MainPanel.progress_bar)
 
-		HandleScrollBar(ARL_MainPanel.list_frame.scroll_bar);
+		HandleScrollBar(ARL_MainPanel.list_frame.scroll_bar)
 
 		S:HandleCloseButton(ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
 
@@ -165,27 +167,27 @@ local function LoadSkin()
 				c = ARL_MainPanel.expand_button
 			end
 
-			c:SetNormalTexture("");
-			c.SetNormalTexture = E.noop;
-			c:SetPushedTexture("");
-			c.SetPushedTexture = E.noop;
-			c:SetHighlightTexture("");
-			c.SetHighlightTexture = E.noop;
-			c:SetDisabledTexture("");
-			c.SetDisabledTexture = E.noop;
+			c:SetNormalTexture("")
+			c.SetNormalTexture = E.noop
+			c:SetPushedTexture("")
+			c.SetPushedTexture = E.noop
+			c:SetHighlightTexture("")
+			c.SetHighlightTexture = E.noop
+			c:SetDisabledTexture("")
+			c.SetDisabledTexture = E.noop
 
-			c.Text = c:CreateFontString(nil, "OVERLAY");
-			c.Text:FontTemplate(nil, 22);
-			c.Text:Point("RIGHT", -5, 0);
-			c.Text:SetText("+");
+			c.Text = c:CreateFontString(nil, "OVERLAY")
+			c.Text:FontTemplate(nil, 22)
+			c.Text:Point("RIGHT", -5, 0)
+			c.Text:SetText("+")
 
 			hooksecurefunc(c, "SetNormalTexture", function(self, texture)
 				if(string.find(texture, "MinusButton")) then
-					self.Text:SetText("-");
+					self.Text:SetText("-")
 				else
-					self.Text:SetText("+");
+					self.Text:SetText("+")
 				end
-			end);
+			end)
 		end
 
 		ARL_MainPanel.filter_toggle:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 325, -41)
@@ -203,8 +205,8 @@ local function LoadSkin()
 				Disabled:SetRotation(S.ArrowRotation.right)
 			end
 
-			self:HookScript("OnEnter", S.SetModifiedBackdrop);
-			self:HookScript("OnLeave", S.SetOriginalBackdrop);
+			self:HookScript("OnEnter", S.SetModifiedBackdrop)
+			self:HookScript("OnLeave", S.SetOriginalBackdrop)
 		end
 
 		ARL_MainPanel.close_button:Height(22)
@@ -346,9 +348,9 @@ local function LoadSkin()
 				end
 			end
 
-			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion0);
-			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion1);
-			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion2);
+			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion0)
+			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion1)
+			ExpansionButton(ARL_MainPanel.filter_menu["rep"].toggle_expansion2)
 		end)
 	end)
 
@@ -367,4 +369,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", LoadSkin);
+S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", LoadSkin)

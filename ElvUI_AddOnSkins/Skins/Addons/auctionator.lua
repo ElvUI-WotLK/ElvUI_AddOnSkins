@@ -1,34 +1,38 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+local _G = _G
+local unpack = unpack
+
+local GetItemIcon = GetItemIcon
 
 -- Auctionator 2.6.3
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Auctionator) then return; end
+	if not E.private.addOnSkins.Auctionator then return end
 
 	hooksecurefunc("Atr_SetTextureButton", function(elementName, _, itemlink)
-		local texture = GetItemIcon(itemlink);
-		local textureElement = getglobal(elementName);
+		local textureElement = _G[elementName]
 
-		if(not textureElement.backdrop) then
-			textureElement:StyleButton(nil, true);
-			textureElement:SetTemplate("Default", true);
+		if not textureElement.backdrop then
+			textureElement:StyleButton(nil, true)
+			textureElement:SetTemplate("Default", true)
 
-			textureElement.backdrop = true;
+			textureElement.backdrop = true
 		end
 
-		if(texture) then
-			textureElement:GetNormalTexture():SetTexCoord(unpack(E.TexCoords));
-			textureElement:GetNormalTexture():SetInside();
+		if GetItemIcon(itemlink) then
+			textureElement:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+			textureElement:GetNormalTexture():SetInside()
 		end
-	end);
+	end)
 
-	Atr_Error_Frame:SetTemplate("Transparent");
-	S:HandleButton(select(1, Atr_Error_Frame:GetChildren()));
+	Atr_Error_Frame:SetTemplate("Transparent")
+	S:HandleButton(select(1, Atr_Error_Frame:GetChildren()))
 
-	Atr_Confirm_Frame:SetTemplate("Transparent");
-	S:HandleButton(Atr_Confirm_Cancel);
-	S:HandleButton(select(2, Atr_Confirm_Frame:GetChildren()));
+	Atr_Confirm_Frame:SetTemplate("Transparent")
+	S:HandleButton(Atr_Confirm_Cancel)
+	S:HandleButton(select(2, Atr_Confirm_Frame:GetChildren()))
 
 	-- Options skinning
 	Atr_BasicOptionsFrame:StripTextures()
@@ -69,10 +73,10 @@ local function LoadSkin()
 		'UC_2000_MoneyInput',
 		'UC_500_MoneyInput',
 	}
-	for i = 1, #moneyEditBoxes do
-		S:HandleEditBox(_G[moneyEditBoxes[i]..'Gold'])
-		S:HandleEditBox(_G[moneyEditBoxes[i]..'Silver'])
-		S:HandleEditBox(_G[moneyEditBoxes[i]..'Copper'])
+	for _, name in ipairs(moneyEditBoxes) do
+		S:HandleEditBox(_G[name..'Gold'])
+		S:HandleEditBox(_G[name..'Silver'])
+		S:HandleEditBox(_G[name..'Copper'])
 	end
 	S:HandleEditBox(Atr_Starting_Discount)
 
@@ -80,72 +84,69 @@ local function LoadSkin()
 	S:HandleButton(Atr_StackingOptionsFrame_Edit)
 	S:HandleButton(Atr_StackingOptionsFrame_New)
 
-	local isSkinned
-	hooksecurefunc("Atr_OnAuctionHouseShow", function()
-		if isSkinned then return end
+	S:SecureHook("Atr_OnAuctionHouseShow", function()
+		S:HandleDropDownBox(Atr_DropDown1, 180)
+		S:HandleDropDownBox(Atr_DropDownSL)
 
-		S:HandleDropDownBox(Atr_DropDown1, 180);
-		S:HandleDropDownBox(Atr_DropDownSL);
+		Atr_CheckActiveButton:SetWidth(195)
+		S:HandleButton(Atr_CheckActiveButton)
 
-		Atr_CheckActiveButton:SetWidth(195);
-		S:HandleButton(Atr_CheckActiveButton);
-
-		S:HandleEditBox(Atr_Search_Box);
-		S:HandleButton(Atr_Search_Button);
-		S:HandleButton(Atr_Adv_Search_Button);
-		S:HandleButton(Auctionator1Button);
-		S:HandleButton(Atr_FullScanButton);
+		S:HandleEditBox(Atr_Search_Box)
+		S:HandleButton(Atr_Search_Button)
+		S:HandleButton(Atr_Adv_Search_Button)
+		S:HandleButton(Auctionator1Button)
+		S:HandleButton(Atr_FullScanButton)
 		Atr_FullScanButton:Width(132)
-		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar);
+		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar)
 
-		Atr_Hlist:StripTextures();
-		Atr_Hlist:SetTemplate("Default");
-		Atr_Hlist:SetWidth(195);
+		Atr_Hlist:StripTextures()
+		Atr_Hlist:SetTemplate("Default")
+		Atr_Hlist:SetWidth(195)
 		Atr_Hlist:ClearAllPoints()
-		Atr_Hlist:Point("TOPLEFT", -195, -75);
+		Atr_Hlist:Point("TOPLEFT", -195, -75)
 
-		S:HandleEditBox(Atr_StackPriceGold);
-		S:HandleEditBox(Atr_StackPriceSilver);
-		S:HandleEditBox(Atr_StackPriceCopper);
-		S:HandleEditBox(Atr_ItemPriceGold);
-		S:HandleEditBox(Atr_ItemPriceSilver);
-		S:HandleEditBox(Atr_ItemPriceCopper);
-		S:HandleEditBox(Atr_StartingPriceGold);
-		S:HandleEditBox(Atr_StartingPriceSilver);
-		S:HandleEditBox(Atr_StartingPriceCopper);
-		S:HandleEditBox(Atr_Batch_NumAuctions);
-		S:HandleEditBox(Atr_Batch_Stacksize);
+		S:HandleEditBox(Atr_StackPriceGold)
+		S:HandleEditBox(Atr_StackPriceSilver)
+		S:HandleEditBox(Atr_StackPriceCopper)
+		S:HandleEditBox(Atr_ItemPriceGold)
+		S:HandleEditBox(Atr_ItemPriceSilver)
+		S:HandleEditBox(Atr_ItemPriceCopper)
+		S:HandleEditBox(Atr_StartingPriceGold)
+		S:HandleEditBox(Atr_StartingPriceSilver)
+		S:HandleEditBox(Atr_StartingPriceCopper)
+		S:HandleEditBox(Atr_Batch_NumAuctions)
+		S:HandleEditBox(Atr_Batch_Stacksize)
 
-		S:HandleButton(Atr_CreateAuctionButton);
-		S:HandleDropDownBox(Atr_Duration);
+		S:HandleButton(Atr_CreateAuctionButton)
+		S:HandleDropDownBox(Atr_Duration)
 
-		S:HandleButton(Atr_AddToSListButton);
-		Atr_RemFromSListButton:SetPoint("TOPLEFT", -195, -350);
-		S:HandleButton(Atr_RemFromSListButton);
-		Atr_DelSListButton:SetPoint("TOPLEFT", -195, -371);
-		S:HandleButton(Atr_DelSListButton);
-		Atr_NewSListButton:SetPoint("TOPLEFT", -195, -392);
-		S:HandleButton(Atr_NewSListButton);
+		S:HandleButton(Atr_AddToSListButton)
+		Atr_RemFromSListButton:SetPoint("TOPLEFT", -195, -350)
+		S:HandleButton(Atr_RemFromSListButton)
+		Atr_DelSListButton:SetPoint("TOPLEFT", -195, -371)
+		S:HandleButton(Atr_DelSListButton)
+		Atr_NewSListButton:SetPoint("TOPLEFT", -195, -392)
+		S:HandleButton(Atr_NewSListButton)
 
-		S:HandleButton(AuctionatorCloseButton);
-		S:HandleButton(Atr_CancelSelectionButton);
-		S:HandleButton(Atr_Buy1_Button);
+		S:HandleButton(AuctionatorCloseButton)
+		S:HandleButton(Atr_CancelSelectionButton)
+		S:HandleButton(Atr_Buy1_Button)
 
-		S:HandleScrollBar(AuctionatorScrollFrameScrollBar);
+		S:HandleScrollBar(AuctionatorScrollFrameScrollBar)
 
-		Atr_HeadingsBar:StripTextures();
-		Atr_HeadingsBar:SetTemplate("Default");
-		Atr_HeadingsBar:SetHeight(20);
+		Atr_HeadingsBar:StripTextures()
+		Atr_HeadingsBar:SetTemplate("Default")
+		Atr_HeadingsBar:SetHeight(20)
 
 
 		for i = 1, 3 do
-			local tab = _G["Atr_ListTabsTab"..i];
-			tab:StripTextures();
-			S:HandleButton(tab);
+			local tab = _G["Atr_ListTabsTab"..i]
+			tab:StripTextures()
+			S:HandleButton(tab)
 		end
 
-		Atr_Hilite1:SetTemplate("Default", true, true);
-		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0);
+		Atr_Hilite1:SetTemplate("Default", true, true)
+		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0)
 
 		S:HandleDropDownBox(Atr_ASDD_Class, 180)
 		S:HandleDropDownBox(Atr_ASDD_Subclass, 180)
@@ -183,8 +184,8 @@ local function LoadSkin()
 			S:HandleTab(_G["AuctionFrameTab"..i])
 		end
 
-		isSkinned = true
-	end);
+		S:Unhook("Atr_OnAuctionHouseShow")
+	end)
 end
 
-S:AddCallbackForAddon("Auctionator", "Auctionator", LoadSkin);
+S:AddCallbackForAddon("Auctionator", "Auctionator", LoadSkin)

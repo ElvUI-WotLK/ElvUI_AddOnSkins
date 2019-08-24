@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 -- AdiBags 1.1 beta 7
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.AdiBags) then return; end
+	if not E.private.addOnSkins.AdiBags then return end
 
 	local AdiBags = LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
 	if not AdiBags then return end
@@ -122,4 +122,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("AdiBags", "AdiBags", LoadSkin);
+S:AddCallbackForAddon("AdiBags", "AdiBags", LoadSkin)

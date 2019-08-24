@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local pairs = pairs
-local band, lshift = bit.band, bit.lshift
+local lshift = bit.lshift
 
 -- Carbonite 3.340
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Carbonite) then return end
+	if not E.private.addOnSkins.Carbonite then return end
 
 	local function ColorConvert(r, g, b, a)
 		if not a then a = 1 end
@@ -60,11 +60,11 @@ local function LoadSkin()
 
 	Nx.Tit.Frm:SetTemplate("Transparent")
 
-	for win, _ in pairs(Nx.Win.Win2) do
+	for win in pairs(Nx.Win.Win2) do
 		win.Frm:SetTemplate("Transparent")
 	end
 
-	for men, _ in pairs(Nx.Men.Men1) do
+	for men in pairs(Nx.Men.Men1) do
 		men.MaF:SetTemplate("Transparent")
 	end
 

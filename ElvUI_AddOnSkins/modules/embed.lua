@@ -3,9 +3,9 @@ local EMB = E:NewModule("EmbedSystem")
 local AS = E:GetModule("AddOnSkins")
 
 local _G = _G
-local pairs, tonumber = pairs, tonumber
+local pairs = pairs
 local floor = math.floor
-local format, lower, match = string.format, string.lower, string.match
+local lower, match = string.lower, string.match
 local tinsert = table.insert
 
 local hooksecurefunc = hooksecurefunc

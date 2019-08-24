@@ -17,7 +17,7 @@ local function LoadSkin()
 		if not Talented.tabs then return end
 
 		local tabName
-		for _, tab in pairs({"spec1", "spec2", "petspec1"}) do
+		for _, tab in ipairs({"spec1", "spec2", "petspec1"}) do
 			tabName = Talented.tabs[tab]
 			if tabName then
 				tabName:SetTemplate("Default")

@@ -147,7 +147,7 @@ local function LoadSkin()
 
 		skinEditbox(self.Name)
 		skinDropdown(self.ScriptMenu)
-		
+
 		S:HandleCheckBox(self.EmptyOutfitCheckButton, true)
 		S:HandleCheckBox(self.ExistingOutfitCheckButton, true)
 		S:HandleCheckBox(self.GenerateOutfitCheckButton, true)
