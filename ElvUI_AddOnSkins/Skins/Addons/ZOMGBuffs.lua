@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local pairs = pairs
-local select = select
 local unpack = unpack
 
 -- ZOMGBuffs r156
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	if ZOMGBuffsButton then
 		ZOMGBuffsButton:SetNormalTexture(nil)
@@ -46,7 +45,7 @@ local function LoadSkin()
 end
 
 local function LoadSkinBM()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZBM = ZOMGBuffs:GetModule("ZOMGBlessingsManager")
 	if not ZBM then return end
@@ -104,7 +103,7 @@ local function LoadSkinBM()
 	S:SecureHook(ZBM, "SplitPanelColumnPopulate", function(self, col)
 		if not self.expandpanel.class then return end
 
-		for i, _ in pairs(col.cell) do
+		for i in pairs(col.cell) do
 			SkinActionButton(col.cell[i])
 		end
 	end)
@@ -115,7 +114,7 @@ local function LoadSkinBM()
 		local f = self.frame
 
 		for i = 1, #f.row do
-			for j, _ in pairs(f.row[i].cell) do
+			for j in pairs(f.row[i].cell) do
 				SkinActionButton(f.row[i].cell[j])
 			end
 		end
@@ -125,7 +124,7 @@ local function LoadSkinBM()
 end
 
 local function LoadSkinLog()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZL = ZOMGBuffs:GetModule("ZOMGLog")
 	if not ZL then return end

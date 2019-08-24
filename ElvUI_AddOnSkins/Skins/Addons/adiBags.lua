@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local unpack = unpack
+local lower, match, trim = string.lower, string.match, string.trim
+
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
+
 -- AdiBags 1.1 beta 7
 
 local function LoadSkin()
@@ -19,8 +26,9 @@ local function LoadSkin()
 		S:HandleCloseButton(frame.CloseButton)
 		frame.BagSlotPanel:SetTemplate("Transparent")
 
+		local icon
 		for _, bag in pairs(frame.BagSlotPanel.buttons) do
-			local icon = _G[bag:GetName().."IconTexture"]
+			icon = _G[bag:GetName().."IconTexture"]
 			bag.oldTex = icon:GetTexture()
 
 			bag:StripTextures()
@@ -113,10 +121,11 @@ local function LoadSkin()
 
 	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight")
 	hooksecurefunc(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
-		local text = self.widget:GetText()
-		text = text:lower():trim()
 		local name = button.itemId and GetItemInfo(button.itemId)
-		if name and not name:lower():match(text) then
+		local text = self.widget:GetText()
+		text = trim(lower(text))
+
+		if name and not match(lower(name), text) then
 			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 	end)
