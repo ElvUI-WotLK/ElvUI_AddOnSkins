@@ -152,15 +152,10 @@ local function LoadSkin()
 		S:HandleNextPrevButton(ARL_MainPanel.sort_button)
 
 		ARL_MainPanel.sort_button.SetTextures = function(self)
-			local Normal, Disabled, Pushed = self:GetNormalTexture(), self:GetDisabledTexture(), self:GetPushedTexture()
 			if addon.db.profile.sorting == "Ascending" then
-				Normal:SetRotation(S.ArrowRotation.down)
-				Pushed:SetRotation(S.ArrowRotation.down)
-				Disabled:SetRotation(S.ArrowRotation.down)
+				S:SetNextPrevButtonDirection(self, "down")
 			else
-				Normal:SetRotation(S.ArrowRotation.up)
-				Pushed:SetRotation(S.ArrowRotation.up)
-				Disabled:SetRotation(S.ArrowRotation.up)
+				S:SetNextPrevButtonDirection(self, "up")
 			end
 		end
 
