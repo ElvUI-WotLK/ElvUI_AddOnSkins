@@ -77,6 +77,9 @@ local addonList = {
 	"BigWigs",
 	"Outfitter",
 	"Poisoner",
+	"TrinketMenu",
+	"Stalker",
+	"ChocolateBar",
 }
 
 AS.addOns = {}

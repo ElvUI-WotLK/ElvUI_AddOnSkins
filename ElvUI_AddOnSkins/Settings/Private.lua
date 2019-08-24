@@ -68,6 +68,9 @@ V.addOnSkins = {
 	BigWigs = true,
 	Outfitter = true,
 	Poisoner = true,
+	TrinketMenu = true,
+	ChocolateBar = true,
+	Stalker = true,
 
 	Blizzard_WorldStateFrame = true,
 }
