@@ -19,12 +19,7 @@ local function LoadSkin()
 			end
 		elseif ftype == "icon" then
 			if E.db.addOnSkins.weakAuraIconCooldown then
-				frame.cooldown.CooldownSettings = {
-					font = E.LSM:Fetch("font", E.db.cooldown.fonts.font),
-					fontSize = E.db.cooldown.fonts.fontSize,
-					fontOutline = E.db.cooldown.fonts.fontOutline
-				}
-
+				frame.cooldown.CooldownOverride = "global"
 				E:RegisterCooldown(frame.cooldown)
 			end
 		end
