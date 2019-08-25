@@ -124,6 +124,12 @@ local positionValues = {
 	BOTTOM = "BOTTOM"
 }
 
+local backdropValues = {
+	["Default"] = L["Default"],
+	["Transparent"] = L["Transparent"],
+	["NoBackdrop"] = NONE
+}
+
 local function getOptions()
 	local options = {
 		order = 50,
@@ -210,11 +216,7 @@ local function getOptions()
 								order = 1,
 								type = "select",
 								name = L["Template"],
-								values = {
-									["Default"] = L["Default"],
-									["Transparent"] = L["Transparent"],
-									["NoBackdrop"] = NONE
-								}
+								values = backdropValues
 							},
 							skadaTemplateGloss = {
 								order = 2,
@@ -231,11 +233,7 @@ local function getOptions()
 								order = 4,
 								type = "select",
 								name = L["Title Template"],
-								values = {
-									["Default"] = L["Default"],
-									["Transparent"] = L["Transparent"],
-									["NoBackdrop"] = NONE
-								}
+								values = backdropValues
 							},
 							skadaTitleTemplateGloss = {
 								order = 5,
@@ -245,8 +243,96 @@ local function getOptions()
 							}
 						}
 					},
-					dbmGroup = {
+					recountGroup = {
 						order = 3,
+						type = "group",
+						name = "Recount",
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value)
+							local db = E.db.addOnSkins
+							db[info[#info]] = value
+							Recount.MainWindow.header:SetTemplate(db.recountTitleTemplate, db.recountTitleTemplate == "Default" and db.recountTitleTemplateGloss or false)
+							Recount.MainWindow.backdrop:SetTemplate(db.recountTemplate, db.recountTemplate == "Default" and db.recountTemplateGloss or false)
+						end,
+						disabled = function() return not AS:CheckAddOn("Recount") end,
+						args = {
+							recountTemplate = {
+								order = 1,
+								type = "select",
+								name = L["Template"],
+								values = backdropValues
+							},
+							recountTemplateGloss = {
+								order = 2,
+								type = "toggle",
+								name = L["Template Gloss"],
+								disabled = function() return E.db.addOnSkins.recountTemplate ~= "Default" or not AS:CheckAddOn("Recount") end
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = ""
+							},
+							recountTitleTemplate = {
+								order = 4,
+								type = "select",
+								name = L["Title Template"],
+								values = backdropValues
+							},
+							recountTitleTemplateGloss = {
+								order = 5,
+								type = "toggle",
+								name = L["Title Template Gloss"],
+								disabled = function() return E.db.addOnSkins.recountTitleTemplate ~= "Default" or not AS:CheckAddOn("Recount") end
+							}
+						}
+					},
+					omenGroup = {
+						order = 4,
+						type = "group",
+						name = "Omen",
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value)
+							local db = E.db.addOnSkins
+							db[info[#info]] = value
+							Omen.Title:SetTemplate(db.omenTitleTemplate, db.omenTitleTemplate == "Default" and db.omenTitleTemplateGloss or false)
+							Omen.BarList:SetTemplate(db.omenTemplate, db.omenTemplate == "Default" and db.omenTemplateGloss or false)
+						end,
+						disabled = function() return not AS:CheckAddOn("Omen") end,
+						args = {
+							omenTemplate = {
+								order = 1,
+								type = "select",
+								name = L["Template"],
+								values = backdropValues
+							},
+							omenTemplateGloss = {
+								order = 2,
+								type = "toggle",
+								name = L["Template Gloss"],
+								disabled = function() return E.db.addOnSkins.omenTemplate ~= "Default" or not AS:CheckAddOn("Omen") end
+							},
+							spacer = {
+								order = 3,
+								type = "description",
+								name = ""
+							},
+							omenTitleTemplate = {
+								order = 4,
+								type = "select",
+								name = L["Title Template"],
+								values = backdropValues
+							},
+							omenTitleTemplateGloss = {
+								order = 5,
+								type = "toggle",
+								name = L["Title Template Gloss"],
+								disabled = function() return E.db.addOnSkins.omenTitleTemplate ~= "Default" or not AS:CheckAddOn("Omen") end
+							}
+						}
+					},
+					dbmGroup = {
+						order = 5,
 						type = "group",
 						name = "DBM",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -290,7 +376,7 @@ local function getOptions()
 						}
 					},
 					waGroup = {
-						order = 4,
+						order = 6,
 						type = "group",
 						name = "WeakAuras",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -313,7 +399,7 @@ local function getOptions()
 						}
 					},
 					chatBarGroup = {
-						order = 5,
+						order = 7,
 						type = "group",
 						name = "ChatBar",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -359,7 +445,7 @@ local function getOptions()
 						}
 					},
 					bwGroup = {
-						order = 6,
+						order = 8,
 						type = "group",
 						name = "BigWigs",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,

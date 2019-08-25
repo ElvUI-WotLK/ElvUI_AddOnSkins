@@ -14,7 +14,7 @@ local function LoadSkin()
 		backdrop:Point("BOTTOMLEFT", frame, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0)
 		backdrop:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30))
 		if frame == Recount.MainWindow then
-			backdrop:SetTemplate("Default")
+			backdrop:SetTemplate(E.db.addOnSkins.recountTemplate, E.db.addOnSkins.recountTemplate == "Default" and E.db.addOnSkins.recountTemplateGloss or false)
 		else
 			backdrop:SetTemplate("Transparent")
 		end
@@ -24,19 +24,22 @@ local function LoadSkin()
 		header:Height(22)
 		header:Point("TOPLEFT", frame, E.PixelMode and 1 or 0, -(E.PixelMode and 8 or 7))
 		header:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, 0)
-		header:SetTemplate("Default", true)
+		header:SetTemplate(E.db.addOnSkins.recountTitleTemplate, E.db.addOnSkins.recountTitleTemplate == "Default" and E.db.addOnSkins.recountTitleTemplateGloss or false)
+		frame.header = header
 
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
 
 		if frame.CloseButton then
 			frame.CloseButton:ClearAllPoints()
-			if frame ~= Recount.MainWindow then
+
+			if frame == Recount.MainWindow then
+				frame.CloseButton:Point("RIGHT", header, -6, 0)
+			else
 				S:HandleCloseButton(frame.CloseButton)
+
 				frame.CloseButton:Size(32)
 				frame.CloseButton:Point("RIGHT", header, 4, 0)
-			else
-				frame.CloseButton:Point("RIGHT", header, -6, 0)
 			end
 		end
 	end
@@ -50,6 +53,8 @@ local function LoadSkin()
 	S:HandleNextPrevButton(Recount.MainWindow.LeftButton, "left", nil, true)
 	Recount.MainWindow.LeftButton:Size(18)
 
+	Recount:SetupMainWindowButtons()
+
 	local buttons = {
 		Recount.MainWindow.CloseButton,
 		Recount.MainWindow.RightButton,
@@ -60,12 +65,9 @@ local function LoadSkin()
 		Recount.MainWindow.ReportButton
 	}
 
-	for i = 1, #buttons do
-		local button = buttons[i]
-		if button then
-			button:GetNormalTexture():SetDesaturated(true)
-			button:GetHighlightTexture():SetDesaturated(true)
-		end
+	for _, button in ipairs(buttons) do
+		button:GetNormalTexture():SetDesaturated(true)
+		button:GetHighlightTexture():SetDesaturated(true)
 	end
 
 	Recount.MainWindow.DragBottomLeft:SetNormalTexture(nil)
@@ -90,7 +92,7 @@ local function LoadSkin()
 
 	hooksecurefunc(Recount, "AddWindow", function(self, window)
 		if window.YesButton and not window.isSkinned then
-			SkinFrame(window)
+			skinFrame(window)
 			window.Text:SetPoint("TOP", window.backdrop, 0, -3)
 
 			S:HandleButton(window.YesButton)

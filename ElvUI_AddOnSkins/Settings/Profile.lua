@@ -6,6 +6,16 @@ P.addOnSkins = {
 	skadaTitleTemplate = "Default",
 	skadaTitleTemplateGloss = true,
 
+	recountTemplate = "Transparent",
+	recountTemplateGloss = false,
+	recountTitleTemplate = "Default",
+	recountTitleTemplateGloss = true,
+
+	omenTemplate = "Transparent",
+	omenTemplateGloss = false,
+	omenTitleTemplate = "Default",
+	omenTitleTemplateGloss = true,
+
 	dbmBarHeight = 22,
 	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,

@@ -335,7 +335,8 @@ if AS:CheckAddOn("Omen") then
 		db.profile.Scale = 1
 		db.profile.Bar.Spacing = 1
 		db.profile.Background.EdgeSize = 1
-		db.profile.Background.BarInset = 2
+		db.profile.Background.BarInset = 1
+		db.profile.TitleBar.Height = 22
 		db.profile.TitleBar.UseSameBG = true
 		db.profile.ShowWith.UseShowWith = false
 		db.profile.Locked = true
@@ -346,12 +347,18 @@ if AS:CheckAddOn("Omen") then
 		OmenAnchor:ClearAllPoints()
 		OmenAnchor:SetAllPoints()
 
-		hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
-			if useDB then
-				self.Anchor:SetParent(parent)
-				self.Anchor:SetInside(parent, 0, 0)
-			end
-		end)
+		if not self.omenHooked then
+			hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
+				if useDB then
+					self.Anchor:SetParent(parent)
+					self.Anchor:SetInside(parent, 0, 0)
+				end
+			end)
+
+			self.omenHooked = true
+		end
+
+		Omen:UpdateBackdrop()
 	end
 end
 
