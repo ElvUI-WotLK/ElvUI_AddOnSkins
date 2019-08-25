@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Postal r299
+-- https://www.wowace.com/projects/postal/files/454610
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Postal then return end
 
@@ -11,6 +14,7 @@ local function LoadSkin()
 		local inboxCB = _G["PostalInboxCB"..i]
 
 		button:SetScale(1)
+
 		if i == 1 then
 			mail:Point("TOPLEFT", 38, -80)
 		end
@@ -35,13 +39,13 @@ local function LoadSkin()
 	if PostalSelectOpenButton then
 		S:HandleButton(PostalSelectOpenButton, true)
 		PostalSelectOpenButton:ClearAllPoints()
-		PostalSelectOpenButton:Point("TOPLEFT", InboxFrame, "TOPLEFT", 45, -45)
+		PostalSelectOpenButton:Point("TOPLEFT", InboxFrame, "TOPLEFT", 43, -45)
 	end
 
 	if PostalSelectReturnButton then
 		S:HandleButton(PostalSelectReturnButton, true)
 		PostalSelectReturnButton:ClearAllPoints()
-		PostalSelectReturnButton:Point("LEFT", PostalSelectOpenButton, "RIGHT", 36, 0)
+		PostalSelectReturnButton:Point("LEFT", PostalSelectOpenButton, "RIGHT", 39, 0)
 	end
 
 	if Postal_OpenAllMenuButton then

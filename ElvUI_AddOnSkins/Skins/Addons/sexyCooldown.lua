@@ -3,6 +3,9 @@ local S = E:GetModule("Skins")
 
 local unpack = unpack
 
+-- SexyCooldown 0.6.18
+-- https://www.wowace.com/projects/sexycooldown/files/424497
+
 local function LoadSkin()
 	if not E.private.addOnSkins.SexyCooldown then return end
 

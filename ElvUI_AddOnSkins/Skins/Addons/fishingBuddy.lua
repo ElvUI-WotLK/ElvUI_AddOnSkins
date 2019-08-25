@@ -4,6 +4,7 @@ local S = E:GetModule("Skins")
 local find = string.find
 
 -- FishingBuddy 0.9.8 p1
+-- https://www.curseforge.com/wow/addons/fishingbuddy/files/442409
 
 local function LoadSkin()
 	if not E.private.addOnSkins.FishingBuddy then return end
