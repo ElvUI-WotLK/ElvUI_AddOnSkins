@@ -69,4 +69,7 @@
 	<Script file="trinketMenu.lua"/>
 	<Script file="chocolateBar.lua"/>
 	<Script file="stalker.lua"/>
+	<Script file="equipCompare.lua"/>
+	<Script file="superDuperMacro.lua"/>
+	<Script file="CLCRet.lua"/>
 </Ui>

@@ -80,6 +80,9 @@ local addonList = {
 	"TrinketMenu",
 	"Stalker",
 	"ChocolateBar",
+	"EquipCompare",
+	"SuperDuperMacro",
+	"CLCRet",
 }
 
 AS.addOns = {}

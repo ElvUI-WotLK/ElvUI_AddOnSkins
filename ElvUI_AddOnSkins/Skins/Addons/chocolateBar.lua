@@ -5,7 +5,7 @@ local function LoadSkin()
 	if not E.private.addOnSkins.ChocolateBar then return end
 
 	local frame
-	for i = 1, 20 do 	
+	for i = 1, 20 do
 		frame = _G["ChocolateBar"..i]
 		if frame then
 			frame:SetTemplate("Transparent")

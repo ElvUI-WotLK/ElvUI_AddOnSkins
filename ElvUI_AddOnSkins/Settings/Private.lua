@@ -71,6 +71,9 @@ V.addOnSkins = {
 	TrinketMenu = true,
 	ChocolateBar = true,
 	Stalker = true,
+	EquipCompare = true,
+	SuperDuperMacro = true,
+	CLCRet = true,
 
 	Blizzard_WorldStateFrame = true,
 }
