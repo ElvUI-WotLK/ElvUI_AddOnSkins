@@ -8,7 +8,10 @@ local function LoadSkin()
 	if not E.private.addOnSkins.AtlasLoot then return end
 
 	AtlasLootTooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent")
+		self:SetTemplate("Transparent", nil, true) --ignore updates
+
+		local r, g, b = self:GetBackdropColor()
+		self:SetBackdropColor(r, g, b, E.db.tooltip.db.colorAlpha)
 
 		local iLink = select(2, self:GetItem())
 		local quality = iLink and select(3, GetItemInfo(iLink))
