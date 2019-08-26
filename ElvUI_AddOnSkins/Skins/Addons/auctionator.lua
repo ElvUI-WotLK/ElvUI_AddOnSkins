@@ -48,7 +48,7 @@ local function LoadSkin()
 	AuctionatorDescriptionFrame:StripTextures()
 	AuctionatorDescriptionFrame:SetTemplate("Transparent")
 	Atr_Stacking_List:StripTextures()
-	Atr_Stacking_List:SetTemplate('Transparent')
+	Atr_Stacking_List:SetTemplate("Transparent")
 
 	S:HandleCheckBox(AuctionatorOption_Enable_Alt_CB)
 	S:HandleCheckBox(AuctionatorOption_Open_All_Bags_CB)
@@ -62,21 +62,21 @@ local function LoadSkin()
 	S:HandleDropDownBox(Atr_tipsShiftDD)
 	S:HandleDropDownBox(Atr_deDetailsDD)
 	S:HandleDropDownBox(Atr_scanLevelDD)
-	Atr_deDetailsDDText:SetJustifyH('RIGHT')
+	Atr_deDetailsDDText:SetJustifyH("RIGHT")
 
 	local moneyEditBoxes = {
-		'UC_5000000_MoneyInput',
-		'UC_1000000_MoneyInput',
-		'UC_200000_MoneyInput',
-		'UC_50000_MoneyInput',
-		'UC_10000_MoneyInput',
-		'UC_2000_MoneyInput',
-		'UC_500_MoneyInput',
+		"UC_5000000_MoneyInput",
+		"UC_1000000_MoneyInput",
+		"UC_200000_MoneyInput",
+		"UC_50000_MoneyInput",
+		"UC_10000_MoneyInput",
+		"UC_2000_MoneyInput",
+		"UC_500_MoneyInput",
 	}
 	for _, name in ipairs(moneyEditBoxes) do
-		S:HandleEditBox(_G[name..'Gold'])
-		S:HandleEditBox(_G[name..'Silver'])
-		S:HandleEditBox(_G[name..'Copper'])
+		S:HandleEditBox(_G[name.."Gold"])
+		S:HandleEditBox(_G[name.."Silver"])
+		S:HandleEditBox(_G[name.."Copper"])
 	end
 	S:HandleEditBox(Atr_Starting_Discount)
 
@@ -85,11 +85,30 @@ local function LoadSkin()
 	S:HandleButton(Atr_StackingOptionsFrame_New)
 
 	S:SecureHook("Atr_OnAuctionHouseShow", function()
-		S:HandleDropDownBox(Atr_DropDown1, 180)
-		S:HandleDropDownBox(Atr_DropDownSL)
+		S:HandleDropDownBox(Atr_DropDownSL, 223)
+		S:HandleDropDownBox(Atr_DropDown1, 223)
+
+		Atr_DropDownSL:ClearAllPoints()
+		Atr_DropDownSL:Point("BOTTOMRIGHT", Atr_Hlist, "TOPRIGHT", 8, 0)
+		Atr_DropDown1:ClearAllPoints()
+		Atr_DropDown1:Point("BOTTOMRIGHT", Atr_Hlist, "TOPRIGHT", 8, 0)
 
 		Atr_CheckActiveButton:SetWidth(195)
 		S:HandleButton(Atr_CheckActiveButton)
+
+		Atr_Adv_Search_Button:Height(22)
+		Atr_FullScanButton:Size(153, 22)
+		Auctionator1Button:Height(22)
+
+		Atr_Search_Box:Point("TOPLEFT", 7, -45)
+		Atr_Search_Button:Point("LEFT", Atr_Search_Box, "RIGHT", 5, 0)
+		Atr_Adv_Search_Button:Point("LEFT", Atr_Search_Button, "RIGHT", 5, 0)
+
+		Atr_FullScanButton:ClearAllPoints()
+		Atr_FullScanButton:Point("LEFT", Atr_Adv_Search_Button, "RIGHT", 5, 0)
+
+		Auctionator1Button:ClearAllPoints()
+		Auctionator1Button:Point("LEFT", Atr_FullScanButton, "RIGHT", 5, 0)
 
 		S:HandleEditBox(Atr_Search_Box)
 		S:HandleButton(Atr_Search_Button)
@@ -100,7 +119,7 @@ local function LoadSkin()
 		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar)
 
 		Atr_Hlist:StripTextures()
-		Atr_Hlist:SetTemplate("Default")
+		Atr_Hlist:SetTemplate("Transparent")
 		Atr_Hlist:SetWidth(195)
 		Atr_Hlist:ClearAllPoints()
 		Atr_Hlist:Point("TOPLEFT", -195, -75)
@@ -118,8 +137,14 @@ local function LoadSkin()
 		S:HandleEditBox(Atr_Batch_Stacksize)
 
 		S:HandleButton(Atr_CreateAuctionButton)
-		S:HandleDropDownBox(Atr_Duration)
+		S:HandleDropDownBox(Atr_Duration, 130)
 
+		Atr_Batch_MaxAuctions_Text:ClearAllPoints()
+		Atr_Batch_MaxAuctions_Text:Point("BOTTOM", Atr_Batch_NumAuctions, 0, -14)
+		Atr_Batch_MaxStacksize_Text:ClearAllPoints()
+		Atr_Batch_MaxStacksize_Text:Point("BOTTOM", Atr_Batch_Stacksize, 0, -14)
+
+		Atr_Duration:Point("TOPLEFT", Atr_Duration_Text, 56, 7)
 		S:HandleButton(Atr_AddToSListButton)
 		Atr_RemFromSListButton:SetPoint("TOPLEFT", -195, -350)
 		S:HandleButton(Atr_RemFromSListButton)
@@ -135,9 +160,8 @@ local function LoadSkin()
 		S:HandleScrollBar(AuctionatorScrollFrameScrollBar)
 
 		Atr_HeadingsBar:StripTextures()
-		Atr_HeadingsBar:SetTemplate("Default")
-		Atr_HeadingsBar:SetHeight(20)
-
+		Atr_HeadingsBar:SetTemplate("Transparent")
+		Atr_HeadingsBar:Size(608, 20)
 
 		for i = 1, 3 do
 			local tab = _G["Atr_ListTabsTab"..i]
@@ -145,7 +169,7 @@ local function LoadSkin()
 			S:HandleButton(tab)
 		end
 
-		Atr_Hilite1:SetTemplate("Default", true, true)
+		Atr_Hilite1:SetTemplate("Transparent", true, true)
 		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0)
 
 		S:HandleDropDownBox(Atr_ASDD_Class, 180)
@@ -172,9 +196,9 @@ local function LoadSkin()
 		Atr_FullScanFrame:StripTextures()
 		Atr_FullScanFrame:SetTemplate("Transparent")
 		Atr_Buy_Confirm_Frame:StripTextures()
-		Atr_Buy_Confirm_Frame:SetTemplate("Default")
+		Atr_Buy_Confirm_Frame:SetTemplate("Transparent")
 		Atr_CheckActives_Frame:StripTextures()
-		Atr_CheckActives_Frame:SetTemplate("Default")
+		Atr_CheckActives_Frame:SetTemplate("Transparent")
 
 		-- Button Positions
 		Atr_Buy1_Button:Point("RIGHT", AuctionatorCloseButton, "LEFT", -5, 0)
@@ -182,6 +206,17 @@ local function LoadSkin()
 
 		for i = 1, AuctionFrame.numTabs do
 			S:HandleTab(_G["AuctionFrameTab"..i])
+		end
+
+		Atr_Mask:SetAllPoints(AuctionFrame.backdrop)
+
+		local child
+		for i = 1, Atr_CheckActives_Frame:GetNumChildren() do
+			child = select(i, Atr_CheckActives_Frame:GetChildren())
+
+			if child and child:IsObjectType("Button") then
+				S:HandleButton(child)
+			end
 		end
 
 		S:Unhook("Atr_OnAuctionHouseShow")
