@@ -74,6 +74,7 @@ V.addOnSkins = {
 	EquipCompare = true,
 	SuperDuperMacro = true,
 	CLCRet = true,
+	FeralbyNight = true,
 
 	Blizzard_WorldStateFrame = true,
 }

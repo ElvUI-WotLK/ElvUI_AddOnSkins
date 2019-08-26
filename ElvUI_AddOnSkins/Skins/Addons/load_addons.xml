@@ -72,4 +72,5 @@
 	<Script file="equipCompare.lua"/>
 	<Script file="superDuperMacro.lua"/>
 	<Script file="CLCRet.lua"/>
+	<Script file="feralbyNight.lua"/>
 </Ui>

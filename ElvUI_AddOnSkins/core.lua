@@ -83,6 +83,7 @@ local addonList = {
 	"EquipCompare",
 	"SuperDuperMacro",
 	"CLCRet",
+	"FeralbyNight",
 }
 
 AS.addOns = {}
