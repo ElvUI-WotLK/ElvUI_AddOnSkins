@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
+local unpack = unpack
+
 -- CLCRet 1.3.03.025
 -- https://www.curseforge.com/wow/addons/clcret/files/439502
 

@@ -45,7 +45,6 @@ local function LoadSkin()
 	end
 
 	local function styleIcon(texture)
-		local parent = texture:GetParent()
 		hooksecurefunc(texture, "SetAlpha", setAlpha)
 		hooksecurefunc(texture, "SetTexture", setTexture)
 
@@ -106,7 +105,7 @@ local function LoadSkin()
 		"FeralbyNightHudFrame_threatbar"
 	}
 
-	local frameName, statusbar
+	local frame, statusbar
 	for _, frameName in ipairs(ufs) do
 		frame = _G[frameName]
 		statusbar = _G[frameName.."_frame"]
