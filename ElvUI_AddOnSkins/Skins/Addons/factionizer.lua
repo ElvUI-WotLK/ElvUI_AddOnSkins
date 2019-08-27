@@ -14,16 +14,52 @@ local function LoadSkin()
 	FIZ_OptionsFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
 
 	S:HandleCloseButton(FIZ_OptionsFrameClose)
-	S:HandleButton(FIZ_OptionsButton)
 
-	S:HandleCheckBox(FIZ_OrderByStandingCheckBox)
-	S:HandleCheckBox(FIZ_EnableMissingBox)
-	S:HandleCheckBox(FIZ_ExtendDetailsBox)
-	S:HandleCheckBox(FIZ_GainToChatBox)
-	S:HandleCheckBox(FIZ_SupressOriginalGainBox)
-	S:HandleCheckBox(FIZ_ShowPreviewRepBox)
+	FIZ_ReputationDetailFrame:StripTextures()
+	FIZ_ReputationDetailFrame:SetTemplate("Transparent")
+
+	FIZ_ReputationDetailFrame:ClearAllPoints()
+	FIZ_ReputationDetailFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
+
+	S:HandleCloseButton(FIZ_ReputationDetailCloseButton)
 
 	S:HandleSliderFrame(FIZ_ChatFrameSlider)
+
+	FIZ_UpdateListScrollFrame:SetTemplate("Transparent")
+	S:HandleScrollBar(FIZ_UpdateListScrollFrameScrollBar)
+
+	local buttons = {
+		FIZ_OptionsButton,
+		FIZ_ShowAllButton,
+		FIZ_ExpandButton,
+		FIZ_ShowNoneButton,
+		FIZ_CollapseButton,
+		FIZ_SupressNoneFactionButton,
+		FIZ_SupressNoneGlobalButton,
+	}
+
+	local checkboxes = {
+		FIZ_OrderByStandingCheckBox,
+		FIZ_EnableMissingBox,
+		FIZ_ExtendDetailsBox,
+		FIZ_GainToChatBox,
+		FIZ_SupressOriginalGainBox,
+		FIZ_ShowPreviewRepBox,
+		FIZ_ReputationDetailAtWarCheckBox,
+		FIZ_ReputationDetailInactiveCheckBox,
+		FIZ_ReputationDetailMainScreenCheckBox,
+		FIZ_ShowQuestButton,
+		FIZ_ShowInstancesButton,
+		FIZ_ShowMobsButton,
+		FIZ_ShowItemsButton,
+	}
+
+	for _, button in ipairs(buttons) do
+		S:HandleButton(button)
+	end
+	for _, checkbox in ipairs(checkboxes) do
+		S:HandleCheckBox(checkbox)
+	end
 end
 
 S:AddCallbackForAddon("Factionizer", "Factionizer", LoadSkin)
