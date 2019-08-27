@@ -14,7 +14,7 @@ local function LoadSkin()
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
 		frame:SetTemplate("Default")
 		frame:SetFrameLevel(1)
-		frame:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.Border + E.Spacing), 0)
+		frame:Point("BOTTOMRIGHT", point, "BOTTOMLEFT", -(E.Border + E.Spacing), 0)
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
 		backdroptex:SetTexture("Interface\\Icons\\Spell_Nature_WispSplode")
@@ -43,7 +43,7 @@ local function LoadSkin()
 						icon1.overlay = createIconOverlay(1, tbar, frame)
 					end
 					if not icon2.overlay then
-						icon1.overlay = createIconOverlay(2, tbar, frame)
+						icon2.overlay = createIconOverlay(2, tbar, frame)
 					end
 
 					icon1.overlay:Size(db.dbmBarHeight)
