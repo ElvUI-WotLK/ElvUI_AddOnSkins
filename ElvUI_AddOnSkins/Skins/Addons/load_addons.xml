@@ -73,4 +73,5 @@
 	<Script file="superDuperMacro.lua"/>
 	<Script file="CLCRet.lua"/>
 	<Script file="feralbyNight.lua"/>
+	<Script file="factionizer.lua"/>
 </Ui>

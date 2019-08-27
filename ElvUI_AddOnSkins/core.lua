@@ -84,6 +84,7 @@ local addonList = {
 	"SuperDuperMacro",
 	"CLCRet",
 	"FeralbyNight",
+	"Factionizer",
 }
 
 AS.addOns = {}

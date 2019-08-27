@@ -75,6 +75,7 @@ V.addOnSkins = {
 	SuperDuperMacro = true,
 	CLCRet = true,
 	FeralbyNight = true,
+	Factionizer = true,
 
 	Blizzard_WorldStateFrame = true,
 }
