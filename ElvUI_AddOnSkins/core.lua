@@ -87,6 +87,7 @@ local addonList = {
 	"Factionizer",
 	"PowerAuras",
 	"Quartz",
+	"TipTac",
 }
 
 AS.addOns = {}

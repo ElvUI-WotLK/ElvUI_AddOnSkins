@@ -76,4 +76,5 @@
 	<Script file="factionizer.lua"/>
 	<Script file="powerAuras.lua"/>
 	<Script file="quartz.lua"/>
+	<Script file="tipTac.lua"/>
 </Ui>

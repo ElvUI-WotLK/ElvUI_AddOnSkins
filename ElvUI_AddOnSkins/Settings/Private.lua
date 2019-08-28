@@ -78,6 +78,7 @@ V.addOnSkins = {
 	Factionizer = true,
 	PowerAuras = true,
 	Quartz = true,
+	TipTac = true,
 
 	Blizzard_WorldStateFrame = true,
 }
