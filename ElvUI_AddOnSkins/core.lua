@@ -85,6 +85,8 @@ local addonList = {
 	"CLCRet",
 	"FeralbyNight",
 	"Factionizer",
+	"PowerAuras",
+	"Quartz",
 }
 
 AS.addOns = {}

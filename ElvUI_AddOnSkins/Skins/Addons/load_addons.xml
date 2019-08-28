@@ -74,4 +74,6 @@
 	<Script file="CLCRet.lua"/>
 	<Script file="feralbyNight.lua"/>
 	<Script file="factionizer.lua"/>
+	<Script file="powerAuras.lua"/>
+	<Script file="quartz.lua"/>
 </Ui>

@@ -76,6 +76,8 @@ V.addOnSkins = {
 	CLCRet = true,
 	FeralbyNight = true,
 	Factionizer = true,
+	PowerAuras = true,
+	Quartz = true,
 
 	Blizzard_WorldStateFrame = true,
 }
