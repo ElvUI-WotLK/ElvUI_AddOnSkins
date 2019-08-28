@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Skada r301
+-- https://www.curseforge.com/wow/addons/skada/files/458800
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Skada then return end
 
