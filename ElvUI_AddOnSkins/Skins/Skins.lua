@@ -31,32 +31,48 @@ function AS:Desaturate(frame, point)
 	end)
 end
 
+function AS:DesaturateButton(button)
+	if button:GetNormalTexture() then
+		button:GetNormalTexture():SetDesaturated(true)
+	end
+	if button:GetPushedTexture() then
+		button:GetPushedTexture():SetDesaturated(true)
+	end
+	if button:GetHighlightTexture() then
+		button:GetHighlightTexture():SetDesaturated(true)
+	end
+end
+
 function AS:AcceptFrame(MainText, Function)
 	if not AcceptFrame then
-		AcceptFrame = CreateFrame("Frame", "AcceptFrame", UIParent)
+		AcceptFrame = CreateFrame("Frame", "ElvUI_AcceptFrame", UIParent)
 		AcceptFrame:SetTemplate("Transparent")
 		AcceptFrame:Point("CENTER", UIParent, "CENTER")
 		AcceptFrame:SetFrameStrata("DIALOG")
+		AcceptFrame:EnableMouse(true)
+		tinsert(UISpecialFrames, AcceptFrame:GetName())
 
 		AcceptFrame.Text = AcceptFrame:CreateFontString(nil, "OVERLAY")
-		AcceptFrame.Text:FontTemplate()
-		AcceptFrame.Text:Point("TOP", AcceptFrame, "TOP", 0, -10)
+		AcceptFrame.Text:FontTemplate(nil, 12)
+		AcceptFrame.Text:Point("TOP", AcceptFrame, "TOP", 0, -16)
 
 		AcceptFrame.Accept = CreateFrame("Button", nil, AcceptFrame, "OptionsButtonTemplate")
+		AcceptFrame.Accept:Size(75, 21)
+		AcceptFrame.Accept:Point("RIGHT", AcceptFrame, "BOTTOM", -5, 26)
+		AcceptFrame.Accept:SetFormattedText(YES)
 		S:HandleButton(AcceptFrame.Accept)
-		AcceptFrame.Accept:Size(70, 25)
-		AcceptFrame.Accept:Point("RIGHT", AcceptFrame, "BOTTOM", -10, 20)
-		AcceptFrame.Accept:SetFormattedText("|cFFFFFFFF%s|r", YES)
 
 		AcceptFrame.Close = CreateFrame("Button", nil, AcceptFrame, "OptionsButtonTemplate")
-		S:HandleButton(AcceptFrame.Close)
-		AcceptFrame.Close:Size(70, 25)
-		AcceptFrame.Close:Point("LEFT", AcceptFrame, "BOTTOM", 10, 20)
+		AcceptFrame.Close:Size(75, 21)
+		AcceptFrame.Close:Point("LEFT", AcceptFrame, "BOTTOM", 5, 26)
 		AcceptFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide() end)
-		AcceptFrame.Close:SetFormattedText("|cFFFFFFFF%s|r", NO)
+		AcceptFrame.Close:SetFormattedText(NO)
+		S:HandleButton(AcceptFrame.Close)
 	end
+
 	AcceptFrame.Text:SetText(MainText)
-	AcceptFrame:Size(AcceptFrame.Text:GetStringWidth() + 100, AcceptFrame.Text:GetStringHeight() + 60)
+	AcceptFrame:Width(AcceptFrame.Text:GetStringWidth() + 50 > 200 and AcceptFrame.Text:GetStringWidth() + 50 or 200)
+	AcceptFrame:Height(AcceptFrame.Text:GetStringHeight() + 60)
 	AcceptFrame.Accept:SetScript("OnClick", Function)
 	AcceptFrame:Show()
 end

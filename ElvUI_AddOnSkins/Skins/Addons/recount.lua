@@ -1,23 +1,36 @@
 local E, L, V, P, G = unpack(ElvUI)
+local AS = E:GetModule("AddOnSkins")
 local S = E:GetModule("Skins")
 
 local _G = _G
+
+-- Recount 4.0.1
+-- https://www.wowace.com/projects/recount/files/458517
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Recount then return end
 
 	local function skinFrame(frame)
+		frame:SetTemplate("Transparent")
+
+		frame.Title:ClearAllPoints()
+		frame.Title:Point("TOP", frame, "TOP", 0, -5)
+		frame.Title:FontTemplate()
+		frame.Title:SetTextColor(1, 0.82, 0, 1)
+
+		frame.CloseButton:ClearAllPoints()
+		frame.CloseButton:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
+		S:HandleCloseButton(frame.CloseButton)
+	end
+
+	local function skinMainFrame(frame)
 		frame:SetBackdrop(nil)
 
 		local backdrop = CreateFrame("Frame", nil, frame)
 		backdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
 		backdrop:Point("BOTTOMLEFT", frame, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0)
 		backdrop:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30))
-		if frame == Recount.MainWindow then
-			backdrop:SetTemplate(E.db.addOnSkins.recountTemplate, E.db.addOnSkins.recountTemplate == "Default" and E.db.addOnSkins.recountTemplateGloss or false)
-		else
-			backdrop:SetTemplate("Transparent")
-		end
+		backdrop:SetTemplate(E.db.addOnSkins.recountTemplate, E.db.addOnSkins.recountTemplate == "Default" and E.db.addOnSkins.recountTemplateGloss or false)
 		frame.backdrop = backdrop
 
 		local header = CreateFrame("Frame", nil, backdrop)
@@ -30,48 +43,59 @@ local function LoadSkin()
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
 
-		if frame.CloseButton then
-			frame.CloseButton:ClearAllPoints()
+		frame.CloseButton:ClearAllPoints()
+		frame.CloseButton:Point("RIGHT", header, -6, 0)
+		S:HandleCloseButton(frame.CloseButton)
+		frame.CloseButton.Texture:Size(10)
 
-			if frame == Recount.MainWindow then
-				frame.CloseButton:Point("RIGHT", header, -6, 0)
-			else
-				S:HandleCloseButton(frame.CloseButton)
+		frame.RightButton:Size(18)
+		frame.LeftButton:Size(18)
+		S:HandleNextPrevButton(frame.RightButton, "right", nil, true)
+		S:HandleNextPrevButton(frame.LeftButton, "left", nil, true)
 
-				frame.CloseButton:Size(32)
-				frame.CloseButton:Point("RIGHT", header, 4, 0)
-			end
+		Recount:SetupMainWindowButtons()
+
+		frame.DragBottomLeft:SetNormalTexture(nil)
+		frame.DragBottomRight:SetNormalTexture(nil)
+	end
+
+	hooksecurefunc(Recount, "AddWindow", function(self, window)
+		if window:GetName() == "Recount_ReportWindow" then
+			if Recount_ReportWindow.isSkinned then return end
+
+			skinFrame(Recount_ReportWindow)
+
+			Recount_ReportWindow.slider:Point("TOP", Recount_ReportWindow, 0, -45)
+			Recount_ReportWindow.ReportTitle:Point("TOPLEFT", Recount_ReportWindow, 10, -75)
+			Recount_ReportWindow.WhisperText:Point("BOTTOMLEFT", Recount_ReportWindow, 10, 37)
+
+			Recount_ReportWindow.ReportTitle:FontTemplate()
+			Recount_ReportWindow.WhisperText:FontTemplate()
+
+			Recount_ReportWindow.Whisper:StripTextures(true)
+			Recount_ReportWindow.Whisper:Height(16)
+
+			S:HandleSliderFrame(Recount_ReportWindow.slider)
+			S:HandleEditBox(Recount_ReportWindow.Whisper)
+			S:HandleButton(Recount_ReportWindow.ReportButton)
+
+			Recount_ReportWindow.isSkinned = true
+		elseif window:GetName() == "Recount_ConfigWindow" then
+			if Recount_ConfigWindow.isSkinned then return end
+
+			skinFrame(Recount_ConfigWindow)
+
+			S:HandleSliderFrame(Recount_ConfigWindow_Scaling_Slider)
+			S:HandleSliderFrame(Recount_ConfigWindow_RowHeight_Slider)
+			S:HandleSliderFrame(Recount_ConfigWindow_RowSpacing_Slider)
+
+			Recount_ConfigWindow.isSkinned = true
 		end
-	end
+	end)
 
-	skinFrame(Recount.MainWindow)
-
-	S:HandleCloseButton(Recount.MainWindow.CloseButton)
-	Recount.MainWindow.CloseButton.Texture:Size(10)
-	S:HandleNextPrevButton(Recount.MainWindow.RightButton, "right", nil, true)
-	Recount.MainWindow.RightButton:Size(18)
-	S:HandleNextPrevButton(Recount.MainWindow.LeftButton, "left", nil, true)
-	Recount.MainWindow.LeftButton:Size(18)
-
-	Recount:SetupMainWindowButtons()
-
-	local buttons = {
-		Recount.MainWindow.CloseButton,
-		Recount.MainWindow.RightButton,
-		Recount.MainWindow.LeftButton,
-		Recount.MainWindow.ResetButton,
-		Recount.MainWindow.FileButton,
-		Recount.MainWindow.ConfigButton,
-		Recount.MainWindow.ReportButton
-	}
-
-	for _, button in ipairs(buttons) do
-		button:GetNormalTexture():SetDesaturated(true)
-		button:GetHighlightTexture():SetDesaturated(true)
-	end
-
-	Recount.MainWindow.DragBottomLeft:SetNormalTexture(nil)
-	Recount.MainWindow.DragBottomRight:SetNormalTexture(nil)
+	skinMainFrame(Recount.MainWindow)
+	skinFrame(Recount.DetailWindow)
+	skinFrame(Recount.GraphWindow)
 
 	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar)
 
@@ -90,51 +114,30 @@ local function LoadSkin()
 		Recount:HideScrollbarElements("Recount_MainWindow_ScrollBar")
 	end
 
-	hooksecurefunc(Recount, "AddWindow", function(self, window)
-		if window.YesButton and not window.isSkinned then
-			skinFrame(window)
-			window.Text:SetPoint("TOP", window.backdrop, 0, -3)
+	local buttons = {
+		Recount.MainWindow.CloseButton,
+		Recount.MainWindow.RightButton,
+		Recount.MainWindow.LeftButton,
+		Recount.MainWindow.ResetButton,
+		Recount.MainWindow.FileButton,
+		Recount.MainWindow.ConfigButton,
+		Recount.MainWindow.ReportButton,
+		Recount_DetailWindow.LeftButton,
+		Recount_DetailWindow.RightButton,
+		Recount_DetailWindow.ReportButton,
+		Recount_DetailWindow.SummaryButton
+	}
 
-			S:HandleButton(window.YesButton)
-			window.YesButton:SetPoint("BOTTOMRIGHT", window, "BOTTOM", -3, 5)
-			S:HandleButton(window.NoButton)
-			window.NoButton:SetPoint("BOTTOMLEFT", window, "BOTTOM", 3, 5)
+	for _, button in ipairs(buttons) do
+		AS:DesaturateButton(button)
+	end
 
-			window.isSkinned = true
-		end
-	end)
+	local L = LibStub("AceLocale-3.0"):GetLocale("Recount")
+	local function resetData(self) Recount:ResetData() self:GetParent():Hide() end
 
-	hooksecurefunc(Recount, "ShowReport", function()
-		if not Recount_ReportWindow.isSkinned then
-			SkinFrame(Recount_ReportWindow)
-
-			S:HandleButton(Recount_ReportWindow.ReportButton)
-			S:HandleSliderFrame(Recount_ReportWindow_Slider)
-
-			Recount_ReportWindow.Whisper:StripTextures(true)
-			S:HandleEditBox(Recount_ReportWindow.Whisper)
-			Recount_ReportWindow.Whisper:Height(16)
-
-			Recount_ReportWindow.isSkinned = true
-		end
-	end)
-
-	hooksecurefunc(Recount, "ShowConfig", function()
-		if not Recount.ConfigWindow.isSkinned then
-			SkinFrame(Recount.ConfigWindow)
-
-			Recount.ConfigWindow:StripTextures()
-
-			Recount.ConfigWindow.backdrop:StripTextures()
-			Recount.ConfigWindow.backdrop:SetTemplate("Transparent")
-
-			S:HandleSliderFrame(Recount_ConfigWindow_Scaling_Slider)
-			S:HandleSliderFrame(Recount_ConfigWindow_RowHeight_Slider)
-			S:HandleSliderFrame(Recount_ConfigWindow_RowSpacing_Slider)
-
-			Recount.ConfigWindow.isSkinned = true
-		end
-	end)
+	function Recount:ShowReset()
+		AS:AcceptFrame(L["Reset Recount?"], resetData)
+	end
 end
 
 S:AddCallbackForAddon("Recount", "Recount", LoadSkin)
