@@ -4,29 +4,47 @@ local S = E:GetModule("Skins")
 local unpack = unpack
 
 -- PallyPower 3.2.20
+-- https://www.curseforge.com/wow/addons/pally-power/files/446442
 
 local function LoadSkin()
 	if not E.private.addOnSkins.PallyPower then return end
 
-	PallyPower.BuffScale = E.noop
-	PallyPower.ConfigScale = E.noop
 	PallyPower.ApplySkin = E.noop
 
-	PallyPower.opt.configscale = 1
-	PallyPower.opt.buffscale = 1
+	PallyPower.options.args.display.args.gapping.min = -1
 
-	PallyPower.options.args.buffscale.hidden = true
-	PallyPower.options.args.configscale.hidden = true
+	local function scaleBackdrop(frame, scale)
+		local backdrop = frame:GetBackdrop()
+		backdrop.edgeSize = E.mult / scale
+		frame:SetBackdrop(backdrop)
+		frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
 
-	local backdrop = E["media"].backdropfadecolor
+	local skinnedFrames = {}
+
+	local function skinFrame(frame)
+		frame:SetTemplate("Transparent")
+		skinnedFrames[#skinnedFrames + 1] = frame
+	end
+
+	hooksecurefunc(PallyPowerFrame, "SetScale", function(self, scale)
+		for _, frame in ipairs(skinnedFrames) do
+			scaleBackdrop(frame, scale)
+		end
+	end)
+
+	hooksecurefunc(PallyPowerConfigFrame, "SetScale", scaleBackdrop)
+
+	local backdrop = E.media.backdropfadecolor
 	PallyPower.db.profile.cBuffGood = {r = backdrop[1], g = backdrop[2], b = backdrop[3], t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedAll = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedSome = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedSpecial = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}
 
-	PallyPowerAuto:SetTemplate("Transparent", nil, true)
-	PallyPowerRF:SetTemplate("Transparent", nil, true)
-	PallyPowerAura:SetTemplate("Transparent", nil, true)
+	skinFrame(PallyPowerAuto)
+	skinFrame(PallyPowerRF)
+	skinFrame(PallyPowerAura)
 
 	PallyPowerAutoIcon:SetTexCoord(unpack(E.TexCoords))
 	PallyPowerRFIcon:SetTexCoord(unpack(E.TexCoords))
@@ -35,13 +53,13 @@ local function LoadSkin()
 
 	for i = 1, PALLYPOWER_MAXCLASSES do
 		local button = PallyPower.classButtons[i]
-		button:SetTemplate("Transparent", nil, true)
+		skinFrame(button)
 
 		_G[button:GetName().."ClassIcon"]:SetTexCoord(unpack(E.TexCoords))
 		_G[button:GetName().."BuffIcon"]:SetTexCoord(unpack(E.TexCoords))
 
 		for j = 1, PALLYPOWER_MAXPERCLASS do
-			PallyPower.playerButtons[i][j]:SetTemplate("Transparent", nil, true)
+			skinFrame(PallyPower.playerButtons[i][j])
 		end
 	end
 
