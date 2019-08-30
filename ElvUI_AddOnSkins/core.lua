@@ -88,6 +88,10 @@ local addonList = {
 	"PowerAuras",
 	"Quartz",
 	"TipTac",
+	"!Swatter",
+	"BeanCounter",
+	"Informant",
+	"AuctioneerSuite",
 }
 
 AS.addOns = {}

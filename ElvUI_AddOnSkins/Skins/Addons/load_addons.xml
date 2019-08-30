@@ -77,4 +77,8 @@
 	<Script file="powerAuras.lua"/>
 	<Script file="quartz.lua"/>
 	<Script file="tipTac.lua"/>
+	<Script file="swatter.lua"/>
+	<Script file="beanCounter.lua"/>
+	<Script file="informant.lua"/>
+	<Script file="auctioneerSuite.lua"/>
 </Ui>

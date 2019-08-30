@@ -2,12 +2,29 @@ local E, L, V, P, G = unpack(ElvUI)
 local AS = E:GetModule("AddOnSkins")
 
 local ipairs = ipairs
+local select = select
 local floor = math.floor
 
 local EnumerateFrames = EnumerateFrames
 
 local function round(x)
 	return floor(x + 0.5)
+end
+
+function AS:GetObjectChildren(obj, childID, list)
+	if not obj then return end
+
+	if not childID then
+		childID = obj:GetNumChildren()
+	elseif childID < 0 then
+		childID = obj:GetNumChildren() + childID
+	end
+
+	if not list then
+		return (select(childID, obj:GetChildren()))
+	else
+		return select(childID, obj:GetChildren())
+	end
 end
 
 function AS:FindChildFrameByPoint(parent, objType, point1, relativeTo, point2, x, y)

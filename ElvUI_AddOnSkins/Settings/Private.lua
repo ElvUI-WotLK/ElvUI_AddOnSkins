@@ -79,6 +79,10 @@ V.addOnSkins = {
 	PowerAuras = true,
 	Quartz = true,
 	TipTac = true,
+	Swatter = true,
+	BeanCounter = true,
+	Informant = true,
+	AuctioneerSuite = true,
 
 	Blizzard_WorldStateFrame = true,
 }
