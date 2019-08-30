@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 
 local select = select
 
-function AS:Desaturate(frame, point)
+function AS:Desaturate(frame)
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:IsObjectType("Texture") then
