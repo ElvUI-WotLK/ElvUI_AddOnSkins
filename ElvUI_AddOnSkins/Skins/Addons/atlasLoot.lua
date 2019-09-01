@@ -11,7 +11,7 @@ local function LoadSkin()
 		self:SetTemplate("Transparent", nil, true) --ignore updates
 
 		local r, g, b = self:GetBackdropColor()
-		self:SetBackdropColor(r, g, b, E.db.tooltip.db.colorAlpha)
+		self:SetBackdropColor(r, g, b, E.db.tooltip.colorAlpha)
 
 		local iLink = select(2, self:GetItem())
 		local quality = iLink and select(3, GetItemInfo(iLink))
