@@ -32,9 +32,17 @@ local function LoadSkin()
 	S:HandleSliderFrame(FishingBuddyOption_MinimapPosSlider)
 
 	S:HandleDropDownBox(FishingBuddyOption_OutfitMenu, 210)
-	S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
 
 	S:HandleCheckBox(FishingBuddyOptionSLZ)
+
+	if FishingBuddyOption_EasyCastKeys then
+		S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
+	else
+		S:SecureHook(FishingBuddy, "Initialize", function()
+			S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
+			S:Unhook(FishingBuddy, "Initialize")
+		end)
+	end
 
 	local function SkinCheckBoxes()
 		local checkBox
