@@ -62,7 +62,7 @@ function AS:FindChildFrameBySize(parent, objType, width, height)
 	for id, child in ipairs({parent:GetChildren()}) do
 		if not child:GetName() then
 			if not objType or (objType and child:IsObjectType(objType)) then
-				if round(child:GetWidth()) == width and round(child:GetHeight()) == width and round(obj:GetHeight()) == height then
+				if round(child:GetWidth()) == width and round(child:GetHeight()) == width and round(child:GetHeight()) == height then
 					return child, id
 				end
 			end

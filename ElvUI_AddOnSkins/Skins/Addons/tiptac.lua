@@ -50,7 +50,7 @@ local function LoadSkin()
 	end
 
 	if skinEnabled and TT:IsHooked(GameTooltip, "OnShow") then
-		local tooltips = {
+		local elvTooltips = {
 			GameTooltip,
 			ItemRefTooltip,
 			ItemRefShoppingTooltip1,
@@ -68,7 +68,7 @@ local function LoadSkin()
 			WorldMapCompareTooltip3
 		}
 
-		for _, tt in ipairs(tooltips) do
+		for _, tt in ipairs(elvTooltips) do
 			if TT:IsHooked(tt, "OnShow") then
 				TT:Unhook(tt, "OnShow", "SetStyle")
 			end

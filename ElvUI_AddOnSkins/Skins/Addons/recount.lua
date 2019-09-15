@@ -132,11 +132,11 @@ local function LoadSkin()
 		AS:DesaturateButton(button)
 	end
 
-	local L = LibStub("AceLocale-3.0"):GetLocale("Recount")
+	local RecountLocale = LibStub("AceLocale-3.0"):GetLocale("Recount")
 	local function resetData(self) Recount:ResetData() self:GetParent():Hide() end
 
 	function Recount:ShowReset()
-		AS:AcceptFrame(L["Reset Recount?"], resetData)
+		AS:AcceptFrame(RecountLocale["Reset Recount?"], resetData)
 	end
 end
 

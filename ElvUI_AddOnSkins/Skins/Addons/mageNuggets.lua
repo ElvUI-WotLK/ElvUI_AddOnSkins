@@ -84,7 +84,7 @@ local function LoadSkin()
 	}
 
 	for _, frameName in ipairs(procFrames) do
-		local frame = _G[frame]
+		local frame = _G[frameName]
 		local texture = _G[frameName .. "Texture"]
 		local bar = _G[frameName .. "_ProcBar"]
 

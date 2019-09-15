@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- WIM 3.3.7
+-- https://www.wowace.com/projects/wim-3/files/439176
 
 local function LoadSkin()
 	if not E.private.addOnSkins.WIM then return end
@@ -287,12 +288,12 @@ local function LoadSkin()
 	}
 
 	local function ApplySkin(self)
-		WIM.db.skin.selected = "WIM ElvUI"
-		WIM.RegisterSkin(WIM_Elvui)
+		self.db.skin.selected = "WIM ElvUI"
+		self.RegisterSkin(WIM_Elvui)
 	end
 
 	if WIM.db then
-		ApplySkin(self)
+		ApplySkin(WIM)
 	else
 		hooksecurefunc(WIM, "VARIABLES_LOADED", function(self)
 			ApplySkin(self)

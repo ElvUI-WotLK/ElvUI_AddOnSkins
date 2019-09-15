@@ -92,7 +92,6 @@ local addonList = {
 	"BeanCounter",
 	"Informant",
 	"AuctioneerSuite",
-	"Altoholic",
 }
 
 AS.addOns = {}

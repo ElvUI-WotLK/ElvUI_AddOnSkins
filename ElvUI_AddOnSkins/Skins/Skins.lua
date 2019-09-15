@@ -44,35 +44,37 @@ function AS:DesaturateButton(button)
 end
 
 function AS:AcceptFrame(MainText, Function)
-	if not AcceptFrame then
-		AcceptFrame = CreateFrame("Frame", "ElvUI_AcceptFrame", UIParent)
-		AcceptFrame:SetTemplate("Transparent")
-		AcceptFrame:Point("CENTER", UIParent, "CENTER")
-		AcceptFrame:SetFrameStrata("DIALOG")
-		AcceptFrame:EnableMouse(true)
-		tinsert(UISpecialFrames, AcceptFrame:GetName())
+	if not self.AcceptFrame then
+		local acceptFrame = CreateFrame("Frame", "ElvUI_AcceptFrame", UIParent)
+		acceptFrame:SetTemplate("Transparent")
+		acceptFrame:Point("CENTER", UIParent, "CENTER")
+		acceptFrame:SetFrameStrata("DIALOG")
+		acceptFrame:EnableMouse(true)
+		tinsert(UISpecialFrames, acceptFrame:GetName())
 
-		AcceptFrame.Text = AcceptFrame:CreateFontString(nil, "OVERLAY")
-		AcceptFrame.Text:FontTemplate(nil, 12)
-		AcceptFrame.Text:Point("TOP", AcceptFrame, "TOP", 0, -16)
+		acceptFrame.Text = acceptFrame:CreateFontString(nil, "OVERLAY")
+		acceptFrame.Text:FontTemplate(nil, 12)
+		acceptFrame.Text:Point("TOP", acceptFrame, "TOP", 0, -16)
 
-		AcceptFrame.Accept = CreateFrame("Button", nil, AcceptFrame, "OptionsButtonTemplate")
-		AcceptFrame.Accept:Size(75, 21)
-		AcceptFrame.Accept:Point("RIGHT", AcceptFrame, "BOTTOM", -5, 26)
-		AcceptFrame.Accept:SetFormattedText(YES)
-		S:HandleButton(AcceptFrame.Accept)
+		acceptFrame.Accept = CreateFrame("Button", nil, acceptFrame, "OptionsButtonTemplate")
+		acceptFrame.Accept:Size(75, 21)
+		acceptFrame.Accept:Point("RIGHT", acceptFrame, "BOTTOM", -5, 26)
+		acceptFrame.Accept:SetFormattedText(YES)
+		S:HandleButton(acceptFrame.Accept)
 
-		AcceptFrame.Close = CreateFrame("Button", nil, AcceptFrame, "OptionsButtonTemplate")
-		AcceptFrame.Close:Size(75, 21)
-		AcceptFrame.Close:Point("LEFT", AcceptFrame, "BOTTOM", 5, 26)
-		AcceptFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide() end)
-		AcceptFrame.Close:SetFormattedText(NO)
-		S:HandleButton(AcceptFrame.Close)
+		acceptFrame.Close = CreateFrame("Button", nil, acceptFrame, "OptionsButtonTemplate")
+		acceptFrame.Close:Size(75, 21)
+		acceptFrame.Close:Point("LEFT", acceptFrame, "BOTTOM", 5, 26)
+		acceptFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide() end)
+		acceptFrame.Close:SetFormattedText(NO)
+		S:HandleButton(acceptFrame.Close)
+
+		self.AcceptFrame = acceptFrame
 	end
 
-	AcceptFrame.Text:SetText(MainText)
-	AcceptFrame:Width(AcceptFrame.Text:GetStringWidth() + 50 > 200 and AcceptFrame.Text:GetStringWidth() + 50 or 200)
-	AcceptFrame:Height(AcceptFrame.Text:GetStringHeight() + 60)
-	AcceptFrame.Accept:SetScript("OnClick", Function)
-	AcceptFrame:Show()
+	self.AcceptFrame.Text:SetText(MainText)
+	self.AcceptFrame:Width(self.AcceptFrame.Text:GetStringWidth() + 50 > 200 and self.AcceptFrame.Text:GetStringWidth() + 50 or 200)
+	self.AcceptFrame:Height(self.AcceptFrame.Text:GetStringHeight() + 60)
+	self.AcceptFrame.Accept:SetScript("OnClick", Function)
+	self.AcceptFrame:Show()
 end
