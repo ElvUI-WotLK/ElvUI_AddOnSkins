@@ -5,10 +5,11 @@ local _G = _G
 local unpack = unpack
 local find, gsub = string.find, string.gsub
 
+-- Deadly Boss Mods 4.52 r4442
+-- https://www.curseforge.com/wow/addons/deadly-boss-mods/files/447605
+
 local function LoadSkin()
 	if not E.private.addOnSkins.DBM then return end
-
-	local db = E.db.addOnSkins
 
 	local function createIconOverlay(id, parent, point)
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
@@ -28,6 +29,8 @@ local function LoadSkin()
 		for bar in self:GetBarIterator() do
 			if not bar.injected then
 				hooksecurefunc(bar, "ApplyStyle", function()
+					local db = E.db.addOnSkins
+
 					local frame = bar.frame
 					local frameName = frame:GetName()
 					local tbar = _G[frameName .. "Bar"]
@@ -81,6 +84,8 @@ local function LoadSkin()
 	end
 
 	local function SkinBoss()
+		local db = E.db.addOnSkins
+
 		local count = 1
 		local bar = _G["DBM_BossHealth_Bar_" .. count]
 		local barName, background, progress, name, timer
@@ -98,7 +103,7 @@ local function LoadSkin()
 
 			bar:ClearAllPoints()
 
-			bar:Height(E.db.addOnSkins.dbmBarHeight)
+			bar:Height(db.dbmBarHeight)
 			bar:SetTemplate("Transparent")
 
 			background:SetNormalTexture(nil)
