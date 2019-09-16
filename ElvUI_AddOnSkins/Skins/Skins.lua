@@ -44,7 +44,7 @@ function AS:DesaturateButton(button)
 end
 
 function AS:AcceptFrame(MainText, Function)
-	if not self.AcceptFrame then
+	if not self.acceptFrame then
 		local acceptFrame = CreateFrame("Frame", "ElvUI_AcceptFrame", UIParent)
 		acceptFrame:SetTemplate("Transparent")
 		acceptFrame:Point("CENTER", UIParent, "CENTER")
@@ -69,12 +69,12 @@ function AS:AcceptFrame(MainText, Function)
 		acceptFrame.Close:SetFormattedText(NO)
 		S:HandleButton(acceptFrame.Close)
 
-		self.AcceptFrame = acceptFrame
+		self.acceptFrame = acceptFrame
 	end
 
-	self.AcceptFrame.Text:SetText(MainText)
-	self.AcceptFrame:Width(self.AcceptFrame.Text:GetStringWidth() + 50 > 200 and self.AcceptFrame.Text:GetStringWidth() + 50 or 200)
-	self.AcceptFrame:Height(self.AcceptFrame.Text:GetStringHeight() + 60)
-	self.AcceptFrame.Accept:SetScript("OnClick", Function)
-	self.AcceptFrame:Show()
+	self.acceptFrame.Text:SetText(MainText)
+	self.acceptFrame:Width(self.acceptFrame.Text:GetStringWidth() + 50 > 200 and self.acceptFrame.Text:GetStringWidth() + 50 or 200)
+	self.acceptFrame:Height(self.acceptFrame.Text:GetStringHeight() + 60)
+	self.acceptFrame.Accept:SetScript("OnClick", Function)
+	self.acceptFrame:Show()
 end
