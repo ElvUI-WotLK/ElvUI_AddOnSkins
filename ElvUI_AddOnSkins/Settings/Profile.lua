@@ -20,6 +20,7 @@ P.addOnSkins = {
 	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
+	dbmTemplate = "Default",
 
 	weakAuraAuraBar = true,
 	weakAuraIconCooldown = true,

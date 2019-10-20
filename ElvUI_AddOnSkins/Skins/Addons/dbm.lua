@@ -5,6 +5,9 @@ local _G = _G
 local unpack = unpack
 local find, gsub = string.find, string.gsub
 
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
 -- Deadly Boss Mods 4.52 r4442
 -- https://www.curseforge.com/wow/addons/deadly-boss-mods/files/447605
 
@@ -13,9 +16,14 @@ local function LoadSkin()
 
 	local function createIconOverlay(id, parent, point)
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
-		frame:SetTemplate("Default")
+		frame:SetTemplate()
 		frame:SetFrameLevel(1)
-		frame:Point("BOTTOMRIGHT", point, "BOTTOMLEFT", -(E.Border + E.Spacing), 0)
+
+		if id == 1 then
+			frame:SetPoint("RIGHT", point, "LEFT", -(E.Border + E.Spacing), 0)
+		else
+			frame:SetPoint("LEFT", point, "RIGHT", (E.Border + E.Spacing), 0)
+		end
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
 		backdroptex:SetTexture("Interface\\Icons\\Spell_Nature_WispSplode")
@@ -34,12 +42,14 @@ local function LoadSkin()
 					local frame = bar.frame
 					local frameName = frame:GetName()
 					local tbar = _G[frameName .. "Bar"]
+					local background = _G[frameName .. "BarBackground"]
 					local icon1 = _G[frameName .. "BarIcon1"]
 					local icon2 = _G[frameName .. "BarIcon2"]
 					local name = _G[frameName .. "BarName"]
 					local timer = _G[frameName .. "BarTimer"]
 					local spark = _G[frameName .. "BarSpark"]
 
+					background:Hide()
 					spark:Kill()
 
 					if not icon1.overlay then
@@ -51,25 +61,21 @@ local function LoadSkin()
 
 					icon1.overlay:Size(db.dbmBarHeight)
 					icon1:SetTexCoord(unpack(E.TexCoords))
-					icon1:ClearAllPoints()
 					icon1:SetInside(icon1.overlay)
 
 					icon2.overlay:Size(db.dbmBarHeight)
 					icon2:SetTexCoord(unpack(E.TexCoords))
-					icon2:ClearAllPoints()
 					icon2:SetInside(icon2.overlay)
 
 					tbar:SetInside(frame)
 
 					frame:Height(db.dbmBarHeight)
-					frame:SetTemplate("Default")
+					frame:SetTemplate(db.dbmTemplate)
 
-					name:ClearAllPoints()
-					name:Point("LEFT", frame, "LEFT", 4, 0.5)
+					name:Point("LEFT", 5, 0)
 					name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
 
-					timer:ClearAllPoints()
-					timer:Point("RIGHT", frame, "RIGHT", -4, 0.5)
+					timer:Point("RIGHT", -5, 0)
 					timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
 
 					if bar.owner.options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end

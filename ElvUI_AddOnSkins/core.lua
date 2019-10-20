@@ -384,6 +384,12 @@ local function getOptions()
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
+							},
+							dbmTemplate = {
+								order = 5,
+								type = "select",
+								name = L["Template"],
+								values = backdropValues
 							}
 						}
 					},
