@@ -14,15 +14,14 @@ local hooksecurefunc = hooksecurefunc
 local function LoadSkin()
 	if not E.private.addOnSkins.DBM then return end
 
-	local function createIconOverlay(id, parent, point)
+	local function createIconOverlay(id, parent)
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
 		frame:SetTemplate()
-		frame:SetFrameLevel(1)
 
 		if id == 1 then
-			frame:SetPoint("RIGHT", point, "LEFT", -(E.Border + E.Spacing), 0)
+			frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
 		else
-			frame:SetPoint("LEFT", point, "RIGHT", (E.Border + E.Spacing), 0)
+			frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
 		end
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
@@ -53,19 +52,20 @@ local function LoadSkin()
 					spark:Kill()
 
 					if not icon1.overlay then
-						icon1.overlay = createIconOverlay(1, tbar, frame)
+						icon1.overlay = createIconOverlay(1, frame)
+						icon1:SetTexCoord(unpack(E.TexCoords))
+						icon1:SetParent(icon1.overlay)
+						icon1:SetInside(icon1.overlay)
 					end
 					if not icon2.overlay then
-						icon2.overlay = createIconOverlay(2, tbar, frame)
+						icon2.overlay = createIconOverlay(2, frame)
+						icon2:SetTexCoord(unpack(E.TexCoords))
+						icon2:SetParent(icon2.overlay)
+						icon2:SetInside(icon2.overlay)
 					end
 
 					icon1.overlay:Size(db.dbmBarHeight)
-					icon1:SetTexCoord(unpack(E.TexCoords))
-					icon1:SetInside(icon1.overlay)
-
 					icon2.overlay:Size(db.dbmBarHeight)
-					icon2:SetTexCoord(unpack(E.TexCoords))
-					icon2:SetInside(icon2.overlay)
 
 					tbar:SetInside(frame)
 
