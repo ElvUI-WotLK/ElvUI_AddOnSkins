@@ -84,4 +84,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallback("WorldStateFrame", LoadSkin)
+S:AddCallback("AddonSkins_WorldStateFrame", LoadSkin)
