@@ -9,6 +9,7 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 
 -- AdiBags 1.1 beta 7
+-- https://www.curseforge.com/wow/addons/adibags/files/452440
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AdiBags then return end
@@ -121,11 +122,17 @@ local function LoadSkin()
 
 	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight")
 	hooksecurefunc(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
-		local name = button.itemId and GetItemInfo(button.itemId)
-		local text = self.widget:GetText()
-		text = trim(lower(text))
+		if not self.widget then return end
 
-		if name and not match(lower(name), text) then
+		local text = self.widget:GetText()
+		if not text then return end
+
+		text = trim(text)
+		if text == "" then return end
+
+		local name = button.itemId and GetItemInfo(button.itemId)
+
+		if name and not match(lower(name), lower(text)) then
 			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 	end)
