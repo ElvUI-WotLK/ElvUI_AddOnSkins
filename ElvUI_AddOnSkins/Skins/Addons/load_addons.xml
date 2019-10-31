@@ -81,4 +81,5 @@
 	<Script file="beanCounter.lua"/>
 	<Script file="informant.lua"/>
 	<Script file="auctioneerSuite.lua"/>
+	<Script file="altoholic.lua"/>
 </Ui>

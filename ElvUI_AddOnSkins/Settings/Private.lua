@@ -83,6 +83,7 @@ V.addOnSkins = {
 	BeanCounter = true,
 	Informant = true,
 	AuctioneerSuite = true,
+	Altoholic = true,
 
 	Blizzard_WorldStateFrame = true,
 }
