@@ -19,6 +19,27 @@ local function LoadSkin()
 		end
 	end
 
+	local function SkinCollapse(button)
+		button:SetNormalTexture(E.Media.Textures.Minus)
+		button:SetPushedTexture(nil)
+		button:SetHighlightTexture(nil)
+
+		hooksecurefunc(button, "SetNormalTexture", function(_, tex)
+			if tex == "Interface\\Buttons\\UI-MinusButton-Up" then
+				button:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
+			else
+				button:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
+			end
+		end)
+	end
+
+	AltoTooltip:HookScript("OnShow", function(self)
+		self:SetTemplate("Transparent", nil, true) --ignore updates
+
+		local r, g, b = self:GetBackdropColor()
+		self:SetBackdropColor(r, g, b, E.db.tooltip.colorAlpha)
+	end)
+
 	AltoholicFrame:StripTextures()
 	AltoholicFramePortrait:Kill()
 	AltoholicFrame:CreateBackdrop("Transparent")
@@ -77,31 +98,215 @@ local function LoadSkin()
 	S:HandleButton(AltoAccountSharing_SendButton)
 	S:HandleButton(AltoAccountSharing_CancelButton)
 
-	AltoAccountSharing_ToggleAll:SetNormalTexture(E.Media.Textures.Minus)
-	AltoAccountSharing_ToggleAll:SetPushedTexture(nil)
-	AltoAccountSharing_ToggleAll:SetHighlightTexture(nil)
-	hooksecurefunc(AltoAccountSharing_ToggleAll, "SetNormalTexture", function(_, tex)
-		if tex == "Interface\\Buttons\\UI-MinusButton-Up" then
-			AltoAccountSharing_ToggleAll:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-		else
-			AltoAccountSharing_ToggleAll:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-		end
-	end)
+	SkinCollapse(AltoAccountSharing_ToggleAll)
 
 	S:HandleCheckBox(AltoAccountSharing_CheckAll)
+
+	-- AccountSummary
+	AltoholicFrameSummaryScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameSummaryScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameSummaryEntry"..i.."Collapse"])
+	end
+
+	-- Activity
+	AltoholicFrameActivityScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameActivityScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameActivityEntry"..i.."Collapse"])
+	end
+
+	-- AuctionHouse
+	AltoholicFrameAuctionsScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameAuctionsScrollFrameScrollBar)
+
+	for i = 1, 7 do
+		AltoItem(_G["AltoholicFrameAuctionsEntry"..i.."Item"])
+	end
+
+	-- BagUsage
+	AltoholicFrameBagUsageScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameBagUsageScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameBagUsageEntry"..i.."Collapse"])
+	end
+
+	-- Calendar
+	S:HandleNextPrevButton(AltoholicFrameCalendar_PrevMonth)
+	S:HandleNextPrevButton(AltoholicFrameCalendar_NextMonth)
+
+	AltoholicFrameCalendarScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameCalendarScrollFrameScrollBar)
+
+	-- Containers
+	S:HandleDropDownBox(AltoholicFrameContainers_SelectContainerView)
+	S:HandleDropDownBox(AltoholicFrameContainers_SelectRarity)
+
+	AltoholicFrameContainersScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameContainersScrollFrameScrollBar)
+
+	for i = 1, 7 do
+		for j = 1, 14 do
+			AltoItem(_G["AltoholicFrameContainersEntry"..i.."Item"..j])
+		end
+	end
+
+	-- Currencies
+	S:HandleDropDownBox(AltoholicFrameCurrencies_SelectCurrencies)
+
+	AltoholicFrameCurrenciesScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameCurrenciesScrollFrameScrollBar)
+
+--[[
+	for i = 1, 8 do
+		for j = 1, 10 do
+			_G["AltoholicFrameCurrenciesEntry"..i.."Item"..j]
+		end
+	end
+]]
+
+	-- Equipment
+	AltoholicFrameEquipmentScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameEquipmentScrollFrameScrollBar)
+
+	for i = 1, 7 do
+		for j = 1, 10 do
+			AltoItem(_G["AltoholicFrameEquipmentEntry"..i.."Item"..j])
+		end
+	end
+
+	-- GuildBank
+	for i = 1, 7 do
+		for j = 1, 14 do
+			AltoItem(_G["AltoGuildBankEntry"..i.."Item"..j])
+		end
+	end
+
+	-- GuildBankTabs
+	AltoholicFrameGuildBankTabsScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameGuildBankTabsScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameGuildBankTabsEntry"..i.."Collapse"])
+		S:HandleButton(_G["AltoholicFrameGuildBankTabsEntry"..i.."UpdateTab"])
+	end
+
+	-- GuildMembers
+	AltoholicFrameGuildMembersScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameGuildMembersScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"])
+	end
+
+	for i = 1, 19 do
+		AltoItem(_G["AltoholicFrameGuildMembersItem"..i])
+	end
+
+	-- GuildProfessions
+	AltoholicFrameGuildProfessionsScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameGuildProfessionsScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameGuildProfessionsEntry"..i.."Collapse"])
+	end
+
+	-- Mails
+	AltoholicFrameMailScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameMailScrollFrameScrollBar)
+
+	for i = 1, 7 do
+		AltoItem(_G["AltoholicFrameMailEntry"..i.."Item"])
+	end
+
+	-- Pets
+	S:HandleDropDownBox(AltoholicFramePets_SelectPetView)
+	S:HandleRotateButton(AltoholicFramePetsNormal_ModelFrameRotateLeftButton)
+	S:HandleRotateButton(AltoholicFramePetsNormal_ModelFrameRotateRightButton)
+
+	for i = 1, 12 do
+		local button = _G["AltoholicFramePetsNormal_Button"..i]
+		button:SetTemplate()
+		button:StyleButton(nil, true)
+		button:GetDisabledTexture():SetInside()
+		button:SetNormalTexture("")
+		button:GetNormalTexture():SetDrawLayer("BORDER")
+		button:GetNormalTexture():SetInside()
+		button:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+	end
+
+	S:HandleNextPrevButton(AltoholicFramePetsNormalPrevPage, nil, nil, true)
+	AltoholicFramePetsNormalPrevPage:Size(32)
+	S:HandleNextPrevButton(AltoholicFramePetsNormalNextPage, nil, nil, true)
+	AltoholicFramePetsNormalNextPage:Size(32)
+
+	AltoholicFramePetsAllInOneScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFramePetsAllInOneScrollFrameScrollBar)
+
+	-- Quests
+	AltoholicFrameQuestsScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameQuestsScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameQuestsEntry"..i.."Collapse"])
+	end
+
+	-- Recipes
+	SkinCollapse(AltoholicFrameRecipesInfo_ToggleAll)
+	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectColor)
+	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectSubclass)
+	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectInvSlot)
+	
+	AltoholicFrameRecipesScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameRecipesScrollFrameScrollBar)
+	
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameRecipesEntry"..i.."Collapse"])
+		AltoItem(_G["AltoholicFrameRecipesEntry"..i.."Craft"])
+
+		for j = 1, 8 do
+			AltoItem(_G["AltoholicFrameRecipesEntry"..i.."Item"..j])
+		end
+	end
 
 	-- Reputations
 	S:HandleDropDownBox(AltoholicFrameReputations_SelectFaction)
 	AltoholicFrameReputationsScrollFrame:StripTextures()
 	S:HandleScrollBar(AltoholicFrameReputationsScrollFrameScrollBar)
 
+	for i = 1, 8 do
+		for j = 1, 10 do
+			local item = _G["AltoholicFrameReputationsEntry"..i.."Item"..j]
+			local bg = _G["AltoholicFrameReputationsEntry"..i.."Item"..j.."_Background"]
+
+			item:SetTemplate()
+			item:StyleButton()
+
+			bg:SetDrawLayer("BORDER")
+			bg:SetInside()
+			bg:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
 	-- Search
 	AltoholicFrameSearchScrollFrame:StripTextures()
 	S:HandleScrollBar(AltoholicFrameSearchScrollFrameScrollBar)
 
+	for i = 1, 7 do
+		E:RegisterCooldown(_G["AltoholicFrameSearchEntry"..i.."Cooldown"])
+		AltoItem(_G["AltoholicFrameSearchEntry"..i.."Item"])
+	end
+
 	-- Skills
 	AltoholicFrameSkillsScrollFrame:StripTextures()
 	S:HandleScrollBar(AltoholicFrameSkillsScrollFrameScrollBar)
+
+	for i = 1, 14 do
+		SkinCollapse(_G["AltoholicFrameSkillsEntry"..i.."Collapse"])
+	end
 
 	-- TabCharacters
 	S:HandleDropDownBox(AltoholicTabCharacters_SelectRealm)
@@ -148,16 +353,7 @@ local function LoadSkin()
 		_G["AltoholicTabSummary_Sort"..i]:StripTextures()
 	end
 
-	AltoholicTabSummaryToggleView:SetNormalTexture(E.Media.Textures.Minus)
-	AltoholicTabSummaryToggleView:SetPushedTexture(nil)
-	AltoholicTabSummaryToggleView:SetHighlightTexture(nil)
-	hooksecurefunc(AltoholicTabSummaryToggleView, "SetNormalTexture", function(_, tex)
-		if tex == "Interface\\Buttons\\UI-MinusButton-Up" then
-			AltoholicTabSummaryToggleView:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-		else
-			AltoholicTabSummaryToggleView:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-		end
-	end)
+	SkinCollapse(AltoholicTabSummaryToggleView)
 
 	S:HandleDropDownBox(AltoholicTabSummary_SelectLocation, 200)
 	S:HandleButton(AltoholicTabSummary_OptionsDataStore)
@@ -177,3 +373,29 @@ local function LoadSkin()
 end
 
 S:AddCallbackForAddon("Altoholic", "Altoholic", LoadSkin)
+
+local function LoadSkin2()
+	if not E.private.addOnSkins.Altoholic_Achievements then return end
+
+	AltoholicFrameAchievementsScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicFrameAchievementsScrollFrameScrollBar)
+
+	for i = 1, 8 do
+		for j = 1, 10 do
+			_G["AltoholicFrameAchievementsEntry"..i.."Item"..j]:SetTemplate()
+			_G["AltoholicFrameAchievementsEntry"..i.."Item"..j]:StyleButton()
+			_G["AltoholicFrameAchievementsEntry"..i.."Item"..j.."_Background"]:SetDrawLayer("BORDER")
+			_G["AltoholicFrameAchievementsEntry"..i.."Item"..j.."_Background"]:SetInside()
+			_G["AltoholicFrameAchievementsEntry"..i.."Item"..j.."_Background"]:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	for i = 1, 15 do
+		_G["AltoholicTabAchievementsMenuItem"..i]:StripTextures()
+	end
+
+	AltoholicAchievementsMenuScrollFrame:StripTextures()
+	S:HandleScrollBar(AltoholicAchievementsMenuScrollFrameScrollBar)
+end
+
+S:AddCallbackForAddon("Altoholic_Achievements", "Altoholic_Achievements", LoadSkin2)
