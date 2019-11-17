@@ -84,6 +84,7 @@ V.addOnSkins = {
 	Informant = true,
 	AuctioneerSuite = true,
 	Altoholic = true,
+	LoseControl = true,
 
 	Blizzard_WorldStateFrame = true,
 }
