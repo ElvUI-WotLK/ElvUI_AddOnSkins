@@ -8,6 +8,9 @@ local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 
+local ITEM_QUALITY_POOR = ITEM_QUALITY_POOR
+local ITEM_QUALITY_UNCOMMON = ITEM_QUALITY_UNCOMMON
+
 -- AdiBags 1.1 beta 7
 -- https://www.curseforge.com/wow/addons/adibags/files/452440
 

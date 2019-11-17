@@ -32,58 +32,68 @@ local function LoadSkin()
 		return frame
 	end
 
+	local function applyStyle(self)
+		local db = E.db.addOnSkins
+
+		local frame = self.frame
+		local frameName = frame:GetName()
+		local tbar = _G[frameName .. "Bar"]
+		local background = _G[frameName .. "BarBackground"]
+		local icon1 = _G[frameName .. "BarIcon1"]
+		local icon2 = _G[frameName .. "BarIcon2"]
+		local name = _G[frameName .. "BarName"]
+		local timer = _G[frameName .. "BarTimer"]
+		local spark = _G[frameName .. "BarSpark"]
+
+		background:Hide()
+		spark:Kill()
+
+		if not icon1.overlay then
+			icon1.overlay = createIconOverlay(1, frame)
+			icon1:SetTexCoord(unpack(E.TexCoords))
+			icon1:SetParent(icon1.overlay)
+			icon1:SetInside(icon1.overlay)
+		end
+		if not icon2.overlay then
+			icon2.overlay = createIconOverlay(2, frame)
+			icon2:SetTexCoord(unpack(E.TexCoords))
+			icon2:SetParent(icon2.overlay)
+			icon2:SetInside(icon2.overlay)
+		end
+
+		icon1.overlay:Size(db.dbmBarHeight)
+		icon2.overlay:Size(db.dbmBarHeight)
+
+		tbar:SetInside(frame)
+
+		frame:Height(db.dbmBarHeight)
+		frame:SetTemplate(db.dbmTemplate)
+
+		name:Point("LEFT", 5, 0)
+		name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+
+		timer:Point("RIGHT", -5, 0)
+		timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+
+		if self.owner.options.IconLeft then
+			icon1.overlay:Show()
+		else
+			icon1.overlay:Hide()
+		end
+
+		if self.owner.options.IconRight then
+			icon2.overlay:Show()
+		else
+			icon2.overlay:Hide()
+		end
+	end
+
 	local function SkinBars(self)
 		for bar in self:GetBarIterator() do
 			if not bar.injected then
-				hooksecurefunc(bar, "ApplyStyle", function()
-					local db = E.db.addOnSkins
+				hooksecurefunc(bar, "ApplyStyle", applyStyle)
 
-					local frame = bar.frame
-					local frameName = frame:GetName()
-					local tbar = _G[frameName .. "Bar"]
-					local background = _G[frameName .. "BarBackground"]
-					local icon1 = _G[frameName .. "BarIcon1"]
-					local icon2 = _G[frameName .. "BarIcon2"]
-					local name = _G[frameName .. "BarName"]
-					local timer = _G[frameName .. "BarTimer"]
-					local spark = _G[frameName .. "BarSpark"]
-
-					background:Hide()
-					spark:Kill()
-
-					if not icon1.overlay then
-						icon1.overlay = createIconOverlay(1, frame)
-						icon1:SetTexCoord(unpack(E.TexCoords))
-						icon1:SetParent(icon1.overlay)
-						icon1:SetInside(icon1.overlay)
-					end
-					if not icon2.overlay then
-						icon2.overlay = createIconOverlay(2, frame)
-						icon2:SetTexCoord(unpack(E.TexCoords))
-						icon2:SetParent(icon2.overlay)
-						icon2:SetInside(icon2.overlay)
-					end
-
-					icon1.overlay:Size(db.dbmBarHeight)
-					icon2.overlay:Size(db.dbmBarHeight)
-
-					tbar:SetInside(frame)
-
-					frame:Height(db.dbmBarHeight)
-					frame:SetTemplate(db.dbmTemplate)
-
-					name:Point("LEFT", 5, 0)
-					name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
-
-					timer:Point("RIGHT", -5, 0)
-					timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
-
-					if bar.owner.options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
-					if bar.owner.options.IconRight then icon2.overlay:Show() else icon2.overlay:Hide() end
-
-					bar.injected = true
-				end)
-
+				bar.injected = true
 				bar:ApplyStyle()
 			end
 		end
@@ -137,15 +147,15 @@ local function LoadSkin()
 		end
 	end
 
-	local function SkinRange()
-		DBMRangeCheck:SetTemplate("Transparent")
-	end
-
 	hooksecurefunc(DBT, "CreateBar", SkinBars)
 	hooksecurefunc(DBM.BossHealth, "Show", SkinBoss)
 	hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss)
 	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss)
-	hooksecurefunc(DBM.RangeCheck, "Show", SkinRange)
+
+	S:SecureHook(DBM.RangeCheck, "Show", function(self)
+		DBMRangeCheck:SetTemplate("Transparent")
+		S:Unhook(self, "Show")
+	end)
 
 	S:RawHook("RaidNotice_AddMessage", function(noticeFrame, textString, colorInfo)
 		if find(textString, " |T") then

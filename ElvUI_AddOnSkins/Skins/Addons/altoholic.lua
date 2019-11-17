@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Altoholic 3.3.002b
+-- https://www.curseforge.com/wow/addons/altoholic/files/437603
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Altoholic then return end
 
@@ -372,10 +375,8 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("Altoholic", "Altoholic", LoadSkin)
-
-local function LoadSkin2()
-	if not E.private.addOnSkins.Altoholic_Achievements then return end
+local function LoadAchievementsSkin()
+	if not E.private.addOnSkins.Altoholic then return end
 
 	AltoholicFrameAchievementsScrollFrame:StripTextures()
 	S:HandleScrollBar(AltoholicFrameAchievementsScrollFrameScrollBar)
@@ -398,4 +399,5 @@ local function LoadSkin2()
 	S:HandleScrollBar(AltoholicAchievementsMenuScrollFrameScrollBar)
 end
 
-S:AddCallbackForAddon("Altoholic_Achievements", "Altoholic_Achievements", LoadSkin2)
+S:AddCallbackForAddon("Altoholic", "Altoholic", LoadSkin)
+S:AddCallbackForAddon("Altoholic_Achievements", "Altoholic_Achievements", LoadAchievementsSkin)
