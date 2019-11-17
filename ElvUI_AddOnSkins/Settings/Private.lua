@@ -85,6 +85,7 @@ V.addOnSkins = {
 	AuctioneerSuite = true,
 	Altoholic = true,
 	LoseControl = true,
+	SilverDragon = true,
 
 	Blizzard_WorldStateFrame = true,
 }

@@ -83,4 +83,5 @@
 	<Script file="auctioneerSuite.lua"/>
 	<Script file="altoholic.lua"/>
 	<Script file="loseControl.lua"/>
+	<Script file="silverDragon.lua"/>
 </Ui>
