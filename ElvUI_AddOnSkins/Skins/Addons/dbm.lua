@@ -37,13 +37,18 @@ local function LoadSkin()
 
 		local frame = self.frame
 		local frameName = frame:GetName()
-		local tbar = _G[frameName .. "Bar"]
+		local bar = _G[frameName .. "Bar"]
 		local background = _G[frameName .. "BarBackground"]
 		local icon1 = _G[frameName .. "BarIcon1"]
 		local icon2 = _G[frameName .. "BarIcon2"]
 		local name = _G[frameName .. "BarName"]
 		local timer = _G[frameName .. "BarTimer"]
 		local spark = _G[frameName .. "BarSpark"]
+
+		local scale = self.enlarged and self.owner.options.HugeScale or self.owner.options.Scale
+		local barWidth = (self.enlarged and self.owner.options.HugeWidth or self.owner.options.Width) * scale
+		local barHeight = db.dbmBarHeight * scale
+		local fontSize = db.dbmFontSize * scale
 
 		background:Hide()
 		spark:Kill()
@@ -61,19 +66,22 @@ local function LoadSkin()
 			icon2:SetInside(icon2.overlay)
 		end
 
-		icon1.overlay:Size(db.dbmBarHeight)
-		icon2.overlay:Size(db.dbmBarHeight)
-
-		tbar:SetInside(frame)
-
-		frame:Height(db.dbmBarHeight)
+		frame:SetScale(1)
 		frame:SetTemplate(db.dbmTemplate)
 
+		bar:SetInside(frame)
+
+		frame:Size(barWidth, barHeight)
+		bar:Size(barWidth, barHeight)
+
+		icon1.overlay:Size(barHeight)
+		icon2.overlay:Size(barHeight)
+
 		name:Point("LEFT", 5, 0)
-		name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+		name:SetFont(E.LSM:Fetch("font", db.dbmFont), fontSize, db.dbmFontOutline)
 
 		timer:Point("RIGHT", -5, 0)
-		timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+		timer:SetFont(E.LSM:Fetch("font", db.dbmFont), fontSize, db.dbmFontOutline)
 
 		if self.owner.options.IconLeft then
 			icon1.overlay:Show()
