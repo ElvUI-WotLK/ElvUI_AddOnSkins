@@ -96,24 +96,38 @@ local addonList = {
 	"LoseControl",
 	"SilverDragon",
 }
+local addonAlias = {
+	["DBM"] = "DBM-Core",
+}
 
 AS.addOns = {}
 
-for i = 1, GetNumAddOns() do
-	local name, _, _, enabled = GetAddOnInfo(i)
-	AS.addOns[lower(name)] = enabled ~= nil
+do
+	local temp = {}
+	for alias, addonName in pairs(addonAlias) do
+		temp[lower(addonName)] = alias
+	end
+
+	for i = 1, GetNumAddOns() do
+		local name, _, _, enabled = GetAddOnInfo(i)
+		AS.addOns[lower(name)] = enabled ~= nil
+
+		if temp[name] then
+			AS.addOns[lower(temp[name])] = enabled ~= nil
+		end
+	end
 end
 
 function AS:CheckAddOn(addon)
-	return self.addOns[lower(addon)] or false
+	return self.addOns[lower(addonAlias[addon] or addon)] or false
 end
 
 function AS:IsAddonExist(addon)
-	return self.addOns[lower(addon)] ~= nil
+	return self.addOns[lower(addonAlias[addon] or addon)] ~= nil
 end
 
 function AS:RegisterAddonOption(addonName, options)
-	if select(6, GetAddOnInfo(addonName)) == "MISSING" then return end
+	if select(6, GetAddOnInfo(addonAlias[addonName] or addonName)) == "MISSING" then return end
 
 	options.args.skins.args.addOns.args[addonName] = {
 		type = "toggle",
