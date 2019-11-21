@@ -53,6 +53,13 @@ local function LoadSkin()
 		background:Hide()
 		spark:Kill()
 
+		self._bar = bar
+		self._icon1 = icon1
+		self._icon2 = icon2
+		self._name = name
+		self._timer = timer
+		self._font = E.LSM:Fetch("font", db.dbmFont)
+
 		if not icon1.overlay then
 			icon1.overlay = createIconOverlay(1, frame)
 			icon1:SetTexCoord(unpack(E.TexCoords))
@@ -78,10 +85,10 @@ local function LoadSkin()
 		icon2.overlay:Size(barHeight)
 
 		name:Point("LEFT", 5, 0)
-		name:SetFont(E.LSM:Fetch("font", db.dbmFont), fontSize, db.dbmFontOutline)
+		name:SetFont(self._font, fontSize, db.dbmFontOutline)
 
 		timer:Point("RIGHT", -5, 0)
-		timer:SetFont(E.LSM:Fetch("font", db.dbmFont), fontSize, db.dbmFontOutline)
+		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
 
 		if self.owner.options.IconLeft then
 			icon1.overlay:Show()
@@ -96,13 +103,126 @@ local function LoadSkin()
 		end
 	end
 
+	local function setPosition(self)
+		if self.moving == "enlarge" then return end
+
+		local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+
+		self.frame:ClearAllPoints()
+		if self.owner.options.ExpandUpwards then
+			self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		else
+			self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		end
+	end
+
+	local function moveToNextPosition(self, oldX, oldY)
+		if self.moving == "enlarge" then return end
+
+		local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+		local oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
+		local oldY = oldY or (self.frame:GetTop())
+
+		self.frame:ClearAllPoints()
+		if self.owner.options.ExpandUpwards then
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		else
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		end
+
+		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
+		local newY = self.frame:GetTop()
+
+		self.moving = "move"
+		self.moveAnchor = newAnchor
+		self.moveOffsetX = -(newX - oldX)
+		self.moveOffsetY = -(newY - oldY)
+		self.moveElapsed = 0
+
+		if self.owner.options.ExpandUpwards then
+			self.movePoint = "BOTTOM"
+			self.moveRelPoint = "TOP"
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.moveOffsetX, self.moveOffsetY)
+		else
+			self.movePoint = "TOP"
+			self.moveRelPoint = "BOTTOM"
+			self.moveOffsetY = -self.moveOffsetY
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, self.moveOffsetY)
+		end
+	end
+
+	local function enlarge(self)
+		local newAnchor = (self.owner.hugeBars.last and self.owner.hugeBars.last.frame) or self.owner.secAnchor
+		local oldX = self.frame:GetRight() - self.frame:GetWidth() / 2
+		local oldY = self.frame:GetTop()
+
+		self.frame:ClearAllPoints()
+		if self.owner.options.ExpandUpwards then
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		else
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		end
+
+		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
+		local newY = self.frame:GetTop()
+
+		self.moving = "enlarge"
+		self.movePoint = "TOP"
+		self.moveRelPoint = "BOTTOM"
+		self.moveAnchor = newAnchor
+		self.moveOffsetX = -(newX - oldX)
+		self.moveOffsetY = -(newY - oldY)
+		self.moveElapsed = 0
+
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, -self.moveOffsetY)
+	end
+
+	local function animateEnlarge(self, elapsed)
+		self.moveElapsed = self.moveElapsed + elapsed
+
+		local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+		local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+
+		local db = E.db.addOnSkins
+		local scale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
+		local width = self.owner.options.Width * scale
+		local height = db.dbmBarHeight * scale
+		local fontSize = db.dbmFontSize * scale
+
+		if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
+			self.frame:ClearAllPoints()
+			self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+			self.frame:Size(width, height)
+			self._bar:Size(width, height)
+
+			self._icon1.overlay:Size(height)
+			self._icon2.overlay:Size(height)
+
+			self._name:SetFont(self._font, fontSize, db.dbmFontOutline)
+			self._timer:SetFont(self._font, fontSize, db.dbmFontOutline)
+		else
+			self.moving = nil
+			self.enlarged = true
+			self.owner.hugeBars:Append(self)
+			self:ApplyStyle()
+			self:SetPosition()
+		end
+	end
+
 	local function SkinBars(self)
 		for bar in self:GetBarIterator() do
 			if not bar.injected then
 				hooksecurefunc(bar, "ApplyStyle", applyStyle)
 
+				bar.SetPosition = setPosition
+				bar.MoveToNextPosition = moveToNextPosition
+				bar.Enlarge = enlarge
+				bar.AnimateEnlarge = animateEnlarge
+
 				bar.injected = true
+
 				bar:ApplyStyle()
+				bar:SetPosition()
 			end
 		end
 	end
