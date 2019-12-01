@@ -86,6 +86,7 @@ V.addOnSkins = {
 	Altoholic = true,
 	LoseControl = true,
 	SilverDragon = true,
+	_NPCScanOverlay = true,
 
 	Blizzard_WorldStateFrame = true,
 }

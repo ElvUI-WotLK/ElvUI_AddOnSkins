@@ -95,9 +95,11 @@ local addonList = {
 	"Altoholic",
 	"LoseControl",
 	"SilverDragon",
+	"_NPCScanOverlay",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
+	["_NPCScanOverlay"] = "_NPCScan.Overlay",
 }
 
 AS.addOns = {}
