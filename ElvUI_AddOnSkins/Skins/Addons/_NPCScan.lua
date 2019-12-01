@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- NPCScan 3.3.5.5
+-- https://www.curseforge.com/wow/addons/npcscan/files/441050
+
 local function LoadSkin()
 	if not E.private.addOnSkins._NPCScan then return end
 
