@@ -7,6 +7,7 @@ local unpack = unpack
 local GetItemIcon = GetItemIcon
 
 -- Auctionator 2.6.3
+-- https://www.curseforge.com/wow/addons/auctionator/files/426882
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Auctionator then return end
@@ -167,15 +168,20 @@ local function LoadSkin()
 			local tab = _G["Atr_ListTabsTab"..i]
 			tab:StripTextures()
 			S:HandleButton(tab)
+			tab:Height(22)
 		end
+
+		Atr_ListTabsTab3:Point("BOTTOMRIGHT", Atr_ListTabs, -8, 21)
+
+		S:HandleButton(Atr_Back_Button)
+		Atr_Back_Button:Height(22)
+		Atr_Back_Button:Point("TOPLEFT", Atr_HeadingsBar, 8, 21)
 
 		Atr_Hilite1:SetTemplate("Transparent", true, true)
 		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0)
 
 		S:HandleDropDownBox(Atr_ASDD_Class, 180)
 		S:HandleDropDownBox(Atr_ASDD_Subclass, 180)
-
-		S:HandleButton(Atr_Back_Button)
 
 		S:HandleButton(Atr_FullScanStartButton)
 		S:HandleButton(Atr_FullScanDone)
