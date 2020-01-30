@@ -85,4 +85,5 @@
 	<Script file="loseControl.lua"/>
 	<Script file="silverDragon.lua"/>
 	<Script file="_NPCScanOverlay.lua"/>
+	<Script file="Examiner.lua"/>
 </Ui>

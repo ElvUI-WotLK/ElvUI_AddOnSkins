@@ -96,6 +96,7 @@ local addonList = {
 	"LoseControl",
 	"SilverDragon",
 	"_NPCScanOverlay",
+	"Examiner",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
