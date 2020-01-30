@@ -3,6 +3,7 @@ local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
 local _G = _G
+local ipairs = ipairs
 local select = select
 
 AS.skinnedLibs = {}
@@ -10,17 +11,18 @@ AS.skinnedLibs = {}
 local dewdropEditBoxFrame
 local dewdropSliderFrame
 
-local function SkinDewdrop2()
-	local frame
+local function SkinDewdrop(prefix)
+	local level = prefix.."Level"
+	local button = prefix.."Button"
+
 	local i = 1
+	local frame = _G[level .. i]
 
-	while _G["Dewdrop20Level" .. i] do
-		frame = _G["Dewdrop20Level" .. i]
-
+	while frame do
 		if not frame.isSkinned then
 			frame:SetTemplate("Transparent")
 
-			select(1, frame:GetChildren()):Hide()
+			frame:GetChildren():Hide()
 			frame.SetBackdropColor = E.noop
 			frame.SetBackdropBorderColor = E.noop
 
@@ -28,12 +30,15 @@ local function SkinDewdrop2()
 		end
 
 		i = i + 1
+		frame = _G[level .. i]
 	end
 
 	i = 1
-	while _G["Dewdrop20Button" .. i] do
-		if not _G["Dewdrop20Button" .. i].isHook then
-			_G["Dewdrop20Button" .. i]:HookScript("OnEnter", function(self)
+	frame = _G[button .. i]
+
+	while frame do
+		if not frame.isHook then
+			frame:HookScript("OnEnter", function(self)
 				if not self.disabled and self.hasArrow then
 					if not dewdropEditBoxFrame and self.hasEditBox then
 						dewdropEditBoxFrame = AS:FindFrameBySizeChild({"EditBox"}, 200, 40)
@@ -55,13 +60,15 @@ local function SkinDewdrop2()
 						end
 					end
 
-					SkinDewdrop2()
+					SkinDewdrop(prefix)
 				end
 			end)
-			_G["Dewdrop20Button" .. i].isHook = true
+
+			frame.isHook = true
 		end
 
 		i = i + 1
+		frame = _G[button .. i]
 	end
 end
 
@@ -71,12 +78,10 @@ local function SkinTablet2(lib)
 			parent = fakeParent
 		end
 		if self.registry[parent].data.detached then
-			local frame
 			local i = 1
+			local frame = _G["Tablet20DetachedFrame" .. i]
 
-			while _G["Tablet20DetachedFrame" .. i] do
-				frame = _G["Tablet20DetachedFrame" .. i]
-
+			while frame do
 				if not frame.isSkinned then
 					frame:SetTemplate("Transparent")
 					S:HandleSliderFrame(frame.slider)
@@ -85,6 +90,7 @@ local function SkinTablet2(lib)
 				end
 
 				i = i + 1
+				frame = _G["Tablet20DetachedFrame" .. i]
 			end
 		end
 	end
@@ -335,9 +341,32 @@ local function SkinConfigator(lib)
 	end
 end
 
+local function SkinAzDialog(lib)
+	local function skinDialog(frame)
+		if frame.isSkinned then return end
+
+		frame:SetTemplate("Transparent")
+
+		frame.edit:SetBackdrop(nil)
+		S:HandleEditBox(frame.edit)
+
+		S:HandleButton(frame.ok)
+		S:HandleButton(frame.cancel)
+
+		frame.isSkinned = true
+	end
+
+	for _, frame in ipairs(lib.dialogs) do
+		skinDialog(frame)
+	end
+
+	S:SecureHook(lib, "Show", function(self)
+		skinDialog(self.dialogs[#self.dialogs])
+	end)
+end
+
 function AS:SkinLibrary(name)
-	if not name then return end
-	if self.skinnedLibs[name] then return end
+	if not name or self.skinnedLibs[name] then return end
 
 	if name == "AceAddon-2.0" then
 		local AceAddon = LibStub("AceAddon-2.0", true)
@@ -358,10 +387,13 @@ function AS:SkinLibrary(name)
 			end)
 			self.skinnedLibs[name] = true
 		end
-	elseif name == "Dewdrop-2.0" then
-		local Dewdrop = LibStub("Dewdrop-2.0", true)
+	elseif name == "Dewdrop-2.0" or name == "ArkDewdrop-3.0" then
+		local Dewdrop = LibStub(name, true)
 		if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
-			S:SecureHook(Dewdrop, "Open", SkinDewdrop2)
+			local prefix = name == "Dewdrop-2.0" and "Dewdrop20" or "ArkDewdrop30"
+			S:SecureHook(Dewdrop, "Open", function()
+				SkinDewdrop(prefix)
+			end)
 			self.skinnedLibs[name] = true
 		end
 	elseif name == "Tablet-2.0" then
@@ -411,5 +443,11 @@ function AS:SkinLibrary(name)
 			end, true)
 		end
 		self.skinnedLibs[name] = true
+	elseif name == "AzDialog" then
+		local AD = AzDialog
+		if AD then
+			SkinAzDialog(AD)
+			self.skinnedLibs[name] = true
+		end
 	end
 end
