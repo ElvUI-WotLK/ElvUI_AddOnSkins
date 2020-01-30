@@ -393,6 +393,8 @@ local function LoadSkin()
 end
 
 local function LoadBasicFilterSkin()
+	if not E.private.addOnSkins.AuctioneerSuite then return end
+
 	S:HandleButton(BasicFilter_IgnoreList_IgnorePlayerButton)
 	S:HandleButton(BasicFilter_IgnoreList_StopIgnoreButton)
 
@@ -401,6 +403,8 @@ local function LoadBasicFilterSkin()
 end
 
 local function LoadStatHistogramSkin()
+	if not E.private.addOnSkins.AuctioneerSuite then return end
+
 	local StatHistogram = AucAdvanced.GetModule("Stat", "Histogram")
 	if StatHistogram then
 		S:SecureHook(StatHistogram.Private, "SetupConfigGui", function()
