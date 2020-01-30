@@ -1,15 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local type = type
 local unpack = unpack
-local lower, match, trim = string.lower, string.match, string.trim
 
-local GetContainerItemQuestInfo = GetContainerItemQuestInfo
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
+local hooksecurefunc = hooksecurefunc
 
-local ITEM_QUALITY_POOR = ITEM_QUALITY_POOR
-local ITEM_QUALITY_UNCOMMON = ITEM_QUALITY_UNCOMMON
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 -- AdiBags 1.1 beta 7
 -- https://www.curseforge.com/wow/addons/adibags/files/452440
@@ -28,18 +26,23 @@ local function LoadSkin()
 	local function SkinContainer(frame)
 		frame:SetTemplate("Transparent")
 		S:HandleCloseButton(frame.CloseButton)
+
+		local bagSlots = frame.HeaderLeftRegion.widgets[1].widget
+		bagSlots:SetTemplate()
+		bagSlots:StyleButton(nil, true)
+
+		local bagSlotsTex = bagSlots:GetNormalTexture()
+		bagSlotsTex:SetInside()
+		bagSlotsTex:SetTexCoord(unpack(E.TexCoords))
+
 		frame.BagSlotPanel:SetTemplate("Transparent")
 
-		local icon
-		for _, bag in pairs(frame.BagSlotPanel.buttons) do
-			icon = _G[bag:GetName().."IconTexture"]
-			bag.oldTex = icon:GetTexture()
-
+		for _, bag in ipairs(frame.BagSlotPanel.buttons) do
 			bag:StripTextures()
-			bag:CreateBackdrop("Default", true)
-			bag.backdrop:SetAllPoints()
+			bag:SetTemplate()
 			bag:StyleButton()
-			icon:SetTexture(bag.oldTex)
+
+			local icon = _G[bag:GetName().."IconTexture"]
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
@@ -52,6 +55,11 @@ local function LoadSkin()
 
 		return frame
 	end)
+
+	local questColors = {
+		["questStarter"] = {E.db.bags.colors.items.questStarter.r, E.db.bags.colors.items.questStarter.g, E.db.bags.colors.items.questStarter.b},
+		["questItem"] =	{E.db.bags.colors.items.questItem.r, E.db.bags.colors.items.questItem.g, E.db.bags.colors.items.questItem.b}
+	}
 
 	local LayeredRegionClass = AdiBags:GetClass("LayeredRegion")
 	hooksecurefunc(LayeredRegionClass.prototype, "AddWidget", function(self, widget)
@@ -71,72 +79,76 @@ local function LoadSkin()
 		end
 	end)
 
+	local function updateBorderTexture(self, texture, g, b)
+		if texture == TEXTURE_ITEM_QUEST_BANG then
+			self:SetAlpha(1)
+			self.parent:SetBackdropBorderColor(unpack(questColors.questStarter))
+		else
+			self:SetAlpha(0)
+
+			if texture == TEXTURE_ITEM_QUEST_BORDER then
+				self.parent:SetBackdropBorderColor(unpack(questColors.questItem))
+			elseif texture == "Interface\\Buttons\\UI-ActionButton-Border" then
+				-- await for vertex color
+				self.awaitColor = true
+				return
+			elseif type(texture) == "number" then
+				self.parent:SetBackdropBorderColor(texture, g, b)
+			end
+		end
+	end
+
+	local function updateBorderVertexColor(self, r, g, b)
+		if not self.awaitColor then return end
+
+		self.parent:SetBackdropBorderColor(r, g, b)
+		self.awaitColor = nil
+	end
+
+	local function updateDimJunk(self, mode)
+		if mode == "MOD" and AdiBags.db.profile.dimJunk then
+			local alpha = 1 - 0.5 * AdiBags.db.profile.qualityOpacity
+			self.parent.IconTexture:SetVertexColor(1, 1, 1, alpha)
+			self._dimmed = true
+		elseif self.dimmed then
+			self.parent.IconTexture:SetVertexColor(1, 1, 1, 1)
+			self._dimmed = nil
+		end
+	end
+
+	local function updateBorderOnHide(self)
+		self.parent:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		self.parent.IconTexture:SetVertexColor(1, 1, 1, 1)
+	end
+
 	local ItemButtonClass = AdiBags:GetClass("ItemButton")
 	hooksecurefunc(ItemButtonClass.prototype, "OnCreate", function(self)
 		self.NormalTexture:SetTexture(nil)
 		self:SetTemplate("Default", true)
 		self:StyleButton()
 
-		E:RegisterCooldown(self.Cooldown)
-
 		self.IconTexture:SetInside()
+		self.IconTexture:SetTexCoord(unpack(E.TexCoords))
+		self.IconTexture.SetTexCoord = E.noop
+
+		self.IconQuestTexture:SetInside()
+		self.IconQuestTexture:SetTexture(E.Media.Textures.BagQuestIcon)
+		self.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
+		self.IconQuestTexture.SetTexCoord = E.noop
+		self.IconQuestTexture.parent = self
+		self.IconQuestTexture.SetTexture = updateBorderTexture
+		self.IconQuestTexture.SetVertexColor = updateBorderVertexColor
+		self.IconQuestTexture.SetBlendMode = updateDimJunk
+		hooksecurefunc(self.IconQuestTexture, "Hide", updateBorderOnHide)
+
+		E:RegisterCooldown(self.Cooldown)
 	end)
 
 	hooksecurefunc(ItemButtonClass.prototype, "Update", function(self)
-		if self.texture then
-			self.IconTexture:SetTexCoord(unpack(E.TexCoords))
-		else
+		if not self:CanUpdate() then return end
+
+		if not self.texture then
 			self.IconTexture:SetTexture(nil)
-		end
-	end)
-
-	hooksecurefunc(ItemButtonClass.prototype, "UpdateBorder", function(self)
-		if not self.hasItem then return end
-
-		local profileDB = AdiBags.db.profile
-		local isQuestItem, questId, isActive = GetContainerItemQuestInfo(self.bag, self.slot)
-		local _, _, quality = GetItemInfo(self.itemId)
-
-		if profileDB.questIndicator and (questId and not isActive) then
-			self.IconQuestTexture:SetAlpha(1)
-			self.IconQuestTexture:SetInside()
-			self.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
-		else
-			self.IconQuestTexture:SetAlpha(0)
-		end
-
-		if questId and not isActive then
-			self:SetBackdropBorderColor(1, 1, 0)
-		elseif questId or isQuestItem then
-			self:SetBackdropBorderColor(1, 0.2, 0.2)
-		elseif profileDB.qualityHighlight and quality then
-			if quality >= ITEM_QUALITY_UNCOMMON then
-				self:SetBackdropBorderColor(GetItemQualityColor(quality))
-			elseif quality == ITEM_QUALITY_POOR and profileDB.dimJunk then
-				local c = 1 - 0.5 * profileDB.qualityOpacity
-				self:SetBackdropBorderColor(c, c, c)
-			else
-				self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			end
-		else
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		end
-	end)
-
-	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight")
-	hooksecurefunc(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
-		if not self.widget then return end
-
-		local text = self.widget:GetText()
-		if not text then return end
-
-		text = trim(text)
-		if text == "" then return end
-
-		local name = button.itemId and GetItemInfo(button.itemId)
-
-		if name and not match(lower(name), lower(text)) then
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		end
 	end)
 end
