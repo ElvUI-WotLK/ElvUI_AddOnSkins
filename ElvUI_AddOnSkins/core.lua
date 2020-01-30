@@ -97,6 +97,7 @@ local addonList = {
 	"SilverDragon",
 	"_NPCScanOverlay",
 	"Examiner",
+	"Mapster",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",

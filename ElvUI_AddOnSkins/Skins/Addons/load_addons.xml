@@ -86,4 +86,5 @@
 	<Script file="silverDragon.lua"/>
 	<Script file="_NPCScanOverlay.lua"/>
 	<Script file="Examiner.lua"/>
+	<Script file="Mapster.lua"/>
 </Ui>
