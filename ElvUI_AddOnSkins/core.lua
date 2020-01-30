@@ -101,6 +101,7 @@ local addonList = {
 	"ArkInventory",
 	"QuestGuru",
 	"QuestGuru_Tracker",
+	"SatrinaBuffFrame",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",

@@ -90,4 +90,5 @@
 	<Script file="ArkInventory.lua"/>
 	<Script file="QuestGuru.lua"/>
 	<Script file="QuestGuruTracker.lua"/>
+	<Script file="SatrinaBuffFrame.lua"/>
 </Ui>
