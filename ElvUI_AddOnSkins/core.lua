@@ -118,6 +118,10 @@ do
 			AS.addOns[lower(temp[name])] = enabled ~= nil
 		end
 	end
+
+	for _, addonName in ipairs(addonList) do
+		V.addOnSkins[addonName] = true
+	end
 end
 
 function AS:CheckAddOn(addon)
