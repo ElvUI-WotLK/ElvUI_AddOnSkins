@@ -73,9 +73,7 @@ local function LoadSkin()
 			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 
-		local name = self:GetName()
-		local icon = _G[self:GetName().."IconTexture"]
-		icon:SetInside()
+		_G[self:GetName().."IconTexture"]:SetInside()
 
 		self.border:SetTexture("")
 	end
@@ -262,10 +260,10 @@ local function LoadSkin()
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectColor)
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectSubclass)
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectInvSlot)
-	
+
 	AltoholicFrameRecipesScrollFrame:StripTextures()
 	S:HandleScrollBar(AltoholicFrameRecipesScrollFrameScrollBar)
-	
+
 	for i = 1, 14 do
 		SkinCollapse(_G["AltoholicFrameRecipesEntry"..i.."Collapse"])
 		AltoItem(_G["AltoholicFrameRecipesEntry"..i.."Craft"])
@@ -314,7 +312,7 @@ local function LoadSkin()
 	-- TabCharacters
 	S:HandleDropDownBox(AltoholicTabCharacters_SelectRealm)
 	S:HandleDropDownBox(AltoholicTabCharacters_SelectChar)
-	
+
 	local tabCharacters = {"_Bags", "_Equipment", "_Quests", "_Talents", "_Auctions", "_Bids", "_Mails", "_Pets", "_Mounts", "_Factions", "_Tokens", "_Cooking", "_FirstAid", "_Prof1", "_Prof2"}
 	for _, tab in pairs(tabCharacters) do
 		AltoItem(_G["AltoholicTabCharacters"..tab])

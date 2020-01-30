@@ -120,8 +120,8 @@ local function LoadSkin()
 		if self.moving == "enlarge" then return end
 
 		local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
-		local oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
-		local oldY = oldY or (self.frame:GetTop())
+		oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
+		oldY = oldY or (self.frame:GetTop())
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
