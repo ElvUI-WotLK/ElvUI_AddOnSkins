@@ -1,7 +1,16 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local ceil = math.ceil
+local format = string.format
+
+local GetNumRaidMembers = GetNumRaidMembers
+local GetSpellInfo = GetSpellInfo
+local IsShiftKeyDown = IsShiftKeyDown
+local SendChatMessage = SendChatMessage
+
 -- RaidCooldowns 3.3.5
+-- https://www.wowace.com/projects/raid-cooldowns/files/441967
 
 local function LoadSkin()
 	if not E.private.addOnSkins.RaidCooldowns then return end
@@ -9,14 +18,20 @@ local function LoadSkin()
 	local RaidCooldowns = LibStub("AceAddon-3.0"):GetAddon("RaidCooldowns", true)
 	if not RaidCooldowns then return end
 
-	local mod = RaidCooldowns:GetModule("Display")
+	local mod = RaidCooldowns:GetModule("Display", true)
 	if not mod then return end
+
+	if mod.db.profile.texture == "Smooth v2" and LibStub("LibSharedMedia-3.0"):Fetch("statusbar", mod.db.profile.texture) == "Interface\\TargetingFrame\\UI-StatusBar" then
+		mod.db.profile.texture = "Blizzard"
+	end
+	if not mod.db.profile.fontFace then
+		mod.db.profile.fontFace = "PT Sans Narrow"
+	end
 
 	mod.configOptions.args.display.args.height.max = 30
 
 	local function onClick(self)
-		if not IsShiftKeyDown() then return end
-		if GetNumRaidMembers() == 0 then return end
+		if not IsShiftKeyDown() or GetNumRaidMembers() == 0 then return end
 
 		local parent = self:GetParent()
 		if parent.value > 0 then
@@ -29,17 +44,23 @@ local function LoadSkin()
 			local bar, isNew = S.hooks[self].NewTimerBar(self, ...)
 
 			if isNew and not bar.isSkinned then
-				bar:CreateBackdrop("Transparent")
-				bar.bgtexture:Hide()
+				bar.texture:CreateBackdrop("Transparent")
+				bar.texture.backdrop:Point("TOPLEFT", bar, -1, 1)
+				bar.texture.backdrop:Point("BOTTOMRIGHT", bar, 1, -1)
+
+				bar.texture:Point("TOPLEFT", 1, 0)
+				bar.texture:Point("BOTTOMLEFT", 1, 0)
+
 				S:HandleIcon(bar.icon)
 
+				bar.bgtexture:Hide()
+				bar.spark:Kill()
+
 				bar.iconButton = CreateFrame("Button", nil, bar)
-				bar.iconButton:Point("TOPLEFT", bar.icon, "TOPLEFT")
-				bar.iconButton:Point("BOTTOMRIGHT", bar, "BOTTOMRIGHT")
+				bar.iconButton:Point("TOPLEFT", bar.icon)
+				bar.iconButton:Point("BOTTOMRIGHT", bar)
 				bar.iconButton:RegisterForClicks("LeftButtonUp")
 				bar.iconButton:SetScript("OnClick", onClick)
-
-				bar.spark:Kill()
 
 				bar.isSkinned = true
 			end
@@ -61,9 +82,9 @@ local function LoadSkin()
 	S:RawHook(mod, "NewBarGroup", function(self, ...)
 		local list = S.hooks[self].NewBarGroup(self, ...)
 
-		list.spacing = E.Border
 		list.button:SetBackdrop(nil)
 		list.button:CreateBackdrop("Transparent")
+		list.spacing = E.Border
 
 		return list
 	end)
