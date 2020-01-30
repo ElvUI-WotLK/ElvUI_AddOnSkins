@@ -99,6 +99,8 @@ local addonList = {
 	"Examiner",
 	"Mapster",
 	"ArkInventory",
+	"QuestGuru",
+	"QuestGuru_Tracker",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",

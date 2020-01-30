@@ -88,4 +88,6 @@
 	<Script file="Examiner.lua"/>
 	<Script file="Mapster.lua"/>
 	<Script file="ArkInventory.lua"/>
+	<Script file="QuestGuru.lua"/>
+	<Script file="QuestGuruTracker.lua"/>
 </Ui>
