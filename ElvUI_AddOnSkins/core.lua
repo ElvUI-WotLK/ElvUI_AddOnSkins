@@ -98,6 +98,7 @@ local addonList = {
 	"_NPCScanOverlay",
 	"Examiner",
 	"Mapster",
+	"ArkInventory",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
