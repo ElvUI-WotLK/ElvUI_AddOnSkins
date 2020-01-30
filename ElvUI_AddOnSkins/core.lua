@@ -102,7 +102,7 @@ local addonAlias = {
 	["_NPCScanOverlay"] = "_NPCScan.Overlay",
 }
 
-AS.addOns = {}
+AS.addons = {}
 
 do
 	local temp = {}
@@ -112,10 +112,10 @@ do
 
 	for i = 1, GetNumAddOns() do
 		local name, _, _, enabled = GetAddOnInfo(i)
-		AS.addOns[lower(name)] = enabled ~= nil
+		AS.addons[lower(name)] = enabled ~= nil
 
 		if temp[name] then
-			AS.addOns[lower(temp[name])] = enabled ~= nil
+			AS.addons[lower(temp[name])] = enabled ~= nil
 		end
 	end
 
@@ -125,17 +125,17 @@ do
 end
 
 function AS:CheckAddOn(addon)
-	return self.addOns[lower(addonAlias[addon] or addon)] or false
+	return self.addons[lower(addonAlias[addon] or addon)] or false
 end
 
 function AS:IsAddonExist(addon)
-	return self.addOns[lower(addonAlias[addon] or addon)] ~= nil
+	return self.addons[lower(addonAlias[addon] or addon)] ~= nil
 end
 
 function AS:RegisterAddonOption(addonName, options)
 	if select(6, GetAddOnInfo(addonAlias[addonName] or addonName)) == "MISSING" then return end
 
-	options.args.skins.args.addOns.args[addonName] = {
+	options[addonName] = {
 		type = "toggle",
 		name = addonName,
 		desc = L["TOGGLESKIN_DESC"],
@@ -143,34 +143,30 @@ function AS:RegisterAddonOption(addonName, options)
 	}
 end
 
-local function ColorizeSettingName(settingName)
-	return string.format("|cff1784d1%s|r", settingName)
-end
-
-local positionValues = {
-	TOPLEFT = "TOPLEFT",
-	LEFT = "LEFT",
-	BOTTOMLEFT = "BOTTOMLEFT",
-	RIGHT = "RIGHT",
-	TOPRIGHT = "TOPRIGHT",
-	BOTTOMRIGHT = "BOTTOMRIGHT",
-	CENTER = "CENTER",
-	TOP = "TOP",
-	BOTTOM = "BOTTOM"
-}
-
-local backdropValues = {
-	["Default"] = L["Default"],
-	["Transparent"] = L["Transparent"],
-	["NoBackdrop"] = NONE
-}
-
 local function getOptions()
+	local positionValues = {
+		TOPLEFT = "TOPLEFT",
+		LEFT = "LEFT",
+		BOTTOMLEFT = "BOTTOMLEFT",
+		RIGHT = "RIGHT",
+		TOPRIGHT = "TOPRIGHT",
+		BOTTOMRIGHT = "BOTTOMRIGHT",
+		CENTER = "CENTER",
+		TOP = "TOP",
+		BOTTOM = "BOTTOM"
+	}
+
+	local backdropValues = {
+		["Default"] = L["Default"],
+		["Transparent"] = L["Transparent"],
+		["NoBackdrop"] = NONE
+	}
+
 	local options = {
 		order = 50,
 		type = "group",
 		childGroups = "tab",
-		name = ColorizeSettingName(L["AddOn Skins"]),
+		name = string.format("|cff1784d1%s|r", L["AddOn Skins"]),
 		args = {
 			skins = {
 				order = 1,
@@ -183,7 +179,7 @@ local function getOptions()
 						type = "header",
 						name = L["Skins"]
 					},
-					addOns = {
+					addons = {
 						order = 1,
 						type = "group",
 						name = L["AddOn Skins"],
@@ -595,8 +591,10 @@ local function getOptions()
 		}
 	}
 
+	local target = options.args.skins.args.addons.args
+
 	for _, addonName in ipairs(addonList) do
-		AS:RegisterAddonOption(addonName, options)
+		AS:RegisterAddonOption(addonName, target)
 	end
 
 	E.Options.args.addOnSkins = options
