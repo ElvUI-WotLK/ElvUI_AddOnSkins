@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 -- Party Ability Bars
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.PAB) then return; end
+	if not E.private.addOnSkins.PAB then return end
 
 	if not PAB then return end
 
@@ -97,4 +97,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("PAB", "PAB", LoadSkin);
+S:AddCallbackForAddon("PAB", "PAB", LoadSkin)

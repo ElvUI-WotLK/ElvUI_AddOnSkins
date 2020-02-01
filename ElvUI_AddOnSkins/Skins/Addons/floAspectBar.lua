@@ -8,8 +8,7 @@ local function LoadSkin()
 	FloAspectBar:SetTemplate("Default")
 
 	for i = 1, 10 do
-		local button = _G["FloAspectBarButton" .. i]
-		AB:StyleButton(button)
+		AB:StyleButton(_G["FloAspectBarButton" .. i])
 	end
 end
 

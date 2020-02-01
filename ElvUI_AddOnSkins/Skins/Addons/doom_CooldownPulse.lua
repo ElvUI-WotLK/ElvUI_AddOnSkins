@@ -11,7 +11,7 @@ local function LoadSkin()
 
 	Doom_CooldownPulse = frame
 	frame:SetTemplate()
-	frame.icon = select(1, frame:GetRegions())
+	frame.icon = frame:GetRegions()
 
 	frame.icon:SetParent(frame)
 	frame.icon:SetDrawLayer("ARTWORK")

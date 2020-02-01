@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
+local unpack = unpack
+
 local function LoadSkin()
 	if not E.private.addOnSkins.TotemTimers then return end
 
@@ -68,8 +71,7 @@ local function LoadSkin()
 	hooksecurefunc(TotemTimers, "SetEmptyTexCoord", function(icon, nr)
 		if nr and nr > 0 then
 			local tcoords = SLOT_EMPTY_TCOORDS[nr]
-			local tcoordLeft, tcoordRight, tcoordTop, tcoordBottom = tcoords.left, tcoords.right, tcoords.top, tcoords.bottom
-			icon:SetTexCoord(tcoordLeft, tcoordRight, tcoordTop, tcoordBottom)
+			icon:SetTexCoord(tcoords.left, tcoords.right, tcoords.top, tcoords.bottom)
 		else
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end

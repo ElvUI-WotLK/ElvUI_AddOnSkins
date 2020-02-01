@@ -33,7 +33,7 @@ local function LoadSkin()
 					if icon and not icon.isSkinned then
 						icon:SetTemplate("Default")
 
-						select(1, icon:GetRegions()):SetTexture(nil)
+						icon:GetRegions():SetTexture(nil)
 
 						_G[iconName .. "Texture"]:SetTexCoord(unpack(E.TexCoords))
 						_G[iconName .. "Texture"]:SetInside()
@@ -64,7 +64,7 @@ local function LoadSkin()
 						_G[iconName]:StyleButton()
 						icon:SetTemplate("Default")
 
-						select(1, icon:GetRegions()):SetTexture(nil)
+						icon:GetRegions():SetTexture(nil)
 
 						_G[iconName .. "Icon"]:SetTexCoord(unpack(E.TexCoords))
 						_G[iconName .. "Icon"]:SetInside()

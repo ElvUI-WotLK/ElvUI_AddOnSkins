@@ -5,6 +5,7 @@ local pairs = pairs
 local unpack = unpack
 
 -- ZOMGBuffs r156
+-- https://www.wowace.com/projects/zomgbuffs/files/424938
 
 local function LoadSkin()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
@@ -31,7 +32,7 @@ local function LoadSkin()
 		frame:SetScale(E:Scale(0.9))
 		frame:SetTemplate("Transparent")
 		frame.close:StripTextures()
-		S:HandleButton(select(1, frame:GetChildren()))
+		S:HandleButton((frame:GetChildren()))
 
 		S:Unhook(ZOMGBuffs, "CreateHelpFrame")
 

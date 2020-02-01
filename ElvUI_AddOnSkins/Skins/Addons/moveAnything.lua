@@ -10,7 +10,7 @@ local function LoadSkin()
 	local SPACING = 1 + (E.Spacing * 2)
 
 	for i = 1, 20 do
-		_G["MAMover" .. i .. "Backdrop"]:SetTemplate("Transparent", nil, nil, true)
+		_G["MAMover" .. i .. "Backdrop"]:SetTemplate("Transparent")
 
 		_G["MAMover" .. i]:HookScript("OnShow", function(self)
 			_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))

@@ -14,9 +14,9 @@ local function LoadSkin()
 	ZygorTalentAdvisorPopoutButton:GetHighlightTexture():SetInside()
 
 	ZygorTalentAdvisorPopout:StripTextures()
-	ZygorTalentAdvisorPopout:CreateBackdrop('Transparent')
-	ZygorTalentAdvisorPopout.backdrop:Point('TOPLEFT', 6, -2)
-	ZygorTalentAdvisorPopout.backdrop:Point('BOTTOMRIGHT', -1, 4)
+	ZygorTalentAdvisorPopout:CreateBackdrop("Transparent")
+	ZygorTalentAdvisorPopout.backdrop:Point("TOPLEFT", 6, -2)
+	ZygorTalentAdvisorPopout.backdrop:Point("BOTTOMRIGHT", -1, 4)
 
 	for i = 1, ZygorTalentAdvisorPopoutScroll:GetNumChildren() do
 		local child = select(i, ZygorTalentAdvisorPopoutScroll:GetChildren())

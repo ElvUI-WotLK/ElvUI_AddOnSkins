@@ -29,7 +29,7 @@ local function LoadSkin()
 	end)
 
 	Atr_Error_Frame:SetTemplate("Transparent")
-	S:HandleButton(select(1, Atr_Error_Frame:GetChildren()))
+	S:HandleButton((Atr_Error_Frame:GetChildren()))
 
 	Atr_Confirm_Frame:SetTemplate("Transparent")
 	S:HandleButton(Atr_Confirm_Cancel)

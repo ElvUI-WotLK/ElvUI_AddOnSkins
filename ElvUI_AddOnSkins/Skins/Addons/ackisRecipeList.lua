@@ -16,8 +16,7 @@ local function LoadSkin()
 	if not addon then return end
 
 	local function HandleScrollBar(frame)
-		local UpButton = select(1, frame:GetChildren())
-		local DownButton = select(2, frame:GetChildren())
+		local UpButton, DownButton = frame:GetChildren()
 
 		S:HandleNextPrevButton(UpButton, "up")
 		UpButton:Size(20, 18)
@@ -55,14 +54,14 @@ local function LoadSkin()
 	end
 
 	local function ExpansionButton(button)
-		select(1, button:GetRegions()):SetDesaturated(true)
+		button:GetRegions():SetDesaturated(true)
 
 		button:GetPushedTexture():SetTexture(nil)
 		button:GetHighlightTexture():SetTexture(nil)
 		button:GetCheckedTexture():SetTexture(nil)
 
 		hooksecurefunc(button, "SetChecked", function(self, state)
-			select(1, self:GetRegions()):SetDesaturated(state)
+			self:GetRegions():SetDesaturated(state)
 		end)
 	end
 
@@ -182,7 +181,7 @@ local function LoadSkin()
 			c.Text:SetText("+")
 
 			hooksecurefunc(c, "SetNormalTexture", function(self, texture)
-				if(string.find(texture, "MinusButton")) then
+				if find(texture, "MinusButton") then
 					self.Text:SetText("-")
 				else
 					self.Text:SetText("+")

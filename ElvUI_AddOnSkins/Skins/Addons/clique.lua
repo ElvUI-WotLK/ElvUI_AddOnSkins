@@ -13,7 +13,7 @@ local function LoadSkin()
 	CliquePulloutTab:SetTemplate("Default", true)
 	CliquePulloutTab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	CliquePulloutTab:GetNormalTexture():SetInside()
-	select(1, CliquePulloutTab:GetRegions()):Hide()
+	CliquePulloutTab:GetRegions():Hide()
 
 	local function SkinFrame(frame)
 		frame:StripTextures()
@@ -50,7 +50,7 @@ local function LoadSkin()
 			end)
 			entry:SetScript("OnLeave", function(self)
 				local selected = FauxScrollFrame_GetOffset(CliqueListScroll) + self.id
-				if(selected == self.listSelected) then
+				if selected == self.listSelected then
 					self:SetBackdropBorderColor(1, 1, 1)
 				else
 					self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
