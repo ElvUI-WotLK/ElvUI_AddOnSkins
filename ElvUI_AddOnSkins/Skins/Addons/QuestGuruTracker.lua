@@ -40,20 +40,26 @@ local function LoadSkin()
 
 	do
 		local alpha = QGT_Settings.Alpha
-		local r, g, b = unpack(E.media.backdropfadecolor, 1, 3)
+		local backdropR, backdropG, backdropB = unpack(E.media.backdropfadecolor, 1, 3)
+		local borderR, borderG, borderB = unpack(E.media.bordercolor, 1, 3)
 
-		QGT_QuestWatchFrame:SetBackdropColor(r, g, b, alpha)
-		QGT_AchievementWatchFrame:SetBackdropColor(r, g, b, alpha)
+		QGT_QuestWatchFrame.backdrop:SetBackdropColor(backdropR, backdropG, backdropB, alpha)
+		QGT_QuestWatchFrame.backdrop:SetBackdropBorderColor(borderR, borderG, borderB, alpha)
+		QGT_AchievementWatchFrame.backdrop:SetBackdropColor(backdropR, backdropG, backdropB, alpha)
+		QGT_AchievementWatchFrame.backdrop:SetBackdropBorderColor(borderR, borderG, borderB, alpha)
 	end
 
 	QGT_OptionsFrameTrackerAlpha:SetScript("OnValueChanged", function(self)
 		local alpha = self:GetValue()
-		local r, g, b = unpack(E.media.backdropfadecolor, 1, 3)
+		local backdropR, backdropG, backdropB = unpack(E.media.backdropfadecolor, 1, 3)
+		local borderR, borderG, borderB = unpack(E.media.bordercolor, 1, 3)
 
 		QGT_Settings.Alpha = alpha
 
-		QGT_QuestWatchFrame.backdrop:SetBackdropColor(r, g, b, alpha)
-		QGT_AchievementWatchFrame.backdrop:SetBackdropColor(r, g, b, alpha)
+		QGT_QuestWatchFrame.backdrop:SetBackdropColor(backdropR, backdropG, backdropB, alpha)
+		QGT_QuestWatchFrame.backdrop:SetBackdropBorderColor(borderR, borderG, borderB, alpha)
+		QGT_AchievementWatchFrame.backdrop:SetBackdropColor(backdropR, backdropG, backdropB, alpha)
+		QGT_AchievementWatchFrame.backdrop:SetBackdropBorderColor(borderR, borderG, borderB, alpha)
 
 		QGT_OptionsFrameTrackerAlphaText:SetFormattedText("%s (%d%%)", QG_OPT_TRACKER_ALPHA, math.abs(math.ceil(alpha * 100 - 0.5)))
 	end)
