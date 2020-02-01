@@ -8,6 +8,7 @@ local find = string.find
 local hooksecurefunc = hooksecurefunc
 
 -- TradeskillInfo r365
+-- https://www.wowace.com/projects/tradeskill-info/files/449625
 
 local function LoadSkin()
 	if not E.private.addOnSkins.TradeskillInfo then return end

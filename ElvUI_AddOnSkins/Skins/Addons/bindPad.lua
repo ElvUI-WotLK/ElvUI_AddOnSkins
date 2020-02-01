@@ -2,39 +2,22 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local _G = _G
+local unpack = unpack
+
+-- BindPad 2.2.4
+-- https://www.curseforge.com/wow/addons/bind-pad/files/410752
 
 local function LoadSkin()
 	if not E.private.addOnSkins.BindPad then return end
 
-	local function HandleMicroButton(button)
-		local pushed = button:GetPushedTexture()
-		local normal = button:GetNormalTexture()
-		local disabled = button:GetDisabledTexture()
-
-		button:GetHighlightTexture():Kill()
-
-		local f = CreateFrame("Frame", nil, button)
-		f:SetPoint("BOTTOMLEFT", button, "BOTTOMLEFT", 2, 0)
-		f:SetPoint("TOPRIGHT", button, "TOPRIGHT", -2, -28)
-		f:SetTemplate("Default")
-		f:SetFrameLevel(button:GetFrameLevel() - 1)
-
-		pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-		pushed:SetInside(f)
-
-		normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-		normal:SetInside(f)
-
-		if disabled then
-			disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
-			disabled:SetInside(f)
-		end
-	end
-
-	BindPadFrame:StripTextures(true)
+	BindPadFrame:StripTextures()
 	BindPadFrame:CreateBackdrop("Transparent")
-	BindPadFrame.backdrop:Point("TOPLEFT", 10, -11)
-	BindPadFrame.backdrop:Point("BOTTOMRIGHT", -31, 71)
+	BindPadFrame.backdrop:Point("TOPLEFT", 11, -12)
+	BindPadFrame.backdrop:Point("BOTTOMRIGHT", -32, 76)
+
+	S:SetBackdropHitRect(BindPadFrame)
+
+	S:HandleCloseButton(BindPadFrameCloseButton, BindPadFrame.backdrop)
 
 	local slot, slotIcon, slotBorder, slotAddButton
 	for i = 1, 42 do
@@ -65,16 +48,17 @@ local function LoadSkin()
 		slotAddButton.Text:SetText("+")
 	end
 
-	local tab
 	for i = 1, 4 do
-		tab = _G["BindPadFrameTab" .. i]
+		local tab = _G["BindPadFrameTab" .. i]
 		S:HandleTab(tab)
 		tab.backdrop:Point("TOPLEFT", 3, -8)
 		tab.backdrop:Point("BOTTOMRIGHT", -3, -1)
+		S:SetBackdropHitRect(tab)
 	end
 
 	for i = 1, 5 do
-		tab = _G["BindPadProfileTab" .. i]
+		local tab = _G["BindPadProfileTab" .. i]
+		local subIcon = _G["BindPadProfileTab" .. i .. "SubIcon"]
 
 		tab:StripTextures()
 		tab:SetTemplate("Defaylt", true)
@@ -84,10 +68,37 @@ local function LoadSkin()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		tab:GetNormalTexture():SetDrawLayer("ARTWORK")
 
-		_G["BindPadProfileTab" .. i .. "SubIcon"]:SetTexCoord(unpack(E.TexCoords))
+		subIcon:Point("BOTTOMRIGHT", -1, 1)
+		subIcon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	S:HandleCloseButton(BindPadFrameCloseButton)
+	BindPadProfileTab1:Point("TOPLEFT", BindPadFrame, "TOPRIGHT", -33, -65)
+
+	local function HandleMicroButton(button)
+		local pushed = button:GetPushedTexture()
+		local normal = button:GetNormalTexture()
+		local disabled = button:GetDisabledTexture()
+
+		button:Size(20, 26)
+		button:SetHitRectInsets(0, 0, 0, 0)
+		button:GetHighlightTexture():Kill()
+
+		button:CreateBackdrop()
+
+		normal:SetInside(button.backdrop)
+		-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 32, 64, 21, 27, 5, 31
+		normal:SetTexCoord(0.15625, 0.8125, 0.484375, 0.90625)
+
+		pushed:SetInside(button.backdrop)
+		-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 32, 64, 20, 26, 5, 33
+		pushed:SetTexCoord(0.15625, 0.78125, 0.515625, 0.921875)
+
+		if disabled then
+			disabled:SetInside(button.backdrop)
+			-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 32, 64, 21, 27, 5, 31
+			disabled:SetTexCoord(0.15625, 0.8125, 0.484375, 0.90625)
+		end
+	end
 
 	S:HandleCheckBox(BindPadFrameCharacterButton)
 	S:HandleCheckBox(BindPadFrameShowHotkeysButton)
@@ -99,65 +110,95 @@ local function LoadSkin()
 	HandleMicroButton(BindPadFrameOpenMacroButton)
 	HandleMicroButton(BindPadFrameOpenBagButton)
 
-	BindPadBindFrame:StripTextures(true)
-	BindPadBindFrame:SetTemplate("Transparent")
+	BindPadFrameOpenSpellBookButton:Point("BOTTOMLEFT", BindPadFrame, "TOPLEFT", 20, -427)
+	BindPadFrameOpenMacroButton:Point("BOTTOMLEFT", BindPadFrameOpenSpellBookButton, "BOTTOMRIGHT", 5, 0)
+	BindPadFrameOpenBagButton:Point("BOTTOMLEFT", BindPadFrameOpenMacroButton, "BOTTOMRIGHT", 5, 0)
 
-	S:HandleCloseButton(BindPadBindFrameCloseButton)
+	BindPadFrameShowHotkeysButton:Point("BOTTOMLEFT", BindPadFrameOpenBagButton, "BOTTOMRIGHT", 15, 11)
+	BindPadFrameTriggerOnKeydownButton:Point("BOTTOMLEFT", BindPadFrameOpenBagButton, "BOTTOMRIGHT", 15, -5)
 
-	S:HandleButton(BindPadBindFrameExitButton)
-	S:HandleButton(BindPadBindFrameUnbindButton)
+	BindPadFrameExitButton:Point("CENTER", BindPadFrame, "TOPLEFT", 304, -417)
 
-	S:HandleCheckBox(BindPadBindFrameFastTriggerButton)
+	-- Popup frame
+	S:HandleIconSelectionFrame(BindPadMacroPopupFrame, 20, "BindPadMacroPopupButton", "BindPadMacroPopup")
+	S:SetBackdropHitRect(BindPadMacroPopupFrame)
+	BindPadMacroPopupFrame:Point("TOPLEFT", BindPadFrame, "TOPRIGHT", -43, 0)
 
-	BindPadMacroPopupFrame:StripTextures()
-	BindPadMacroPopupFrame:CreateBackdrop("Transparent")
-	BindPadMacroPopupFrame.backdrop:Point("TOPLEFT", 10, -9)
-	BindPadMacroPopupFrame.backdrop:Point("BOTTOMRIGHT", -7, 9)
+	BindPadMacroPopupScrollFrame:SetTemplate("Transparent")
 
-	BindPadMacroPopupNameLeft:SetTexture(nil)
-	BindPadMacroPopupNameMiddle:SetTexture(nil)
-	BindPadMacroPopupNameRight:SetTexture(nil)
-	S:HandleEditBox(BindPadMacroPopupEditBox)
-
-	BindPadMacroPopupScrollFrame:StripTextures()
 	S:HandleScrollBar(BindPadMacroPopupScrollFrameScrollBar)
 
-	local button, buttonIcon
-	for i = 1, 20 do
-		button = _G["BindPadMacroPopupButton" .. i]
-		buttonIcon = _G["BindPadMacroPopupButton" .. i .. "Icon"]
+	local text1, text2 = select(5, BindPadMacroPopupFrame:GetRegions())
+	text1:Point("TOPLEFT", 24, -18)
+	text2:Point("TOPLEFT", 24, -60)
 
-		button:StripTextures()
-		button:StyleButton(nil, true)
-		button:SetTemplate("Default", true)
+	BindPadMacroPopupEditBox:Point("TOPLEFT", 61, -35)
 
-		buttonIcon:SetInside()
-		buttonIcon:SetTexCoord(unpack(E.TexCoords))
-	end
+	BindPadMacroPopupButton1:Point("TOPLEFT", 31, -82)
 
-	S:HandleButton(BindPadMacroPopupCancelButton)
-	S:HandleButton(BindPadMacroPopupOkayButton)
+	BindPadMacroPopupScrollFrame:Size(247, 180)
+	BindPadMacroPopupScrollFrame:Point("TOPRIGHT", -32, -76)
 
-	BindPadMacroTextFrame:StripTextures(true)
+	BindPadMacroPopupScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroPopupScrollFrame, "TOPRIGHT", 4, -18)
+	BindPadMacroPopupScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroPopupScrollFrame, "BOTTOMRIGHT", 4, 18)
+
+	BindPadMacroPopupOkayButton:Point("RIGHT", BindPadMacroPopupCancelButton, "LEFT", -3, 0)
+
+	-- Macro Text
+	BindPadMacroTextFrame:StripTextures()
 	BindPadMacroTextFrame:CreateBackdrop("Transparent")
-	BindPadMacroTextFrame.backdrop:Point("TOPLEFT", 10, -11)
-	BindPadMacroTextFrame.backdrop:Point("BOTTOMRIGHT", -31, 71)
+	BindPadMacroTextFrame.backdrop:Point("TOPLEFT", 11, -12)
+	BindPadMacroTextFrame.backdrop:Point("BOTTOMRIGHT", -32, 76)
+
+	S:SetBackdropHitRect(BindPadMacroTextFrame)
+
+	S:HandleCloseButton(BindPadMacroTextFrameCloseButton, BindPadMacroTextFrame.backdrop)
 
 	BindPadMacroTextFrameSelectedMacroButton:StripTextures()
 	BindPadMacroTextFrameSelectedMacroButton:SetTemplate("Defaylt", true)
 	BindPadMacroTextFrameSelectedMacroButtonIcon:SetInside()
 	BindPadMacroTextFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 
-	S:HandleScrollBar(BindPadMacroTextFrameScrollFrameScrollBar)
-
 	BindPadMacroTextFrameTextBackground:SetTemplate("Defaylt")
+
+	S:HandleScrollBar(BindPadMacroTextFrameScrollFrameScrollBar)
 
 	S:HandleButton(BindPadMacroTextFrameEditButton)
 	S:HandleButton(BindPadMacroTextFrameTestButton)
 	S:HandleButton(BindPadMacroTextFrameExitButton)
 	S:HandleButton(BindPadMacroDeleteButton)
 
-	S:HandleCloseButton(BindPadMacroTextFrameCloseButton)
+	BindPadMacroTextFrameEnterMacroText:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "BOTTOMLEFT", 8, 3)
+
+	BindPadMacroTextFrameTextBackground:Size(304, 252)
+	BindPadMacroTextFrameTextBackground:Point("TOPLEFT", 19, -147)
+
+	BindPadMacroTextFrameText:Width(298)
+
+	BindPadMacroTextFrameScrollFrame:Size(298, 241)
+	BindPadMacroTextFrameScrollFrame:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "BOTTOMLEFT", 6, -16)
+
+	BindPadMacroTextFrameScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroTextFrameScrollFrame, "TOPRIGHT", 7, -13)
+	BindPadMacroTextFrameScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroTextFrameScrollFrame, "BOTTOMRIGHT", 7, 12)
+
+	BindPadMacroTextFrameSelectedMacroName:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "TOPRIGHT", -4, -12)
+	BindPadMacroTextFrameEditButton:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "TOPLEFT", 53, -28)
+
+	BindPadMacroDeleteButton:Point("BOTTOMLEFT", 19, 84)
+	BindPadMacroTextFrameTestButton:Point("CENTER", BindPadMacroTextFrame, "TOPLEFT", 221, -417)
+	BindPadMacroTextFrameExitButton:Point("CENTER", BindPadMacroTextFrame, "TOPLEFT", 304, -417)
+
+	-- Bind
+	BindPadBindFrame:StripTextures()
+	BindPadBindFrame:SetTemplate("Transparent")
+	BindPadBindFrame:Size(400, 150)
+
+	S:HandleCloseButton(BindPadBindFrameCloseButton, BindPadBindFrame)
+
+	S:HandleButton(BindPadBindFrameUnbindButton)
+	S:HandleButton(BindPadBindFrameExitButton)
+
+	S:HandleCheckBox(BindPadBindFrameFastTriggerButton)
 end
 
 S:AddCallbackForAddon("BindPad", "BindPad", LoadSkin)
