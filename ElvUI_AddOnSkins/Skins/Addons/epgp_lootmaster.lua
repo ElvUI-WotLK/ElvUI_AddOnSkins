@@ -6,6 +6,7 @@ local select = select
 local unpack = unpack
 
 local GetItemQualityColor = GetItemQualityColor
+local hooksecurefunc = hooksecurefunc
 
 -- EPGP LootMaster 0.4.9
 
@@ -78,14 +79,14 @@ local function LoadSkin()
 
 				local btnNoteIcon = frame.btnNote:GetRegions()
 				btnNoteIcon:SetDrawLayer("ARTWORK")
-				btnNoteIcon:Point("CENTER", btnNote)
+				btnNoteIcon:Point("CENTER", 0, 0)
 
 				frame.tbNote:SetBackdrop(nil)
 				S:HandleEditBox(frame.tbNote)
 
 				local buttonSave = frame.tbNote:GetChildren()
 				buttonSave:SetHeight(26)
-				buttonSave:Point("LEFT", tbNote, "RIGHT", 0, 0)
+				buttonSave:Point("LEFT", frame.tbNote, "RIGHT", 0, 0)
 				S:HandleButton(buttonSave)
 
 				frame.isSkinned = true

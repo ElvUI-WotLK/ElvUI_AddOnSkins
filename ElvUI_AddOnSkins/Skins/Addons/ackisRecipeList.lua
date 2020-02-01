@@ -3,7 +3,9 @@ local S = E:GetModule("Skins")
 
 local ipairs = ipairs
 local select = select
+local select = select
 local unpack = unpack
+local find = string.find
 
 local hooksecurefunc = hooksecurefunc
 
@@ -268,8 +270,8 @@ local function LoadSkin()
 		end)
 
 		ARL_MainPanel.filter_toggle:HookScript("OnClick", function(self)
-			if self.isSkinned then return end
-			self.isSkinned = true
+			if self.isFrameSkinned then return end
+			self.isFrameSkinned = true
 
 			ARL_MainPanel.filter_menu:Point("TOPRIGHT", ARL_MainPanel, "TOPRIGHT", -115, -75)
 

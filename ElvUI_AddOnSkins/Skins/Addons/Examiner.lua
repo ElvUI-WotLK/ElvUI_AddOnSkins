@@ -16,6 +16,8 @@ local function LoadSkin()
 	Examiner.backdrop:Point("TOPLEFT", 11, -12)
 	Examiner.backdrop:Point("BOTTOMRIGHT", -32, 4)
 
+	S:SetBackdropHitRect(Examiner)
+
 	Examiner.dlgTopLeft:Hide()
 	Examiner.dlgTopRight:Hide()
 	Examiner.dlgBottomLeft:Hide()

@@ -84,7 +84,7 @@ local function epgp()
 		S:HandleNextPrevButton(parentFrame.decButton, "down")
 		parentFrame.decButton:Size(14)
 
-		S:HandleNextPrevButton(parentFrame.incButton, "down")
+		S:HandleNextPrevButton(parentFrame.incButton, "up")
 		parentFrame.incButton:Size(14)
 
 		-- Log Frame

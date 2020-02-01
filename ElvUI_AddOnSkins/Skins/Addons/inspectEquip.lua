@@ -9,7 +9,7 @@ local function LoadSkin()
 
 	S:SecureHook(InspectEquip, "SetParent", function(self, frame)
 		InspectEquip_InfoWindow:ClearAllPoints()
-		InspectEquip_InfoWindow:Point("TOPLEFT", _G[frame:GetName() .. "CloseButton"], "TOPRIGHT", 0, -3)
+		InspectEquip_InfoWindow:Point("TOPLEFT", _G[frame:GetName() .. "CloseButton"], "TOPRIGHT", -3, -3)
 	end)
 
 	GearManagerDialogPopup:HookScript("OnShow", function()

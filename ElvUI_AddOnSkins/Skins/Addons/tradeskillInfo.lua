@@ -2,7 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local _G = _G
+local unpack = unpack
 local find = string.find
+
+local hooksecurefunc = hooksecurefunc
 
 -- TradeskillInfo r365
 
@@ -25,7 +28,10 @@ local function LoadSkin()
 
 	TradeskillInfoListScrollFrame:StripTextures()
 	S:HandleScrollBar(TradeskillInfoListScrollFrameScrollBar)
+
 	TradeskillInfoDetailScrollFrame:StripTextures()
+	TradeskillInfoDetailScrollFrame:Point("TOPRIGHT", -30, -80)
+	TradeskillInfoDetailScrollFrame:Point("BOTTOMRIGHT", -30, 32)
 	S:HandleScrollBar(TradeskillInfoDetailScrollFrameScrollBar)
 
 	S:HandleEditBox(TradeskillInfoInputBox)
