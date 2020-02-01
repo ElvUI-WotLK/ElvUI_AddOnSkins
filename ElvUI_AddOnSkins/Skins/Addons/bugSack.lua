@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- BugSack r229
+-- https://www.curseforge.com/wow/addons/bugsack/files/448833
+
 local function LoadSkin()
 	if not E.private.addOnSkins.BugSack then return end
 

@@ -10,6 +10,7 @@ local find = string.find
 local hooksecurefunc = hooksecurefunc
 
 -- AckisRecipeList 2.01.14
+-- https://www.curseforge.com/wow/addons/arl/files/458020
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AckisRecipeList then return end

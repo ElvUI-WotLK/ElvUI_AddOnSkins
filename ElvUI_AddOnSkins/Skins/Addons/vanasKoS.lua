@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Vanas KoS 4.25
+-- https://www.curseforge.com/wow/addons/vanaskos/files/457856
+
 local function LoadSkin()
 	if not E.private.addOnSkins.VanasKoS then return end
 

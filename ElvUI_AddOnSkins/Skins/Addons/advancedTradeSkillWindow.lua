@@ -8,6 +8,7 @@ local find = string.find
 local hooksecurefunc = hooksecurefunc
 
 -- AdvancedTradeSkillWindow 0.7.8
+-- https://www.curseforge.com/wow/addons/advanced-trade-skill-window/files/400569
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AdvancedTradeSkillWindow then return end

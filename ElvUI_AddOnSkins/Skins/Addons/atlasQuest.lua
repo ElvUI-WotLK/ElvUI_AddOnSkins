@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- AtlasQuest 4.4.3
+-- https://www.curseforge.com/wow/addons/atlas-quest-fan-update/files/442800
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AtlasQuest then return end

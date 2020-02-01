@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Omen 3.0.9
+-- https://www.wowace.com/projects/omen-threat-meter/files/404746
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Omen then return end
 

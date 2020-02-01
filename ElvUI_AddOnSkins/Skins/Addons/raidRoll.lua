@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- RaidRoll 4.4.15
+-- https://www.curseforge.com/wow/addons/raid-roll/files/450070
 
 local function LoadSkin()
 	if not E.private.addOnSkins.RaidRoll then return end

@@ -4,6 +4,7 @@ local S = E:GetModule("Skins")
 local _G = _G
 
 -- EventAlert 4.3.6
+-- https://www.curseforge.com/wow/addons/event-alert/files/456081
 
 local function LoadSkin()
 	if not E.private.addOnSkins.EventAlert then return end

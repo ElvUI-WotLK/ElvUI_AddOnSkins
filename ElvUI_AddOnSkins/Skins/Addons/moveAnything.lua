@@ -4,6 +4,9 @@ local S = E:GetModule("Skins")
 local _G = _G
 local unpack = unpack
 
+-- MoveAnything 3.3.5-10
+-- https://www.curseforge.com/wow/addons/move-anything/files/434496
+
 local function LoadSkin()
 	if not E.private.addOnSkins.MoveAnything then return end
 

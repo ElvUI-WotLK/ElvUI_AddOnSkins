@@ -4,6 +4,9 @@ local S = E:GetModule("Skins")
 local _G = _G
 local unpack = unpack
 
+-- Mage Nuggets 1.86
+-- https://www.curseforge.com/wow/addons/mage-nuggets/files/438172
+
 local function LoadSkin()
 	if not E.private.addOnSkins.MageNuggets then return end
 

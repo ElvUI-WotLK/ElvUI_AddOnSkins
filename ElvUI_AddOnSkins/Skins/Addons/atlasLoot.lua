@@ -4,6 +4,9 @@ local S = E:GetModule("Skins")
 local select = select
 local unpack = unpack
 
+-- AtlasLoot Enhanced 5.11.04
+-- https://www.curseforge.com/wow/addons/atlasloot-enhanced/files/445202
+
 local function LoadSkin()
 	if not E.private.addOnSkins.AtlasLoot then return end
 

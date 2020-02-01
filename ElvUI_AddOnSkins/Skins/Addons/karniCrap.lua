@@ -4,6 +4,7 @@ local S = E:GetModule("Skins")
 local _G = _G
 
 -- KarniCrap 3.02
+-- https://www.curseforge.com/wow/addons/karnicrap/files/416407
 
 local function LoadSkin()
 	if not E.private.addOnSkins.KarniCrap then return end

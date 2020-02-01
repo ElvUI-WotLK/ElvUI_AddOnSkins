@@ -6,6 +6,9 @@ local unpack = unpack
 
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
+-- Clique r139
+-- https://www.curseforge.com/wow/addons/clique/files/466948
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Clique then return end
 

@@ -4,6 +4,9 @@ local S = E:GetModule("Skins")
 local _G = _G
 local unpack = unpack
 
+-- Skillet r167
+-- https://www.wowace.com/projects/skillet/files/438510
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Skillet then return end
 

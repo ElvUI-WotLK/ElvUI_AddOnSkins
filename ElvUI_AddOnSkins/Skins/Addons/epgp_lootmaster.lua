@@ -9,6 +9,7 @@ local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
 -- EPGP LootMaster 0.4.9
+-- https://www.curseforge.com/wow/addons/epgp_lootmaster/files/409167
 
 local function LoadSkin()
 	if not E.private.addOnSkins.EPGP_LootMaster then return end

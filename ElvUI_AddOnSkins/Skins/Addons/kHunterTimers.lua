@@ -3,6 +3,9 @@ local S = E:GetModule("Skins")
 
 local _G = _G
 
+-- Kharthus's Hunter Timers 3.2.5
+-- https://www.curseforge.com/wow/addons/kharthuss-hunter-timers/files/423973
+
 local function LoadSkin()
 	if not E.private.addOnSkins.KHunterTimers then return end
 

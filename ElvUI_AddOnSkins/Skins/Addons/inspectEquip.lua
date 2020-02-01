@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- InspectEquip 1.7.7
+-- https://www.wowace.com/projects/inspect-equip/files/436507
+
 local function LoadSkin()
 	if not E.private.addOnSkins.InspectEquip then return end
 

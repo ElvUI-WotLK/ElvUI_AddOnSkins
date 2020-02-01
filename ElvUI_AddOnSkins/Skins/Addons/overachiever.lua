@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Overachiever 0.56
+-- https://www.curseforge.com/wow/addons/overachiever/files/443622
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Overachiever then return end
 

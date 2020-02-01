@@ -4,6 +4,9 @@ local S = E:GetModule("Skins")
 local _G = _G
 local unpack = unpack
 
+-- TotemTimers 10.2.4
+-- https://www.curseforge.com/wow/addons/totemtimers/files/454307
+
 local function LoadSkin()
 	if not E.private.addOnSkins.TotemTimers then return end
 

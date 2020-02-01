@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Atlas 1.18.1
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Atlas then return end
 

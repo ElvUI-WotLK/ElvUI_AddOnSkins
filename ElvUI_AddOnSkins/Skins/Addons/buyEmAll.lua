@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- BuyEmAll 2.9.2
+-- https://www.curseforge.com/wow/addons/project-2590/files/447131
 
 local function LoadSkin()
 	if not E.private.addOnSkins.BuyEmAll then return end

@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- Party Ability Bars
+-- Party Ability Bars r7
+-- https://www.wowace.com/projects/pab/files/353353
 
 local function LoadSkin()
 	if not E.private.addOnSkins.PAB then return end

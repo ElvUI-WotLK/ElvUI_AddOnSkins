@@ -6,6 +6,9 @@ local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 
+-- PlateBuffs 1.5.4
+-- https://www.wowace.com/projects/platebuffs/files/447971
+
 local function LoadSkin()
 	if not E.private.addOnSkins.PlateBuffs then return end
 

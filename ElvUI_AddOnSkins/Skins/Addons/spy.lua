@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- Repository: https://wow.curseforge.com/projects/spy/files/442604
--- Version: 1.2
-
 local _G = _G
+
+-- Spy 1.2
+-- https://www.curseforge.com/wow/addons/spy/files/442604
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Spy then return end

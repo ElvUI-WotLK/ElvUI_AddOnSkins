@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- Open Group Finder
+
 local function LoadSkin()
 	if not E.private.addOnSkins.OpenGF then return end
 
