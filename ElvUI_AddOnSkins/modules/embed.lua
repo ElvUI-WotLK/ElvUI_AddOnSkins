@@ -90,6 +90,7 @@ function EMB:EmbedUpdate()
 	if self:CheckEmbed("Omen") then self:EmbedOmen() end
 	if self:CheckEmbed("Recount") then self:EmbedRecount() end
 	if self:CheckEmbed("Skada") then self:EmbedSkada() end
+	if self:CheckEmbed("Details") then self:EmbedDetails() end
 end
 
 function EMB:SetHooks()
@@ -424,6 +425,136 @@ if AS:CheckAddOn("Skada") then
 
 			point = self.skadaWindows[2].db.reversegrowth and "BOTTOMRIGHT" or "TOPRIGHT"
 			EmbedWindow(self.skadaWindows[2], self.rightFrame:GetWidth() -(E.Border*2), self.rightFrame:GetHeight(), point, self.rightFrame, point, -E.Border, E.Border)
+		end
+	end
+end
+
+if AS:CheckAddOn("Details") then
+	local Details = _G._details
+
+	local numberToEmbed = 0
+
+	EMB.DetailsInstances = {}
+
+	local listener = Details:CreateEventListener()
+	listener:RegisterEvent("DETAILS_INSTANCE_OPEN")
+	listener:RegisterEvent("DETAILS_INSTANCE_CLOSE")
+
+	function listener:OnDetailsEvent(event, instance)
+		if event == "DETAILS_INSTANCE_CLOSE" then
+			if instance._ElvUIEmbed and _G.DetailsOptionsWindow and _G.DetailsOptionsWindow:IsShown() then
+				Details:Msg("You just closed a window Embed on ElvUI, if wasn't intended click on Reopen.") --> need localization
+			end
+		elseif event == "DETAILS_INSTANCE_OPEN" then
+			if instance._ElvUIEmbed then
+				if #EMB.DetailsInstances >= 2 then
+					EMB.DetailsInstances[1]:UngroupInstance()
+					EMB.DetailsInstances[2]:UngroupInstance()
+
+					EMB.DetailsInstances[1].baseframe:ClearAllPoints()
+					EMB.DetailsInstances[2].baseframe:ClearAllPoints()
+
+					EMB.DetailsInstances[1]:RestoreMainWindowPosition()
+					EMB.DetailsInstances[2]:RestoreMainWindowPosition()
+				end
+			end
+		end
+	end
+
+	local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
+		if not window then return end
+
+		if not window:IsEnabled() then
+			window:EnableInstance()
+		end
+
+		window._ElvUIEmbed = true
+
+		if window.bars_grow_direction == 2 then
+			ofsy = -2
+		else
+			ofsy = -20
+		end
+
+		window:UngroupInstance()
+
+		window.baseframe:ClearAllPoints()
+		window.baseframe:SetParent(relativeFrame)
+		window.baseframe:SetFrameStrata(relativeFrame:GetFrameStrata())
+		window.baseframe:SetFrameLevel(relativeFrame:GetFrameLevel())
+
+		ofsx = ofsx - 1
+
+		if window.show_statusbar then
+			height = height - 13
+		end
+
+		window:SetSize(width, height - 20)
+
+		window.baseframe:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
+		window:SaveMainWindowPosition()
+		window:RestoreMainWindowPosition()
+
+		window:LockInstance(true)
+
+		if window:GetId() == 1 then
+			DetailsRowFrame1:SetParent(DetailsBaseFrame1)
+			DetailsRowFrame1:SetFrameLevel(DetailsBaseFrame1:GetFrameLevel() + 1)
+		elseif window:GetId() == 2 then
+			DetailsRowFrame2:SetParent(DetailsBaseFrame2)
+			DetailsRowFrame2:SetFrameLevel(DetailsBaseFrame2:GetFrameLevel() + 1)
+		end
+
+		if window:GetSegment() ~= 0 then
+			window:SetDisplay(0)
+		end
+	end
+
+	function EMB:EmbedDetails()
+		wipe(self.DetailsInstances)
+
+		for _, instance in Details:ListInstances() do
+			tinsert(self.DetailsInstances, instance)
+		end
+
+		local db = E.db.addOnSkins.embed
+		numberToEmbed = 0
+		if db.embedType == "SINGLE" then
+			numberToEmbed = 1
+		end
+
+		if db.embedType == "DOUBLE" then
+			if db.rightWindow == "Details" then numberToEmbed = numberToEmbed + 1 end
+			if db.leftWindow == "Details" then numberToEmbed = numberToEmbed + 1 end
+		end
+
+		if Details:GetMaxInstancesAmount() < numberToEmbed then
+			Details:SetMaxInstancesAmount(numberToEmbed)
+		end
+
+		local instances_amount = Details:GetNumInstancesAmount()
+
+		for i = instances_amount + 1, numberToEmbed do
+			local new_instance = Details:CreateInstance(i)
+
+			if type(new_instance) == "table" then
+				tinsert(self.DetailsInstances, new_instance)
+			end
+		end
+
+		if numberToEmbed == 1 then
+			local parent = self.leftFrame
+			if db.embedType == "DOUBLE" then
+				parent = db.rightWindow == "Details" and self.rightFrame or self.leftFrame
+			end
+			EmbedWindow(self.DetailsInstances[1], parent:GetWidth() - (E.Border*2), parent:GetHeight(), "TOPLEFT", parent, "TOPLEFT", 2, 0)
+
+			if self.DetailsInstances[2] then
+				self.DetailsInstances[2]._ElvUIEmbed = nil
+			end
+		elseif numberToEmbed == 2 then
+			EmbedWindow(self.DetailsInstances[1], self.leftFrame:GetWidth() - (E.Border*2), self.leftFrame:GetHeight(), "TOPLEFT", self.leftFrame, "TOPLEFT", E.Border, E.Border)
+			EmbedWindow(self.DetailsInstances[2], self.rightFrame:GetWidth() - (E.Border*2), self.rightFrame:GetHeight(), "TOPRIGHT", self.rightFrame, "TOPRIGHT", -E.Border, E.Border)
 		end
 	end
 end

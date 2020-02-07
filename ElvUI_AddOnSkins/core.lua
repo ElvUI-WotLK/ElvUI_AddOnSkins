@@ -554,7 +554,8 @@ local function getOptions()
 						values = {
 							["Recount"] = "Recount",
 							["Omen"] = "Omen",
-							["Skada"] = "Skada"
+							["Skada"] = "Skada",
+							["Details"] = "Details"
 						},
 						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
@@ -565,7 +566,8 @@ local function getOptions()
 						values = {
 							["Recount"] = "Recount",
 							["Omen"] = "Omen",
-							["Skada"] = "Skada"
+							["Skada"] = "Skada",
+							["Details"] = "Details"
 						},
 						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end
 					},
