@@ -430,7 +430,7 @@ if AS:CheckAddOn("Skada") then
 end
 
 if AS:CheckAddOn("Details") then
-	local Details = _G._details
+	local Details = _G._details or _G._detalhes
 
 	local numberToEmbed = 0
 
