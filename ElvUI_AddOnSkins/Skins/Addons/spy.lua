@@ -34,7 +34,6 @@ local function LoadSkin()
 	Spy_MainWindow.LeftButton:Size(16)
 	Spy_MainWindow.LeftButton:Point("RIGHT", Spy_MainWindow.RightButton, "LEFT", -3, 0)
 
---	S:HandleNextPrevButton(Spy_MainWindow.ClearButton)
 	Spy_MainWindow.ClearButton:Size(16)
 	Spy_MainWindow.ClearButton:Point("RIGHT", Spy_MainWindow.LeftButton, "LEFT", -3, 0)
 
@@ -42,13 +41,17 @@ local function LoadSkin()
 	Spy_MainWindow.DragBottomRight:SetNormalTexture(nil)
 
 	local function SkinBar(bar)
+		if bar.isSkinned then return end
+
 		bar:StyleButton()
 		bar.StatusBar:SetStatusBarTexture(E["media"].normTex)
 		bar.LeftText:FontTemplate(nil, 12)
 		bar.RightText:FontTemplate(nil, 12)
+
+		bar.isSkinned = true
 	end
 
-	for i = 1, 5 do
+	for i = 1, Spy.ButtonLimit do
 		SkinBar(_G["Spy_MainWindow_Bar"..i])
 	end
 
