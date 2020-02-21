@@ -25,15 +25,36 @@ local function LoadSkin()
 	local GVS = E:GetModule("AddOnSkins"):FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
 	if not GVS then return end
 
-	GVS:Point("TOPLEFT", 19, -70)
+	GVS:Point("TOPLEFT", 19, -52)
 
 	MerchantBuyBackItem:ClearAllPoints()
-	MerchantBuyBackItem:Point("BOTTOMLEFT", 187, 102)
+	MerchantBuyBackItem:Point("BOTTOMLEFT", 187, 118)
+
+	local popoutButtonOnEnter = function(self) self.icon:SetVertexColor(unpack(E.media.rgbvaluecolor)) end
+	local popoutButtonOnLeave = function(self) self.icon:SetVertexColor(1, 1, 1) end
 
 	for _, child in ipairs({GVS:GetChildren()}) do
 		local objType = child:GetObjectType()
 
-		if objType == "EditBox" then
+		if objType == "Button" then
+			S:HandleButtonHighlight(child)
+
+			if child.icon then
+				child.icon:SetTexCoord(unpack(E.TexCoords))
+			end
+
+			if child.popout then
+				child.popout:StripTextures()
+				child.popout:HookScript("OnEnter", popoutButtonOnEnter)
+				child.popout:HookScript("OnLeave", popoutButtonOnLeave)
+
+				child.popout.icon = child.popout:CreateTexture(nil, "ARTWORK")
+				child.popout.icon:Size(21)
+				child.popout.icon:Point("CENTER")
+				child.popout.icon:SetTexture(E.Media.Textures.ArrowUp)
+				child.popout.icon:SetRotation(S.ArrowRotation.right)
+			end
+		elseif objType == "EditBox" then
 			for _, region in ipairs({child:GetRegions()}) do
 				if region:GetDrawLayer() == "BACKGROUND" then
 					region:SetTexture(nil)
