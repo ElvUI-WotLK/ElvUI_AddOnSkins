@@ -91,4 +91,5 @@
 	<Script file="QuestGuru.lua"/>
 	<Script file="QuestGuruTracker.lua"/>
 	<Script file="SatrinaBuffFrame.lua"/>
+	<Script file="LootCouncil_Lite.lua"/>
 </Ui>

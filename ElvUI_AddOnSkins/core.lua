@@ -102,6 +102,7 @@ local addonList = {
 	"QuestGuru",
 	"QuestGuru_Tracker",
 	"SatrinaBuffFrame",
+	"LootCouncil_Lite",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
