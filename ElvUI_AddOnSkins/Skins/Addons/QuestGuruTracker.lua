@@ -38,6 +38,20 @@ local function LoadSkin()
 	S:HandleSliderFrame(QGT_QuestWatchFrameSlider)
 	S:HandleSliderFrame(QGT_AchievementWatchFrameSlider)
 
+	for i = 1, 40 do
+		local frame = _G["QGT_AchievementWatchLine"..i]
+		local icon = _G["QGT_AchievementWatchLine"..i.."Icon"]
+
+		icon:Size(14)
+		icon:SetTexCoord(unpack(E.TexCoords))
+
+		frame.statusBar:StripTextures()
+		frame.statusBar:CreateBackdrop("Transparent")
+
+		frame.statusBar:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(frame.statusBar)
+	end
+
 	do
 		local alpha = QGT_Settings.Alpha
 		local backdropR, backdropG, backdropB = unpack(E.media.backdropfadecolor, 1, 3)
