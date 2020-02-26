@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 local _G = _G
-local select = select
 local unpack = unpack
 
 -- TellMeWhen 1.2.5b1

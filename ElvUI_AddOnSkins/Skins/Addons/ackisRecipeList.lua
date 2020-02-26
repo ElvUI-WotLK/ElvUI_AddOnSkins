@@ -3,7 +3,6 @@ local S = E:GetModule("Skins")
 
 local ipairs = ipairs
 local select = select
-local select = select
 local unpack = unpack
 local find = string.find
 

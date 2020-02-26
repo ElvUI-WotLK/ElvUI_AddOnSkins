@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local unpack = unpack
+
 -- GnomishVendorShrinker 3.3.0.6
 -- https://www.curseforge.com/wow/addons/gnomishvendorshrinker/files/426171
 
