@@ -1,9 +1,9 @@
 local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
-L["AddOn Skins"] = true
+L["AddOn Skins"] = "插件皮肤"
 L["AuraBar Backdrop"] = true
-L["Blizzard Skins"] = true
+L["Blizzard Skins"] = "暴雪皮肤"
 L["Default"] = true
 L["Double"] = true
 L["Embed Type"] = true
@@ -12,7 +12,7 @@ L["Icon Cooldown"] = true
 L["Left Panel"] = true
 L["Left Window Width"] = true
 L["Misc Options"] = true
-L["None"] = true
+L["None"] = "无"
 L["Right Panel"] = true
 L["Single"] = true
 L["Template Gloss"] = true
