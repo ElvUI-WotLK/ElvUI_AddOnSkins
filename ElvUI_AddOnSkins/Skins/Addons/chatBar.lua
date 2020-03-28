@@ -10,24 +10,37 @@ local function LoadSkin()
 
 	local db = E.db.addOnSkins
 
+	if ChatBar_ButtonScale then
+		ChatBar_ButtonScale = 1
+	end
+
+	ChatBar_UpdateArt = E.noop
+	ChatBar_Toggle_LargeButtons = E.noop
+
 	ChatBarFrameBackground:SetOutside()
 	ChatBarFrameBackground:SetTemplate("Transparent")
 
 	for i = 1, 20 do
 		local button = _G["ChatBarFrameButton" .. i]
-		local higliht = _G["ChatBarFrameButton" .. i .. "Highlight"]
+		local center = _G["ChatBarFrameButton" .. i .. "Center"]
+		local highlight = _G["ChatBarFrameButton" .. i .. "Highlight"]
+		local flash = _G["ChatBarFrameButton" .. i .. "Flash"]
+
 		button:StripTextures()
-		button:SetTemplate("Default", true, true)
+		button:SetTemplate()
+		button:SetScale(1)
+		button:Size(E.db.addOnSkins.chatBarSize)
 
-		button:GetNormalTexture():SetTexture(nil)
-		button:GetPushedTexture():SetTexture(nil)
-		button:SetHighlightTexture(1, 1, 1, 0.3)
-		button:StyleButton(true)
-		button:GetNormalTexture().SetTexture = E.noop
-		button:GetPushedTexture().SetTexture = E.noop
+		center:SetInside()
+		highlight:SetInside()
+		flash:SetInside()
 
-		higliht:SetInside()
-		higliht:SetTexture(1, 1, 1, 0.3)
+		center:SetTexture(1, 1, 1)
+		highlight:SetTexture(1, 1, 1, 0.5)
+		flash:SetTexture(1, 1, 1, 0.5)
+
+		highlight:SetBlendMode("MOD")
+		flash:SetTexture("MOD")
 	end
 
 	ChatBarFrame:SetScript("OnUpdate", function(self, elapsed)
@@ -108,6 +121,7 @@ local function LoadSkin()
 			button:ClearAllPoints()
 			button.Text:ClearAllPoints()
 			button.Text:SetPoint(db.chatBarTextPoint, button, db.chatBarTextPoint, db.chatBarTextXOffset, db.chatBarTextYOffset)
+
 			if ChatBar_VerticalDisplay then
 				if ChatBar_AlternateOrientation then
 					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -db.chatBarSpacing)
@@ -132,7 +146,7 @@ local function LoadSkin()
 				if ChatBar_ChatTypes[i].show() then
 					info = ChatTypeInfo[ChatBar_ChatTypes[i].type]
 					_G["ChatBarFrameButton" .. buttonIndex]:Size(db.chatBarSize)
-					_G["ChatBarFrameButton" .. buttonIndex]:SetBackdropColor(info.r, info.g, info.b)
+					_G["ChatBarFrameButton" .. buttonIndex]:SetAlpha(1)
 					buttonIndex = buttonIndex + 1
 				end
 
@@ -158,11 +172,14 @@ local function LoadSkin()
 				ChatBarFrame:SetWidth(size)
 			end
 		end
+
+		while buttonIndex <= 20 do
+			_G["ChatBarFrameButton" .. buttonIndex]:SetAlpha(0)
+			buttonIndex = buttonIndex + 1
+		end
 	end)
 
 	ChatBar_UpdateButtonOrientation()
-	ChatBar_UpdateArt = E.noop
-	ChatBar_Toggle_LargeButtons = E.noop
 
 	TT:HookScript(ChatBarFrameTooltip, "OnShow", "SetStyle")
 end
