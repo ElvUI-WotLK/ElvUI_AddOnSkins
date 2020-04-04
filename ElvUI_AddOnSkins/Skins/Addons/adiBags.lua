@@ -118,7 +118,7 @@ local function LoadSkin()
 
 	local function updateBorderOnHide(self)
 		self.parent:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		self.parent.IconTexture:SetVertexColor(1, 1, 1, 1)
+	--	self.parent.IconTexture:SetVertexColor(1, 1, 1, 1)
 	end
 
 	local ItemButtonClass = AdiBags:GetClass("ItemButton")
