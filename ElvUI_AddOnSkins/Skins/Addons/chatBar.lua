@@ -139,12 +139,11 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("ChatBar_UpdateButtons", function()
-		local i, buttonIndex, info = 1, 1
+		local i, buttonIndex = 1, 1
 
 		if not ChatBar_HideAllButtons then
 			while ChatBar_ChatTypes[i] and buttonIndex <= 20 do
 				if ChatBar_ChatTypes[i].show() then
-					info = ChatTypeInfo[ChatBar_ChatTypes[i].type]
 					_G["ChatBarFrameButton" .. buttonIndex]:Size(db.chatBarSize)
 					_G["ChatBarFrameButton" .. buttonIndex]:SetAlpha(1)
 					buttonIndex = buttonIndex + 1
