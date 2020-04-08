@@ -39,10 +39,10 @@ local function LoadSkin()
 	S:HandleButton(Raid_Roll_ClearRolls)
 	S:HandleButton(RaidRoll_ExtraOptionButton)
 
-	if GetLocale() ~= "zhCN" then
+	if E.private.general.replaceBlizzFonts and GetLocale() ~= "zhCN" then
 		local setFont = RR_Roller1.SetFont
 		local function updateFont(self, font, size, flag)
-			setFont(self, E.media.normFont, size, flag)
+			setFont(self, E.media.normFont, E.db.general.fontSize, flag)
 		end
 
 		for i = 1, 5 do
