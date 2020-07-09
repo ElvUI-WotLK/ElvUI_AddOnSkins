@@ -115,7 +115,7 @@ function EMB:SetHooks()
 	end)
 
 	RightChatToggleButton:RegisterForClicks("AnyDown")
-	RightChatToggleButton:SetScript("OnClick", function(self, btn)
+	RightChatToggleButton:HookScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
 			if E.db.addOnSkins.embed.rightChatPanel then
 				if EMB.mainFrame:IsShown() then
@@ -123,17 +123,6 @@ function EMB:SetHooks()
 				else
 					EMB.mainFrame:Show()
 				end
-			end
-		else
-			if E.db[self.parent:GetName().."Faded"] then
-				E.db[self.parent:GetName().."Faded"] = nil
-				UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			else
-				E.db[self.parent:GetName().."Faded"] = true
-				UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-				UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-				self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
 			end
 		end
 		EMB:UpdateSwitchButton()
@@ -148,7 +137,7 @@ function EMB:SetHooks()
 	end)
 
 	LeftChatToggleButton:RegisterForClicks("AnyDown")
-	LeftChatToggleButton:SetScript("OnClick", function(self, btn)
+	LeftChatToggleButton:HookScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
 			if not E.db.addOnSkins.embed.rightChatPanel then
 				if EMB.mainFrame:IsShown() then
@@ -156,17 +145,6 @@ function EMB:SetHooks()
 				else
 					EMB.mainFrame:Show()
 				end
-			end
-		else
-			if E.db[self.parent:GetName().."Faded"] then
-				E.db[self.parent:GetName().."Faded"] = nil
-				UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-				UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			else
-				E.db[self.parent:GetName().."Faded"] = true
-				UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-				UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-				self.parent.fadeInfo.finishedFunc = self.parent.fadeFunc
 			end
 		end
 		EMB:UpdateSwitchButton()
@@ -179,19 +157,6 @@ function EMB:SetHooks()
 			EMB:UpdateSwitchButton()
 		end
 	end)
-
-	function HideLeftChat()
-		LeftChatToggleButton:Click()
-	end
-
-	function HideRightChat()
-		RightChatToggleButton:Click()
-	end
-
-	function HideBothChat()
-		LeftChatToggleButton:Click()
-		RightChatToggleButton:Click()
-	end
 end
 
 function EMB:WindowResize()
