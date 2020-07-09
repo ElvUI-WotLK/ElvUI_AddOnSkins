@@ -185,46 +185,6 @@ local function getOptions()
 						order = 1,
 						type = "header",
 						name = L["Skins"]
-					},
-					addons = {
-						order = 1,
-						type = "group",
-						name = L["AddOn Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]] end,
-						set = function(info, value)
-							E.private.addOnSkins[info[#info]] = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end,
-						args = {
-							header = {
-								order = 1,
-								type = "header",
-								name = L["AddOn Skins"]
-							}
-						}
-					},
-					blizzard = {
-						order = 2,
-						type = "group",
-						name = L["Blizzard Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]] end,
-						set = function(info, value)
-							E.private.addOnSkins[info[#info]] = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end,
-						args = {
-							header = {
-								order = 1,
-								type = "header",
-								name = L["Blizzard Skins"]
-							},
-							Blizzard_WorldStateFrame = {
-								order = 2,
-								type = "toggle",
-								name = "WorldStateFrame",
-								desc = L["TOGGLESKIN_DESC"],
-							}
-						}
 					}
 				}
 			},
@@ -600,7 +560,7 @@ local function getOptions()
 		}
 	}
 
-	local target = options.args.skins.args.addons.args
+	local target = options.args.skins.args
 
 	for _, addonName in ipairs(addonList) do
 		AS:RegisterAddonOption(addonName, target)
