@@ -39,10 +39,23 @@ local function LoadSkin()
 	S:HandleButton(Raid_Roll_ClearRolls)
 	S:HandleButton(RaidRoll_ExtraOptionButton)
 
+	for i = 1, 5 do
+		local f = _G["Raid_Roll_SetSymbol"..i]
+		f:ClearAllPoints()
+		f:SetPoint("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
+		f:SetPoint("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
+
+		local highlight = f:GetHighlightTexture()
+		highlight:SetTexture(E.Media.Textures.Highlight)
+		highlight:SetVertexColor(0.9, 0.9, 0.9, 0.35)
+	end
+
 	if E.private.general.replaceBlizzFonts and GetLocale() ~= "zhCN" then
-		local setFont = RR_Roller1.SetFont
+		local fontTemplate = RR_Roller1.FontTemplate
 		local function updateFont(self, font, size, flag)
-			setFont(self, E.media.normFont, E.db.general.fontSize, flag)
+			self.SetFont = nil
+			fontTemplate(self, nil, nil, flag)
+			self.SetFont = updateFont
 		end
 
 		for i = 1, 5 do

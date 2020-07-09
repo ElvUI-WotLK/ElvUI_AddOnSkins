@@ -96,7 +96,7 @@ local function LoadSkin()
 		end
 	end)
 
-	hooksecurefunc("ChatBar_UpdateButtonOrientation", function()
+	function ChatBar_UpdateButtonOrientation()
 		local button = ChatBarFrameButton1
 		button:ClearAllPoints()
 		button.Text:ClearAllPoints()
@@ -136,7 +136,7 @@ local function LoadSkin()
 				end
 			end
 		end
-	end)
+	end
 
 	hooksecurefunc("ChatBar_UpdateButtons", function()
 		local i, buttonIndex = 1, 1
