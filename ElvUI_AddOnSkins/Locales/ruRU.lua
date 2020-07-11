@@ -3,7 +3,6 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
 L["AddOn Skins"] = "Скины аддонов"
 L["AuraBar Backdrop"] = true
-L["Blizzard Skins"] = "Скины Blizzard"
 L["Default"] = true
 L["Double"] = "Двойной"
 L["Embed Type"] = "Тип встраивания"
