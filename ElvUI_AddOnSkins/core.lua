@@ -180,6 +180,11 @@ local function getOptions()
 				type = "group",
 				childGroups = "tab",
 				name = L["Skins"],
+				get = function(info) return E.private.addOnSkins[info[#info]] end,
+				set = function(info, value)
+					E.private.addOnSkins[info[#info]] = value
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
 				args = {
 					header = {
 						order = 1,
