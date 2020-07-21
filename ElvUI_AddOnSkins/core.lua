@@ -27,6 +27,7 @@ local addonList = {
 	"AtlasLoot",
 	"Atlas",
 	"FlightMap",
+	"WeakAuras",
 	"Overachiever",
 	"OpenGF",
 	"KHunterTimers",
@@ -383,8 +384,32 @@ local function getOptions()
 							}
 						}
 					},
-					chatBarGroup = {
+					waGroup = {
 						order = 6,
+						type = "group",
+						name = "WeakAuras",
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value)
+							E.db.addOnSkins[info[#info]] = value
+							E:StaticPopup_Show("PRIVATE_RL")
+						end,
+						disabled = function() return not AS:CheckAddOn("WeakAuras") end,
+						hidden = function() return WeakAuras and WeakAuras.IsCorrectVersion end,
+						args = {
+							weakAuraAuraBar = {
+								order = 1,
+								type = "toggle",
+								name = L["AuraBar Backdrop"]
+							},
+							weakAuraIconCooldown = {
+								order = 2,
+								type = "toggle",
+								name = L["Icon Cooldown"]
+							}
+						}
+					},
+					chatBarGroup = {
+						order = 7,
 						type = "group",
 						name = "ChatBar",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -430,7 +455,7 @@ local function getOptions()
 						}
 					},
 					bwGroup = {
-						order = 7,
+						order = 8,
 						type = "group",
 						name = "BigWigs",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -545,6 +570,10 @@ local function getOptions()
 
 	for _, addonName in ipairs(addonList) do
 		AS:RegisterAddonOption(addonName, target)
+	end
+
+	if target.WeakAuras then
+		target.WeakAuras.hidden = function() return WeakAuras and WeakAuras.IsCorrectVersion end
 	end
 
 	E.Options.args.addOnSkins = options
