@@ -27,7 +27,6 @@ local addonList = {
 	"AtlasLoot",
 	"Atlas",
 	"FlightMap",
-	"WeakAuras",
 	"Overachiever",
 	"OpenGF",
 	"KHunterTimers",
@@ -384,31 +383,8 @@ local function getOptions()
 							}
 						}
 					},
-					waGroup = {
-						order = 6,
-						type = "group",
-						name = "WeakAuras",
-						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value)
-							E.db.addOnSkins[info[#info]] = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end,
-						disabled = function() return not AS:CheckAddOn("WeakAuras") end,
-						args = {
-							weakAuraAuraBar = {
-								order = 1,
-								type = "toggle",
-								name = L["AuraBar Backdrop"]
-							},
-							weakAuraIconCooldown = {
-								order = 2,
-								type = "toggle",
-								name = L["Icon Cooldown"]
-							}
-						}
-					},
 					chatBarGroup = {
-						order = 7,
+						order = 6,
 						type = "group",
 						name = "ChatBar",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
@@ -454,7 +430,7 @@ local function getOptions()
 						}
 					},
 					bwGroup = {
-						order = 8,
+						order = 7,
 						type = "group",
 						name = "BigWigs",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,

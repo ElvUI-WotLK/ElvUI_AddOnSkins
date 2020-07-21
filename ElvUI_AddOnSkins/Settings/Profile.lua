@@ -22,9 +22,6 @@ P.addOnSkins = {
 	dbmFontOutline = "OUTLINE",
 	dbmTemplate = "Default",
 
-	weakAuraAuraBar = true,
-	weakAuraIconCooldown = true,
-
 	chatBarSize = 16,
 	chatBarSpacing = 1,
 	chatBarTextPoint = "CENTER",

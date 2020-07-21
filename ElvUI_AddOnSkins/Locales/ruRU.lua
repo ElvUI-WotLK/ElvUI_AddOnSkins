@@ -2,12 +2,10 @@ local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, Global
 local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
 L["AddOn Skins"] = "Скины аддонов"
-L["AuraBar Backdrop"] = true
 L["Default"] = true
 L["Double"] = "Двойной"
 L["Embed Type"] = "Тип встраивания"
 L["Font Size"] = true
-L["Icon Cooldown"] = true
 L["Left Panel"] = "Левое окно"
 L["Left Window Width"] = "Ширина левого окна"
 L["Misc Options"] = true
