@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Examiner") then return end
 
 local select = select
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- Examiner 10.08.14
 -- https://www.curseforge.com/wow/addons/examiner/files/445178
 
-local function LoadSkin()
+S:AddCallbackForAddon("Examiner", "Examiner", function()
 	if not E.private.addOnSkins.Examiner then return end
 
 	UIPanelWindows["Examiner"].width = 348
@@ -245,6 +248,4 @@ local function LoadSkin()
 	end)
 
 	E:GetModule("AddOnSkins"):SkinLibrary("AzDialog")
-end
-
-S:AddCallbackForAddon("Examiner", "Examiner", LoadSkin)
+end)

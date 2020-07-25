@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("LootCouncil_Lite") then return end
 
 -- Loot Council Lite 1.011
 -- https://www.curseforge.com/wow/addons/lootcouncil-lite/files/457971
 
-local function LoadSkin()
+S:AddCallbackForAddon("LootCouncil_Lite", "LootCouncil_Lite", function()
 	if not E.private.addOnSkins.LootCouncil_Lite then return end
 
 	-- Main Frame
@@ -93,6 +96,4 @@ local function LoadSkin()
 		S:HandleButton(RunTestButton)
 		S:HandleButton(TestCancelButton)
 	end
-end
-
-S:AddCallbackForAddon("LootCouncil_Lite", "LootCouncil_Lite", LoadSkin)
+end)

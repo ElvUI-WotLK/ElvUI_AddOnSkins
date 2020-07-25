@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("InspectEquip") then return end
 
 -- InspectEquip 1.7.7
 -- https://www.wowace.com/projects/inspect-equip/files/436507
 
-local function LoadSkin()
+S:AddCallbackForAddon("InspectEquip", "InspectEquip", function()
 	if not E.private.addOnSkins.InspectEquip then return end
 
 	InspectEquip_InfoWindow:SetTemplate("Transparent")
@@ -24,6 +27,4 @@ local function LoadSkin()
 			InspectEquip_InfoWindow:Show()
 		end
 	end)
-end
-
-S:AddCallbackForAddon("InspectEquip", "InspectEquip", LoadSkin)
+end)

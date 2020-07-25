@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Skada") then return end
 
 -- Skada r301
 -- https://www.curseforge.com/wow/addons/skada/files/458800
 
-local function LoadSkin()
+S:AddCallbackForAddon("Skada", "Skada", function()
 	if not E.private.addOnSkins.Skada then return end
 
 	hooksecurefunc(Skada.displays["bar"], "ApplySettings", function(_, win)
@@ -76,6 +79,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Skada", "Skada", LoadSkin)
+end)

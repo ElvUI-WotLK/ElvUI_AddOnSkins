@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 local NP = E:GetModule("NamePlates")
+
+if not AS:IsAddonLODorEnabled("PlateBuffs") then return end
 
 local unpack = unpack
 
@@ -9,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 -- PlateBuffs 1.5.4
 -- https://www.wowace.com/projects/platebuffs/files/447971
 
-local function LoadSkin()
+S:AddCallbackForAddon("PlateBuffs", "PlateBuffs", function()
 	if not E.private.addOnSkins.PlateBuffs then return end
 
 	local core = LibStub("AceAddon-3.0"):GetAddon("PlateBuffs", true)
@@ -77,6 +80,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("PlateBuffs", "PlateBuffs", LoadSkin)
+end)

@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("AtlasLoot") then return end
 
 local select = select
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- AtlasLoot Enhanced 5.11.04
 -- https://www.curseforge.com/wow/addons/atlasloot-enhanced/files/445202
 
-local function LoadSkin()
+S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	if not E.private.addOnSkins.AtlasLoot then return end
 
 	AtlasLootTooltip:HookScript("OnShow", function(self)
@@ -149,6 +152,4 @@ local function LoadSkin()
 		E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
 		E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 	end
-end
-
-S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", LoadSkin)
+end)

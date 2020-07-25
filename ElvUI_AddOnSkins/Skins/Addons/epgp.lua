@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("epgp") then return end
 
 -- EPGP 5.5.19
 -- https://www.curseforge.com/wow/addons/epgp-dkp-reloaded/files/442647
 
-local function epgp()
+S:AddCallbackForAddon("epgp", "epgp", function()
 	if not E.private.addOnSkins.EPGP then return end
 
 	local EPGPUI = EPGP and EPGP:GetModule("ui", true)
@@ -139,6 +142,4 @@ local function epgp()
 			S:Unhook(EPGPFrame, "Show")
 		end)
 	end
-end
-
-S:AddCallbackForAddon("epgp", "epgp", epgp)
+end)

@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("MageNuggets") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- Mage Nuggets 1.86
 -- https://www.curseforge.com/wow/addons/mage-nuggets/files/438172
 
-local function LoadSkin()
+S:AddCallbackForAddon("MageNuggets", "MageNuggets", function()
 	if not E.private.addOnSkins.MageNuggets then return end
 
 	MageNugSP_Frame:SetTemplate("Transparent", nil, true)
@@ -208,6 +211,4 @@ local function LoadSkin()
 
 	S:HandleButton(MageNugAlliFrameClose)
 	S:HandleButton(MageNugAlliFrameShowOptions)
-end
-
-S:AddCallbackForAddon("MageNuggets", "MageNuggets", LoadSkin)
+end)

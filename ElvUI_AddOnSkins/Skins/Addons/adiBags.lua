@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("AdiBags") then return end
 
 local _G = _G
 local ipairs = ipairs
@@ -17,7 +20,7 @@ local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 -- AdiBags 1.1 beta 7
 -- https://www.curseforge.com/wow/addons/adibags/files/452440
 
-local function LoadSkin()
+S:AddCallbackForAddon("AdiBags", "AdiBags", function()
 	if not E.private.addOnSkins.AdiBags then return end
 
 	local AdiBags = LibStub("AceAddon-3.0"):GetAddon("AdiBags", true)
@@ -195,6 +198,4 @@ local function LoadSkin()
 		S.hooks[self].UpdateButton(self, event, button)
 		button.IconQuestTexture._searchMode = nil
 	end)
-end
-
-S:AddCallbackForAddon("AdiBags", "AdiBags", LoadSkin)
+end)

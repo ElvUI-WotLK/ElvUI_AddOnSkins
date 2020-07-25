@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Overachiever_Tabs") then return end
 
 -- Overachiever 0.56
 -- https://www.curseforge.com/wow/addons/overachiever/files/443622
 
-local function LoadSkin()
+S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", function()
 	if not E.private.addOnSkins.Overachiever then return end
 
 	for i = 3, 5 do
@@ -44,6 +47,4 @@ local function LoadSkin()
 		scrollFrame.backdrop:Point("BOTTOMRIGHT", -3, -3)
 		S:HandleScrollBar(scrollBar)
 	end
-end
-
-S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", LoadSkin)
+end)

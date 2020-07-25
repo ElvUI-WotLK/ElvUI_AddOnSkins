@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("ZOMGBuffs") then return end
 
 local pairs = pairs
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- ZOMGBuffs r156
 -- https://www.wowace.com/projects/zomgbuffs/files/424938
 
-local function LoadSkin()
+S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	if ZOMGBuffsButton then
@@ -43,9 +46,9 @@ local function LoadSkin()
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("ZFrame-1.0")
-end
+end)
 
-local function LoadSkinBM()
+S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZBM = ZOMGBuffs:GetModule("ZOMGBlessingsManager")
@@ -122,9 +125,9 @@ local function LoadSkinBM()
 
 		S:Unhook(ZBM, "DrawAll")
 	end)
-end
+end)
 
-local function LoadSkinLog()
+S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZL = ZOMGBuffs:GetModule("ZOMGLog")
@@ -138,8 +141,4 @@ local function LoadSkinLog()
 
 		return frame
 	end, true)
-end
-
-S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", LoadSkin)
-S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", LoadSkinBM)
-S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", LoadSkinLog)
+end)

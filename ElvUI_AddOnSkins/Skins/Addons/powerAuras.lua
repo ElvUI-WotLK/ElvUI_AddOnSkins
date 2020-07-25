@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("PowerAuras") then return end
 
 local _G = _G
 
 -- Power Auras Classic 3.0.0S
 -- https://www.curseforge.com/wow/addons/powerauras-classic/files/452580
 
-local function LoadSkin()
+S:AddCallbackForAddon("PowerAuras", "PowerAuras", function()
 	if not E.private.addOnSkins.PowerAuras then return end
 
 	local frames = {
@@ -333,6 +336,4 @@ local function LoadSkin()
 	PowaBuffTimerCentsButton:Size(25) --Fix
 
 	PowaAuthorText:Kill()
-end
-
-S:AddCallbackForAddon("PowerAuras", "PowerAuras", LoadSkin)
+end)

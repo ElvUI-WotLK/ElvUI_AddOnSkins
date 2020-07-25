@@ -1,7 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
-local function LoadSkin()
+if not AS:IsAddonLODorEnabled("CallToArms") then return end
+
+S:AddCallbackForAddon("CallToArms", "CallToArms", function()
 	if not E.private.addOnSkins.CallToArms then return end
 
 	CTA_MainFrame:SetHeight(CTA_MainFrame:GetHeight() + 20)
@@ -172,6 +175,4 @@ local function LoadSkin()
 	for i = 1, #callToArmsConfigCheck do
 		S:HandleCheckBox(_G[callToArmsConfigCheck[i]])
 	end
-end
-
-S:AddCallbackForAddon("CallToArms", "CallToArms", LoadSkin)
+end)

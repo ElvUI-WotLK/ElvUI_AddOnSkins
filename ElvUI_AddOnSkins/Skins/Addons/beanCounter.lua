@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("BeanCounter") then return end
 
 -- BeanCounter 5.8.4723
 -- https://www.curseforge.com/wow/addons/auctioneer/files/427823
 
-local function LoadSkin()
+S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 	if not E.private.addOnSkins.BeanCounter then return end
 
 	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
@@ -64,6 +67,4 @@ local function LoadSkin()
 			private.frame.icon:GetNormalTexture():SetInside()
 		end)
 	end
-end
-
-S:AddCallbackForAddon("BeanCounter", "BeanCounter", LoadSkin)
+end)

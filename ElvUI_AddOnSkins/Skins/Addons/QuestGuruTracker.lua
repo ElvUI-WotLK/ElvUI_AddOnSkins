@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("QuestGuru_Tracker") then return end
 
 -- QuestGuru_Tracker 1.3
 
-local function LoadSkin()
+S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 	if not E.private.addOnSkins.QuestGuru_Tracker then return end
 
 	QGT_SetQuestWatchBorder = E.noop
@@ -364,6 +367,4 @@ local function LoadSkin()
 			updateAchievemtHeader(true)
 		end
 	end
-end
-
-S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", LoadSkin)
+end)

@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Mapster") then return end
 
 -- Mapster 1.3.9
 -- https://www.wowace.com/projects/mapster/files/436697
 
-local function LoadSkin()
+S:AddCallbackForAddon("Mapster", "Mapster", function()
 	if not E.private.addOnSkins.Mapster then return end
 
 	local Mapster = LibStub("AceAddon-3.0"):GetAddon("Mapster", true)
@@ -165,6 +168,4 @@ local function LoadSkin()
 			end
 		end
 	end
-end
-
-S:AddCallbackForAddon("Mapster", "Mapster", LoadSkin)
+end)

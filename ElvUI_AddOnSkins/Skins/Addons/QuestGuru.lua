@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("QuestGuru") then return end
 
 local _G = _G
 local select = select
@@ -13,7 +16,7 @@ local hooksecurefunc = hooksecurefunc
 
 -- QuestGuru 1.3
 
-local function LoadSkin()
+S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	if not E.private.addOnSkins.QuestGuru then return end
 
 	local origCount = QUESTGURU_QUESTS_DISPLAYED
@@ -321,9 +324,9 @@ local function LoadSkin()
 		fixFontColor(QuestGuru_QuestAbandonHonorFrameReceiveText, 1, 1, 1)
 		fixFontColor(QuestGuru_QuestAbandonTalentFrameReceiveText, 1, 1, 1)
 	end
-end
+end)
 
-local function LoadHistorySkin()
+S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 	if not E.private.addOnSkins.QuestGuru then return end
 
 	QuestGuru_QuestLogFrameTab3:StripTextures()
@@ -502,7 +505,4 @@ local function LoadHistorySkin()
 		fixFontColor(QuestGuru_QuestHistoryHonorFrameReceiveText, 1, 1, 1)
 		fixFontColor(QuestGuru_QuestHistoryTalentFrameReceiveText, 1, 1, 1)
 	end
-end
-
-S:AddCallbackForAddon("QuestGuru", "QuestGuru", LoadSkin)
-S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", LoadHistorySkin)
+end)

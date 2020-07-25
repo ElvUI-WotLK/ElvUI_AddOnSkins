@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
+if not AS:IsAddonLODorEnabled("Auc-Advanced") then return end
+
 local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
@@ -9,7 +11,7 @@ local hooksecurefunc = hooksecurefunc
 -- AuctioneerSuite 5.8.4723
 -- https://www.curseforge.com/wow/addons/auctioneer/files/427823
 
-local function LoadSkin()
+S:AddCallbackForAddon("Auc-Advanced", "Auc-Advanced", function()
 	if not E.private.addOnSkins.AuctioneerSuite then return end
 
 	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
@@ -390,9 +392,9 @@ local function LoadSkin()
 		S:HandleButton(AucAdvanced.Buy.Private.Prompt.Yes)
 		S:HandleButton(AucAdvanced.Buy.Private.Prompt.No)
 	end
-end
+end)
 
-local function LoadBasicFilterSkin()
+S:AddCallbackForAddon("Auc-Filter-Basic", "Auc-Filter-Basic", function()
 	if not E.private.addOnSkins.AuctioneerSuite then return end
 
 	S:HandleButton(BasicFilter_IgnoreList_IgnorePlayerButton)
@@ -400,9 +402,9 @@ local function LoadBasicFilterSkin()
 
 	BasicFilter_IgnoreList_ScrollFrame:StripTextures()
 	S:HandleScrollBar(BasicFilter_IgnoreList_ScrollFrameScrollBar)
-end
+end)
 
-local function LoadStatHistogramSkin()
+S:AddCallbackForAddon("Auc-Stat-Histogram", "Auc-Stat-Histogram", function()
 	if not E.private.addOnSkins.AuctioneerSuite then return end
 
 	local StatHistogram = AucAdvanced.GetModule("Stat", "Histogram")
@@ -428,8 +430,4 @@ local function LoadStatHistogramSkin()
 			StatHistogram.Private.frame.icon:GetNormalTexture():SetInside()
 		end)
 	end
-end
-
-S:AddCallbackForAddon("Auc-Advanced", "Auc-Advanced", LoadSkin)
-S:AddCallbackForAddon("Auc-Filter-Basic", "Auc-Filter-Basic", LoadBasicFilterSkin)
-S:AddCallbackForAddon("Auc-Stat-Histogram", "Auc-Stat-Histogram", LoadStatHistogramSkin)
+end)

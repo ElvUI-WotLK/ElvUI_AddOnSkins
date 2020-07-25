@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("RaidRoll") then return end
 
 -- RaidRoll 4.4.15
 -- https://www.curseforge.com/wow/addons/raid-roll/files/450070
 
-local function LoadSkin()
+S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	if not E.private.addOnSkins.RaidRoll then return end
 
 	RR_RollFrame:SetTemplate("Transparent")
@@ -62,9 +65,9 @@ local function LoadSkin()
 			_G["RR_Roller"..i].SetFont = updateFont
 		end
 	end
-end
+end)
 
-local function LootTrackerSkin()
+S:AddCallbackForAddon("RaidRoll_LootTracker", "RaidRoll_LootTracker", function()
 	if not E.private.addOnSkins.RaidRoll then return end
 
 	RR_LOOT_FRAME:SetTemplate("Transparent")
@@ -96,7 +99,4 @@ local function LootTrackerSkin()
 			S:HandleCloseButton(child)
 		end
 	end
-end
-
-S:AddCallbackForAddon("RaidRoll", "RaidRoll", LoadSkin)
-S:AddCallbackForAddon("RaidRoll_LootTracker", "RaidRoll_LootTracker", LootTrackerSkin)
+end)

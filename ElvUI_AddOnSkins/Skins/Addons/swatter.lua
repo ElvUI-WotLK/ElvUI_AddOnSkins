@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("!Swatter") then return end
 
 -- Swatter 5.8.4723
 
-local function LoadSkin()
+S:AddCallbackForAddon("!Swatter", "!Swatter", function()
 	if not E.private.addOnSkins.Swatter then return end
 	if not Swatter.Error then return end
 
@@ -15,6 +18,4 @@ local function LoadSkin()
 	S:HandleButton(Swatter.Error.Prev)
 	S:HandleButton(Swatter.Error.Next)
 	S:HandleButton(Swatter.Error.Done)
-end
-
-S:AddCallbackForAddon("!Swatter", "!Swatter", LoadSkin)
+end)

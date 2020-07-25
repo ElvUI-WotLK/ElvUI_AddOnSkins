@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Stalker") then return end
 
 local _G = _G
 
 -- Spy 1.2
 -- https://www.curseforge.com/wow/addons/spy/files/442604
 
-local function LoadSkin()
+S:AddCallbackForAddon("Spy", "Spy", function()
 	if not E.private.addOnSkins.Spy then return end
 
 	Spy_AlertWindow:StripTextures()
@@ -139,6 +142,4 @@ local function LoadSkin()
 			Spy.MainWindow.CountFrame.Text:SetText(activeCount)
 		end
 	end
-end
-
-S:AddCallbackForAddon("Spy", "Spy", LoadSkin)
+end)

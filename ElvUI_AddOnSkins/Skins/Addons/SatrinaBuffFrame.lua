@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("SatrinaBuffFrame") then return end
 
 local _G = _G
 local ipairs = ipairs
@@ -7,7 +10,7 @@ local unpack = unpack
 
 -- SatrinaBuffFrame 3.1.20
 
-local function LoadSkin()
+S:AddCallbackForAddon("SatrinaBuffFrame", "SatrinaBuffFrame", function()
 	if not E.private.addOnSkins.SatrinaBuffFrame then return end
 
 	local SBF = LibStub("AceAddon-3.0"):GetAddon("SBF", true)
@@ -81,6 +84,4 @@ local function LoadSkin()
 		skinBar(element)
 		return element
 	end)
-end
-
-S:AddCallbackForAddon("SatrinaBuffFrame", "SatrinaBuffFrame", LoadSkin)
+end)

@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("FishingBuddy") then return end
 
 local find = string.find
 
 -- FishingBuddy 0.9.8 p1
 -- https://www.curseforge.com/wow/addons/fishingbuddy/files/442409
 
-local function LoadSkin()
+S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 	if not E.private.addOnSkins.FishingBuddy then return end
 
 	FishingBuddyFrame:CreateBackdrop("Transparent")
@@ -120,6 +123,4 @@ local function LoadSkin()
 	FishingWatchTab.backdrop:Point("TOPLEFT", 4, -11)
 	FishingWatchTab.backdrop:Point("BOTTOMRIGHT", -2, 0)
 	FishingWatchTab:DisableDrawLayer("BACKGROUND")
-end
-
-S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", LoadSkin)
+end)

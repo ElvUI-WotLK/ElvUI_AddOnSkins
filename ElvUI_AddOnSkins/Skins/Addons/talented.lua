@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Talented") then return end
 
 -- Talented r660
 
-local function LoadSkin()
+S:AddCallbackForAddon("Talented", "Talented", function()
 	if not E.private.addOnSkins.Talented then return end
 
 	local function SkinButton(button)
@@ -109,9 +112,9 @@ local function LoadSkin()
 	end)
 
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-end
+end)
 
-local function LoadGlyphSkin()
+S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
 	if not E.private.addOnSkins.Talented then return end
 
 	TalentedGlyphs:Size(350, 420)
@@ -157,7 +160,4 @@ local function LoadGlyphSkin()
 	S:HandleCheckBox(TalentedGlyphs.checkbox)
 	TalentedGlyphs.checkbox:ClearAllPoints()
 	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", TalentedGlyphs, 10, 5)
-end
-
-S:AddCallbackForAddon("Talented", "Talented", LoadSkin)
-S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", LoadGlyphSkin)
+end)

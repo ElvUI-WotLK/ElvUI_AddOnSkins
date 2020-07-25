@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("PAB") then return end
 
 -- Party Ability Bars r7
 -- https://www.wowace.com/projects/pab/files/353353
 
-local function LoadSkin()
+S:AddCallbackForAddon("PAB", "PAB", function()
 	if not E.private.addOnSkins.PAB then return end
 
 	if not PAB then return end
@@ -96,6 +99,4 @@ local function LoadSkin()
 			end
 		end
 	end
-end
-
-S:AddCallbackForAddon("PAB", "PAB", LoadSkin)
+end)

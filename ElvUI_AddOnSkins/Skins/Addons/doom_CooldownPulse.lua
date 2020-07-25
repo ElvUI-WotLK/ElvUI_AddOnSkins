@@ -1,13 +1,16 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Doom_CooldownPulse") then return end
 
 -- Doom_CooldownPulse 1.2.3
 -- https://www.curseforge.com/wow/addons/doomcooldownpulse/files/400638
 
-local function LoadSkin()
+S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", function()
 	if not E.private.addOnSkins.Doom_CooldownPulse then return end
 
-	local frame = E:GetModule("AddOnSkins"):FindFrameByPoint("CENTER", UIParent, "BOTTOMLEFT", DCP_Saved.x, DCP_Saved.y)
+	local frame = AS:FindFrameByPoint("CENTER", UIParent, "BOTTOMLEFT", DCP_Saved.x, DCP_Saved.y)
 	if not frame then return end
 
 	Doom_CooldownPulse = frame
@@ -47,6 +50,4 @@ local function LoadSkin()
 		S:HandleButton(DCP_OptionsFrameButton3)
 		S:HandleButton(DCP_OptionsFrameButton4)
 	end)
-end
-
-S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", LoadSkin)
+end)

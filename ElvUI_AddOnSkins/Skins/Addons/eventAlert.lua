@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("EventAlert") then return end
 
 local _G = _G
 
 -- EventAlert 4.3.6
 -- https://www.curseforge.com/wow/addons/event-alert/files/456081
 
-local function LoadSkin()
+S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 	if not E.private.addOnSkins.EventAlert then return end
 
 	local function Alart_OnShow(self)
@@ -131,6 +134,4 @@ local function LoadSkin()
 	EA_Version_Frame:SetTemplate("Transparent")
 	EA_Version_Frame_Header:Hide()
 	S:HandleButton(EA_Version_Frame_Okay)
-end
-
-S:AddCallbackForAddon("EventAlert", "EventAlert", LoadSkin)
+end)

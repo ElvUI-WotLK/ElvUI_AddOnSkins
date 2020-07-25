@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Stalker") then return end
 
 -- Stalker 1.2
 -- https://wow.curseforge.com/projects/Stalker/files/442604
 
-local function LoadSkin()
+S:AddCallbackForAddon("Stalker", "Stalker", function()
 	if not E.private.addOnSkins.Stalker then return end
 
 	Stalker_AlertWindow:StripTextures()
@@ -56,6 +59,4 @@ local function LoadSkin()
 			Stalker.MapTooltip:SetTemplate("Transparent")
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Stalker", "Stalker", LoadSkin)
+end)

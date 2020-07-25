@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("EPGP_LootMaster") then return end
 
 local ipairs = ipairs
 local select = select
@@ -11,7 +14,7 @@ local hooksecurefunc = hooksecurefunc
 -- EPGP LootMaster 0.4.9
 -- https://www.curseforge.com/wow/addons/epgp_lootmaster/files/409167
 
-local function LoadSkin()
+S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 	if not E.private.addOnSkins.EPGP_LootMaster then return end
 
 	local EPGPLM = LibStub("AceAddon-3.0"):GetAddon("EPGPLootMaster", true)
@@ -94,9 +97,9 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
+end)
 
-local function LoadMLSkin()
+S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", function()
 	if not E.private.addOnSkins.EPGP_LootMaster then return end
 
 	local LMML = LibStub("AceAddon-3.0"):GetAddon("LootMasterML", true)
@@ -166,7 +169,4 @@ local function LoadMLSkin()
 
 		S:Unhook(LMML, "ShowRaidInfoLookup")
 	end)
-end
-
-S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", LoadSkin)
-S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", LoadMLSkin)
+end)

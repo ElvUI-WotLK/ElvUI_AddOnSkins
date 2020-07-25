@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("CLCRet") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- CLCRet 1.3.03.025
 -- https://www.curseforge.com/wow/addons/clcret/files/439502
 
-local function LoadSkin()
+S:AddCallbackForAddon("CLCRet", "CLCRet", function()
 	if not E.private.addOnSkins.CLCRet then return end
 
 	local function styleButton(button, icon, height, width)
@@ -82,6 +85,4 @@ local function LoadSkin()
 		S:Unhook(self, "InitSwingBar")
 	end)
 
-end
-
-S:AddCallbackForAddon("CLCRet", "CLCRet", LoadSkin)
+end)

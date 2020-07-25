@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("KarniCrap") then return end
 
 local _G = _G
 
 -- KarniCrap 3.02
 -- https://www.curseforge.com/wow/addons/karnicrap/files/416407
 
-local function LoadSkin()
+S:AddCallbackForAddon("KarniCrap", "KarniCrap", function()
 	if not E.private.addOnSkins.KarniCrap then return end
 
 	KarniCrap:StripTextures()
@@ -172,6 +175,4 @@ local function LoadSkin()
 		_G["KarniInvEntry"..i.."_BtnCrap"]:Size(30)
 		S:HandleCloseButton(_G["KarniInvEntry"..i.."_BtnCrap"])
 	end
-end
-
-S:AddCallbackForAddon("KarniCrap", "KarniCrap", LoadSkin)
+end)

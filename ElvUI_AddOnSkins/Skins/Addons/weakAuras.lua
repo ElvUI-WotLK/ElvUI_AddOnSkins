@@ -1,7 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
-local function LoadSkin()
+if not AS:IsAddonLODorEnabled("WeakAuras") then return end
+
+S:AddCallbackForAddon("WeakAuras", "WeakAuras", function()
 	if WeakAuras.IsCorrectVersion then return end
 	if not E.private.addOnSkins.WeakAuras then return end
 
@@ -58,6 +61,4 @@ local function LoadSkin()
 			Skin_WeakAuras(WeakAuras.regions[weakAura].region, WeakAuras.regions[weakAura].regionType)
 		end
 	end
-end
-
-S:AddCallbackForAddon("WeakAuras", "WeakAuras", LoadSkin)
+end)

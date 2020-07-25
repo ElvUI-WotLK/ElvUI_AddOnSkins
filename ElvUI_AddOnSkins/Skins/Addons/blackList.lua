@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("BlackList") then return end
 
 -- Black List 3.3.01
 -- https://www.curseforge.com/wow/addons/black-list-siv0968/files/439842
 
-local function LoadSkin()
+S:AddCallbackForAddon("BlackList", "BlackList", function()
 	if not E.private.addOnSkins.BlackList then return end
 
 	FriendsTabHeaderTab4:StripTextures()
@@ -97,6 +100,4 @@ local function LoadSkin()
 	S:HandleEditBox(BL_RankBox)
 
 	S:HandleButton(BlackListOptionsFrameClose)
-end
-
-S:AddCallbackForAddon("BlackList", "BlackList", LoadSkin)
+end)

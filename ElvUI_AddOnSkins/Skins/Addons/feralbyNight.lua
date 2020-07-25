@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("FeralbyNight") then return end
 
 local _G = _G
 local ipairs = ipairs
@@ -10,7 +13,7 @@ local hooksecurefunc = hooksecurefunc
 -- FeralbyNight 3.321
 -- https://www.curseforge.com/wow/addons/fbn/files/441598
 
-local function LoadSkin()
+S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 	if not E.private.addOnSkins.FeralbyNight then return end
 
 	local function setAlpha(self, alpha)
@@ -123,6 +126,4 @@ local function LoadSkin()
 		hooksecurefunc(frame, "SetScale", setScale)
 		frame:SetScale(frame:GetScale())
 	end
-end
-
-S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", LoadSkin)
+end)

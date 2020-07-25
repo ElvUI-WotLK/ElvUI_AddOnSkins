@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Carbonite") then return end
 
 local pairs = pairs
 local lshift = bit.lshift
 
 -- Carbonite 3.340
 
-local function LoadSkin()
+S:AddCallbackForAddon("Carbonite", "Carbonite", function()
 	if not E.private.addOnSkins.Carbonite then return end
 
 	local function ColorConvert(r, g, b, a)
@@ -85,6 +88,4 @@ local function LoadSkin()
 	end, true)
 
 	Nx.Ski:Set("ElvUI")
-end
-
-S:AddCallbackForAddon("Carbonite", "Carbonite", LoadSkin)
+end)

@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Factionizer") then return end
 
 -- Factionizer 30300.4
 -- https://www.curseforge.com/wow/addons/factionizer/files/419110
 
-local function LoadSkin()
+S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	if not E.private.addOnSkins.Factionizer then return end
 
 	FIZ_OptionsFrame:StripTextures()
@@ -60,6 +63,4 @@ local function LoadSkin()
 	for _, checkbox in ipairs(checkboxes) do
 		S:HandleCheckBox(checkbox)
 	end
-end
-
-S:AddCallbackForAddon("Factionizer", "Factionizer", LoadSkin)
+end)

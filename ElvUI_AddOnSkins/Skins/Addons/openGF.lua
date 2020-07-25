@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("OpenGF") then return end
 
 -- Open Group Finder
 
-local function LoadSkin()
+S:AddCallbackForAddon("OpenGF", "OpenGF", function()
 	if not E.private.addOnSkins.OpenGF then return end
 
 	ogf_OpenGF_MainFrame:StripTextures()
@@ -48,6 +51,4 @@ local function LoadSkin()
 	for i = 1, #OpenGFConfigCheck do
 		S:HandleCheckBox(_G[OpenGFConfigCheck[i]])
 	end
-end
-
-S:AddCallbackForAddon("OpenGF", "OpenGF", LoadSkin)
+end)

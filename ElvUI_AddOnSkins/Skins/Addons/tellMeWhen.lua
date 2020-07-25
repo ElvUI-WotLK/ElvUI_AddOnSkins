@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("TellMeWhen") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- TellMeWhen 1.2.5b1
 -- https://www.curseforge.com/wow/addons/tellmewhen/files/448968
 
-local function LoadSkin()
+S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", function()
 	if not E.private.addOnSkins.TellMeWhen then return end
 
 	TELLMEWHEN_ICONSPACING = E.Border
@@ -87,6 +90,4 @@ local function LoadSkin()
 	else
 		hooksecurefunc("TellMeWhen_Group_Update", GroupUpdate)
 	end
-end
-
-S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", LoadSkin)
+end)

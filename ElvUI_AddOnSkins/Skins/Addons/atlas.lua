@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Atlas") then return end
 
 -- Atlas 1.18.1
 
-local function LoadSkin()
+S:AddCallbackForAddon("Atlas", "Atlas", function()
 	if not E.private.addOnSkins.Atlas then return end
 
 	AtlasFrame:StripTextures()
@@ -60,6 +63,4 @@ local function LoadSkin()
 	S:HandleDropDownBox(AtlasOptionsFrameDropDownCats)
 
 	S:HandleButton(AtlasOptionsFrameResetPosition)
-end
-
-S:AddCallbackForAddon("Atlas", "Atlas", LoadSkin)
+end)

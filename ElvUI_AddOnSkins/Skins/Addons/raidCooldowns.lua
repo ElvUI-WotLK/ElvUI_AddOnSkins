@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("RaidCooldowns") then return end
 
 local ceil = math.ceil
 local format = string.format
@@ -12,7 +15,7 @@ local SendChatMessage = SendChatMessage
 -- RaidCooldowns 3.3.5
 -- https://www.wowace.com/projects/raid-cooldowns/files/441967
 
-local function LoadSkin()
+S:AddCallbackForAddon("RaidCooldowns", "RaidCooldowns", function()
 	if not E.private.addOnSkins.RaidCooldowns then return end
 
 	local RaidCooldowns = LibStub("AceAddon-3.0"):GetAddon("RaidCooldowns", true)
@@ -88,6 +91,4 @@ local function LoadSkin()
 
 		return list
 	end)
-end
-
-S:AddCallbackForAddon("RaidCooldowns", "RaidCooldowns", LoadSkin)
+end)

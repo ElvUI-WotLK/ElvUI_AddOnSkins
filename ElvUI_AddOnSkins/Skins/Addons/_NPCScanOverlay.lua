@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("_NPCScan.Overlay") then return end
 
 -- NPCScan 3.3.5.5
 -- https://www.curseforge.com/wow/addons/npcscan/files/441050
 
-local function LoadSkin()
+S:AddCallbackForAddon("_NPCScan.Overlay", "_NPCScan.Overlay", function()
 	if not E.private.addOnSkins._NPCScanOverlay then return end
 
 	S:HandleCheckBox(_NPCScanOverlayWorldMapToggle)
@@ -25,6 +28,4 @@ local function LoadSkin()
 
 	worldMapKey:ClearAllPoints()
 	worldMapKey:SetPoint("TOPRIGHT")
-end
-
-S:AddCallbackForAddon("_NPCScan.Overlay", "_NPCScan.Overlay", LoadSkin)
+end)

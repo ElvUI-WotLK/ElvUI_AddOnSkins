@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("KHunterTimers") then return end
 
 local _G = _G
 
 -- Kharthus's Hunter Timers 3.2.5
 -- https://www.curseforge.com/wow/addons/kharthuss-hunter-timers/files/423973
 
-local function LoadSkin()
+S:AddCallbackForAddon("KHunterTimers", "KHunterTimers", function()
 	if not E.private.addOnSkins.KHunterTimers then return end
 
 	KHunterTimersAnchor:StripTextures()
@@ -157,6 +160,4 @@ local function LoadSkin()
 		S:HandleTab(_G[frame])
 		_G[frame .. "Text"]:Point("CENTER", 0, 1)
 	end
-end
-
-S:AddCallbackForAddon("KHunterTimers", "KHunterTimers", LoadSkin)
+end)

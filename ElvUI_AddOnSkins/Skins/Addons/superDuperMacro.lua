@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("SuperDuperMacro") then return end
 
 local _G = _G
 
 -- SuperDuperMacro 1.8.3
 -- https://www.wowinterface.com/downloads/getfile.php?id=10496&aid=59782
 
-local function LoadSkin()
+S:AddCallbackForAddon("SuperDuperMacro", "SuperDuperMacro", function()
 	if not E.private.addOnSkins.SuperDuperMacro then return end
 
 	local frames = {
@@ -85,6 +88,4 @@ local function LoadSkin()
 		S:HandleButton(MacroPopupFrame_sdmOkayButton)
 		S:HandleButton(MacroPopupFrame_sdmCancelButton)
 	end)
-end
-
-S:AddCallbackForAddon("SuperDuperMacro", "SuperDuperMacro", LoadSkin)
+end)

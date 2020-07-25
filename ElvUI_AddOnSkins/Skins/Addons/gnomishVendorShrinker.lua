@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("GnomishVendorShrinker") then return end
 
 local unpack = unpack
 
 -- GnomishVendorShrinker 3.3.0.6
 -- https://www.curseforge.com/wow/addons/gnomishvendorshrinker/files/426171
 
-local function LoadSkin()
+S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function()
 	if not E.private.addOnSkins.GnomishVendorShrinker then return end
 
 	if GVSEditBox then
@@ -90,6 +93,4 @@ local function LoadSkin()
 			S:HandleScrollBar(child)
 		end
 	end
-end
-
-S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", LoadSkin)
+end)

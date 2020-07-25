@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("BindPad") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- BindPad 2.2.4
 -- https://www.curseforge.com/wow/addons/bind-pad/files/410752
 
-local function LoadSkin()
+S:AddCallbackForAddon("BindPad", "BindPad", function()
 	if not E.private.addOnSkins.BindPad then return end
 
 	BindPadFrame:StripTextures()
@@ -199,6 +202,4 @@ local function LoadSkin()
 	S:HandleButton(BindPadBindFrameExitButton)
 
 	S:HandleCheckBox(BindPadBindFrameFastTriggerButton)
-end
-
-S:AddCallbackForAddon("BindPad", "BindPad", LoadSkin)
+end)

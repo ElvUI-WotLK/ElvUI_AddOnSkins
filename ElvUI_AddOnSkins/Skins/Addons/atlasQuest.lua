@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("AtlasQuest") then return end
 
 -- AtlasQuest 4.4.3
 -- https://www.curseforge.com/wow/addons/atlas-quest-fan-update/files/442800
 
-local function LoadSkin()
+S:AddCallbackForAddon("AtlasQuest", "AtlasQuest", function()
 	if not E.private.addOnSkins.AtlasQuest then return end
 
 	local buttons = {
@@ -103,6 +106,4 @@ local function LoadSkin()
 			AtlasQuestInsideFrame:Point("TOPLEFT", "AlphaMapFrame", 1, -108)
 		end
 	end
-end
-
-S:AddCallbackForAddon("AtlasQuest", "AtlasQuest", LoadSkin)
+end)

@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("WIM") then return end
 
 -- WIM 3.3.7
 -- https://www.wowace.com/projects/wim-3/files/439176
 
-local function LoadSkin()
+S:AddCallbackForAddon("WIM", "WIM", function()
 	if not E.private.addOnSkins.WIM then return end
 
 	local function formatDetails(window, guild, level, race, class)
@@ -304,6 +307,4 @@ local function LoadSkin()
 		TutorialFrame:StripTextures()
 		TutorialFrame:SetTemplate("Transparent")
 	end)
-end
-
-S:AddCallbackForAddon("WIM", "WIM", LoadSkin)
+end)

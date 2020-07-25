@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Auctionator") then return end
 
 local _G = _G
 local unpack = unpack
@@ -9,7 +12,7 @@ local GetItemIcon = GetItemIcon
 -- Auctionator 2.6.3
 -- https://www.curseforge.com/wow/addons/auctionator/files/426882
 
-local function LoadSkin()
+S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 	if not E.private.addOnSkins.Auctionator then return end
 
 	hooksecurefunc("Atr_SetTextureButton", function(elementName, _, itemlink)
@@ -227,6 +230,4 @@ local function LoadSkin()
 
 		S:Unhook("Atr_OnAuctionHouseShow")
 	end)
-end
-
-S:AddCallbackForAddon("Auctionator", "Auctionator", LoadSkin)
+end)

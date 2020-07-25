@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("GearScore") then return end
 
 local _G = _G
 local unpack = unpack
@@ -9,7 +12,7 @@ local GetItemQualityColor = GetItemQualityColor
 
 -- GearScore 3.1.17
 
-local function LoadSkin()
+S:AddCallbackForAddon("GearScore", "GearScore", function()
 	if not E.private.addOnSkins.GearScore then return end
 
 	GS_DisplayFrame:SetTemplate("Transparent")
@@ -185,6 +188,4 @@ local function LoadSkin()
 	S:HandleCheckBox(GSXWhisperTargetCheck, true)
 	S:HandleCheckBox(GSXWhisperCheck, true)
 	S:HandleCheckBox(GSXChannelCheck, true)
-end
-
-S:AddCallbackForAddon("GearScore", "GearScore", LoadSkin)
+end)

@@ -1,11 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 local TT = E:GetModule("Tooltip")
+
+if not AS:IsAddonLODorEnabled("ChatBar") then return end
 
 local _G = _G
 local abs = math.abs
 
-local function LoadSkin()
+S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 	if not E.private.addOnSkins.ChatBar then return end
 
 	local db = E.db.addOnSkins
@@ -181,6 +184,4 @@ local function LoadSkin()
 	ChatBar_UpdateButtonOrientation()
 
 	TT:HookScript(ChatBarFrameTooltip, "OnShow", "SetStyle")
-end
-
-S:AddCallbackForAddon("ChatBar", "ChatBar", LoadSkin)
+end)

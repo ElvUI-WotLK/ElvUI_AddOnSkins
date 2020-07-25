@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("ChocolateBar") then return end
 
 -- ChocolateBar r109
 -- https://www.curseforge.com/wow/addons/chocolatebar/files/445816
 
-local function LoadSkin()
+S:AddCallbackForAddon("ChocolateBar", "ChocolateBar", function()
 	if not E.private.addOnSkins.ChocolateBar then return end
 
 	local frame
@@ -18,6 +21,4 @@ local function LoadSkin()
 	if RaidUtility_ShowButton then
 		RaidUtility_ShowButton:SetFrameStrata("TOOLTIP")
 	end
-end
-
-S:AddCallbackForAddon("ChocolateBar", "ChocolateBar", LoadSkin)
+end)

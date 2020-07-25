@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("DBM-Core") then return end
 
 local _G = _G
 local unpack = unpack
@@ -11,7 +14,7 @@ local hooksecurefunc = hooksecurefunc
 -- Deadly Boss Mods 4.52 r4442
 -- https://www.curseforge.com/wow/addons/deadly-boss-mods/files/447605
 
-local function LoadSkin()
+S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	if not E.private.addOnSkins.DBM then return end
 
 	local function createIconOverlay(id, parent)
@@ -292,9 +295,9 @@ local function LoadSkin()
 
 		return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
 	end, true)
-end
+end)
 
-local function LoadOptionsSkin()
+S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 	if not E.private.addOnSkins.DBM then return end
 
 	DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
@@ -312,7 +315,4 @@ local function LoadOptionsSkin()
 
 	S:HandleTab(DBM_GUI_OptionsFrameTab1)
 	S:HandleTab(DBM_GUI_OptionsFrameTab2)
-end
-
-S:AddCallbackForAddon("DBM-Core", "DBM-Core", LoadSkin)
-S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", LoadOptionsSkin)
+end)

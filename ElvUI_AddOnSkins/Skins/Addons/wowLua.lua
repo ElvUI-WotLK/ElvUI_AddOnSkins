@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("WowLua") then return end
 
 -- WowLua r40
 -- https://www.curseforge.com/wow/addons/wowlua/files/448825
 
-local function LoadSkin()
+S:AddCallbackForAddon("WowLua", "WowLua", function()
 	if not E.private.addOnSkins.WowLua then return end
 
 	WowLuaFrame:StripTextures()
@@ -82,6 +85,4 @@ local function LoadSkin()
 	hooksecurefunc(WowLua, "UpdateLineNums", function()
 		WowLuaFrameLineNumScrollFrame:Point("TOPLEFT", 8, -57)
 	end)
-end
-
-S:AddCallbackForAddon("WowLua", "WowLua", LoadSkin)
+end)

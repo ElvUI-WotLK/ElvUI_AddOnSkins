@@ -1,11 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("LightHeaded") then return end
 
 local cos, pi = math.cos, math.pi
 
 -- LightHeaded r310
 
-local function LoadSkin()
+S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 	if not E.private.addOnSkins.LightHeaded then return end
 
 	LightHeadedFrame:StripTextures()
@@ -131,6 +134,4 @@ local function LoadSkin()
 	end)
 
 	LightHeaded.ChangeBGAlpha = E.noop
-end
-
-S:AddCallbackForAddon("LightHeaded", "LightHeaded", LoadSkin)
+end)

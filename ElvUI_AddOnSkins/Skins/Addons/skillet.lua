@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Skillet") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- Skillet r167
 -- https://www.wowace.com/projects/skillet/files/438510
 
-local function LoadSkin()
+S:AddCallbackForAddon("Skillet", "Skillet", function()
 	if not E.private.addOnSkins.Skillet then return end
 
 	S:HandleCloseButton(SkilletFrameCloseButton)
@@ -78,6 +81,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Skillet", "Skillet", LoadSkin)
+end)

@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Clique") then return end
 
 local _G = _G
 local unpack = unpack
@@ -9,7 +12,7 @@ local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 -- Clique r139
 -- https://www.curseforge.com/wow/addons/clique/files/466948
 
-local function LoadSkin()
+S:AddCallbackForAddon("Clique", "Clique", function()
 	if not E.private.addOnSkins.Clique then return end
 
 	CliquePulloutTab:StyleButton(nil, true)
@@ -189,6 +192,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Clique", "Clique", LoadSkin)
+end)

@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("VanasKoS") then return end
 
 -- Vanas KoS 4.25
 -- https://www.curseforge.com/wow/addons/vanaskos/files/457856
 
-local function LoadSkin()
+S:AddCallbackForAddon("VanasKoS", "VanasKoS", function()
 	if not E.private.addOnSkins.VanasKoS then return end
 
 	VanasKoS_WarnFrame:SetTemplate("Transparent", nil, true)
@@ -65,6 +68,4 @@ local function LoadSkin()
 	VanasKoSPvPStatsCharacterDropDown:SetPoint("RIGHT", VanasKoSListFrameToggleLeftButton, "LEFT", 6, -4)
 	S:HandleDropDownBox(VanasKoSPvPStatsTimeSpanDropDown, 90)
 	VanasKoSPvPStatsTimeSpanDropDown:SetPoint("RIGHT", VanasKoSPvPStatsCharacterDropDown, "LEFT", 26, 0)
-end
-
-S:AddCallbackForAddon("VanasKoS", "VanasKoS", LoadSkin)
+end)

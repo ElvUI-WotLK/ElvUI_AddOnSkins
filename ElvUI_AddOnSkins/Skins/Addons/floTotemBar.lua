@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("FloTotemBar") then return end
 
 -- FloTotemBar 3.3.0.16
 -- https://www.curseforge.com/wow/addons/flo-totem-bar/files/399321
 
-local function LoadSkin()
+S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", function()
 	if not E.private.addOnSkins.FloTotemBar then return end
 
 	local AB = E:GetModule("ActionBars")
@@ -51,6 +54,4 @@ local function LoadSkin()
 	function FloLib_ShowBorders(self)
 		self:SetTemplate("Transparent")
 	end
-end
-
-S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", LoadSkin)
+end)

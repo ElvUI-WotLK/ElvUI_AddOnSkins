@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("ArkInventory") then return end
 
 local _G = _G
 local ipairs = ipairs
@@ -9,7 +12,7 @@ local format = string.format
 -- ArkInventory 3.02.54
 -- https://www.wowace.com/projects/ark-inventory/files/458795
 
-local function LoadSkin()
+S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 	if not E.private.addOnSkins.ArkInventory then return end
 
 	local function skinIcon(frame)
@@ -203,10 +206,10 @@ local function LoadSkin()
 	S:HandleEditBox(ARKINV_SearchFrameViewSearchFilter)
 	S:HandleScrollBar(ARKINV_SearchFrameViewTableScrollScrollBar)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("ArkDewdrop-3.0")
-end
+	AS:SkinLibrary("ArkDewdrop-3.0")
+end)
 
-local function LoadRulesSkin()
+S:AddCallbackForAddon("ArkInventoryRules", "ArkInventoryRules", function()
 	if not E.private.addOnSkins.ArkInventory then return end
 
 	ArkInventoryRules.Frame_Rules_Paint_Border = E.noop
@@ -252,7 +255,4 @@ local function LoadRulesSkin()
 
 	S:HandleButton(ARKINV_RulesFrameModifyMenuOk)
 	S:HandleButton(ARKINV_RulesFrameModifyMenuCancel)
-end
-
-S:AddCallbackForAddon("ArkInventory", "ArkInventory", LoadSkin)
-S:AddCallbackForAddon("ArkInventoryRules", "ArkInventoryRules", LoadRulesSkin)
+end)

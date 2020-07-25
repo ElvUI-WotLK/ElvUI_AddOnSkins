@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("SexyCooldown") then return end
 
 local unpack = unpack
 
 -- SexyCooldown 0.6.18
 -- https://www.wowace.com/projects/sexycooldown/files/424497
 
-local function LoadSkin()
+S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", function()
 	if not E.private.addOnSkins.SexyCooldown then return end
 
 	local function SkinSexyCooldownIcon(_, icon)
@@ -42,6 +45,4 @@ local function LoadSkin()
 			bar:UpdateBarLook()
 		end
 	end)
-end
-
-S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", LoadSkin)
+end)

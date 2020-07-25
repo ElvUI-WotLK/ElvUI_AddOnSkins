@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Poisoner") then return end
 
 local _G = _G
 local pairs = pairs
@@ -7,7 +10,7 @@ local pairs = pairs
 -- Poisoner 3.01
 -- https://www.curseforge.com/wow/addons/poisoner/files/301731
 
-local function LoadSkin()
+S:AddCallbackForAddon("Poisoner", "Poisoner", function()
 	if not E.private.addOnSkins.Poisoner then return end
 
 	local function skinButton(button)
@@ -38,6 +41,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("Poisoner", "Poisoner", LoadSkin)
+end)

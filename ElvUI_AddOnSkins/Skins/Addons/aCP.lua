@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("ACP") then return end
 
 local _G = _G
 
 -- Addon Control Panel 3.3.7
 -- https://www.curseforge.com/wow/addons/acp/files/453071
 
-local function LoadSkin()
+S:AddCallbackForAddon("ACP", "ACP", function()
 	if not E.private.addOnSkins.ACP then return end
 
 	S:HandleButton(GameMenuButtonAddOns)
@@ -84,6 +87,4 @@ local function LoadSkin()
 
 		S:HandleButton(_G["ACP_AddonListEntry" .. i .. "LoadNow"])
 	end
-end
-
-S:AddCallbackForAddon("ACP", "ACP", LoadSkin)
+end)

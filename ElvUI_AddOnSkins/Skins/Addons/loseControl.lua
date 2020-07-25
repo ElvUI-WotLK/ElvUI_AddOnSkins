@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("LoseControl") then return end
 
 local _G = _G
 local unpack = unpack
@@ -9,7 +12,7 @@ local hooksecurefunc = hooksecurefunc
 -- LoseControl 3.33
 -- https://www.curseforge.com/wow/addons/losecontrol/files/417954
 
-local function LoadSkin()
+S:AddCallbackForAddon("LoseControl", "LoseControl", function()
 	if not E.private.addOnSkins.LoseControl then return end
 
 	local framePrefix = "LoseControl"
@@ -60,6 +63,4 @@ local function LoadSkin()
 	hooksecurefunc(LoseControl, "new", function(_, unitID)
 		skinIcon(_G[framePrefix..unitID])
 	end)
-end
-
-S:AddCallbackForAddon("LoseControl", "LoseControl", LoadSkin)
+end)

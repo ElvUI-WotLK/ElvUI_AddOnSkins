@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Omen") then return end
 
 -- Omen 3.0.9
 -- https://www.wowace.com/projects/omen-threat-meter/files/404746
 
-local function LoadSkin()
+S:AddCallbackForAddon("Omen", "Omen", function()
 	if not E.private.addOnSkins.Omen then return end
 
 	hooksecurefunc(Omen, "UpdateBars", function(self)
@@ -31,6 +34,4 @@ local function LoadSkin()
 	hooksecurefunc(Omen, "UpdateBackdrop", function(self)
 		self:UpdateTitleBar()
 	end)
-end
-
-S:AddCallbackForAddon("Omen", "Omen", LoadSkin)
+end)

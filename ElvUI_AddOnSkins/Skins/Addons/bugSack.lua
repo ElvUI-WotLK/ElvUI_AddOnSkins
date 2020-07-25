@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("BugSack") then return end
 
 -- BugSack r229
 -- https://www.curseforge.com/wow/addons/bugsack/files/448833
 
-local function LoadSkin()
+S:AddCallbackForAddon("BugSack", "BugSack", function()
 	if not E.private.addOnSkins.BugSack then return end
 
 	S:SecureHook(BugSack, "OpenSack", function()
@@ -36,6 +39,4 @@ local function LoadSkin()
 
 		S:Unhook(BugSack, "OpenSack")
 	end)
-end
-
-S:AddCallbackForAddon("BugSack", "BugSack", LoadSkin)
+end)

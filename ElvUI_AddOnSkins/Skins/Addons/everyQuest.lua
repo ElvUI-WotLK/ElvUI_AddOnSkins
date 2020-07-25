@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("EveryQuest") then return end
 
 -- EveryQuest r162
 -- https://www.wowace.com/projects/everyquest/files/459624
 
-local function LoadSkin()
+S:AddCallbackForAddon("EveryQuest", "EveryQuest", function()
 	if not E.private.addOnSkins.EveryQuest then return end
 
 	local addon = LibStub("AceAddon-3.0"):GetAddon("EveryQuest", true)
@@ -56,6 +59,4 @@ local function LoadSkin()
 			EveryQuestFrame:Point("TOPLEFT", QuestLogFrame, "TOPRIGHT", -2, -12)
 		end
 	end)
-end
-
-S:AddCallbackForAddon("EveryQuest", "EveryQuest", LoadSkin)
+end)

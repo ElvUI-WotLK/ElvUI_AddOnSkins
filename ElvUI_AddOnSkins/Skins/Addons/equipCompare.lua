@@ -1,16 +1,17 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("EquipCompare") then return end
 
 -- EquipCompare 2.17
 -- https://www.wowinterface.com/downloads/getfile.php?id=4392&aid=46750
 
-local function LoadSkin()
+S:AddCallbackForAddon("EquipCompare", "EquipCompare", function()
 	if not E.private.addOnSkins.EquipCompare then return end
 
 	local TT = E:GetModule("Tooltip")
 
 	TT:HookScript(ComparisonTooltip1, "OnShow", "SetStyle")
 	TT:HookScript(ComparisonTooltip2, "OnShow", "SetStyle")
-end
-
-S:AddCallbackForAddon("EquipCompare", "EquipCompare", LoadSkin)
+end)

@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("TinyPad") then return end
 
 -- TinyPad 1.6.2
 
-local function LoadSkin()
+S:AddCallbackForAddon("TinyPad", "TinyPad", function()
 	if not E.private.addOnSkins.TinyPad then return end
 
 --[[
@@ -41,6 +44,4 @@ local function LoadSkin()
 	S:HandleScrollBar(TinyPadEditScrollFrameScrollBar)
 
 	S:HandleEditBox(TinyPadSearchEditBox)
-end
-
-S:AddCallbackForAddon("TinyPad", "TinyPad", LoadSkin)
+end)

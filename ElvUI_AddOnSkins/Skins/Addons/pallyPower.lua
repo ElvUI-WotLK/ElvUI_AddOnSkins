@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("PallyPower") then return end
 
 local unpack = unpack
 
 -- PallyPower 3.2.20
 -- https://www.curseforge.com/wow/addons/pally-power/files/446442
 
-local function LoadSkin()
+S:AddCallbackForAddon("PallyPower", "PallyPower", function()
 	if not E.private.addOnSkins.PallyPower then return end
 
 	PallyPower.ApplySkin = E.noop
@@ -88,6 +91,4 @@ local function LoadSkin()
 
 	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-end
-
-S:AddCallbackForAddon("PallyPower", "PallyPower", LoadSkin)
+end)

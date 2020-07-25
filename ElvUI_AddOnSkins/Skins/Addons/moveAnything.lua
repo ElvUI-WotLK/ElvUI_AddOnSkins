@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("MoveAnything") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- MoveAnything 3.3.5-10
 -- https://www.curseforge.com/wow/addons/move-anything/files/434496
 
-local function LoadSkin()
+S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 	if not E.private.addOnSkins.MoveAnything then return end
 
 	local SPACING = 1 + (E.Spacing * 2)
@@ -75,6 +78,4 @@ local function LoadSkin()
 	S:HandleButton(MANudger_MoverMinus)
 
 	S:HandleButton(GameMenuButtonMoveAnything)
-end
-
-S:AddCallbackForAddon("MoveAnything", "MoveAnything", LoadSkin)
+end)

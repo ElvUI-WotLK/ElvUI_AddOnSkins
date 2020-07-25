@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("TradeskillInfoUI") then return end
 
 local _G = _G
 local unpack = unpack
@@ -10,7 +13,7 @@ local hooksecurefunc = hooksecurefunc
 -- TradeskillInfo r365
 -- https://www.wowace.com/projects/tradeskill-info/files/449625
 
-local function LoadSkin()
+S:AddCallbackForAddon("TradeskillInfoUI", "TradeskillInfoUI", function()
 	if not E.private.addOnSkins.TradeskillInfo then return end
 
 	TradeskillInfoFrame:SetTemplate("Transparent")
@@ -106,6 +109,4 @@ local function LoadSkin()
 			end
 		end
 	end)
-end
-
-S:AddCallbackForAddon("TradeskillInfoUI", "TradeskillInfoUI", LoadSkin)
+end)

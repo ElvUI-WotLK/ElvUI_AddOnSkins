@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("TotemTimers") then return end
 
 local _G = _G
 local unpack = unpack
@@ -7,7 +10,7 @@ local unpack = unpack
 -- TotemTimers 10.2.4
 -- https://www.curseforge.com/wow/addons/totemtimers/files/454307
 
-local function LoadSkin()
+S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 	if not E.private.addOnSkins.TotemTimers then return end
 
 	local SLOT_EMPTY_TCOORDS = {
@@ -93,6 +96,4 @@ local function LoadSkin()
 			self.timerbars[nr].background:SetTemplate("Default")
 		end
 	end)
-end
-
-S:AddCallbackForAddon("TotemTimers", "TotemTimers", LoadSkin)
+end)

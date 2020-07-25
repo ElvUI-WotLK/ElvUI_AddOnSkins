@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("AckisRecipeList") then return end
 
 local ipairs = ipairs
 local select = select
@@ -11,7 +14,7 @@ local hooksecurefunc = hooksecurefunc
 -- AckisRecipeList 2.01.14
 -- https://www.curseforge.com/wow/addons/arl/files/458020
 
-local function LoadSkin()
+S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 	if not E.private.addOnSkins.AckisRecipeList then return end
 
 	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
@@ -368,6 +371,4 @@ local function LoadSkin()
 			break
 		end
 	end
-end
-
-S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", LoadSkin)
+end)

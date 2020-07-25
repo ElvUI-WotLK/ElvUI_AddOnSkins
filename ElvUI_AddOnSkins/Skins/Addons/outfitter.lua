@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Outfitter") then return end
 
 local _G = _G
 local pairs, ipairs = pairs, ipairs
@@ -7,7 +10,7 @@ local pairs, ipairs = pairs, ipairs
 -- Outfitter 5.0
 -- https://www.wowinterface.com/downloads/getfile.php?id=5467&aid=47018
 
-local function LoadSkin()
+S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 	if not E.private.addOnSkins.Outfitter then return end
 
 	local function skinTab(frame)
@@ -202,6 +205,4 @@ local function LoadSkin()
 		S:HandleCheckBox(self.LockPositionCheckbutton)
 		S:HandleCheckBox(self.HideBackgroundCheckbutton)
 	end)
-end
-
-S:AddCallbackForAddon("Outfitter", "Outfitter", LoadSkin)
+end)

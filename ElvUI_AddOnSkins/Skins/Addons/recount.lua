@@ -1,13 +1,16 @@
 local E, L, V, P, G = unpack(ElvUI)
-local AS = E:GetModule("AddOnSkins")
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("Recount") then return end
+
 
 local _G = _G
 
 -- Recount 4.0.1
 -- https://www.wowace.com/projects/recount/files/458517
 
-local function LoadSkin()
+S:AddCallbackForAddon("Recount", "Recount", function()
 	if not E.private.addOnSkins.Recount then return end
 
 	local function skinFrame(frame)
@@ -138,6 +141,4 @@ local function LoadSkin()
 	function Recount:ShowReset()
 		AS:AcceptFrame(RecountLocale["Reset Recount?"], resetData)
 	end
-end
-
-S:AddCallbackForAddon("Recount", "Recount", LoadSkin)
+end)

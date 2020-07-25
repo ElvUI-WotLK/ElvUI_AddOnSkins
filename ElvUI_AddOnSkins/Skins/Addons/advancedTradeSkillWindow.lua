@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("AdvancedTradeSkillWindow") then return end
 
 local _G = _G
 local ipairs = ipairs
@@ -10,7 +13,7 @@ local hooksecurefunc = hooksecurefunc
 -- AdvancedTradeSkillWindow 0.7.8
 -- https://www.curseforge.com/wow/addons/advanced-trade-skill-window/files/400569
 
-local function LoadSkin()
+S:AddCallbackForAddon("AdvancedTradeSkillWindow", "AdvancedTradeSkillWindow", function()
 	if not E.private.addOnSkins.AdvancedTradeSkillWindow then return end
 
 	local scrollBars = {
@@ -330,6 +333,4 @@ local function LoadSkin()
 
 		ChatFrameEditBox:Insert(GetTradeSkillListLink())
 	end)
-end
-
-S:AddCallbackForAddon("AdvancedTradeSkillWindow", "AdvancedTradeSkillWindow", LoadSkin)
+end)

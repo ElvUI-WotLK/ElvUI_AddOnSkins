@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("TipTac") then return end
 
 -- TipTac 10.05.01
 -- https://www.curseforge.com/wow/addons/tip-tac/files/427096
 
-local function LoadSkin()
+S:AddCallbackForAddon("TipTac", "TipTac", function()
 	if not E.private.addOnSkins.TipTac then return end
 
 	if not TipTac_Config then TipTac_Config = {} end
@@ -91,9 +94,9 @@ local function LoadSkin()
 
 		S:SecureHook("GameTooltip_ShowStatusBar", GameTooltip_ShowStatusBar_Skinned)
 	end
-end
+end)
 
-local function LoadSkin_Options()
+S:AddCallbackForAddon("TipTacOptions", "TipTacOptions", function()
 	if not E.private.addOnSkins.TipTac then return end
 
 	TipTacOptions:StripTextures()
@@ -121,7 +124,4 @@ local function LoadSkin_Options()
 			end
 		end)
 	end
-end
-
-S:AddCallbackForAddon("TipTac", "TipTac", LoadSkin)
-S:AddCallbackForAddon("TipTacOptions", "TipTacOptions", LoadSkin_Options)
+end)

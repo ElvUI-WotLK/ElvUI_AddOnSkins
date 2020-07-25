@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+if not AS:IsAddonLODorEnabled("BigWigs_Plugins") then return end
 
 -- BigWigs r7558
 -- https://www.curseforge.com/wow/addons/big-wigs/files/458195
 
-local function LoadSkin()
+S:AddCallbackForAddon("BigWigs_Plugins", "BigWigs_Plugins", function()
 	if not E.private.addOnSkins.BigWigs then return end
 
 	local db = E.db.addOnSkins
@@ -57,6 +60,4 @@ local function LoadSkin()
 			SetScale(bar)
 		end
 	end)
-end
-
-S:AddCallbackForAddon("BigWigs_Plugins", "BigWigs_Plugins", LoadSkin)
+end)

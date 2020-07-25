@@ -1,7 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
-local function LoadSkin()
+if not AS:IsAddonLODorEnabled("ZygorGuidesViewer") then return end
+
+S:AddCallbackForAddon("ZygorGuidesViewer", "ZygorGuidesViewer", function()
 	if not E.private.addOnSkins.ZygorGuidesViewer then return end
 
 	ZygorGuidesViewerFrame_Border:StripTextures()
@@ -11,6 +14,4 @@ local function LoadSkin()
 	for i = 1, 6 do
 		_G["ZygorGuidesViewerFrame_Step" .. i]:CreateBackdrop("Transparent")
 	end
-end
-
-S:AddCallbackForAddon("ZygorGuidesViewer", "ZygorGuidesViewer", LoadSkin)
+end)
