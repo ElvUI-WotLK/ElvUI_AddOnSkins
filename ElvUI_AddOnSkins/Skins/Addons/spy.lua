@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
-if not AS:IsAddonLODorEnabled("Stalker") then return end
+if not AS:IsAddonLODorEnabled("Spy") then return end
 
 local _G = _G
 
