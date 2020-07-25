@@ -14,7 +14,7 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	if not E.private.addOnSkins.AtlasLoot then return end
 
 	AtlasLootTooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent", nil, true) --ignore updates
+		self:SetTemplate("Transparent", nil, true)
 
 		local r, g, b = self:GetBackdropColor()
 		self:SetBackdropColor(r, g, b, E.db.tooltip.colorAlpha)
@@ -31,31 +31,45 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	AtlasLootDefaultFrame:StripTextures()
 	AtlasLootDefaultFrame:SetTemplate("Transparent")
 
-	S:HandleCloseButton(AtlasLootDefaultFrame_CloseButton)
-	S:HandleButton(AtlasLootDefaultFrame_LoadModules)
+	S:HandleCloseButton(AtlasLootDefaultFrame_CloseButton, AtlasLootDefaultFrame)
+
 	S:HandleButton(AtlasLootDefaultFrame_Options)
+	S:HandleButton(AtlasLootDefaultFrame_LoadModules)
 	S:HandleButton(AtlasLootDefaultFrame_Menu)
 	S:HandleButton(AtlasLootDefaultFrame_SubMenu)
-	AtlasLootDefaultFrame_LootBackground:SetTemplate("Default", nil, true)
-	AtlasLootDefaultFrame_LootBackground_Back:SetTexture(0, 0, 0, 0)
+
+	AtlasLootDefaultFrame_LootBackground_Back:SetTexture()
+	AtlasLootDefaultFrame_LootBackground:SetTemplate("Transparent")
+
 	S:HandleButton(AtlasLootDefaultFrame_Preset1)
 	S:HandleButton(AtlasLootDefaultFrame_Preset2)
 	S:HandleButton(AtlasLootDefaultFrame_Preset3)
 	S:HandleButton(AtlasLootDefaultFrame_Preset4)
-	S:HandleEditBox(AtlasLootDefaultFrameSearchBox)
-	AtlasLootDefaultFrameSearchBox:Point("BOTTOM", AtlasLootDefaultFrame, "BOTTOM", -78, 30)
-	AtlasLootDefaultFrameSearchBox:Height(22)
-	S:HandleButton(AtlasLootDefaultFrameSearchButton)
-	AtlasLootDefaultFrameSearchButton:Point("LEFT", AtlasLootDefaultFrameSearchBox, "RIGHT", 3, 0)
-	S:HandleNextPrevButton(AtlasLootDefaultFrameSearchOptionsButton)
-	AtlasLootDefaultFrameSearchOptionsButton:Point("LEFT", AtlasLootDefaultFrameSearchButton, "RIGHT", 2, 0)
-	AtlasLootDefaultFrameSearchOptionsButton:SetSize(24, 24)
-	S:HandleButton(AtlasLootDefaultFrameSearchClearButton)
-	AtlasLootDefaultFrameSearchClearButton:Point("LEFT", AtlasLootDefaultFrameSearchOptionsButton, "RIGHT", 2, 0)
-	S:HandleButton(AtlasLootDefaultFrameLastResultButton)
-	AtlasLootDefaultFrameLastResultButton:Point("LEFT", AtlasLootDefaultFrameSearchClearButton, "RIGHT", 2, 0)
+
 	S:HandleButton(AtlasLootDefaultFrameWishListButton)
-	AtlasLootDefaultFrameWishListButton:Point("RIGHT", AtlasLootDefaultFrameSearchBox, "LEFT", -2, 0)
+	S:HandleEditBox(AtlasLootDefaultFrameSearchBox)
+	S:HandleButton(AtlasLootDefaultFrameSearchButton)
+	S:HandleNextPrevButton(AtlasLootDefaultFrameSearchOptionsButton)
+	S:HandleButton(AtlasLootDefaultFrameSearchClearButton)
+	S:HandleButton(AtlasLootDefaultFrameLastResultButton)
+
+	AtlasLootDefaultFrame_Options:Point("TOPLEFT", 43, -11)
+	AtlasLootDefaultFrame_LoadModules:Point("TOPRIGHT", -42, -11)
+
+	AtlasLootDefaultFrame_Preset1:Point("BOTTOMLEFT", 83, 59)
+
+	AtlasLootDefaultFrameSearchBox:Height(22)
+	AtlasLootDefaultFrameSearchBox:Point("BOTTOM", AtlasLootDefaultFrame, "BOTTOM", -83, 29)
+
+	AtlasLootDefaultFrameSearchButton:Point("LEFT", AtlasLootDefaultFrameSearchBox, "RIGHT", 6, 0)
+
+	AtlasLootDefaultFrameSearchOptionsButton:Size(24)
+	AtlasLootDefaultFrameSearchOptionsButton:Point("LEFT", AtlasLootDefaultFrameSearchButton, "RIGHT", 5, 0)
+	AtlasLootDefaultFrameSearchClearButton:Point("LEFT", AtlasLootDefaultFrameSearchOptionsButton, "RIGHT", 5, 0)
+	AtlasLootDefaultFrameLastResultButton:Point("LEFT", AtlasLootDefaultFrameSearchClearButton, "RIGHT", 5, 0)
+	AtlasLootDefaultFrameWishListButton:Point("RIGHT", AtlasLootDefaultFrameSearchBox, "LEFT", -6, 0)
+
+	AtlasLootDefaultFrame_Notice:Point("BOTTOM", 0, 9)
 
 	S:HandleCloseButton(AtlasLootItemsFrame_CloseButton)
 
@@ -72,15 +86,30 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	end
 
 	S:HandleButton(AtlasLoot10Man25ManSwitch)
-	S:HandleCheckBox(AtlasLootItemsFrame_Heroic)
-	S:HandleButton(AtlasLootItemsFrame_BACK)
-	S:HandleNextPrevButton(AtlasLootItemsFrame_NEXT)
 	S:HandleButton(AtlasLootServerQueryButton)
-	S:HandleNextPrevButton(AtlasLootQuickLooksButton)
+	S:HandleCheckBox(AtlasLootItemsFrame_Heroic)
 	S:HandleCheckBox(AtlasLootFilterCheck)
+	S:HandleButton(AtlasLootItemsFrame_BACK)
+	S:HandleNextPrevButton(AtlasLootQuickLooksButton)
 	S:HandleNextPrevButton(AtlasLootItemsFrame_PREV)
+	S:HandleNextPrevButton(AtlasLootItemsFrame_NEXT)
 
-	AtlasLootItemsFrame_Back:SetTexture(0, 0, 0, 0)
+	AtlasLootItemsFrame_Back:SetTexture()
+
+	AtlasLoot10Man25ManSwitch:Height(24)
+	AtlasLootServerQueryButton:Height(24)
+	AtlasLootItemsFrame_BACK:Height(24)
+
+	AtlasLoot10Man25ManSwitch:Point("BOTTOM", -130, 3)
+	AtlasLootServerQueryButton:Point("BOTTOM", 131, 3)
+	AtlasLootItemsFrame_BACK:Point("BOTTOM", 0, 3)
+
+	AtlasLootItemsFrame_Heroic:Point("BOTTOM", -185, 28)
+	AtlasLootFilterCheck:Point("BOTTOM", 115, 28)
+	AtlasLootQuickLooksButton:Point("BOTTOM", 58, 32)
+
+	AtlasLootItemsFrame_PREV:Point("BOTTOMLEFT", 7, 6)
+	AtlasLootItemsFrame_NEXT:Point("BOTTOMRIGHT", -6, 6)
 
 	S:HandleCheckBox(AtlasLootOptionsFrameDefaultTT)
 	S:HandleCheckBox(AtlasLootOptionsFrameLootlinkTT)
@@ -141,15 +170,13 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	AtlasLootLastResultButton:Point("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0)
 
 	hooksecurefunc("AtlasLoot_SetupForAtlas", function()
-		AtlasLootPanel:ClearAllPoints()
-		AtlasLootPanel:SetParent(AtlasFrame)
 		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2)
 	end)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
+end)
 
-	if E:GetModule("AddOnSkins"):CheckAddOn("AtlasLootFu") then
-		E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-		E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
-	end
+S:AddCallbackForAddon("AtlasLootFu", "AtlasLootFu", function()
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Tablet-2.0")
 end)
