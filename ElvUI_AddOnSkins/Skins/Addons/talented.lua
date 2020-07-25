@@ -51,8 +51,10 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 
 		S:HandleCheckBox(TalentedFrame.checkbox)
 
-		if E:GetModule("AddOnSkins"):CheckAddOn("Talented_SpecTabs") then
+		if AS:IsAddonEnabled("Talented_SpecTabs") then
 			E:Delay(0.01, SkinTabs)
+		elseif AS:IsAddonLOD("Talented_SpecTabs") then
+			S:AddCallbackForAddon("Talented_SpecTabs", "Talented_SpecTabs", SkinTabs)
 		end
 
 		S:Unhook(Talented, "CreateBaseFrame")
@@ -111,7 +113,7 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 		return tree
 	end)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
 end)
 
 S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
