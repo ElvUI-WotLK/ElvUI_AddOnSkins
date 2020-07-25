@@ -4,7 +4,6 @@ local AS = E:NewModule("AddOnSkins")
 
 local AddOnName = ...
 
-local select = select
 local lower = string.lower
 
 local GetAddOnInfo = GetAddOnInfo

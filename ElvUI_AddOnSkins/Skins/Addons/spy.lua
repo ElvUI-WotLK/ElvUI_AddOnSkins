@@ -74,7 +74,7 @@ S:AddCallbackForAddon("Spy", "Spy", function()
 	hooksecurefunc(Spy, "ResizeMainWindow", function()
 		local CurWidth = Spy.MainWindow:GetWidth() - 2
 		for i, row in pairs(Spy.MainWindow.Rows) do
-			row:SetWidth(CurWidth)	
+			row:SetWidth(CurWidth)
 		end
 	end)
 
