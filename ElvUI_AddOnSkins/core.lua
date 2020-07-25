@@ -107,6 +107,7 @@ local addonList = {
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
+	["AuctioneerSuite"] = "Auc-Advanced",
 	["_NPCScanOverlay"] = "_NPCScan.Overlay",
 }
 
@@ -581,7 +582,7 @@ local function getOptions()
 	end
 
 	if target.WeakAuras then
-		target.WeakAuras.hidden = function() return WeakAuras and WeakAuras.IsCorrectVersion end
+		target.WeakAuras.hidden = WeakAuras and WeakAuras.IsCorrectVersion ~= nil or false
 	end
 
 	E.Options.args.addOnSkins = options
