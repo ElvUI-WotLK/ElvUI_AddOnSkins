@@ -27,7 +27,7 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 		return
 	end
 
-	local GVS = E:GetModule("AddOnSkins"):FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
+	local GVS = AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
 	if not GVS then return end
 
 	GVS:Point("TOPLEFT", 19, -52)

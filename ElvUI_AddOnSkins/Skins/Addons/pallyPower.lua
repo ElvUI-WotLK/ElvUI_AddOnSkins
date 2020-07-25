@@ -89,6 +89,6 @@ S:AddCallbackForAddon("PallyPower", "PallyPower", function()
 		end
 	end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
 end)

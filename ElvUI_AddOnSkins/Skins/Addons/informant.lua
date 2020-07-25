@@ -10,5 +10,5 @@ if not AS:IsAddonLODorEnabled("Informant") then return end
 S:AddCallbackForAddon("Informant", "Informant", function()
 	if not E.private.addOnSkins.Informant then return end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
+	AS:SkinLibrary("Configator")
 end)

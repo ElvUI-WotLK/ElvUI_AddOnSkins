@@ -42,10 +42,10 @@ S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", function()
 		return frame
 	end, true)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("ZFrame-1.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Tablet-2.0")
+	AS:SkinLibrary("ZFrame-1.0")
 end)
 
 S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", function()

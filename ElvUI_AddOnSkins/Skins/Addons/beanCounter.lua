@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("BeanCounter") then return end
 S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 	if not E.private.addOnSkins.BeanCounter then return end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
+	AS:SkinLibrary("Configator")
 
 	local base = BeanCounterBaseFrame
 	if base then

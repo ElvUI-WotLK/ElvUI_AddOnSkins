@@ -14,7 +14,7 @@ local hooksecurefunc = hooksecurefunc
 S:AddCallbackForAddon("Auc-Advanced", "Auc-Advanced", function()
 	if not E.private.addOnSkins.AuctioneerSuite then return end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
+	AS:SkinLibrary("Configator")
 
 	local function skinMoneyFrame(obj)
 		if obj.gold then S:HandleEditBox(obj.gold) end

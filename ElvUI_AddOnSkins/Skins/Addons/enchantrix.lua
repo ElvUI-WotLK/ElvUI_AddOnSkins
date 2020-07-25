@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("Enchantrix") then return end
 S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 	if not E.private.addOnSkins.Enchantrix then return end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Configator")
+	AS:SkinLibrary("Configator")
 
 	S:SecureHook(Enchantrix_Manifest, "ShowMessage", function()
 		Enchantrix_Manifest.messageFrame:SetTemplate("Transparent")
@@ -39,5 +39,5 @@ S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 		end)
 	end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("LibExtraTip-1")
+	AS:SkinLibrary("LibExtraTip-1")
 end)
