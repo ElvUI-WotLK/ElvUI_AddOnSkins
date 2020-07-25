@@ -71,7 +71,7 @@ function EMB:CheckEmbed(addon)
 	local db = E.db.addOnSkins.embed
 	local left, right, embed = lower(db.leftWindow), lower(db.rightWindow), lower(addon)
 
-	if AS:CheckAddOn(addon) and ((db.embedType == "SINGLE" and match(left, embed)) or db.embedType == "DOUBLE" and (match(left, embed) or match(right, embed))) then
+	if AS:IsAddonEnabled(addon) and ((db.embedType == "SINGLE" and match(left, embed)) or db.embedType == "DOUBLE" and (match(left, embed) or match(right, embed))) then
 		return true
 	else
 		return false
@@ -263,7 +263,7 @@ function EMB:EmbedCreate()
 	self:EmbedUpdate()
 end
 
-if AS:CheckAddOn("Recount") then
+if AS:IsAddonLODorEnabled("Recount") then
 	function EMB:EmbedRecount()
 		local parent = self.leftFrame
 		if E.db.addOnSkins.embed.embedType == "DOUBLE" then
@@ -289,7 +289,7 @@ if AS:CheckAddOn("Recount") then
 	end
 end
 
-if AS:CheckAddOn("Omen") then
+if AS:IsAddonLODorEnabled("Omen") then
 	function EMB:EmbedOmen()
 		local parent = self.leftFrame
 		if E.db.addOnSkins.embed.embedType == "DOUBLE" then
@@ -328,7 +328,7 @@ if AS:CheckAddOn("Omen") then
 	end
 end
 
-if AS:CheckAddOn("Skada") then
+if AS:IsAddonLODorEnabled("Skada") then
 	EMB["skadaWindows"] = {}
 
 	local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
@@ -394,7 +394,7 @@ if AS:CheckAddOn("Skada") then
 	end
 end
 
-if AS:CheckAddOn("Details") then
+if AS:IsAddonLODorEnabled("Details") then
 	local Details = _G._details or _G._detalhes
 
 	local numberToEmbed = 0

@@ -8,6 +8,7 @@ local select = select
 local lower = string.lower
 
 local GetAddOnInfo = GetAddOnInfo
+local IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
 
 local addonList = {
 	"Omen",
@@ -119,10 +120,14 @@ do
 
 	for i = 1, GetNumAddOns() do
 		local name, _, _, enabled = GetAddOnInfo(i)
-		AS.addons[lower(name)] = enabled ~= nil
+		local state = (enabled and 1) or (IsAddOnLoadOnDemand(i) and 2)
 
-		if temp[name] then
-			AS.addons[lower(temp[name])] = enabled ~= nil
+		if state then
+			AS.addons[lower(name)] = state
+
+			if temp[name] then
+				AS.addons[lower(temp[name])] = state
+			end
 		end
 	end
 
@@ -131,22 +136,25 @@ do
 	end
 end
 
-function AS:CheckAddOn(addon)
-	return self.addons[lower(addonAlias[addon] or addon)] or false
+function AS:IsAddonEnabled(addon)
+	return self.addons[lower(addonAlias[addon] or addon)] == 1
 end
 
-function AS:IsAddonExist(addon)
+function AS:IsAddonLOD(addon)
+	return self.addons[lower(addonAlias[addon] or addon)] == 2
+end
+
+function AS:IsAddonLODorEnabled(addon)
 	return self.addons[lower(addonAlias[addon] or addon)] ~= nil
 end
 
 function AS:RegisterAddonOption(addonName, options)
-	if select(6, GetAddOnInfo(addonAlias[addonName] or addonName)) == "MISSING" then return end
+	if not self:IsAddonLODorEnabled(addonName) then return end
 
 	options[addonName] = {
 		type = "toggle",
 		name = addonName,
 		desc = L["TOGGLESKIN_DESC"],
-		hidden = function() return not self:CheckAddOn(addonName) end
 	}
 end
 
@@ -213,7 +221,7 @@ local function getOptions()
 							E.db.addOnSkins[info[#info]] = value
 							Skada:ApplySettings()
 						end,
-						disabled = function() return not AS:CheckAddOn("Skada") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("Skada") end,
 						args = {
 							skadaTemplate = {
 								order = 1,
@@ -225,7 +233,7 @@ local function getOptions()
 								order = 2,
 								type = "toggle",
 								name = L["Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTemplate ~= "Default" or not AS:CheckAddOn("Skada") end
+								disabled = function() return E.db.addOnSkins.skadaTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Skada") end
 							},
 							spacer = {
 								order = 3,
@@ -242,7 +250,7 @@ local function getOptions()
 								order = 5,
 								type = "toggle",
 								name = L["Title Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTitleTemplate ~= "Default" or not AS:CheckAddOn("Skada") end
+								disabled = function() return E.db.addOnSkins.skadaTitleTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Skada") end
 							}
 						}
 					},
@@ -257,7 +265,7 @@ local function getOptions()
 							Recount.MainWindow.header:SetTemplate(db.recountTitleTemplate, db.recountTitleTemplate == "Default" and db.recountTitleTemplateGloss or false)
 							Recount.MainWindow.backdrop:SetTemplate(db.recountTemplate, db.recountTemplate == "Default" and db.recountTemplateGloss or false)
 						end,
-						disabled = function() return not AS:CheckAddOn("Recount") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("Recount") end,
 						args = {
 							recountTemplate = {
 								order = 1,
@@ -269,7 +277,7 @@ local function getOptions()
 								order = 2,
 								type = "toggle",
 								name = L["Template Gloss"],
-								disabled = function() return E.db.addOnSkins.recountTemplate ~= "Default" or not AS:CheckAddOn("Recount") end
+								disabled = function() return E.db.addOnSkins.recountTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Recount") end
 							},
 							spacer = {
 								order = 3,
@@ -286,7 +294,7 @@ local function getOptions()
 								order = 5,
 								type = "toggle",
 								name = L["Title Template Gloss"],
-								disabled = function() return E.db.addOnSkins.recountTitleTemplate ~= "Default" or not AS:CheckAddOn("Recount") end
+								disabled = function() return E.db.addOnSkins.recountTitleTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Recount") end
 							}
 						}
 					},
@@ -301,7 +309,7 @@ local function getOptions()
 							Omen.Title:SetTemplate(db.omenTitleTemplate, db.omenTitleTemplate == "Default" and db.omenTitleTemplateGloss or false)
 							Omen.BarList:SetTemplate(db.omenTemplate, db.omenTemplate == "Default" and db.omenTemplateGloss or false)
 						end,
-						disabled = function() return not AS:CheckAddOn("Omen") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("Omen") end,
 						args = {
 							omenTemplate = {
 								order = 1,
@@ -313,7 +321,7 @@ local function getOptions()
 								order = 2,
 								type = "toggle",
 								name = L["Template Gloss"],
-								disabled = function() return E.db.addOnSkins.omenTemplate ~= "Default" or not AS:CheckAddOn("Omen") end
+								disabled = function() return E.db.addOnSkins.omenTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Omen") end
 							},
 							spacer = {
 								order = 3,
@@ -330,7 +338,7 @@ local function getOptions()
 								order = 5,
 								type = "toggle",
 								name = L["Title Template Gloss"],
-								disabled = function() return E.db.addOnSkins.omenTitleTemplate ~= "Default" or not AS:CheckAddOn("Omen") end
+								disabled = function() return E.db.addOnSkins.omenTitleTemplate ~= "Default" or not AS:IsAddonLODorEnabled("Omen") end
 							}
 						}
 					},
@@ -344,7 +352,7 @@ local function getOptions()
 							DBM.Bars:ApplyStyle()
 							DBM.BossHealth:UpdateSettings()
 						end,
-						disabled = function() return not AS:CheckAddOn("DBM-Core") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("DBM-Core") end,
 						args = {
 							dbmBarHeight = {
 								order = 1,
@@ -393,8 +401,8 @@ local function getOptions()
 							E.db.addOnSkins[info[#info]] = value
 							E:StaticPopup_Show("PRIVATE_RL")
 						end,
-						disabled = function() return not AS:CheckAddOn("WeakAuras") end,
-						hidden = function() return WeakAuras and WeakAuras.IsCorrectVersion end,
+						disabled = function() return not AS:IsAddonLODorEnabled("WeakAuras") end,
+						hidden = WeakAuras and WeakAuras.IsCorrectVersion ~= nil or false,
 						args = {
 							weakAuraAuraBar = {
 								order = 1,
@@ -418,7 +426,7 @@ local function getOptions()
 							ChatBar_UpdateButtonOrientation()
 							ChatBar_UpdateButtons()
 						end,
-						disabled = function() return not AS:CheckAddOn("ChatBar") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("ChatBar") end,
 						args = {
 							chatBarSize = {
 								order = 1,
@@ -460,7 +468,7 @@ local function getOptions()
 						name = "BigWigs",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
 						set = function(info, value) E.db.addOnSkins[info[#info]] = value end,
-						disabled = function() return not AS:CheckAddOn("BigWigs") end,
+						disabled = function() return not AS:IsAddonLODorEnabled("BigWigs") end,
 						args = {
 							bigwigsBarHeight = {
 								order = 1,
