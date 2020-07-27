@@ -42,7 +42,18 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 		QuestGuru_QuestLogFrame.backdrop:Point("BOTTOMRIGHT", -1, 11)
 	end
 
+	S:SetUIPanelWindowInfo(QuestGuru_QuestLogFrame, "xoffset", -50)
+
 	S:HandleCloseButton(QuestGuru_QuestLogFrameCloseButton, QuestLogFrame.backdrop)
+
+	QuestGuru_QuestLogTitleText:Point("TOP", 0, -16)
+
+	QuestGuruShowMapButton:StripTextures()
+	S:HandleButton(QuestGuruShowMapButton)
+	QuestGuruShowMapButton.text:ClearAllPoints()
+	QuestGuruShowMapButton.text:Point("CENTER")
+	QuestGuruShowMapButton:Point("TOPRIGHT", -98, 35)
+	QuestGuruShowMapButton:Size(QuestGuruShowMapButton:GetWidth() - 30, QuestGuruShowMapButton:GetHeight(), - 40)
 
 	QuestGuru_QuestLogCount:StripTextures()
 	QuestGuru_QuestLogCount:Point("TOPRIGHT", -31, -23)
@@ -151,6 +162,27 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	S:HandleButton(QuestGuru_QuestAbandonClearList)
 	QuestGuru_QuestAbandonClearList:Height(22)
 	QuestGuru_QuestAbandonClearList:Point("LEFT", QuestGuru_QuestAbandonSearch, "RIGHT", 8, 0)
+
+	local function skinOptions(f)
+		for i = 1, f:GetNumChildren() do
+			local child = select(i, f:GetChildren())
+			if child then
+				if child:IsObjectType("CheckButton") then
+					S:HandleCheckBox(child)
+				elseif child:IsObjectType("EditBox") then
+					S:HandleEditBox(child)
+				elseif child:IsObjectType("Button") then
+					S:HandleButton(child)
+				elseif child:IsObjectType("Frame") then
+					S:HandleDropDownBox(child, 240)
+				end
+			end
+		end
+	end
+
+	skinOptions(QuestGuru_OptionsFrameGeneral)
+	skinOptions(QuestGuru_OptionsFrameSound)
+	skinOptions(QuestGuru_AnnounceFrame)
 
 	local function skinLogEntry(questLogTitle, index)
 		questLogTitle:Width(300)
