@@ -41,6 +41,25 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 	S:HandleSliderFrame(QGT_QuestWatchFrameSlider)
 	S:HandleSliderFrame(QGT_AchievementWatchFrameSlider)
 
+	local function skinOptions(f)
+		for i = 1, f:GetNumChildren() do
+			local child = select(i, f:GetChildren())
+			if child then
+				if child:IsObjectType("CheckButton") then
+					S:HandleCheckBox(child)
+				elseif child:IsObjectType("EditBox") then
+					S:HandleEditBox(child)
+				elseif child:IsObjectType("Button") then
+					S:HandleButton(child)
+				elseif child:IsObjectType("Slider") then
+					S:HandleSliderFrame(child)
+				end
+			end
+		end
+	end
+
+	skinOptions(QGT_OptionsFrameTracker)
+
 	for i = 1, 40 do
 		local frame = _G["QGT_AchievementWatchLine"..i]
 		local icon = _G["QGT_AchievementWatchLine"..i.."Icon"]
