@@ -114,8 +114,9 @@ function EMB:SetHooks()
 		end
 	end)
 
+	local rightChatToggleOnClickOriginal = RightChatToggleButton:GetScript("OnClick")
 	RightChatToggleButton:RegisterForClicks("AnyDown")
-	RightChatToggleButton:HookScript("OnClick", function(self, btn)
+	RightChatToggleButton:SetScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
 			if E.db.addOnSkins.embed.rightChatPanel then
 				if EMB.mainFrame:IsShown() then
@@ -124,6 +125,8 @@ function EMB:SetHooks()
 					EMB.mainFrame:Show()
 				end
 			end
+		else
+			rightChatToggleOnClickOriginal(self, btn)
 		end
 		EMB:UpdateSwitchButton()
 	end)
@@ -136,8 +139,9 @@ function EMB:SetHooks()
 		end
 	end)
 
+	local leftChatToggleOnClickOriginal = LeftChatToggleButton:GetScript("OnClick")
 	LeftChatToggleButton:RegisterForClicks("AnyDown")
-	LeftChatToggleButton:HookScript("OnClick", function(self, btn)
+	LeftChatToggleButton:SetScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
 			if not E.db.addOnSkins.embed.rightChatPanel then
 				if EMB.mainFrame:IsShown() then
@@ -146,6 +150,8 @@ function EMB:SetHooks()
 					EMB.mainFrame:Show()
 				end
 			end
+		else
+			leftChatToggleOnClickOriginal(self, btn)
 		end
 		EMB:UpdateSwitchButton()
 	end)
