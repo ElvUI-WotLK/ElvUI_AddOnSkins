@@ -51,8 +51,8 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 
 		frame.resultlist:SetTemplate("Transparent")
 
-		S:HandleScrollBar(frame.resultlist.sheet.panel.vScroll, 1)
-		S:HandleScrollBar(frame.resultlist.sheet.panel.hScroll, 1)
+		S:HandleScrollBar(frame.resultlist.sheet.panel.vScroll)
+		S:HandleScrollBar(frame.resultlist.sheet.panel.hScroll, true)
 
 		private.frame.slot:Hide()
 

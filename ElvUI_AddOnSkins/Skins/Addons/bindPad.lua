@@ -142,8 +142,8 @@ S:AddCallbackForAddon("BindPad", "BindPad", function()
 	BindPadMacroPopupScrollFrame:Size(247, 180)
 	BindPadMacroPopupScrollFrame:Point("TOPRIGHT", -32, -76)
 
-	BindPadMacroPopupScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroPopupScrollFrame, "TOPRIGHT", 4, -18)
-	BindPadMacroPopupScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroPopupScrollFrame, "BOTTOMRIGHT", 4, 18)
+	BindPadMacroPopupScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroPopupScrollFrame, "TOPRIGHT", 3, -19)
+	BindPadMacroPopupScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroPopupScrollFrame, "BOTTOMRIGHT", 3, 19)
 
 	BindPadMacroPopupOkayButton:Point("RIGHT", BindPadMacroPopupCancelButton, "LEFT", -3, 0)
 
@@ -181,8 +181,8 @@ S:AddCallbackForAddon("BindPad", "BindPad", function()
 	BindPadMacroTextFrameScrollFrame:Size(298, 241)
 	BindPadMacroTextFrameScrollFrame:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "BOTTOMLEFT", 6, -16)
 
-	BindPadMacroTextFrameScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroTextFrameScrollFrame, "TOPRIGHT", 7, -13)
-	BindPadMacroTextFrameScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroTextFrameScrollFrame, "BOTTOMRIGHT", 7, 12)
+	BindPadMacroTextFrameScrollFrameScrollBar:Point("TOPLEFT", BindPadMacroTextFrameScrollFrame, "TOPRIGHT", 6, -14)
+	BindPadMacroTextFrameScrollFrameScrollBar:Point("BOTTOMLEFT", BindPadMacroTextFrameScrollFrame, "BOTTOMRIGHT", 6, 13)
 
 	BindPadMacroTextFrameSelectedMacroName:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "TOPRIGHT", -4, -12)
 	BindPadMacroTextFrameEditButton:Point("TOPLEFT", BindPadMacroTextFrameSelectedMacroBackground, "TOPLEFT", 53, -28)

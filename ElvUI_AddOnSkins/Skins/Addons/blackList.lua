@@ -38,8 +38,8 @@ S:AddCallbackForAddon("BlackList", "BlackList", function()
 
 	FriendsFrameBlackListScrollFrame:StripTextures()
 	S:HandleScrollBar(FriendsFrameBlackListScrollFrameScrollBar)
-	FriendsFrameBlackListScrollFrameScrollBar:Point("TOPLEFT", FriendsFrameBlackListScrollFrame, "TOPRIGHT", 4, -18)
-	FriendsFrameBlackListScrollFrameScrollBar:Point("BOTTOMLEFT", FriendsFrameBlackListScrollFrame, "BOTTOMRIGHT", 4, 18)
+	FriendsFrameBlackListScrollFrameScrollBar:Point("TOPLEFT", FriendsFrameBlackListScrollFrame, "TOPRIGHT", 3, -19)
+	FriendsFrameBlackListScrollFrameScrollBar:Point("BOTTOMLEFT", FriendsFrameBlackListScrollFrame, "BOTTOMRIGHT", 3, 19)
 
 	-- Details
 	BlackListDetailsFrame:StripTextures()
@@ -54,6 +54,8 @@ S:AddCallbackForAddon("BlackList", "BlackList", function()
 
 	BlackListDetailsFrameReasonTextBackground:SetTemplate()
 	S:HandleScrollBar(BlackListDetailsFrameScrollFrameScrollBar)
+
+	BlackListDetailsFrameScrollFrameScrollBar:Point("BOTTOMLEFT", BlackListDetailsFrameScrollFrame, "BOTTOMRIGHT", 6, 18)
 
 	-- Details Edit
 	BlackListEditDetailsFrame:StripTextures()

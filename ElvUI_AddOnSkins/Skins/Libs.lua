@@ -265,10 +265,10 @@ local function SkinConfigator(lib)
 		if tab.scroll.isSkinned then return end
 
 		if tab.scroll.vScroll then
-			S:HandleScrollBar(tab.scroll.vScroll, 1)
+			S:HandleScrollBar(tab.scroll.vScroll)
 		end
 		if tab.scroll.hScroll then
-			S:HandleScrollBar(tab.scroll.hScroll, 1)
+			S:HandleScrollBar(tab.scroll.hScroll, true)
 		end
 
 		tab.scroll.isSkinned = true
@@ -307,10 +307,10 @@ local function SkinConfigator(lib)
 
 				if tab.scroll then
 					if tab.scroll.vScroll then
-						S:HandleScrollBar(tab.scroll.vScroll, 1)
+						S:HandleScrollBar(tab.scroll.vScroll)
 					end
 					if tab.scroll.hScroll then
-						S:HandleScrollBar(tab.scroll.hScroll, 1)
+						S:HandleScrollBar(tab.scroll.hScroll, true)
 					end
 				end
 
@@ -329,7 +329,7 @@ local function SkinConfigator(lib)
 
 	lib.help:SetTemplate("Transparent")
 	lib.help.scroll:SetTemplate("Transparent")
-	S:HandleScrollBar(lib.help.scroll.vScroll, 1)
+	S:HandleScrollBar(lib.help.scroll.vScroll)
 	S:HandleCloseButton(lib.help.close)
 
 	local SelectBox = LibStub("SelectBox")
@@ -343,10 +343,10 @@ local function SkinConfigator(lib)
 
 			if not sheet.panel.isSkinned then
 				if sheet.panel.vScroll then
-					S:HandleScrollBar(sheet.panel.vScroll, 1)
+					S:HandleScrollBar(sheet.panel.vScroll)
 				end
 				if sheet.panel.hScroll then
-					S:HandleScrollBar(sheet.panel.hScroll, 1)
+					S:HandleScrollBar(sheet.panel.hScroll, true)
 				end
 
 				sheet.panel.isSkinned = true

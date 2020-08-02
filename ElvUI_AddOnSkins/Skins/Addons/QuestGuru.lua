@@ -96,8 +96,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_QuestLogListScrollFrame.Hide = QuestGuru_QuestLogListScrollFrame.Show
 
 	S:HandleScrollBar(QuestGuru_QuestLogListScrollFrameScrollBar)
-	QuestGuru_QuestLogListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogListScrollFrame, "TOPRIGHT", 4, -16)
-	QuestGuru_QuestLogListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogListScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestLogListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogListScrollFrame, "TOPRIGHT", 3, -17)
+	QuestGuru_QuestLogListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	QuestGuru_QuestLogDetailScrollFrame:Size(304, 336)
 	QuestGuru_QuestLogDetailScrollFrame:ClearAllPoints()
@@ -108,8 +108,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_QuestLogDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
 	S:HandleScrollBar(QuestGuru_QuestLogDetailScrollFrameScrollBar)
-	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogDetailScrollFrame, "TOPRIGHT", 4, -17)
-	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogDetailScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogDetailScrollFrame, "TOPRIGHT", 3, -18)
+	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	S:HandleButton(QuestGuru_QuestLogFrameAbandonButton)
 	S:HandleButton(QuestGuru_QuestFramePushQuestButton)
@@ -141,8 +141,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_QuestAbandonListScrollFrame.Hide = QuestGuru_QuestAbandonListScrollFrame.Show
 
 	S:HandleScrollBar(QuestGuru_QuestAbandonListScrollFrameScrollBar)
-	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame, "TOPRIGHT", 4, -16)
-	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonListScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame, "TOPRIGHT", 3, -17)
+	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	QuestGuru_QuestAbandonDetailScrollFrame:Size(304, 336)
 	QuestGuru_QuestAbandonDetailScrollFrame:ClearAllPoints()
@@ -153,8 +153,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_QuestAbandonDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
 	S:HandleScrollBar(QuestGuru_QuestAbandonDetailScrollFrameScrollBar)
-	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "TOPRIGHT", 4, -17)
-	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "TOPRIGHT", 3, -18)
+	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	S:HandleEditBox(QuestGuru_QuestAbandonSearch)
 	QuestGuru_QuestAbandonSearch:Point("LEFT", QuestGuru_QuestAbandonSearchText, "RIGHT", 4, -1)

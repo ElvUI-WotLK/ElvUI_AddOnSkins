@@ -36,8 +36,8 @@ S:AddCallbackForAddon("ACP", "ACP", function()
 	ACP_AddonList_ScrollFrame:Point("TOPLEFT", 8, -35)
 
 	S:HandleScrollBar(ACP_AddonList_ScrollFrameScrollBar)
-	ACP_AddonList_ScrollFrameScrollBar:Point("TOPLEFT", ACP_AddonList_ScrollFrame, "TOPRIGHT", 4, -18)
-	ACP_AddonList_ScrollFrameScrollBar:Point("BOTTOMLEFT", ACP_AddonList_ScrollFrame, "BOTTOMRIGHT", 4, 18)
+	ACP_AddonList_ScrollFrameScrollBar:Point("TOPLEFT", ACP_AddonList_ScrollFrame, "TOPRIGHT", 3, -19)
+	ACP_AddonList_ScrollFrameScrollBar:Point("BOTTOMLEFT", ACP_AddonList_ScrollFrame, "BOTTOMRIGHT", 3, 19)
 
 	S:HandleButton(ACP_AddonListSetButton)
 	S:HandleButton(ACP_AddonListDisableAll)

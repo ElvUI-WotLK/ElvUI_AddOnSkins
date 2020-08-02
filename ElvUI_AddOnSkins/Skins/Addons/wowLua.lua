@@ -34,8 +34,8 @@ S:AddCallbackForAddon("WowLua", "WowLua", function()
 	WowLuaFrameEditScrollFrame:Point("BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -3)
 
 	S:HandleScrollBar(WowLuaFrameEditScrollFrameScrollBar)
-	WowLuaFrameEditScrollFrameScrollBar:Point("TOPLEFT", WowLuaFrameEditScrollFrame, "TOPRIGHT", 4, -16)
-	WowLuaFrameEditScrollFrameScrollBar:Point("BOTTOMLEFT", WowLuaFrameEditScrollFrame, "BOTTOMRIGHT", 4, 15)
+	WowLuaFrameEditScrollFrameScrollBar:Point("TOPLEFT", WowLuaFrameEditScrollFrame, "TOPRIGHT", 3, -17)
+	WowLuaFrameEditScrollFrameScrollBar:Point("BOTTOMLEFT", WowLuaFrameEditScrollFrame, "BOTTOMRIGHT", 3, 16)
 
 	WowLuaFrameResizeBar:Height(20)
 

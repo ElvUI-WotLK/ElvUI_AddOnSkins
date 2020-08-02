@@ -141,8 +141,8 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 			end
 		elseif mod.token == "Cache" then
 			S:HandleScrollBar(ExaminerCacheScrollScrollBar)
-			ExaminerCacheScrollScrollBar:Point("TOPLEFT", ExaminerCacheScroll, "TOPRIGHT", 4, -18)
-			ExaminerCacheScrollScrollBar:Point("BOTTOMLEFT", ExaminerCacheScroll, "BOTTOMRIGHT", 4, 18)
+			ExaminerCacheScrollScrollBar:Point("TOPLEFT", ExaminerCacheScroll, "TOPRIGHT", 3, -19)
+			ExaminerCacheScrollScrollBar:Point("BOTTOMLEFT", ExaminerCacheScroll, "BOTTOMRIGHT", 3, 19)
 		elseif mod.token == "Stats" then
 			for i = 1, 5 do
 				local child = select(i, mod.page:GetChildren())
@@ -176,8 +176,8 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 			end
 
 			S:HandleScrollBar(ExaminerStatScrollScrollBar)
-			ExaminerStatScrollScrollBar:Point("TOPLEFT", ExaminerStatScroll, "TOPRIGHT", 11, -19)
-			ExaminerStatScrollScrollBar:Point("BOTTOMLEFT", ExaminerStatScroll, "BOTTOMRIGHT", 11, 19)
+			ExaminerStatScrollScrollBar:Point("TOPLEFT", ExaminerStatScroll, "TOPRIGHT", 10, -20)
+			ExaminerStatScrollScrollBar:Point("BOTTOMLEFT", ExaminerStatScroll, "BOTTOMRIGHT", 10, 20)
 		elseif mod.token == "PvP" then
 			for i = 2, 4 do
 				local child = select(i, mod.page:GetChildren())
@@ -187,8 +187,8 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 			skinAzDropdown((mod.page:GetChildren()))
 
 			S:HandleScrollBar(ExaminerFeatsScrollScrollBar)
-			ExaminerFeatsScrollScrollBar:Point("TOPLEFT", ExaminerFeatsScroll, "TOPRIGHT", 7, -18)
-			ExaminerFeatsScrollScrollBar:Point("BOTTOMLEFT", ExaminerFeatsScroll, "BOTTOMRIGHT", 7, 18)
+			ExaminerFeatsScrollScrollBar:Point("TOPLEFT", ExaminerFeatsScroll, "TOPRIGHT", 6, -19)
+			ExaminerFeatsScrollScrollBar:Point("BOTTOMLEFT", ExaminerFeatsScroll, "BOTTOMRIGHT", 6, 19)
 		elseif mod.token == "Talents" then
 			for i = 1, MAX_TALENT_TABS do
 				local tab = _G["ExaminerTab"..i]
@@ -219,8 +219,8 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 			end
 
 			S:HandleScrollBar(ExaminerTalentsScrollChildScrollBar)
-			ExaminerTalentsScrollChildScrollBar:Point("TOPLEFT", ExaminerTalentsScrollChild, "TOPRIGHT", 5, -17)
-			ExaminerTalentsScrollChildScrollBar:Point("BOTTOMLEFT", ExaminerTalentsScrollChild, "BOTTOMRIGHT", 5, 16)
+			ExaminerTalentsScrollChildScrollBar:Point("TOPLEFT", ExaminerTalentsScrollChild, "TOPRIGHT", 4, -18)
+			ExaminerTalentsScrollChildScrollBar:Point("BOTTOMLEFT", ExaminerTalentsScrollChild, "BOTTOMRIGHT", 4, 17)
 
 			ExaminerTalentsScrollChild:ClearAllPoints()
 			ExaminerTalentsScrollChild:Point("TOPLEFT", 1, -1)

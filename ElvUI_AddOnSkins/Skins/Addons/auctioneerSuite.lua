@@ -130,8 +130,9 @@ S:AddCallbackForAddon("Auc-Advanced", "Auc-Advanced", function()
 		frame.baglist:SetTemplate("Transparent")
 		frame.resultlist:SetTemplate("Transparent")
 
-		S:HandleScrollBar(frame.baglist.sheet.panel.vScroll, 1)
-		S:HandleScrollBar(frame.resultlist.sheet.panel.vScroll, 1)
+		S:HandleScrollBar(frame.baglist.sheet.panel.vScroll)
+		S:HandleScrollBar(frame.resultlist.sheet.panel.vScroll)
+		S:HandleScrollBar(frame.resultlist.sheet.panel.hScroll, true)
 
 		S:HandleButton(frame.additem)
 		S:HandleButton(frame.removeitem)

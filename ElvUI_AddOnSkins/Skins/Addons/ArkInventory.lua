@@ -250,8 +250,8 @@ S:AddCallbackForAddon("ArkInventoryRules", "ArkInventoryRules", function()
 
 	S:HandleScrollBar(ARKINV_RulesFrameModifyDataScrollScrollBar)
 
-	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("TOPLEFT", ARKINV_RulesFrameModifyDataScroll, "TOPRIGHT", 9, -12)
-	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("BOTTOMLEFT", ARKINV_RulesFrameModifyDataScroll, "BOTTOMRIGHT", 9, 12)
+	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("TOPLEFT", ARKINV_RulesFrameModifyDataScroll, "TOPRIGHT", 8, -13)
+	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("BOTTOMLEFT", ARKINV_RulesFrameModifyDataScroll, "BOTTOMRIGHT", 8, 13)
 
 	S:HandleButton(ARKINV_RulesFrameModifyMenuOk)
 	S:HandleButton(ARKINV_RulesFrameModifyMenuCancel)

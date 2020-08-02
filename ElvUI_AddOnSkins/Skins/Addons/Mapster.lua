@@ -60,8 +60,8 @@ S:AddCallbackForAddon("Mapster", "Mapster", function()
 		WorldMapQuestHighlightBar:SetAlpha(0.35)
 
 		S:HandleScrollBar(WorldMapQuestScrollFrameScrollBar)
-		S:HandleScrollBar(WorldMapQuestDetailScrollFrameScrollBar, 4)
-		S:HandleScrollBar(WorldMapQuestRewardScrollFrameScrollBar, 4)
+		S:HandleScrollBar(WorldMapQuestDetailScrollFrameScrollBar)
+		S:HandleScrollBar(WorldMapQuestRewardScrollFrameScrollBar)
 
 		S:HandleCloseButton(WorldMapFrameCloseButton)
 
