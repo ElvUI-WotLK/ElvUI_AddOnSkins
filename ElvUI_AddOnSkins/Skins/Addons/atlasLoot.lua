@@ -169,9 +169,18 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 	AtlasLootLastResultButton:Height(22)
 	AtlasLootLastResultButton:Point("LEFT", AtlasLootSearchClearButton, "RIGHT", 2, 0)
 
-	hooksecurefunc("AtlasLoot_SetupForAtlas", function()
-		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2)
-	end)
+	if AS:IsAddonEnabled("Atlas") then
+		hooksecurefunc("AtlasLoot_SetupForAtlas", function()
+			AtlasLootInfo:Point("TOPLEFT", 546, 15)
+			AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, 1)
+		end)
+
+		hooksecurefunc("AtlasLoot_SetItemInfoFrame", function(pFrame)
+			if not pFrame or pFrame == AtlasFrame then
+				AtlasLootItemsFrame:Point("TOPLEFT", 15, -74)
+			end
+		end)
+	end
 
 	AS:SkinLibrary("Dewdrop-2.0")
 end)

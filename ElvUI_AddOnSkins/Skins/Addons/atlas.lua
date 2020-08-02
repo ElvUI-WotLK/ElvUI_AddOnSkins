@@ -11,20 +11,22 @@ S:AddCallbackForAddon("Atlas", "Atlas", function()
 
 	AtlasFrame:StripTextures()
 	AtlasFrame:SetTemplate("Transparent")
+	AtlasFrame:SetClampRectInsets(0, 0, 0, 0)
 
-	AtlasMap:SetDrawLayer("BORDER")
+	S:HandleCloseButton(AtlasFrameCloseButton, AtlasFrame)
 
-	AtlasFrameCloseButton:Point("TOPRIGHT", AtlasFrame, "TOPRIGHT", -5, -7)
-	AtlasFrameLockButton:Point("RIGHT", AtlasFrameCloseButton, "LEFT", 12, 0)
-	S:HandleCloseButton(AtlasFrameCloseButton)
-	S:HandleCloseButton(AtlasFrameLockButton, nil, " ")
+	AtlasFrameLockButton:Point("RIGHT", AtlasFrameCloseButton, "LEFT", 12, -1)
+	AtlasFrameLockButton:SetHitRectInsets(6, 6, 6, 6)
 
-	AtlasLockNorm:SetTexCoord(.36, .65, .32, .73)
 	AtlasLockNorm:SetInside(AtlasFrameLockButton, 10, 10)
-	AtlasLockPush:SetTexCoord(.36, .60, .38, .76)
 	AtlasLockPush:SetInside(AtlasFrameLockButton, 10, 10)
+	AtlasLockNorm:SetTexCoord(.36, .65, .32, .73)
+	AtlasLockPush:SetTexCoord(.36, .60, .38, .76)
 
-	S:SecureHook("Atlas_UpdateLock", function()
+	AtlasMap:SetDrawLayer("ARTWORK")
+	AtlasMap:CreateBackdrop()
+
+	hooksecurefunc("Atlas_UpdateLock", function()
 		AtlasLockNorm:SetDesaturated(true)
 		AtlasLockPush:SetDesaturated(true)
 	end)
@@ -37,17 +39,34 @@ S:AddCallbackForAddon("Atlas", "Atlas", function()
 	AtlasSearchEditBox:Height(22)
 
 	S:HandleButton(AtlasSwitchButton)
-	AtlasSwitchButton:Height(24)
 	S:HandleButton(AtlasSearchButton)
-	AtlasSearchButton:Height(24)
-	AtlasSearchButton:Point("LEFT", AtlasSearchEditBox, "RIGHT", 3, 0)
 	S:HandleButton(AtlasSearchClearButton)
-	AtlasSearchClearButton:Height(24)
-	AtlasSearchClearButton:Point("LEFT", AtlasSearchButton, "RIGHT", 2, 0)
 	S:HandleButton(AtlasFrameOptionsButton)
 
 	S:HandleScrollBar(AtlasScrollBarScrollBar)
 
+	AtlasFrameDropDownType:Point("TOPLEFT", 24, -40)
+	AtlasFrameDropDown:Point("LEFT", AtlasFrameDropDownType, "RIGHT", 2, 0)
+
+	AtlasFrameOptionsButton:Point("TOPRIGHT", -14, -43)
+
+	AtlasMap:Point("TOPLEFT", 15, -74)
+	AtlasMap.ClearAllPoints = E.noop
+	AtlasMap.SetPoint = E.noop
+
+	AtlasSwitchButton:Height(24)
+	AtlasSearchButton:Height(24)
+	AtlasSearchClearButton:Size(62, 24)
+
+	AtlasSearchEditBox:Point("BOTTOMRIGHT", -152, 15)
+	AtlasSwitchButton:Point("RIGHT", AtlasSearchEditBox, "LEFT", -4, 0)
+	AtlasSearchButton:Point("LEFT", AtlasSearchEditBox, "RIGHT", 4, 0)
+	AtlasSearchClearButton:Point("LEFT", AtlasSearchButton, "RIGHT", 3, 0)
+
+	AtlasScrollBarScrollBar:Point("TOPLEFT", AtlasScrollBar, "TOPRIGHT", 8, -16)
+	AtlasScrollBarScrollBar:Point("BOTTOMLEFT", AtlasScrollBar, "BOTTOMRIGHT", 8, 16)
+
+	-- options
 	S:HandleCheckBox(AtlasOptionsFrameToggleButton)
 	S:HandleCheckBox(AtlasOptionsFrameAutoSelect)
 	S:HandleCheckBox(AtlasOptionsFrameRightClick)
