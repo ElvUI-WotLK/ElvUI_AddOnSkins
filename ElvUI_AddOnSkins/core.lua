@@ -104,6 +104,7 @@ local addonList = {
 	"SatrinaBuffFrame",
 	"LootCouncil_Lite",
 	"ElvinCDs",
+	"oRA3",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
