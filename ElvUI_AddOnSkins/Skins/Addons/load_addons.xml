@@ -92,4 +92,5 @@
 	<Script file="QuestGuruTracker.lua"/>
 	<Script file="SatrinaBuffFrame.lua"/>
 	<Script file="LootCouncil_Lite.lua"/>
+	<Script file="ElvinCDs.lua"/>
 </Ui>

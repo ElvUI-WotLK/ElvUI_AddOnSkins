@@ -103,11 +103,13 @@ local addonList = {
 	"QuestGuru_Tracker",
 	"SatrinaBuffFrame",
 	"LootCouncil_Lite",
+	"ElvinCDs",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
 	["AuctioneerSuite"] = "Auc-Advanced",
 	["_NPCScanOverlay"] = "_NPCScan.Overlay",
+	["ElvinCDs"] = "!ElvinCDs",
 }
 
 AS.addons = {}
