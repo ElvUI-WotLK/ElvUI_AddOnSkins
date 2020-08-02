@@ -6,70 +6,82 @@ local _G = _G
 local ipairs = ipairs
 local select = select
 
+local hooksecurefunc = hooksecurefunc
+
 AS.skinnedLibs = {}
 
-local dewdropEditBoxFrame
-local dewdropSliderFrame
+local function SkinDewdrop(lib, libName)
+	local dewdropEditBoxFrame
+	local dewdropSliderFrame
 
-local function SkinDewdrop(prefix)
-	local level = prefix.."Level"
-	local button = prefix.."Button"
+	local function DewdropOpen(prefix)
+		local level = prefix.."Level"
+		local button = prefix.."Button"
 
-	local i = 1
-	local frame = _G[level .. i]
+		local i = 1
+		local frame = _G[level .. i]
 
-	while frame do
-		if not frame.isSkinned then
-			frame:SetTemplate("Transparent")
+		while frame do
+			if not frame.isSkinned then
+				frame:SetTemplate("Transparent")
 
-			frame:GetChildren():Hide()
-			frame.SetBackdropColor = E.noop
-			frame.SetBackdropBorderColor = E.noop
+				frame:GetChildren():Hide()
+				frame.SetBackdropColor = E.noop
+				frame.SetBackdropBorderColor = E.noop
 
-			frame.isSkinned = true
+				frame.isSkinned = true
+			end
+
+			i = i + 1
+			frame = _G[level .. i]
 		end
 
-		i = i + 1
-		frame = _G[level .. i]
-	end
-
-	i = 1
-	frame = _G[button .. i]
-
-	while frame do
-		if not frame.isHook then
-			frame:HookScript("OnEnter", function(self)
-				if not self.disabled and self.hasArrow then
-					if not dewdropEditBoxFrame and self.hasEditBox then
-						dewdropEditBoxFrame = AS:FindFrameBySizeChild({"EditBox"}, 200, 40)
-
-						if dewdropEditBoxFrame then
-							dewdropEditBoxFrame:SetTemplate("Transparent")
-							S:HandleEditBox(dewdropEditBoxFrame.editBox)
-							dewdropEditBoxFrame.editBox:DisableDrawLayer("BACKGROUND")
-						end
-					end
-					if not dewdropSliderFrame and self.hasSlider then
-						dewdropSliderFrame = AS:FindFrameBySizeChild({"Slider", "EditBox"}, 100, 170)
-
-						if dewdropSliderFrame then
-							dewdropSliderFrame:SetTemplate("Transparent")
-							S:HandleSliderFrame(dewdropSliderFrame.slider)
-							S:HandleEditBox(dewdropSliderFrame.currentText)
-							dewdropSliderFrame.currentText:DisableDrawLayer("BACKGROUND")
-						end
-					end
-
-					SkinDewdrop(prefix)
-				end
-			end)
-
-			frame.isHook = true
-		end
-
-		i = i + 1
+		i = 1
 		frame = _G[button .. i]
+
+		while frame do
+			if not frame.isHook then
+				frame:HookScript("OnEnter", function(self)
+					if not self.disabled and self.hasArrow then
+						if not dewdropEditBoxFrame and self.hasEditBox then
+							dewdropEditBoxFrame = AS:FindFrameBySizeChild({"EditBox"}, 200, 40)
+
+							if dewdropEditBoxFrame then
+								dewdropEditBoxFrame:SetTemplate("Transparent")
+								S:HandleEditBox(dewdropEditBoxFrame.editBox)
+								dewdropEditBoxFrame.editBox:DisableDrawLayer("BACKGROUND")
+							end
+						end
+						if not dewdropSliderFrame and self.hasSlider then
+							dewdropSliderFrame = AS:FindFrameBySizeChild({"Slider", "EditBox"}, 100, 170)
+
+							if dewdropSliderFrame then
+								dewdropSliderFrame:SetTemplate("Transparent")
+								S:HandleSliderFrame(dewdropSliderFrame.slider)
+								S:HandleEditBox(dewdropSliderFrame.currentText)
+								dewdropSliderFrame.currentText:DisableDrawLayer("BACKGROUND")
+							end
+						end
+
+						DewdropOpen(prefix)
+					end
+				end)
+
+				frame.isHook = true
+			end
+
+			i = i + 1
+			frame = _G[button .. i]
+		end
 	end
+
+	if not S:IsHooked(lib, "Open") then
+		S:SecureHook(lib, "Open", function()
+			DewdropOpen(libName == "Dewdrop-2.0" and "Dewdrop20" or "ArkDewdrop30")
+		end)
+	end
+
+	return true
 end
 
 local function SkinTablet2(lib)
@@ -107,9 +119,11 @@ local function SkinTablet2(lib)
 			SkinDetachedFrame(self, parent)
 		end)
 	end
+
+	return true
 end
 
-local function SkinRockConfig(lib)
+local function SkinLibRockConfig(lib)
 	local function SkinMainFrame(self)
 		if self.base.isSkinned then return end
 
@@ -159,6 +173,8 @@ local function SkinRockConfig(lib)
 			end
 		end
 	end
+
+	return true
 end
 
 local function SkinConfigator(lib)
@@ -339,9 +355,34 @@ local function SkinConfigator(lib)
 			return sheet
 		end, true)
 	end
+
+	return true
 end
 
-local function SkinAzDialog(lib)
+local function SkinAceAddon20(lib)
+	S:SecureHook(lib.prototype, "PrintAddonInfo", function()
+		AceAddon20AboutFrame:SetTemplate("Transparent")
+		S:HandleButton(AceAddon20AboutFrameButton)
+		S:HandleButton(AceAddon20AboutFrameDonateButton)
+
+		S:Unhook(lib.prototype, "PrintAddonInfo")
+	end)
+
+	S:SecureHook(lib.prototype, "OpenDonationFrame", function()
+		AceAddon20Frame:SetTemplate("Transparent")
+		S:HandleScrollBar(AceAddon20FrameScrollFrameScrollBar)
+		S:HandleButton(AceAddon20FrameButton)
+
+		S:Unhook(lib.prototype, "OpenDonationFrame")
+	end)
+
+	return true
+end
+
+local function SkinAzDialog(libName)
+	local lib = _G[libName]
+	if not lib then return end
+
 	local function skinDialog(frame)
 		if frame.isSkinned then return end
 
@@ -363,91 +404,93 @@ local function SkinAzDialog(lib)
 	S:SecureHook(lib, "Show", function(self)
 		skinDialog(self.dialogs[#self.dialogs])
 	end)
+
+	return true
 end
 
-function AS:SkinLibrary(name)
-	if not name or self.skinnedLibs[name] then return end
+local function SkinLibExtraTip(lib)
+	S:RawHook(lib, "GetFreeExtraTipObject", function(self)
+		local tooltip = S.hooks[self].GetFreeExtraTipObject(self)
 
-	if name == "AceAddon-2.0" then
-		local AceAddon = LibStub("AceAddon-2.0", true)
-		if AceAddon then
-			S:SecureHook(AceAddon.prototype, "PrintAddonInfo", function()
-				AceAddon20AboutFrame:SetTemplate("Transparent")
-				S:HandleButton(AceAddon20AboutFrameButton)
-				S:HandleButton(AceAddon20AboutFrameDonateButton)
+		if not tooltip.isSkinned then
+			tooltip:SetTemplate("Transparent")
+			tooltip.isSkinned = true
+		end
 
-				S:Unhook(AceAddon.prototype, "PrintAddonInfo")
-			end)
-			S:SecureHook(AceAddon.prototype, "OpenDonationFrame", function()
-				AceAddon20Frame:SetTemplate("Transparent")
-				S:HandleScrollBar(AceAddon20FrameScrollFrameScrollBar)
-				S:HandleButton(AceAddon20FrameButton)
+		return tooltip
+	end)
 
-				S:Unhook(AceAddon.prototype, "OpenDonationFrame")
-			end)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "Dewdrop-2.0" or name == "ArkDewdrop-3.0" then
-		local Dewdrop = LibStub(name, true)
-		if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
-			local prefix = name == "Dewdrop-2.0" and "Dewdrop20" or "ArkDewdrop30"
-			S:SecureHook(Dewdrop, "Open", function()
-				SkinDewdrop(prefix)
-			end)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "Tablet-2.0" then
-		local Tablet = LibStub("Tablet-2.0", true)
-		if Tablet then
-			SkinTablet2(Tablet)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "Configator" then
-		local Configator = LibStub("Configator", true)
-		if Configator then
-			SkinConfigator(Configator)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "LibExtraTip-1" then
-		local LibExtraTip = LibStub("LibExtraTip-1", true)
-		if LibExtraTip and not S:IsHooked(LibExtraTip, "GetFreeExtraTipObject") then
-			S:RawHook(LibExtraTip, "GetFreeExtraTipObject", function(self)
-				local tooltip = S.hooks[self].GetFreeExtraTipObject(self)
+	return true
+end
 
-				if not tooltip.isSkinned then
-					tooltip:SetTemplate("Transparent")
-					tooltip.isSkinned = true
-				end
+local function SkinZFrame(lib)
+	S:RawHook(lib, "Create", function(self, ...)
+		local frame = S.hooks[self].Create(self, ...)
 
-				return tooltip
-			end)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "LibRockConfig-1.0" then
-		local LRC = LibStub("LibRockConfig-1.0", true)
-		if LRC then
-			SkinRockConfig(LRC)
-			self.skinnedLibs[name] = true
-		end
-	elseif name == "ZFrame-1.0" then
-		local LZF = LibStub("ZFrame-1.0", true)
-		if LZF and not S:IsHooked(LZF, "Create") then
-			S:RawHook(LZF, "Create", function(self, ...)
-				local frame = S.hooks[self].Create(self, ...)
+		frame.ZMain:SetTemplate("Transparent")
+		frame.ZMain.close:Size(32)
+		S:HandleCloseButton(frame.ZMain.close, frame.ZMain)
 
-				frame.ZMain:SetTemplate("Transparent")
-				frame.ZMain.close:Size(32)
-				S:HandleCloseButton(frame.ZMain.close, frame.ZMain)
+		return frame
+	end, true)
 
-				return frame
-			end, true)
+	return true
+end
+
+AS.libSkins = {
+	["AceAddon-2.0"] = {
+		stub = true,
+		func = SkinAceAddon20
+	},
+	["ArkDewdrop-3.0"] = {
+		stub = true,
+		func = SkinDewdrop
+	},
+	["AzDialog"] = {
+		stub = false,
+		func = SkinAzDialog
+	},
+	["Configator"] = {
+		stub = true,
+		func = SkinConfigator
+	},
+	["Dewdrop-2.0"] = {
+		stub = true,
+		func = SkinDewdrop
+	},
+	["LibExtraTip-1"] = {
+		stub = true,
+		func = SkinLibExtraTip
+	},
+	["LibRockConfig-1.0"] = {
+		stub = true,
+		func = SkinLibRockConfig
+	},
+	["Tablet-2.0"] = {
+		stub = true,
+		func = SkinTablet2
+	},
+	["ZFrame-1.0"] = {
+		stub = true,
+		func = SkinZFrame
+	},
+}
+
+function AS:SkinLibrary(libName)
+	if not libName or not self.libSkins[libName] then return end
+
+	if self.libSkins[libName].stub then
+		local lib, minor = LibStub(libName, true)
+		if lib and (not self.skinnedLibs[libName] or self.skinnedLibs[libName] < minor) then
+			if self.libSkins[libName].func(lib, libName) then
+				self.skinnedLibs[libName] = minor or 1
+				return true
+			end
 		end
-		self.skinnedLibs[name] = true
-	elseif name == "AzDialog" then
-		local AD = AzDialog
-		if AD then
-			SkinAzDialog(AD)
-			self.skinnedLibs[name] = true
+	elseif not self.skinnedLibs[libName] then
+		if self.libSkins[libName].func(libName) then
+			self.skinnedLibs[libName] = true
+			return true
 		end
 	end
 end
