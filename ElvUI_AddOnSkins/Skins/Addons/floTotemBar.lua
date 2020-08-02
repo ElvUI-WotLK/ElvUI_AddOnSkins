@@ -12,46 +12,47 @@ S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", function()
 
 	local AB = E:GetModule("ActionBars")
 
-	if FLO_CLASS_NAME == "HUNTER" then
-		FloBarTRAP:SetTemplate("Transparent")
-
-		for i = 1, 10 do
-			AB:StyleButton(_G["FloBarTRAPButton" .. i])
-		end
-
-		for i = 1, 3 do
-			local countdown = _G["FloBarTRAPCountdown" .. i]
-			countdown:SetStatusBarTexture(E.media.normTex)
-			E:RegisterStatusBar(countdown)
-		end
-	elseif FLO_CLASS_NAME == "SHAMAN" then
-		FloBarEARTH:SetTemplate("Transparent")
-		FloBarFIRE:SetTemplate("Transparent")
-		FloBarWATER:SetTemplate("Transparent")
-		FloBarAIR:SetTemplate("Transparent")
-		FloBarCALL:SetTemplate("Transparent")
-
-		FloBarEARTHCountdown:SetStatusBarTexture(E.media.normTex)
-		FloBarFIRECountdown:SetStatusBarTexture(E.media.normTex)
-		FloBarWATERCountdown:SetStatusBarTexture(E.media.normTex)
-		FloBarAIRCountdown:SetStatusBarTexture(E.media.normTex)
-
-		E:RegisterStatusBar(FloBarEARTHCountdown)
-		E:RegisterStatusBar(FloBarFIRECountdown)
-		E:RegisterStatusBar(FloBarWATERCountdown)
-		E:RegisterStatusBar(FloBarAIRCountdown)
-
-		for i = 1, 10 do
-			AB:StyleButton(_G["FloBarEARTHButton" .. i])
-			AB:StyleButton(_G["FloBarFIREButton" .. i])
-			AB:StyleButton(_G["FloBarWATERButton" .. i])
-			AB:StyleButton(_G["FloBarAIRButton" .. i])
-			AB:StyleButton(_G["FloBarWATERButton" .. i])
-			AB:StyleButton(_G["FloBarCALLButton" .. i])
+	local function toggleBorders(self)
+		if self.globalSettings.borders then
+			self:SetTemplate("Transparent")
+			if self.settings and self.settings.color then
+				self:SetBackdropBorderColor(unpack(self.settings.color))
+			end
+		else
+			FloLib_HideBorders(self)
 		end
 	end
 
-	function FloLib_ShowBorders(self)
-		self:SetTemplate("Transparent")
+	if not S:IsHooked("FloLib_ShowBorders") then
+		S:SecureHook("FloLib_ShowBorders", toggleBorders)
+	end
+
+	local function skinFrame(frame)
+		FloLib_ShowBorders(frame)
+
+		frame:SetClampedToScreen(true)
+
+		local frameCountDown = _G[frame:GetName().."Countdown"]
+		if frameCountDown then
+			frameCountDown:SetStatusBarTexture(E.media.normTex)
+			E:RegisterStatusBar(frameCountDown)
+		end
+
+		for i = 1, frame:GetNumChildren() do
+			local child = select(i, frame:GetChildren())
+			if child then
+				if child:IsObjectType("CheckButton") then
+					AB:StyleButton(child)
+				end
+			end
+		end
+	end
+
+	if FLO_CLASS_NAME == "HUNTER" then
+		skinFrame(FloBarTRAP)
+	elseif FLO_CLASS_NAME == "SHAMAN" then
+		for _, frame in ipairs({FloBarCALL, FloBarEARTH, FloBarFIRE, FloBarWATER, FloBarAIR}) do
+			skinFrame(frame)
+		end
 	end
 end)
