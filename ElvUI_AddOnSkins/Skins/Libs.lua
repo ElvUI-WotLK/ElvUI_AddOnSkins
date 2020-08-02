@@ -437,6 +437,35 @@ local function SkinZFrame(lib)
 	return true
 end
 
+local function SkinLibCandyBar(lib)
+	local offset = E:Scale(E.PixelMode and 1 or 3)
+	local function setPoint(self, point, attachTo, anchorPoint, xOffset, yOffset)
+		if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
+			self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
+		end
+	end
+
+	local function skinBar(bar)
+		if not bar.isSkinned then
+			bar:CreateBackdrop("Transparent")
+			hooksecurefunc(bar, "SetPoint", setPoint)
+			bar.isSkinned = true
+		end
+	end
+
+	for _, bar in ipairs(lib.availableBars) do
+		skinBar(bar)
+	end
+
+	S:RawHook(lib, "New", function(self, ...)
+		local bar = S.hooks[self].New(self, ...)
+		skinBar(bar)
+		return bar
+	end)
+
+	return true
+end
+
 AS.libSkins = {
 	["AceAddon-2.0"] = {
 		stub = true,
@@ -457,6 +486,10 @@ AS.libSkins = {
 	["Dewdrop-2.0"] = {
 		stub = true,
 		func = SkinDewdrop
+	},
+	["LibCandyBar-3.0"] = {
+		stub = true,
+		func = SkinLibCandyBar
 	},
 	["LibExtraTip-1"] = {
 		stub = true,
