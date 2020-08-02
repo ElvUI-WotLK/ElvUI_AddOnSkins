@@ -466,6 +466,149 @@ local function SkinLibCandyBar(lib)
 	return true
 end
 
+local function SkinLibDialog(lib)
+	local function skinDialog(dialog)
+		if not dialog.isSkinned then
+			dialog:SetTemplate("Transparent")
+			dialog.SetBackdrop = E.noop
+			S:HandleCloseButton(dialog.close_button, dialog)
+
+			dialog.isSkinned = true
+		end
+
+		if dialog.checkboxes then
+			for _, checkbox in ipairs(dialog.checkboxes) do
+				S:HandleCheckBox(checkbox)
+			end
+		end
+
+		if dialog.editboxes then
+			for _, editbox in ipairs(dialog.editboxes) do
+				S:HandleEditBox(editbox)
+				editbox:Height(20)
+			end
+		end
+
+		if dialog.buttons then
+			for _, button in ipairs(dialog.buttons) do
+				S:HandleButton(button)
+			end
+		end
+	end
+
+	for _, dialog in ipairs(lib.active_dialogs) do
+		skinDialog(dialog)
+	end
+
+	S:RawHook(lib, "Spawn", function(self, ...)
+		local dialog = S.hooks[self].Spawn(self, ...)
+
+		if dialog then
+			skinDialog(dialog)
+			return dialog
+		end
+	end)
+
+	return true
+end
+
+local function SkinScrollingTable(lib)
+	local function updateRows(self, num)
+		if num and num > 0 and #self.rows ~= 0 then
+			self.rows[1]:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -21, -5)
+		end
+	end
+
+	S:RawHook(lib, "CreateST", function(self, ...)
+		local st = S.hooks[self].CreateST(self, ...)
+
+		st.frame:SetTemplate("Transparent")
+
+		local frameName = st.frame:GetName()
+		local scrollbar = _G[frameName .. "ScrollFrameScrollBar"]
+		scrollbar:Point("TOPLEFT", st.scrollframe, "TOPRIGHT", 6, -17)
+		scrollbar:Point("BOTTOMLEFT", st.scrollframe, "BOTTOMRIGHT", 6, 18)
+		S:HandleScrollBar(scrollbar)
+
+		_G[frameName .. "ScrollTrough"]:Kill()
+		_G[frameName .. "ScrollTroughBorder"]:Kill()
+
+		updateRows(st, st.displayRows)
+		S:SecureHook(st, "SetDisplayRows", updateRows)
+
+		return st
+	end)
+
+	return true
+end
+
+local function SkinDropDownMenu(libName)
+	if not _G.Lib_UIDropDownMenu_Initialize then return end
+
+	local checkBoxSkin = E.private.skins.dropdownCheckBoxSkin
+	local menuLevel = 0
+	local maxButtons = 0
+
+	local function dropDownButtonShow(self)
+		if self.notCheckable then
+			self.check.backdrop:Hide()
+		else
+			self.check.backdrop:Show()
+		end
+	end
+
+	local function skinDropdownMenu()
+		local updateButtons = maxButtons < LIB_UIDROPDOWNMENU_MAXBUTTONS
+
+		if updateButtons or menuLevel < LIB_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
+				local frame = _G["Lib_DropDownList"..i]
+
+				if not frame.isSkinned then
+					_G["Lib_DropDownList"..i.."Backdrop"]:SetTemplate("Transparent")
+					_G["Lib_DropDownList"..i.."MenuBackdrop"]:SetTemplate("Transparent")
+
+					frame.isSkinned = true
+				end
+
+				if updateButtons then
+					for j = 1, LIB_UIDROPDOWNMENU_MAXBUTTONS do
+						local button = _G["Lib_DropDownList"..i.."Button"..j]
+
+						if not button.isSkinned then
+							S:HandleButtonHighlight(_G["Lib_DropDownList"..i.."Button"..j.."Highlight"])
+
+							if checkBoxSkin then
+								local check = _G["Lib_DropDownList"..i.."Button"..j.."Check"]
+								check:Size(12)
+								check:Point("LEFT", 1, 0)
+								check:CreateBackdrop()
+								check:SetTexture(E.media.normTex)
+								check:SetVertexColor(1, 0.82, 0, 0.8)
+
+								button.check = check
+								hooksecurefunc(button, "Show", dropDownButtonShow)
+							end
+
+							S:HandleColorSwatch(_G["Lib_DropDownList"..i.."Button"..j.."ColorSwatch"], 14)
+
+							button.isSkinned = true
+						end
+					end
+				end
+			end
+
+			menuLevel = LIB_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = LIB_UIDROPDOWNMENU_MAXBUTTONS
+		end
+	end
+
+	skinDropdownMenu()
+	hooksecurefunc("Lib_UIDropDownMenu_InitializeHelper", skinDropdownMenu)
+
+	return true
+end
+
 AS.libSkins = {
 	["AceAddon-2.0"] = {
 		stub = true,
@@ -487,9 +630,17 @@ AS.libSkins = {
 		stub = true,
 		func = SkinDewdrop
 	},
+	["DropDownMenu"] = {
+		stub = false,
+		func = SkinDropDownMenu
+	},
 	["LibCandyBar-3.0"] = {
 		stub = true,
 		func = SkinLibCandyBar
+	},
+	["LibDialog-1.0"] = {
+		stub = true,
+		func = SkinLibDialog
 	},
 	["LibExtraTip-1"] = {
 		stub = true,
@@ -498,6 +649,10 @@ AS.libSkins = {
 	["LibRockConfig-1.0"] = {
 		stub = true,
 		func = SkinLibRockConfig
+	},
+	["ScrollingTable"] = {
+		stub = true,
+		func = SkinScrollingTable
 	},
 	["Tablet-2.0"] = {
 		stub = true,
