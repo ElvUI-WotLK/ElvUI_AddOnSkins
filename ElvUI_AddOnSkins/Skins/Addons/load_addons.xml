@@ -94,4 +94,5 @@
 	<Script file="LootCouncil_Lite.lua"/>
 	<Script file="ElvinCDs.lua"/>
 	<Script file="oRA3.lua"/>
+	<Script file="RCLootCouncil.lua"/>
 </Ui>

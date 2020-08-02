@@ -105,6 +105,7 @@ local addonList = {
 	"LootCouncil_Lite",
 	"ElvinCDs",
 	"oRA3",
+	"RCLootCouncil",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
