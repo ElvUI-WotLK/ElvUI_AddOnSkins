@@ -13,45 +13,70 @@ S:AddCallbackForAddon("EveryQuest", "EveryQuest", function()
 	local addon = LibStub("AceAddon-3.0"):GetAddon("EveryQuest", true)
 	if not addon then return end
 
-	EveryQuestFrame:SetHitRectInsets(0, 0, 0, 0)
 	EveryQuestFrame:StripTextures()
 	EveryQuestFrame:SetTemplate("Transparent")
+	EveryQuestFrame:Width(334)
+	EveryQuestFrame:SetClampedToScreen(true)
 
-	EveryQuestTitleText:Point("TOP", 0, -3)
+	EveryQuestTitleText:Point("TOP", 0, -5)
 
-	EveryQuestFrame:SetSize(364, 512)
-
-	addon.frames.Menu:ClearAllPoints()
-	addon.frames.Menu:Point("TOP", EveryQuestFrame, 0, -20)
-	S:HandleDropDownBox(addon.frames.Menu, 190)
-
-	EveryQuestListScrollFrame:SetTemplate("Transparent")
+	EveryQuestListScrollFrame:CreateBackdrop("Transparent")
+	EveryQuestListScrollFrame.backdrop:Point("TOPLEFT", 0, 1)
+	EveryQuestListScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, 4)
 	EveryQuestListScrollFrame:ClearAllPoints()
-	EveryQuestListScrollFrame:Point("TOPLEFT", EveryQuestFrame, 20, -73)
+	EveryQuestListScrollFrame:Point("TOPLEFT", EveryQuestFrame, 6, -75)
+	EveryQuestListScrollFrame.Hide = E.noop
+	EveryQuestListScrollFrame:Show()
+
 	S:HandleScrollBar(EveryQuestListScrollFrameScrollBar)
+	EveryQuestListScrollFrameScrollBar:ClearAllPoints()
+	EveryQuestListScrollFrameScrollBar:Point("TOPRIGHT", EveryQuestListScrollFrame, 22, -18)
+	EveryQuestListScrollFrameScrollBar:Point("BOTTOMRIGHT", EveryQuestListScrollFrame, 0, 23)
+
+	for i = 1, 27 do
+		local button = _G["EveryQuestTitle"..i]
+
+		S:HandleButtonHighlight(button, 1, 0.8, 0.1)
+
+		if i == 1 then
+			button:ClearAllPoints()
+			button:Point("TOPLEFT", EveryQuestListScrollFrame, -2, 0)
+		end
+	end
 
 	S:HandleCloseButton(EveryQuestFrameCloseButton, EveryQuestFrame)
 
-	addon.frames.Show:ClearAllPoints()
-	addon.frames.Show:Point("BOTTOMLEFT", QuestLogCount, "TOPLEFT", 0, 3)
-	addon.frames.Show:Size(50, 20)
-	S:HandleButton(addon.frames.Show)
+	addon.frames.Menu:ClearAllPoints()
+	addon.frames.Menu:Point("TOPLEFT", EveryQuestListScrollFrame, -20, 30)
+	S:HandleDropDownBox(addon.frames.Menu, 220)
+
+	EQ_MenuText:ClearAllPoints()
+	EQ_MenuText:Point("LEFT", addon.frames.Menu, 23, 3)
+	EQ_MenuText:SetJustifyH("LEFT")
+
+	addon.frames.ShownTT:ClearAllPoints()
+	addon.frames.ShownTT:Point("RIGHT", addon.frames.Menu, 100, 3)
+	addon.frames.ShownTT:Width(100)
 
 	S:HandleButton(EveryQuestExitButton)
-	S:HandleButton(addon.frames.Options)
-	S:HandleButton(addon.frames.Filters)
-
 	EveryQuestExitButton:ClearAllPoints()
-	EveryQuestExitButton:Point("BOTTOMRIGHT", EveryQuestFrame, "BOTTOMRIGHT", -21, 4)
+	EveryQuestExitButton:Point("BOTTOMRIGHT", EveryQuestFrame, -28, 5)
+	EveryQuestExitButton:Width(98)
 
+	S:HandleButton(addon.frames.Options)
 	addon.frames.Options:ClearAllPoints()
-	addon.frames.Options:Point("RIGHT", EveryQuestExitButton, "LEFT", -1, 0)
+	addon.frames.Options:Point("RIGHT", EveryQuestExitButton, "LEFT", -3, 0)
+	addon.frames.Options:Width(98)
 
+	S:HandleButton(addon.frames.Filters)
 	addon.frames.Filters:ClearAllPoints()
-	addon.frames.Filters:Point("RIGHT", addon.frames.Options, "LEFT", -1, 0)
+	addon.frames.Filters:Point("RIGHT", addon.frames.Options, "LEFT", -3, 0)
+	addon.frames.Filters:Width(98)
 
-	addon.frames.Shown:ClearAllPoints()
-	addon.frames.Shown:Point("BOTTOMLEFT", EveryQuestFrame, "BOTTOMLEFT", 20, 4)
+	addon.frames.Show:ClearAllPoints()
+	addon.frames.Show:Point("LEFT", QuestLogCount, "RIGHT", 6, -1)
+	addon.frames.Show:Size(50, 20)
+	S:HandleButton(addon.frames.Show)
 
 	hooksecurefunc(addon, "OnShow", function(self)
 		if not self.dbpc.profile.posx and not self.dbpc.profile.posy then
