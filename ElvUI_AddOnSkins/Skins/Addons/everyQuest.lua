@@ -17,6 +17,7 @@ S:AddCallbackForAddon("EveryQuest", "EveryQuest", function()
 	EveryQuestFrame:SetTemplate("Transparent")
 	EveryQuestFrame:Width(334)
 	EveryQuestFrame:SetClampedToScreen(true)
+	EveryQuestFrame:SetHitRectInsets(0, 0, 0, 0)
 
 	EveryQuestTitleText:Point("TOP", 0, -5)
 
