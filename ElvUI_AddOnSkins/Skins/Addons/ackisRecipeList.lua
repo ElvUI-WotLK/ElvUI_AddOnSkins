@@ -176,11 +176,9 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 
 			self:HookScript("OnEnter", function()
 				normal:SetVertexColor(unpack(E.media.rgbvaluecolor))
-				pushed:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			end)
 			self:HookScript("OnLeave", function()
 				normal:SetVertexColor(1, 1, 1)
-				pushed:SetVertexColor(1, 1, 1)
 			end)
 		end
 
