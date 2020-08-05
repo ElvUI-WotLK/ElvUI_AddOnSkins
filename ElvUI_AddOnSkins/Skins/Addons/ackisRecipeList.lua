@@ -174,8 +174,14 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 				pushed:SetRotation(-1.57)
 			end
 
-			self:HookScript("OnEnter", function() normal:SetVertexColor(unpack(E.media.rgbvaluecolor)) end)
-			self:HookScript("OnLeave", function() pushed:SetVertexColor(1, 1, 1) end)
+			self:HookScript("OnEnter", function()
+				normal:SetVertexColor(unpack(E.media.rgbvaluecolor))
+				pushed:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			end)
+			self:HookScript("OnLeave", function()
+				normal:SetVertexColor(1, 1, 1)
+				pushed:SetVertexColor(1, 1, 1)
+			end)
 		end
 
 		ARL_MainPanel.close_button:Height(22)
@@ -200,9 +206,6 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 				normal:SetRotation(0)
 				pushed:SetRotation(0)
 			end
-
-			self:HookScript("OnEnter", function() normal:SetVertexColor(unpack(E.media.rgbvaluecolor)) end)
-			self:HookScript("OnLeave", function() pushed:SetVertexColor(1, 1, 1) end)
 		end
 
 		for i = 1, ARL_MainPanel:GetNumChildren() do
