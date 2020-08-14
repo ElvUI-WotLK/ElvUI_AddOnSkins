@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local EP = LibStub("LibElvUIPlugin-1.0", true)
+local EP = E.Libs.EP
 local AS = E:NewModule("AddOnSkins")
 
 local AddOnName = ...

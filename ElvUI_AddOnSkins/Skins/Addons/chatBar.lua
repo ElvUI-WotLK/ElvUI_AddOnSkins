@@ -32,7 +32,7 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 		button:StripTextures()
 		button:SetTemplate()
 		button:SetScale(1)
-		button:Size(E.db.addOnSkins.chatBarSize)
+		button:Size(db.chatBarSize)
 
 		center:SetInside()
 		highlight:SetInside()
