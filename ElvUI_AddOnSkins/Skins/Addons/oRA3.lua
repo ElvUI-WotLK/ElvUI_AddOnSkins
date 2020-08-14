@@ -115,6 +115,8 @@ S:AddCallbackForAddon("oRA3", "oRA3", function()
 	local readycheck = addon:GetModule("ReadyCheck")
 	if readycheck then
 		S:SecureHook(readycheck, "READY_CHECK", function(self)
+			if not (addon:IsPromoted() and self.db.profile.gui) then return end
+
 			S:Unhook(self, "READY_CHECK")
 
 			oRA3ReadyCheck:StripTextures()
