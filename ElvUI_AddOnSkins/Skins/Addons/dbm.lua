@@ -21,8 +21,13 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
 		frame:SetTemplate()
 
+		local db = E.db.addOnSkins
 		if id == 1 then
-			frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
+			if db.DBMSkinHalf then
+				frame:Point("BOTTOMRIGHT", parent, "BOTTOMLEFT", -10 * (E.Border + E.Spacing), 0)
+			else
+				frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
+			end
 		else
 			frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
 		end
@@ -87,23 +92,32 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		icon1.overlay:Size(barHeight)
 		icon2.overlay:Size(barHeight)
 
-		name:Point("LEFT", 5, 0)
+		if db.DBMSkinHalf then
+			if (not self.owner.options.BarYOffset or self.owner.options.BarYOffset and self.owner.options.BarYOffset < 20) then
+				self.owner.options.BarYOffset = 20
+			end
+
+			if (not self.owner.options.HugeBarYOffset or self.owner.options.HugeBarYOffset and self.owner.options.HugeBarYOffset < 20) then
+				self.owner.options.HugeBarYOffset = 20
+			end
+
+			frame:SetHeight(barHeight / 3)
+			name:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
+			timer:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 3)
+		else
+			frame:SetHeight(barHeight)
+			name:SetPoint('LEFT', frame, 'LEFT', 4, 0)
+			timer:SetPoint('RIGHT', frame, 'RIGHT', -4, 0)
+		end
+
+		--name:Point("LEFT", 5, 0)
 		name:SetFont(self._font, fontSize, db.dbmFontOutline)
 
-		timer:Point("RIGHT", -5, 0)
+		--timer:Point("RIGHT", -5, 0)
 		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
 
-		if self.owner.options.IconLeft then
-			icon1.overlay:Show()
-		else
-			icon1.overlay:Hide()
-		end
-
-		if self.owner.options.IconRight then
-			icon2.overlay:Show()
-		else
-			icon2.overlay:Hide()
-		end
+		if self.owner.options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
+		if self.owner.options.IconRight then icon2.overlay:Show() else icon2.overlay:Hide()	end
 	end
 
 	local function setPosition(self)
@@ -189,7 +203,8 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local db = E.db.addOnSkins
 		local scale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 		local width = self.owner.options.Width * scale
-		local height = db.dbmBarHeight * scale
+		local height
+		if db.DBMSkinHalf then height = (db.dbmBarHeight * scale) / 3 else height = db.dbmBarHeight * scale end
 		local fontSize = db.dbmFontSize * scale
 
 		if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
