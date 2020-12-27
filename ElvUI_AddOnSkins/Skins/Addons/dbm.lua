@@ -29,7 +29,11 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 				frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
 			end
 		else
-			frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
+			if db.DBMSkinHalf then
+				frame:Point("BOTTOMLEFT", parent, "BOTTOMRIGHT", 10 * (E.Border + E.Spacing), 0)
+			else
+				frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
+			end
 		end
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
@@ -122,14 +126,14 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 	local function setPosition(self)
 		if self.moving == "enlarge" then return end
-
 		local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+		local Enlarged = self.enlarged
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
-			self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+			self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
-			self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 	end
 
@@ -137,87 +141,83 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		if self.moving == "enlarge" then return end
 
 		local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
-		oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
-		oldY = oldY or (self.frame:GetTop())
-
+		local oldX = self.frame:GetRight() - self.frame:GetWidth() / 2
+		local oldY = self.frame:GetTop()
+		local Enlarged = self.enlarged
+		
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+			self.movePoint = "BOTTOM"
+			self.moveRelPoint = "TOP"
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.movePoint = "TOP"
+			self.moveRelPoint = "BOTTOM"
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local newY = self.frame:GetTop()
-
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, -(newX - oldX), -(newY - oldY))
 		self.moving = "move"
+		
 		self.moveAnchor = newAnchor
 		self.moveOffsetX = -(newX - oldX)
 		self.moveOffsetY = -(newY - oldY)
 		self.moveElapsed = 0
-
-		if self.owner.options.ExpandUpwards then
-			self.movePoint = "BOTTOM"
-			self.moveRelPoint = "TOP"
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.moveOffsetX, self.moveOffsetY)
-		else
-			self.movePoint = "TOP"
-			self.moveRelPoint = "BOTTOM"
-			self.moveOffsetY = -self.moveOffsetY
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, self.moveOffsetY)
-		end
 	end
-
+	
 	local function enlarge(self)
 		local newAnchor = (self.owner.hugeBars.last and self.owner.hugeBars.last.frame) or self.owner.secAnchor
 		local oldX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local oldY = self.frame:GetTop()
+		local Enlarged = self.enlarged
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+			self.movePoint = "BOTTOM"
+			self.moveRelPoint = "TOP"
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.movePoint = "TOP"
+			self.moveRelPoint = "BOTTOM"
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[Enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[Enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local newY = self.frame:GetTop()
 
-		self.moving = "enlarge"
-		self.movePoint = "TOP"
-		self.moveRelPoint = "BOTTOM"
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
+		self.moving = self.owner.options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
 		self.moveAnchor = newAnchor
 		self.moveOffsetX = -(newX - oldX)
 		self.moveOffsetY = -(newY - oldY)
 		self.moveElapsed = 0
-
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, -self.moveOffsetY)
 	end
 
 	local function animateEnlarge(self, elapsed)
 		self.moveElapsed = self.moveElapsed + elapsed
-
-		local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
-		local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
-
 		local db = E.db.addOnSkins
-		local scale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
-		local width = self.owner.options.Width * scale
-		local height
-		if db.DBMSkinHalf then height = (db.dbmBarHeight * scale) / 3 else height = db.dbmBarHeight * scale end
-		local fontSize = db.dbmFontSize * scale
-
-		if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
+		local melapsed = self.moveElapsed
+		local newX = self.moveOffsetX + (self.owner.options.HugeBarXOffset - self.moveOffsetX) * (melapsed / 1)
+		local newY = self.moveOffsetY + (self.owner.options.HugeBarYOffset - self.moveOffsetY) * (melapsed / 1)
+		local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width) * (melapsed / 1)
+		local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (melapsed / 1)
+		local newHeight = (db.DBMSkinHalf and db.dbmBarHeight * newScale / 3) or db.dbmBarHeight * newScale
+		local fontSize = db.dbmFontSize * newScale
+		if melapsed < 1 then
 			self.frame:ClearAllPoints()
 			self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
-			self.frame:Size(width, height)
-			self._bar:Size(width, height)
-
-			self._icon1.overlay:Size(height)
-			self._icon2.overlay:Size(height)
+			self.frame:SetScale(newScale)
+			self.frame:SetWidth(newWidth)
+			self.frame:SetHeight(newHeight)
 
 			self._name:SetFont(self._font, fontSize, db.dbmFontOutline)
 			self._timer:SetFont(self._font, fontSize, db.dbmFontOutline)
+
+			_G[self.frame:GetName().."Bar"]:SetWidth(newWidth)
 		else
 			self.moving = nil
 			self.enlarged = true
