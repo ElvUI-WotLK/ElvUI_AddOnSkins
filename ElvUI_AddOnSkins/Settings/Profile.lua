@@ -21,6 +21,7 @@ P.addOnSkins = {
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
 	dbmTemplate = "Default",
+	DBMSkinHalf = false,
 
 	weakAuraAuraBar = true,
 	weakAuraIconCooldown = true,
