@@ -66,6 +66,12 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
   QDKP2_frame5_scrollbar:StripTextures()
   S:HandleCloseButton(QDKP2_Frame5_Button1, QDKP2_Frame5)
   S:HandleScrollBar(QDKP2_frame5_scrollbarScrollBar)
+  QDKP2_frame5_intest_net:Size(40, 14)
+  QDKP2_frame5_intest_mod:Size(40, 14)
+  for i = 1, 25 do
+    _G["QDKP2_frame5_entry" .. i .. "_net"]:Size(40, 14)
+    _G["QDKP2_frame5_entry" .. i .. "_mod"]:Size(40, 14)
+  end
   for i = 4, 28 do
     local child = select(i, QDKP2_Frame5:GetChildren())
     if child:IsObjectType("Button") then
