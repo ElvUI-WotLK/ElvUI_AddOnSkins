@@ -95,4 +95,5 @@
 	<Script file="ElvinCDs.lua"/>
 	<Script file="oRA3.lua"/>
 	<Script file="RCLootCouncil.lua"/>
+	<Script file="QDKP2_GUI.lua"/>
 </Ui>
