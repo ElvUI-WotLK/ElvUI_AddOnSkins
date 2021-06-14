@@ -44,6 +44,12 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 		S:Unhook(EPGPLM, "ShowVersionCheckFrame")
 	end)
 
+	local function UpdateLootUI_Icon_SetNormalTexture(self, texture)
+		if texture and self:GetParent().data then
+			self:SetBackdropBorderColor(GetItemQualityColor(self:GetParent().data.quality))
+		end
+	end
+
 	hooksecurefunc(EPGPLM, "UpdateLootUI", function(self)
 		for _, frame in ipairs(self.lootSelectFrames) do
 			if frame and not frame.isSkinned then
@@ -54,11 +60,7 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 				frame.itemIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 				frame.itemIcon:SetBackdropBorderColor(GetItemQualityColor(frame.data.quality))
 
-				hooksecurefunc(frame.itemIcon, "SetNormalTexture", function(self, texture)
-					if texture and self:GetParent().data then
-						self:SetBackdropBorderColor(GetItemQualityColor(self:GetParent().data.quality))
-					end
-				end)
+				hooksecurefunc(frame.itemIcon, "SetNormalTexture", UpdateLootUI_Icon_SetNormalTexture)
 
 				for _, button in ipairs(frame.buttons) do
 					S:HandleButton(button)
@@ -70,7 +72,7 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 				frame.progressBar:CreateBackdrop()
 				frame.progressBar:Height(20)
-				frame.progressBar:SetStatusBarTexture(E["media"].normTex)
+				frame.progressBar:SetStatusBarTexture(E.media.normTex)
 				frame.progressBar:SetStatusBarColor(0.13, 0.35, 0.80)
 				E:RegisterStatusBar(frame.progressBar)
 
@@ -83,14 +85,14 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 				local btnNoteIcon = frame.btnNote:GetRegions()
 				btnNoteIcon:SetDrawLayer("ARTWORK")
-				btnNoteIcon:Point("CENTER", 0, 0)
+				btnNoteIcon:SetPoint("CENTER", 0, 0)
 
 				frame.tbNote:SetBackdrop(nil)
 				S:HandleEditBox(frame.tbNote)
 
 				local buttonSave = frame.tbNote:GetChildren()
 				buttonSave:SetHeight(26)
-				buttonSave:Point("LEFT", frame.tbNote, "RIGHT", 0, 0)
+				buttonSave:SetPoint("LEFT", frame.tbNote, "RIGHT", 0, 0)
 				S:HandleButton(buttonSave)
 
 				frame.isSkinned = true
@@ -134,6 +136,12 @@ S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", function()
 		S:Unhook(LMML, "GetFrame")
 	end)
 
+	local function CreateLootButton_Icon_SetNormalTexturefunction(self, texture)
+		if texture and self.data then
+			self:SetBackdropBorderColor(GetItemQualityColor(self.data.quality))
+		end
+	end
+
 	S:RawHook(LMML, "CreateLootButton", function(self)
 		local icon = S.hooks[self].CreateLootButton(self)
 
@@ -141,11 +149,7 @@ S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", function()
 		icon:GetNormalTexture():SetInside(icon.backdrop)
 		icon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
-		hooksecurefunc(icon, "SetNormalTexture", function(self, texture)
-			if texture and self.data then
-				self:SetBackdropBorderColor(GetItemQualityColor(self.data.quality))
-			end
-		end)
+		hooksecurefunc(icon, "SetNormalTexture", CreateLootButton_Icon_SetNormalTexturefunction)
 
 		return icon
 	end)
