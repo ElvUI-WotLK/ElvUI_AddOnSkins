@@ -19,7 +19,6 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 			options.titleoptions.args.margin = nil
 			options.titleoptions.args.color = nil
 		end)
-		AS:SkinLibrary("LibUIDropDownMenu")
 	end
 
 	hooksecurefunc(Skada.displays["bar"], "ApplySettings", function(_, win)
@@ -35,7 +34,7 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 			skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false)
 		end
 
-		if win.db.enablebackground and Skada.revisited then
+		if Skada.revisited then
 			skada:SetBackdrop(nil) -- remove default backdrop
 			if not skada.backdrop then
 				skada:CreateBackdrop(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false)
@@ -48,11 +47,11 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 				if win.db.reversegrowth then
 					skada.backdrop:SetPoint("LEFT", skada, "LEFT", -E.Border, 0)
 					skada.backdrop:SetPoint("RIGHT", skada, "RIGHT", E.Border, 0)
-					skada.backdrop:SetPoint("BOTTOM", skada.button, "TOP", 0, -((win.db.enabletitle and win.db.title.height or 0) + E.Border))
+					skada.backdrop:SetPoint("BOTTOM", skada.button, "TOP", 0, -(win.db.title.height + E.Border))
 				else
 					skada.backdrop:SetPoint("LEFT", skada, "LEFT", -E.Border, 0)
 					skada.backdrop:SetPoint("RIGHT", skada, "RIGHT", E.Border, 0)
-					skada.backdrop:SetPoint("TOP", skada.button, "BOTTOM", 0, (win.db.enabletitle and win.db.title.height or 0) + E.Border)
+					skada.backdrop:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.title.height + E.Border)
 				end
 			end
 
@@ -93,6 +92,7 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 				EMB:EmbedSkada()
 			end
 		end)
+		AS:SkinLibrary("LibUIDropDownMenu")
 	end
 
 	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
