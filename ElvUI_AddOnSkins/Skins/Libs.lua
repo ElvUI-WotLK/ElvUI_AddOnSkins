@@ -558,10 +558,10 @@ local function SkinDropDownMenu(libName)
 	end
 
 	local function skinDropdownMenu()
-		local updateButtons = maxButtons < LIB_UIDROPDOWNMENU_MAXBUTTONS
+		local updateButtons = maxButtons < L_UIDROPDOWNMENU_MAXBUTTONS
 
-		if updateButtons or menuLevel < LIB_UIDROPDOWNMENU_MAXLEVELS then
-			for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
+		if updateButtons or menuLevel < L_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, L_UIDROPDOWNMENU_MAXLEVELS do
 				local frame = _G["Lib_DropDownList"..i]
 
 				if not frame.isSkinned then
@@ -572,7 +572,7 @@ local function SkinDropDownMenu(libName)
 				end
 
 				if updateButtons then
-					for j = 1, LIB_UIDROPDOWNMENU_MAXBUTTONS do
+					for j = 1, L_UIDROPDOWNMENU_MAXBUTTONS do
 						local button = _G["Lib_DropDownList"..i.."Button"..j]
 
 						if not button.isSkinned then
@@ -598,8 +598,8 @@ local function SkinDropDownMenu(libName)
 				end
 			end
 
-			menuLevel = LIB_UIDROPDOWNMENU_MAXLEVELS
-			maxButtons = LIB_UIDROPDOWNMENU_MAXBUTTONS
+			menuLevel = L_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = L_UIDROPDOWNMENU_MAXBUTTONS
 		end
 	end
 
@@ -625,10 +625,10 @@ local function SkinL_DropDownMenu(libName)
 	end
 
 	local function skinL_DropDownMenu()
-		local updateButtons = maxButtons < LIB_UIDROPDOWNMENU_MAXBUTTONS
+		local updateButtons = maxButtons < L_UIDROPDOWNMENU_MAXBUTTONS
 
-		if updateButtons or menuLevel < LIB_UIDROPDOWNMENU_MAXLEVELS then
-			for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
+		if updateButtons or menuLevel < L_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, L_UIDROPDOWNMENU_MAXLEVELS do
 				local frame = _G["L_DropDownList" .. i]
 
 				if frame and not frame.isSkinned then
@@ -639,7 +639,7 @@ local function SkinL_DropDownMenu(libName)
 				end
 
 				if updateButtons then
-					for j = 1, LIB_UIDROPDOWNMENU_MAXBUTTONS do
+					for j = 1, L_UIDROPDOWNMENU_MAXBUTTONS do
 						local button = _G["L_DropDownList" .. i .. "Button" .. j]
 
 						if button and not button.isSkinned then
@@ -663,8 +663,8 @@ local function SkinL_DropDownMenu(libName)
 				end
 			end
 
-			menuLevel = LIB_UIDROPDOWNMENU_MAXLEVELS
-			maxButtons = LIB_UIDROPDOWNMENU_MAXBUTTONS
+			menuLevel = L_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = L_UIDROPDOWNMENU_MAXBUTTONS
 		end
 	end
 
