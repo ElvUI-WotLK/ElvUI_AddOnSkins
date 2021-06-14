@@ -24,7 +24,7 @@ S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", function()
 		if quality and quality >= 2 then
 			self:SetBackdropBorderColor(GetItemQualityColor(quality))
 		else
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 

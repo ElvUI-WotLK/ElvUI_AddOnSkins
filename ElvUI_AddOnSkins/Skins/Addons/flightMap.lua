@@ -19,8 +19,7 @@ S:AddCallbackForAddon("FlightMap", "FlightMap", function()
 	FlightMapTimesText:ClearAllPoints()
 	FlightMapTimesText:Point("CENTER", FlightMapTimesFrame, "CENTER", 0, 0)
 
-	local base = "InterfaceOptionsFlightMapPanel"
 	for optionID in pairs(FLIGHTMAP_OPTIONS) do
-		S:HandleCheckBox(_G[base .. "Option" .. optionID])
+		S:HandleCheckBox(_G["InterfaceOptionsFlightMapPanelOption" .. optionID])
 	end
 end)

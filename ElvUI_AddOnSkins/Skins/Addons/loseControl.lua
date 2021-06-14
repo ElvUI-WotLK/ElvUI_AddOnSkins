@@ -58,9 +58,7 @@ S:AddCallbackForAddon("LoseControl", "LoseControl", function()
 		skinIcon(_G[framePrefix..frameUnit])
 	end
 
-	local LoseControl = _G["LoseControlplayer"].__index
-
-	hooksecurefunc(LoseControl, "new", function(_, unitID)
+	hooksecurefunc(_G["LoseControlplayer"].__index, "new", function(_, unitID)
 		skinIcon(_G[framePrefix..unitID])
 	end)
 end)

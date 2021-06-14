@@ -136,7 +136,7 @@ S:AddCallbackForAddon("Spy", "Spy", function()
 
 		function Spy:UpdateActiveCount()
 			local activeCount = 0
-			for k in pairs(Spy.ActiveList) do
+			for _ in pairs(Spy.ActiveList) do
 				activeCount = activeCount + 1
 			end
 			Spy.MainWindow.CountFrame.Text:SetText(activeCount)
