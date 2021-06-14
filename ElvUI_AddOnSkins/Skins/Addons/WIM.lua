@@ -4,6 +4,8 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("WIM") then return end
 
+local format = string.format
+
 -- WIM 3.3.7
 -- https://www.wowace.com/projects/wim-3/files/439176
 
@@ -11,10 +13,11 @@ S:AddCallbackForAddon("WIM", "WIM", function()
 	if not E.private.addOnSkins.WIM then return end
 
 	local function formatDetails(window, guild, level, race, class)
-		if guild ~= "" then
-			guild = "<"..guild.."> "
+		if guild == "" then
+			return format("|cffffffff %s %s %s|r", level, race, class)
+		else
+			return format("|cffffffff<%s> %s %s %s|r", guild, level, race, class)
 		end
-		return "|cffffffff"..guild..level.." "..race.." "..class.."|r"
 	end
 
 	local WIM_Elvui = {
@@ -303,8 +306,8 @@ S:AddCallbackForAddon("WIM", "WIM", function()
 		end)
 	end
 
-	hooksecurefunc("TutorialFrame_Update", function()
-		TutorialFrame:StripTextures()
-		TutorialFrame:SetTemplate("Transparent")
-	end)
+	TutorialFrameTop.Show = E.noop
+	TutorialFrameTop:Hide()
+	TutorialFrameBottom.Show = E.noop
+	TutorialFrameBottom:Hide()
 end)
