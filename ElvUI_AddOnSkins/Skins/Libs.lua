@@ -5,10 +5,13 @@ local AS = E:GetModule("AddOnSkins")
 local _G = _G
 local ipairs = ipairs
 local select = select
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 
 AS.skinnedLibs = {}
+
+local dropdownArrowColor = {1, 0.8, 0}
 
 local function SkinDewdrop(lib, libName)
 	local dewdropEditBoxFrame
@@ -182,7 +185,7 @@ local function SkinConfigator(lib)
 		obj:StripTextures()
 		obj:SetTemplate("Default")
 		obj:Height(12)
-		obj:SetThumbTexture(E["media"].blankTex)
+		obj:SetThumbTexture(E.media.blankTex)
 		obj:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 		obj:GetThumbTexture():Size(10)
 	end
@@ -212,7 +215,7 @@ local function SkinConfigator(lib)
 
 	--	if objType == "FontString" then
 		if objType == "CheckButton" then
-			S:HandleCheckBox(obj)
+			S:HandleCheckBox(obj, true)
 		elseif objType == "Slider" then
 			skinSlider(obj)
 
@@ -225,17 +228,16 @@ local function SkinConfigator(lib)
 			S:HandleButton(obj, true)
 		elseif objType == "Frame" then
 			if obj.stype == "SelectBox" then
-				obj.clearance = 3
-
 				obj:StripTextures()
-				obj:CreateBackdrop("Default")
-				obj.backdrop:SetPoint("TOPLEFT", 15, -1)
-				obj.backdrop:SetPoint("BOTTOMRIGHT", -16, -1)
-				_G[obj:GetName().."Text"]:SetParent(obj.backdrop)
+				obj:SetTemplate("Default")
+				obj:Size(159, 22)
+				local _, _, _, x = obj:GetPoint(2)
+				obj:Point("LEFT", x + 15, 0)
 
-				obj.button:SetPoint("TOPRIGHT", -18, -3)
-				S:HandleNextPrevButton(obj.button)
-				S:SetNextPrevButtonDirection(obj.button)
+				_G[obj:GetName().."Text"]:Point("RIGHT", -26, 0)
+
+				S:HandleNextPrevButton(obj.button, "down", dropdownArrowColor)
+				obj.button:Point("TOPRIGHT", -2, -2)
 			elseif obj.stype == "MoneyFrame"
 			or obj.stype == "PinnedMoney"
 			or obj.stype == "MoneyFramePinned" then
@@ -256,8 +258,33 @@ local function SkinConfigator(lib)
 		end
 	end
 
+	local function fullsizeSetNormalTexture(self, texture)
+		if texture == "Interface\\Minimap\\UI-Minimap-ZoomInButton-Up" then
+			self.normalTexture:SetTexture(E.Media.Textures.Plus)
+			self.pushedTexture:SetTexture(E.Media.Textures.Plus)
+		else
+			self.normalTexture:SetTexture(E.Media.Textures.Minus)
+			self.pushedTexture:SetTexture(E.Media.Textures.Minus)
+		end
+	end
 	local function skinTab(self)
-		self.tabs[#self.tabs].frame:SetTemplate("Transparent")
+		local frame = self.tabs[#self.tabs].frame
+
+		frame:SetTemplate("Default")
+
+		S:HandleButton(frame.fullsize)
+		frame.fullsize:Size(18)
+		frame.fullsize:Point("BOTTOMLEFT", 4, 4)
+
+		frame.fullsize.normalTexture = frame.fullsize:GetNormalTexture()
+		frame.fullsize.pushedTexture = frame.fullsize:GetPushedTexture()
+
+		frame.fullsize.SetNormalTexture = fullsizeSetNormalTexture
+		frame.fullsize:SetNormalTexture(frame.fullsize.normalTexture:GetTexture())
+
+		frame.fullsize:SetHighlightTexture("")
+		frame.fullsize.SetPushedTexture = E.noop
+		frame.fullsize.SetHighlightTexture = E.noop
 	end
 
 	local function skinScroll(self, id)
@@ -266,9 +293,13 @@ local function SkinConfigator(lib)
 
 		if tab.scroll.vScroll then
 			S:HandleScrollBar(tab.scroll.vScroll)
+			tab.scroll.vScroll:Point("TOPLEFT", tab.scroll, "TOPRIGHT", 3, -16)
+			tab.scroll.vScroll:Point("BOTTOMLEFT", tab.scroll, "BOTTOMRIGHT", 3, 14)
 		end
 		if tab.scroll.hScroll then
 			S:HandleScrollBar(tab.scroll.hScroll, true)
+			tab.scroll.hScroll:Point("TOPLEFT", tab.scroll, "BOTTOMLEFT", 18, -3)
+			tab.scroll.hScroll:Point("TOPRIGHT", tab.scroll, "BOTTOMRIGHT", -19, -3)
 		end
 
 		tab.scroll.isSkinned = true
@@ -285,8 +316,16 @@ local function SkinConfigator(lib)
 	S:RawHook(lib, "Create", function(self, ...)
 		local gui = S.hooks[self].Create(self, ...)
 
-		_G[gui:GetName() .. "Backdrop"]:SetTemplate("Transparent")
+		gui.Backdrop:SetTemplate("Transparent")
+
+		gui.DragTop:Point("TOPLEFT", 10, -1)
+		gui.DragTop:Point("TOPRIGHT", -10, -1)
+
+		gui.DragBottom:Point("BOTTOMLEFT", 10, 1)
+		gui.DragBottom:Point("BOTTOMRIGHT", -10, 1)
+
 		S:HandleButton(gui.Done)
+		gui.Done:Point("BOTTOMRIGHT", gui, "BOTTOMRIGHT", -8, 8)
 
 		hooksecurefunc(gui, "AddTab", skinTab)
 		hooksecurefunc(gui, "MakeScrollable", skinScroll)
@@ -308,9 +347,13 @@ local function SkinConfigator(lib)
 				if tab.scroll then
 					if tab.scroll.vScroll then
 						S:HandleScrollBar(tab.scroll.vScroll)
+						tab.scroll.vScroll:Point("TOPLEFT", tab.scroll, "TOPRIGHT", 3, -16)
+						tab.scroll.vScroll:Point("BOTTOMLEFT", tab.scroll, "BOTTOMRIGHT", 3, 14)
 					end
 					if tab.scroll.hScroll then
 						S:HandleScrollBar(tab.scroll.hScroll, true)
+						tab.scroll.hScroll:Point("TOPLEFT", tab.scroll, "BOTTOMLEFT", 18, -3)
+						tab.scroll.hScroll:Point("TOPRIGHT", tab.scroll, "BOTTOMRIGHT", -19, -3)
 					end
 				end
 
@@ -325,16 +368,37 @@ local function SkinConfigator(lib)
 		end
 	end
 
-	lib.tooltip:SetTemplate("Transparent")
+	do	-- tooltip
+		lib.tooltip:SetTemplate("Transparent")
+		lib.tooltip._SetBackdropColor = lib.tooltip.SetBackdropColor
+		lib.tooltip.SetBackdropColor = function(self)
+			self:SetBackdropBorderColor(unpack(E.media.bordercolor, 1, 3))
+			local r, g, b = unpack(E.media.backdropfadecolor, 1, 3)
+			self:_SetBackdropColor(r, g, b, E.db.tooltip.colorAlpha)
+		end
+	end
 
-	lib.help:SetTemplate("Transparent")
-	lib.help.scroll:SetTemplate("Transparent")
-	S:HandleScrollBar(lib.help.scroll.vScroll)
-	S:HandleCloseButton(lib.help.close)
+	do	-- help
+		lib.help:SetTemplate("Transparent")
 
-	local SelectBox = LibStub("SelectBox")
-	SelectBox.menu.back:SetTemplate("Transparent")
-	SelectBox.menu.isSkinned = true
+		lib.help.scroll:SetTemplate("Transparent")
+		lib.help.scroll:Point("TOPLEFT", 8, -25)
+		lib.help.scroll:Point("BOTTOMRIGHT", -29, 8)
+
+		lib.help.content:Width(416)
+
+		S:HandleScrollBar(lib.help.scroll.vScroll)
+		lib.help.scroll.vScroll:Point("TOPLEFT", lib.help.scroll, "TOPRIGHT", 3, -19)
+		lib.help.scroll.vScroll:Point("BOTTOMLEFT", lib.help.scroll, "BOTTOMRIGHT", 3, 19)
+
+		S:HandleCloseButton(lib.help.close)
+	end
+
+	local SelectBox = LibStub("SelectBox", true)
+	if SelectBox then
+		SelectBox.menu.back:SetTemplate("Transparent")
+		SelectBox.menu.isSkinned = true
+	end
 
 	local ScrollSheet = LibStub("ScrollSheet", true)
 	if ScrollSheet then
@@ -344,9 +408,13 @@ local function SkinConfigator(lib)
 			if not sheet.panel.isSkinned then
 				if sheet.panel.vScroll then
 					S:HandleScrollBar(sheet.panel.vScroll)
+					sheet.panel.vScroll:Point("TOPLEFT", sheet.panel, "TOPRIGHT", 3, -18)
+					sheet.panel.vScroll:Point("BOTTOMLEFT", sheet.panel, "BOTTOMRIGHT", 3, 19)
 				end
 				if sheet.panel.hScroll then
 					S:HandleScrollBar(sheet.panel.hScroll, true)
+					sheet.panel.hScroll:Point("TOPLEFT", sheet.panel, "BOTTOMLEFT", 18, -3)
+					sheet.panel.hScroll:Point("TOPRIGHT", sheet.panel, "BOTTOMRIGHT", -19, -3)
 				end
 
 				sheet.panel.isSkinned = true
