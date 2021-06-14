@@ -4,6 +4,8 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("ZygorGuidesViewer") then return end
 
+-- Zygor Guides Viewer 2.0
+
 S:AddCallbackForAddon("ZygorGuidesViewer", "ZygorGuidesViewer", function()
 	if not E.private.addOnSkins.ZygorGuidesViewer then return end
 

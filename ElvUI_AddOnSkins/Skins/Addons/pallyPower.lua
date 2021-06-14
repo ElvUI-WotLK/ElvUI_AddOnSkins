@@ -7,7 +7,6 @@ if not AS:IsAddonLODorEnabled("PallyPower") then return end
 local unpack = unpack
 
 -- PallyPower 3.2.20
--- https://www.curseforge.com/wow/addons/pally-power/files/446442
 
 S:AddCallbackForAddon("PallyPower", "PallyPower", function()
 	if not E.private.addOnSkins.PallyPower then return end
