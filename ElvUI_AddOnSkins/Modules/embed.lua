@@ -340,22 +340,23 @@ if AS:IsAddonLODorEnabled("Skada") then
 	local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
 		if not window then return end
 		local barmod = Skada.displays["bar"]
-		local bargroup_backdrop
 
 		window.db.barwidth = width
+		window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
 
 		window.db.spark = false
 		window.db.barslocked = true
+		window.db.enablebackground = true
 
-		window.bargroup:SetFrameStrata("LOW")
 		window.bargroup:SetParent(relativeFrame)
-		window.bargroup:ClearAllPoints()
+		window.bargroup:SetFrameStrata("LOW")
 
 		if Skada.revisited then
+			local offsety = window.db.reversegrowth and 0 or E.Border
+
 			window.db.scale = 1
 			window.db.background.height = height - (E.Border + E.Spacing)
 
-			local offsety = window.db.reversegrowth and 0 or E.Border
 			window.bargroup.ClearAllPoints = nil
 			window.bargroup:ClearAllPoints()
 			window.bargroup.ClearAllPoints = E.noop
@@ -364,26 +365,24 @@ if AS:IsAddonLODorEnabled("Skada") then
 			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, -offsety)
 			window.bargroup.SetPoint = E.noop
 
-			window.bargroup:SetParent(relativeFrame)
-			window.bargroup:ClearAllPoints()
-			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
-			window.bargroup:SetFrameStrata("LOW")
+			barmod.ApplySettings(barmod, window)
 
-			bargroup_backdrop = window.bargroup.backdrop
+			if window.bargroup.backdrop then
+				window.bargroup.backdrop:SetFrameStrata("LOW")
+				window.bargroup.backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			end
+
 		else
 			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
 			window.db.enablebackground = true
 
+			window.bargroup:ClearAllPoints()
 			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
 
-			bargroup_backdrop = window.bargroup.bgframe
-		end
+			barmod.ApplySettings(barmod, window)
 
-		barmod.ApplySettings(barmod, window)
-
-		if bargroup_backdrop then
-			bargroup_backdrop:SetFrameStrata("LOW")
-			bargroup_backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			window.bargroup.bgframe:SetFrameStrata("LOW")
+			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
 		end
 
 	end
