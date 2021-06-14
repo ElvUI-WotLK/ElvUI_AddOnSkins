@@ -19,6 +19,7 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 			options.titleoptions.args.margin = nil
 			options.titleoptions.args.color = nil
 		end)
+		AS:SkinLibrary("LibUIDropDownMenu")
 	end
 
 	hooksecurefunc(Skada.displays["bar"], "ApplySettings", function(_, win)
