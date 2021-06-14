@@ -15,6 +15,7 @@ local hooksecurefunc = hooksecurefunc
 
 S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 	if not E.private.addOnSkins.FeralbyNight then return end
+	if E.myclass ~= "DRUID" or E.mylevel < 80 then return end
 
 	local function setAlpha(self, alpha)
 		self.backdrop:SetAlpha(alpha)
