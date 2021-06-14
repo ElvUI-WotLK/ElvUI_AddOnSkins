@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
-local TT = E:GetModule("Tooltip")
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("AckisRecipeList") then return end
 
 local ipairs, select, unpack = ipairs, select, unpack
-local find = string.find
 
 local hooksecurefunc = hooksecurefunc
 
@@ -77,55 +75,45 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		end
 	end)
 
-	hooksecurefunc(addon, "Scan", function(self)
-		if self.isSkinned then return end
-		self.isSkinned = true
+	S:SecureHook(addon, "Scan", function(self)
+		S:Unhook(self, "Scan")
 
 		local ARL_MainPanel = ARL_MainPanel
 
 		ARL_MainPanel:StripTextures()
 		ARL_MainPanel:CreateBackdrop("Transparent")
-		ARL_MainPanel.backdrop:Point("TOPLEFT", 10, -12)
-		ARL_MainPanel.backdrop:Point("BOTTOMRIGHT", -35, 74)
+		ARL_MainPanel.backdrop:Point("TOPLEFT", 11, -12)
+		ARL_MainPanel.backdrop:Point("BOTTOMRIGHT", -32, 76)
 
-		ARL_MainPanel.BG = CreateFrame("Frame", nil, ARL_MainPanel)
-		ARL_MainPanel.BG:CreateBackdrop("Transparent")
-		ARL_MainPanel.BG:Point("TOPLEFT", 350, -76)
-		ARL_MainPanel.BG:Point("BOTTOMRIGHT", -92, 103)
-		ARL_MainPanel.BG:Hide()
+		S:SetBackdropHitRect(ARL_MainPanel, ARL_MainPanel.backdrop, true)
 
 		hooksecurefunc(ARL_MainPanel, "ToggleState", function(self)
 			if self.is_expanded then
-				self.backdrop:ClearAllPoints()
-				self.backdrop:Point("TOPLEFT", 10, -12)
-				self.backdrop:Point("BOTTOMRIGHT", -88, 74)
-				self.BG:Show()
+				self.backdrop:Point("BOTTOMRIGHT", -87, 76)
+				S:SetBackdropHitRect(self, self.backdrop, true)
 			else
-				self.backdrop:ClearAllPoints()
-				self.backdrop:Point("TOPLEFT", 10, -12)
-				self.backdrop:Point("BOTTOMRIGHT", -35, 74)
-				self.BG:Hide()
+				self.backdrop:Point("BOTTOMRIGHT", -32, 76)
+				S:SetBackdropHitRect(self, self.backdrop, true)
 			end
 		end)
 
+		S:HandleCloseButton(ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
+
 		ARL_MainPanel.title_bar:Hide()
 
-		ARL_MainPanel.top_left:Kill()
-		ARL_MainPanel.top_right:Kill()
-		ARL_MainPanel.bottom_left:Kill()
-		ARL_MainPanel.bottom_right:Kill()
+		ARL_MainPanel.top_left:Hide()
+		ARL_MainPanel.top_right:Hide()
+		ARL_MainPanel.bottom_left:Hide()
+		ARL_MainPanel.bottom_right:Hide()
 
-		ARL_MainPanel.progress_bar:StripTextures()
-		ARL_MainPanel.progress_bar:CreateBackdrop()
-		ARL_MainPanel.progress_bar:Height(20)
-		ARL_MainPanel.progress_bar:Point("BOTTOMLEFT", ARL_MainPanel, 15, 78)
-		ARL_MainPanel.progress_bar:SetStatusBarTexture(E.media.normTex)
-		ARL_MainPanel.progress_bar:SetStatusBarColor(0.22, 0.39, 0.84)
-		E:RegisterStatusBar(ARL_MainPanel.progress_bar)
+		ARL_MainPanel.top_left.Show = E.noop
+		ARL_MainPanel.top_right.Show = E.noop
+		ARL_MainPanel.bottom_left.Show = E.noop
+		ARL_MainPanel.bottom_right.Show = E.noop
 
 		ARL_MainPanel.prof_button:SetTemplate()
-		ARL_MainPanel.prof_button:Size(36)
-		ARL_MainPanel.prof_button:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 14, -16)
+		ARL_MainPanel.prof_button:Size(32)
+		ARL_MainPanel.prof_button:Point("TOPLEFT", 19, -20)
 
 		local prof_buttonHighlight = ARL_MainPanel.prof_button:GetHighlightTexture()
 		prof_buttonHighlight:SetInside()
@@ -142,26 +130,108 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			ChangeTexture(self._disabled)
 		end)
 
-		ARL_MainPanel.list_frame:SetBackdrop(nil)
-		ARL_MainPanel.list_frame:CreateBackdrop("Transparent")
-		ARL_MainPanel.list_frame.backdrop:Point("TOPLEFT", -8, 0)
-		ARL_MainPanel.list_frame.backdrop:Point("BOTTOMRIGHT", 28, 0)
-		select(2, ARL_MainPanel.expand_button:GetPoint()):GetParent():Hide()
-
 		S:HandleEditBox(ARL_MainPanel.search_editbox)
 		ARL_MainPanel.search_editbox.backdrop:Point("TOPLEFT", -2, 0)
-		ARL_MainPanel.search_editbox:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 80, -52)
+		ARL_MainPanel.search_editbox:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 90, -50)
 		ARL_MainPanel.search_editbox:DisableDrawLayer("BACKGROUND")
-		ARL_MainPanel.search_editbox:Size(140, 18)
+		ARL_MainPanel.search_editbox:Size(140, 17)
+
+		for i = 1, ARL_MainPanel:GetNumChildren() do
+			local child = select(i, ARL_MainPanel:GetChildren())
+			if child and child:IsObjectType("CheckButton") and child.text then
+				-- SkillToggle
+				S:HandleCheckBox(child, true)
+				child:Size(14)
+				child:Point("TOPLEFT", ARL_MainPanel.search_editbox, "TOPRIGHT", -142, 34)
+				child.text:Point("LEFT", child, "RIGHT", 3, 0)
+
+				local excludeToggle = select(i + 1, ARL_MainPanel:GetChildren())
+				S:HandleCheckBox(excludeToggle, true)
+				excludeToggle:Size(14)
+				excludeToggle:Point("TOP", child, "BOTTOM", 0, -3)
+				excludeToggle.text:Point("LEFT", excludeToggle, "RIGHT", 3, 0)
+
+				break
+			end
+		end
+
+		select(2, ARL_MainPanel.expand_button:GetPoint()):GetParent():Hide()
+		S:HandleCollapseExpandButton(ARL_MainPanel.expand_button, "+")
+		ARL_MainPanel.expand_button:ClearAllPoints()
+		ARL_MainPanel.expand_button:Point("BOTTOMRIGHT", ARL_MainPanel.search_editbox, "BOTTOMLEFT", -53, -2)
+
+		ARL_MainPanel.list_frame:SetBackdrop(nil)
+		ARL_MainPanel.list_frame:CreateBackdrop("Transparent")
+		ARL_MainPanel.list_frame.backdrop:Point("TOPLEFT", -2, 2)
+		ARL_MainPanel.list_frame.backdrop:Point("BOTTOMRIGHT", 5, 5)
+		ARL_MainPanel.list_frame:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 21, -73)
 
 		HandleScrollBar(ARL_MainPanel.list_frame.scroll_bar)
-		ARL_MainPanel.list_frame.scroll_bar:Point("TOPLEFT", ARL_MainPanel.list_frame, "TOPRIGHT", 4, -16)
-		ARL_MainPanel.list_frame.scroll_bar:Point("BOTTOMLEFT", ARL_MainPanel.list_frame, "BOTTOMRIGHT", 0, 16)
+		ARL_MainPanel.list_frame.scroll_bar:Point("TOPLEFT", ARL_MainPanel.list_frame, "TOPRIGHT", 6, -12)
+		ARL_MainPanel.list_frame.scroll_bar:Point("BOTTOMLEFT", ARL_MainPanel.list_frame, "BOTTOMRIGHT", 6, 19)
+		ARL_MainPanel.list_frame.scroll_bar.Hide = E.noop
+		ARL_MainPanel.list_frame.scroll_bar:Show()
 
-		S:HandleCloseButton(ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
+		for i = 1, 25 do
+			S:HandleCollapseExpandButton(ARL_MainPanel.list_frame.state_buttons[i], "+")
+			S:HandleButtonHighlight(ARL_MainPanel.list_frame.entry_buttons[i])
+		end
+
+		S:HandleNextPrevButton(ARL_MainPanel.sort_button, "down", nil, true)
+		ARL_MainPanel.sort_button:Size(22)
+		ARL_MainPanel.sort_button:ClearAllPoints()
+		ARL_MainPanel.sort_button:Point("LEFT", ARL_MainPanel.expand_button, "RIGHT", 20, 0)
+
+		ARL_MainPanel.sort_button.SetTextures = function(self)
+			local normal, pushed = self:GetNormalTexture(), self:GetPushedTexture()
+
+			if addon.db.profile.sorting == "Ascending" then
+				normal:SetRotation(3.14)
+				pushed:SetRotation(3.14)
+			else
+				normal:SetRotation(0)
+				pushed:SetRotation(0)
+			end
+		end
+
+		ARL_MainPanel.progress_bar:StripTextures()
+		ARL_MainPanel.progress_bar:CreateBackdrop()
+		ARL_MainPanel.progress_bar:Size(209, 20)
+		ARL_MainPanel.progress_bar:Point("BOTTOMLEFT", ARL_MainPanel, 20, 85)
+		ARL_MainPanel.progress_bar:SetStatusBarTexture(E.media.normTex)
+		ARL_MainPanel.progress_bar:SetStatusBarColor(0.22, 0.39, 0.84)
+		E:RegisterStatusBar(ARL_MainPanel.progress_bar)
+
+		ARL_MainPanel.close_button:Height(22)
+		ARL_MainPanel.close_button:Point("LEFT", ARL_MainPanel.progress_bar, "RIGHT", 4, 0)
+		SkinButton(ARL_MainPanel.close_button, true)
+
+		for i, tab in ipairs(ARL_MainPanel.tabs) do
+			tab:StripTextures()
+			tab.left.SetTexture = E.noop
+			tab.middle.SetTexture = E.noop
+			tab.right.SetTexture = E.noop
+
+			tab:CreateBackdrop()
+			tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
+			tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
+
+			tab:SetHitRectInsets(10, 10, E.PixelMode and 1 or 3, 3)
+
+			if i == 1 then
+				tab:Point("TOPLEFT", ARL_MainPanel, "BOTTOMLEFT", 11, 78)
+			else
+				tab:Point("LEFT", ARL_MainPanel.tabs[i-1], "RIGHT", -15, 0)
+			end
+		end
+
+		if not (TipTac and TipTac.AddModifiedTip) then
+			E:GetModule("Tooltip"):SecureHookScript(AckisRecipeList_SpellTooltip, "OnShow", "SetStyle")
+			AS:SkinLibrary("LibQTip-1.0")
+		end
 
 		S:HandleNextPrevButton(ARL_MainPanel.filter_toggle, "right", nil, true)
-		ARL_MainPanel.filter_toggle:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 323, -41)
+		ARL_MainPanel.filter_toggle:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 324, -39)
 		ARL_MainPanel.filter_toggle:Size(28)
 
 		ARL_MainPanel.filter_toggle.SetTextures = function(self)
@@ -182,154 +252,15 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			end)
 		end
 
-		ARL_MainPanel.close_button:Height(22)
-		ARL_MainPanel.close_button:Point("LEFT", ARL_MainPanel.progress_bar, "RIGHT", 3, 0)
-		SkinButton(ARL_MainPanel.close_button, true)
-
-		ARL_MainPanel.expand_button:ClearAllPoints()
-		ARL_MainPanel.expand_button:Point("BOTTOMRIGHT", ARL_MainPanel.search_editbox, "BOTTOMLEFT", -48, -1)
-
-		S:HandleNextPrevButton(ARL_MainPanel.sort_button, "down", nil, true)
-		ARL_MainPanel.sort_button:Size(22)
-		ARL_MainPanel.sort_button:ClearAllPoints()
-		ARL_MainPanel.sort_button:Point("LEFT", ARL_MainPanel.expand_button, "RIGHT", 20, 0)
-
-		ARL_MainPanel.sort_button.SetTextures = function(self)
-			local normal, pushed = self:GetNormalTexture(), self:GetPushedTexture()
-
-			if addon.db.profile.sorting == "Ascending" then
-				normal:SetRotation(3.14)
-				pushed:SetRotation(3.14)
-			else
-				normal:SetRotation(0)
-				pushed:SetRotation(0)
-			end
-		end
-
-		for i = 1, ARL_MainPanel:GetNumChildren() do
-			local p1, frame, p2, x, y
-
-			local child = select(i, ARL_MainPanel:GetChildren())
-			if child and child:IsObjectType("CheckButton") and child.text then
-				S:HandleCheckBox(child, true)
-				child:Size(14)
-
-				if child.text:GetText() == SKILL then
-					p1, frame, p2, x, y = child:GetPoint()
-					child:Point(p1, frame, p2, x - 142, y + 32)
-
-					p1, frame, p2, x, y = child.text:GetPoint()
-					child.text:Point(p1, frame, p2, x + 3, y)
-			--	elseif child.text:GetText() == LibStub("AceLocale-3.0"):GetLocale("Ackis Recipe List")["Display Exclusions"] then
-				else
-					p1, frame, p2, x, y = child:GetPoint()
-					child:Point(p1, frame, p2, x, y - 3)
-
-					p1, frame, p2, x, y = child.text:GetPoint()
-					child.text:Point(p1, frame, p2, x + 3, y)
-				end
-			end
-		end
-
-		for i = 0, 25 do
-			local state = ARL_MainPanel.list_frame.state_buttons[i]
-			local entry = ARL_MainPanel.list_frame.entry_buttons[i]
-
-			if i == 0 then
-				state = ARL_MainPanel.expand_button
-			end
-
-			if entry then
-				S:HandleButtonHighlight(entry)
-				entry:GetHighlightTexture():SetInside(button)
-			end
-
-			state:SetNormalTexture(E.Media.Textures.Plus)
-			state.SetNormalTexture = E.noop
-			state:GetNormalTexture():Size(14)
-			state:GetNormalTexture():Point("LEFT", 15, 3)
-			state:GetNormalTexture().SetPoint = E.noop
-
-			state:SetPushedTexture(E.Media.Textures.Plus)
-			state.SetPushedTexture = E.noop
-			state:GetPushedTexture():Size(14)
-			state:GetPushedTexture():Point("LEFT", 15, 3)
-			state:GetPushedTexture().SetPoint = E.noop
-
-			state:SetHighlightTexture("")
-			state.SetHighlightTexture = E.noop
-			state:SetDisabledTexture(E.Media.Textures.Plus)
-			state.SetDisabledTexture = E.noop
-			state:GetDisabledTexture():Size(14)
-			state:GetDisabledTexture():Point("LEFT", 15, 3)
-			state:GetDisabledTexture().SetPoint = E.noop
-			state:GetDisabledTexture():SetVertexColor(0.6, 0.6, 0.6)
-
-			hooksecurefunc(state, "SetNormalTexture", function(self, texture)
-				if find(texture, "MinusButton") or find(texture, "ZoomOutButton") then
-					self:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-					self:GetPushedTexture():SetTexture(E.Media.Textures.Minus)
-				elseif find(texture, "PlusButton") or find(texture, "ZoomInButton") then
-					self:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-					self:GetPushedTexture():SetTexture(E.Media.Textures.Plus)
-				end
-			end)
-		end
-
-		for i, tab in ipairs(ARL_MainPanel.tabs) do
-			tab:StripTextures()
-			tab.left:Kill()
-			tab.middle:Kill()
-			tab.right:Kill()
-
-			tab.backdrop = CreateFrame("Frame", nil, tab)
-			tab.backdrop:SetTemplate()
-			tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
-			tab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -1 or -3)
-			tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
-
-			if i == 1 then
-				local p1, frame, p2, x, y = tab:GetPoint()
-				tab:Point(p1, frame, p2, x, y - 5)
-			end
-		end
-
-		if not (TipTac and TipTac.AddModifiedTip) then
-			AckisRecipeList_SpellTooltip:HookScript("OnShow", function(self)
-				TT:SetStyle(self)
-			end)
-
-			local LibQTip = LibStub("LibQTip-1.0")
-			--[[
-			if LibQTip and not S:IsHooked(LibQTip, "Acquire") then
-				S:RawHook(LibQTip, "Acquire", function(self, key)
-					local tooltip = self.activeTooltips[key]
-					if tooltip then
-						E:GetModule("Tooltip"):SetStyle(tooltip)
-					end
-				end)
-			end
-			]]
-
-			hooksecurefunc(LibQTip, "Acquire", function(self, key)
-				local tooltip = self.activeTooltips[key]
-				if tooltip then
-					TT:SetStyle(tooltip)
-				end
-			end)
-
-			hooksecurefunc(LibQTip.LabelPrototype, "SetupCell", function(self)
-				self.fontString:FontTemplate()
-			end)
-		end
-
 		ARL_MainPanel.filter_toggle:HookScript("OnClick", function(self)
 			if self.isFrameSkinned then return end
 			self.isFrameSkinned = true
 
-			ARL_MainPanel.filter_menu:Point("TOPRIGHT", ARL_MainPanel, "TOPRIGHT", -115, -75)
+			ARL_MainPanel.filter_menu:SetTemplate("Transparent")
+			ARL_MainPanel.filter_menu:Size(326, 332)
+			ARL_MainPanel.filter_menu:Point("TOPRIGHT", ARL_MainPanel, "TOPRIGHT", -95, -71)
 
-			ARL_MainPanel.filter_reset:Point("BOTTOMRIGHT", ARL_MainPanel, "BOTTOMRIGHT", -91, 77)
+			ARL_MainPanel.filter_reset:Point("BOTTOMRIGHT", ARL_MainPanel, "BOTTOMRIGHT", -95, 84)
 			SkinButton(ARL_MainPanel.filter_reset, true)
 
 			local menuIcons = {
@@ -347,7 +278,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 				local iconEntry = ARL_MainPanel[menuIcon]
 
 				if i == 1 then
-					iconEntry:Point("LEFT", ARL_MainPanel.filter_toggle, "RIGHT", 21, 0)
+					iconEntry:Point("LEFT", ARL_MainPanel.filter_toggle, "RIGHT", 17, 0)
 				end
 
 				iconEntry:SetTemplate()
