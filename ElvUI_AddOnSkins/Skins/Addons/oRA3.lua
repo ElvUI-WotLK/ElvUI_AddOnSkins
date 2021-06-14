@@ -99,10 +99,10 @@ S:AddCallbackForAddon("oRA3", "oRA3", function()
 			oRA3TankBottomScrollFrame.backdrop:Point("BOTTOMRIGHT", 7, -1)
 
 			oRA3TankTopScrollFrameScrollBar:Point("TOPLEFT", oRA3TankTopScrollFrame, "TOPRIGHT", 10, -18)
-			oRA3TankTopScrollFrameScrollBar:Point("BOTTOMLEFT", oRA3TankTopScrollFrame, "BOTTOMRIGHT", 10, 19)
+			oRA3TankTopScrollFrameScrollBar:Point("BOTTOMLEFT", oRA3TankTopScrollFrame, "BOTTOMRIGHT", 10, 18)
 
 			oRA3TankBottomScrollFrameScrollBar:Point("TOPLEFT", oRA3TankBottomScrollFrame, "TOPRIGHT", 10, -18)
-			oRA3TankBottomScrollFrameScrollBar:Point("BOTTOMLEFT", oRA3TankBottomScrollFrame, "BOTTOMRIGHT", 10, 19)
+			oRA3TankBottomScrollFrameScrollBar:Point("BOTTOMLEFT", oRA3TankBottomScrollFrame, "BOTTOMRIGHT", 10, 18)
 
 			for i = 1, 10 do
 				local checkBox = _G["oRA3TankHideButton"..i]

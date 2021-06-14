@@ -128,8 +128,10 @@ S:AddCallbackForAddon("Mapster", "Mapster", function()
 		end
 	end)
 
-	MapsterOptionsButton:Point("TOPRIGHT", WorldMapPositioningGuide, "TOPRIGHT", -50, -2)
+	MapsterOptionsButton:Point("TOPRIGHT", WorldMapPositioningGuide, "TOPRIGHT", -50, -3)
 	MapsterOptionsButton.SetPoint = E.noop
+
+	MapsterQuestObjectivesDropDown:Point("BOTTOMRIGHT", WorldMapPositioningGuide, "BOTTOMRIGHT", -7, -4)
 
 	S:HandleButton(MapsterOptionsButton)
 	S:HandleDropDownBox(MapsterQuestObjectivesDropDown)

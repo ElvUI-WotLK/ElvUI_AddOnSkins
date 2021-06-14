@@ -13,7 +13,8 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 
 	LightHeadedFrame:StripTextures()
 	LightHeadedFrame:SetTemplate("Transparent")
-	LightHeadedFrame:Height(427)
+	LightHeadedFrame:Height(424)
+	LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", -2, 0)
 
 	LightHeadedFrame.handle:SetParent(QuestLogFrame) -- ignore LightHeadedFrame alpha
 	LightHeadedFrame.handle:StripTextures()
@@ -24,12 +25,17 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 	LightHeadedSearchBox:Point("TOP", LightHeadedFrame, "TOP", 0, -30)
 	S:HandleEditBox(LightHeadedSearchBox)
 
-	S:HandleCloseButton(LightHeadedFrame.close)
+	S:HandleCloseButton(LightHeadedFrame.close, LightHeadedFrame)
 
-	LightHeadedFrameSub.scroll:SetTemplate("Default")
-	LightHeadedFrameSub.scroll:Size(260, 300)
-	LightHeadedFrameSub.scroll:ClearAllPoints()
-	LightHeadedFrameSub.scroll:Point("TOPLEFT", LightHeadedFrameSub, "TOPLEFT", 21, -75)
+	LightHeadedScrollFrame:CreateBackdrop("Transparent")
+	LightHeadedScrollFrame.backdrop:Point("TOPLEFT", -1, 2)
+	LightHeadedScrollFrame.backdrop:Point("BOTTOMRIGHT", 1, -2)
+
+	LightHeadedScrollFrame:Point("TOPLEFT", 9, -75)
+	LightHeadedScrollFrame:Point("BOTTOMRIGHT", -30, 55)
+
+	LightHeadedScrollFrameScrollBar:Point("TOPLEFT", LightHeadedScrollFrame, "TOPRIGHT", 4, -17)
+	LightHeadedScrollFrameScrollBar:Point("BOTTOMLEFT", LightHeadedScrollFrame, "BOTTOMRIGHT", 4, 17)
 
 	S:HandleNextPrevButton(LightHeadedFrameSub.next, "right")
 	S:HandleNextPrevButton(LightHeadedFrameSub.prev, "left")
@@ -38,8 +44,8 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 
 	LightHeadedTooltip:SetTemplate("Transparent")
 	hooksecurefunc(LightHeaded, "OnHyperlinkEnter", function()
-		local backdrop = E["media"].backdropfadecolor
-		local border = E["media"].bordercolor
+		local backdrop = E.media.backdropfadecolor
+		local border = E.media.bordercolor
 		LightHeadedTooltip:SetBackdropColor(backdrop[1], backdrop[2], backdrop[3], backdrop[4])
 		LightHeadedTooltip:SetBackdropBorderColor(border[1], border[2], border[3])
 	end)
@@ -51,18 +57,18 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 
 	local function UpdatePosition()
 		if LightHeaded.db.profile.open then
-			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXOpened, -2)
+			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXOpened, 0)
 		else
 			LightHeadedFrame:SetAlpha(0)
 			LightHeadedFrameSub:SetAlpha(1)
-			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXClosed, -2)
+			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXClosed, 0)
 		end
 	end
 
 	UpdatePosition()
 
 	hooksecurefunc(LightHeaded, "LockUnlockFrame", function()
-		LightHeadedFrame:Height(427)
+		LightHeadedFrame:Height(424)
 		UpdatePosition()
 	end)
 
@@ -119,8 +125,8 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 		local status = mod * totalElapsed
 		local offset = cosineInterpolation(closedX, openedX, status)
 
-		self:SetPoint("LEFT", QuestLogFrame, "RIGHT", offset, -2)
-		self:SetAlpha(LightHeaded.db.profile.lhopen and status or (1 - status))
+		self:Point("LEFT", QuestLogFrame, "RIGHT", offset, 0)
+		self:SetAlpha(LightHeaded.db.profile.lhopen and (1 - status) or status)
 	end
 
 	LightHeadedFrame.handle:SetScript("OnClick", function()
