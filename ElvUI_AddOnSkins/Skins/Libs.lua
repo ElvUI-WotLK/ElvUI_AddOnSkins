@@ -476,6 +476,87 @@ local function SkinAzDialog(libName)
 	return true
 end
 
+local function SkinAzDropDown(libName)
+	local lib = _G[libName]
+	if not lib then return end
+
+	S:RawHook(lib, "CreateDropDown", function(parent, ...)
+		local f = S.hooks[lib].CreateDropDown(parent, ...)
+
+		f:SetTemplate()
+
+		S:HandleNextPrevButton(f.button, "down", dropdownArrowColor)
+		f.button:Point("TOPRIGHT", -2, -2)
+		f.button:Point("BOTTOMRIGHT", -2, 2)
+		f.button:Size(20)
+
+		return f
+	end)
+
+	S:SecureHook(lib, "ToggleMenu", function(parent, width, isAutoSelect, initFunc, selectValueFunc)
+		local scrollFrame = _G["AzDropDownScroll"..lib.vers]
+		if scrollFrame then
+			scrollFrame:GetParent():SetTemplate("Default")
+			S:HandleScrollBar(_G["AzDropDownScroll"..lib.vers.."ScrollBar"])
+
+			S:Unhook(lib, "ToggleMenu")
+		end
+	end)
+
+	return true
+end
+
+local function SkinAzOptionsFactory(libName)
+	local lib = _G[libName]
+	if not lib then return end
+
+	AS:SkinLibrary("AzDropDown")
+
+	S:RawHook(lib.makers, "Slider", function(self)
+		local f = S.hooks[lib.makers].Slider(self)
+
+		S:HandleEditBox(f.edit)
+		S:HandleSliderFrame(f.slider)
+
+		f.slider:Point("TOPLEFT", f.edit, "TOPRIGHT", 5, -10)
+		f.slider:Point("BOTTOMRIGHT", 0, -1)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Check", function(self)
+		local f = S.hooks[lib.makers].Check(self)
+
+		S:HandleCheckBox(f)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Color", function(self)
+		local f = S.hooks[lib.makers].Color(self)
+
+		S:HandleColorSwatch(f)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Text", function(self)
+		local f = S.hooks[lib.makers].Text(self)
+
+		f:SetBackdrop(nil)
+
+		f:CreateBackdrop()
+		f.backdrop:SetFrameLevel(f:GetFrameLevel())
+
+		f.backdrop:Point("TOPLEFT", 2, -2)
+		f.backdrop:Point("BOTTOMRIGHT", -2, 2)
+
+		return f
+	end)
+
+	return true
+end
+
 local function SkinLibExtraTip(lib)
 	S:RawHook(lib, "GetFreeExtraTipObject", function(self)
 		local tooltip = S.hooks[self].GetFreeExtraTipObject(self)
@@ -677,6 +758,168 @@ local function SkinDropDownMenu(libName)
 	return true
 end
 
+local function SkinLibQTip(lib)
+	hooksecurefunc(lib, "Acquire", function(self, key)
+		if self.activeTooltips[key] then
+			self.activeTooltips[key]:SetTemplate("Transparent")
+		end
+	end)
+
+	S:Hook(lib.LabelPrototype, "SetupCell", function(self)
+		self.fontString:FontTemplate()
+	end)
+
+	hooksecurefunc(lib.tipPrototype, "UpdateScrolling", function(self)
+		if self.slider and not self.slider.isSkinned then
+			S:HandleSliderFrame(self.slider)
+			self.slider.isSkinned = true
+		end
+	end)
+
+	return true
+end
+
+local function SkinWaterfall(lib)
+	hooksecurefunc(WaterfallFrame.prototype, "init", function(self)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		self.titlebar:Point("TOPLEFT", self.frame, "TOPLEFT", 4, -4)
+		self.titlebar:Point("TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
+
+		S:HandleCloseButton(self.closebutton)
+		self.closebutton:SetPoint("TOPRIGHT", 0, 0)
+
+		self.treeview:Point("TOPLEFT", self.frame, "TOPLEFT", 8, -33)
+		self.treeview:Point("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 8, 8)
+
+		self.mainpane:Point("TOPLEFT", self.treeview.frame, "TOPRIGHT", 3, 0)
+		self.mainpane:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -8, 8)
+	end)
+	S:RawHook(WaterfallFrame.prototype, "ReAnchorTree", function(self)
+		self.treeview:Point("TOPLEFT", self.frame, "TOPLEFT", 8, -33)
+		self.treeview:Point("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 8, 8)
+	end)
+
+	hooksecurefunc(WaterfallPane.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		S:HandleScrollBar(self.scrollbar)
+	end)
+
+	hooksecurefunc(WaterfallTreeView.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		S:HandleScrollBar(self.scrollbar)
+
+		self.sizer:ClearAllPoints()
+		self.sizer:Point("TOPLEFT", self.frame, "TOPRIGHT", -2, 0)
+		self.sizer:Point("BOTTOMLEFT", self.frame, "BOTTOMRIGHT", -2, 0)
+	end)
+	hooksecurefunc(WaterfallTreeLine.prototype, "init", function(self)
+		S:HandleCollapseExpandButton(self.expand)
+	end)
+	hooksecurefunc(WaterfallTreeSection.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		self.titlebar:Point("TOPLEFT", self.frame, "TOPLEFT", 4, -4)
+		self.titlebar:Point("TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
+
+		S:HandleCloseButton(self.closebutton)
+		self.closebutton:SetPoint("TOPRIGHT", 0, 0)
+	end)
+
+	hooksecurefunc(WaterfallColorSwatch.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:SetOutside(self.colorSwatch)
+
+		self.colorSwatch:SetTexture(nil)
+		self.colorSwatch:Size(18)
+
+		self.colorSwatch.texture:SetParent(self.frame.backdrop)
+		self.colorSwatch.texture:SetInside()
+
+		self.text:Point("LEFT", self.colorSwatch, "RIGHT", 4, 0)
+		self.text.SetPoint = E.noop
+	end)
+
+	hooksecurefunc(WaterfallCheckBox.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:SetOutside(self.checkbg)
+
+		self.checkbg:Hide()
+		self.checkbg:Size(18)
+
+		self.check:SetParent(self.frame.backdrop)
+		self.check:SetAllPoints()
+
+		self.text:Point("LEFT", self.check, "RIGHT", 3, 0)
+		self.text.SetPoint = E.noop
+	end)
+	hooksecurefunc(WaterfallCheckBox.prototype, "UpdateTexture", function(self)
+		if self.isRadio then
+			self.frame.backdrop:Hide()
+			self.checkbg:Show()
+		else
+			self.frame.backdrop:Show()
+			self.checkbg:Hide()
+		end
+	end)
+
+	hooksecurefunc(WaterfallDragLink.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:ClearAllPoints()
+		self.frame.backdrop:SetPoint("LEFT")
+		self.frame.backdrop:Width(self.iconWidth or WaterfallDragLink.defaultIconSize)
+		self.frame.backdrop:Height(self.iconHeight or WaterfallDragLink.defaultIconSize)
+
+		self.linkIcon:SetParent(self.frame.backdrop)
+		self.linkIcon:SetInside()
+		self.linkIcon:SetTexCoord(unpack(E.TexCoords))
+	end)
+
+	hooksecurefunc(WaterfallButton.prototype, "init", function(self)
+		S:HandleButton(self.frame)
+	end)
+
+	hooksecurefunc(WaterfallKeybinding.prototype, "init", function(self)
+		S:HandleButton(self.frame)
+		self.msgframe:SetTemplate("Transparent")
+	end)
+
+	hooksecurefunc(WaterfallSlider.prototype, "init", function(self)
+		S:HandleSliderFrame(self.slider)
+	end)
+
+	hooksecurefunc(WaterfallTextBox.prototype, "init", function(self)
+		self.frame:Height(22)
+		self.frame:SetTemplate("Default")
+	end)
+
+	hooksecurefunc(WaterfallDropdown.prototype, "init", function(self)
+		self.editbox:SetTemplate("Default")
+
+		self.frame:Size(200, 20)
+		self.frame.SetWidth = E.noop
+
+		S:HandleNextPrevButton(self.button, "down", dropdownArrowColor)
+		self.button:Size(16)
+		self.button:Point("RIGHT", self.frame, "RIGHT", -22, 0)
+
+		self.pullout:SetTemplate("Default")
+	end)
+
+	return true
+end
+
 local function SkinLDropDownMenu(lib)
 	if not _G.Lib_UIDropDownMenu_Initialize then return end
 
@@ -755,6 +998,14 @@ AS.libSkins = {
 		stub = false,
 		func = SkinAzDialog
 	},
+	["AzDropDown"] = {
+		stub = false,
+		func = SkinAzDropDown
+	},
+	["AzOptionsFactory"] = {
+		stub = false,
+		func = SkinAzOptionsFactory
+	},
 	["Configator"] = {
 		stub = true,
 		func = SkinConfigator
@@ -783,6 +1034,10 @@ AS.libSkins = {
 		stub = true,
 		func = SkinLibRockConfig
 	},
+	["LibQTip-1.0"] = {
+		stub = true,
+		func = SkinLibQTip
+	},
 	["ScrollingTable"] = {
 		stub = true,
 		func = SkinScrollingTable
@@ -790,6 +1045,10 @@ AS.libSkins = {
 	["Tablet-2.0"] = {
 		stub = true,
 		func = SkinTablet2
+	},
+	["Waterfall-1.0"] = {
+		stub = true,
+		func = SkinWaterfall
 	},
 	["ZFrame-1.0"] = {
 		stub = true,
