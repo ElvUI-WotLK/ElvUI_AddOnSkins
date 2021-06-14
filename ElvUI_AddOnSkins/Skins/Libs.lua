@@ -921,7 +921,7 @@ local function SkinWaterfall(lib)
 end
 
 local function SkinLDropDownMenu(lib)
-	if not _G.Lib_UIDropDownMenu_Initialize then return end
+	if not _G.L_UIDropDownMenu_Initialize then return end
 
 	local checkBoxSkin = E.private.skins.dropdownCheckBoxSkin
 	local menuLevel = 0
@@ -963,6 +963,13 @@ local function SkinLDropDownMenu(lib)
 								check:CreateBackdrop()
 								check:SetTexture(E.media.normTex)
 								check:SetVertexColor(1, 0.82, 0, 0.8)
+
+								local uncheck = _G["L_DropDownList" .. i .. "Button" .. j .. "UnCheck"]
+								uncheck:Size(12)
+								uncheck:Point("LEFT", 1, 0)
+								uncheck:CreateBackdrop()
+								uncheck:SetTexture(nil)
+								uncheck:SetVertexColor(1, 0.82, 0, 0.8)
 
 								button.check = check
 								hooksecurefunc(button, "Show", dropDownButtonShow)
