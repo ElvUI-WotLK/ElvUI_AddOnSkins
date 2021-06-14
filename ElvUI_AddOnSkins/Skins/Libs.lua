@@ -590,7 +590,7 @@ local function SkinLibCandyBar(lib)
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 	local function setPoint(self, point, attachTo, anchorPoint, xOffset, yOffset)
 		if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
-			self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
+			self:Point(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
 		end
 	end
 
@@ -664,7 +664,7 @@ end
 local function SkinScrollingTable(lib)
 	local function updateRows(self, num)
 		if num and num > 0 and #self.rows ~= 0 then
-			self.rows[1]:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -21, -5)
+			self.rows[1]:Point("TOPRIGHT", self.frame, "TOPRIGHT", -21, -5)
 		end
 	end
 
