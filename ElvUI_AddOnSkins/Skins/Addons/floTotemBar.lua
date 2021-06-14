@@ -4,13 +4,16 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("FloTotemBar") then return end
 
+local _G = _G
+local unpack = unpack
+
 -- FloTotemBar 3.3.0.16
 -- https://www.curseforge.com/wow/addons/flo-totem-bar/files/399321
 
 S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", function()
 	if not E.private.addOnSkins.FloTotemBar then return end
 
-	if FLO_CLASS_NAME ~= "HUNTER" and FLO_CLASS_NAME ~= "SHAMAN" then return end
+	if E.myclass ~= "HUNTER" and E.myclass ~= "SHAMAN" then return end
 
 	local AB = E:GetModule("ActionBars")
 

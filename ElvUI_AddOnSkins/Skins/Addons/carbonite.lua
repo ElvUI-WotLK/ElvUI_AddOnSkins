@@ -7,7 +7,7 @@ if not AS:IsAddonLODorEnabled("Carbonite") then return end
 local pairs = pairs
 local lshift = bit.lshift
 
--- Carbonite 3.340
+-- Carbonite 3.34
 
 S:AddCallbackForAddon("Carbonite", "Carbonite", function()
 	if not E.private.addOnSkins.Carbonite then return end
@@ -54,7 +54,7 @@ S:AddCallbackForAddon("Carbonite", "Carbonite", function()
 		["BgCol"] = backdropColor,
 	}
 
-	for i, v in pairs(Nx.OpD) do
+	for i, v in ipairs(Nx.OpD) do
 		if v.N == "Skin" then
 			table.insert(Nx.OpD[i], {N = "ElvUI", F = "NXCmdSkin", Dat = "ElvUI"})
 			break
