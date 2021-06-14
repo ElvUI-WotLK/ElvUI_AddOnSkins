@@ -10,10 +10,10 @@ if not AS:IsAddonLODorEnabled("SilverDragon") then return end
 S:AddCallbackForAddon("SilverDragon", "SilverDragon", function()
 	if not E.private.addOnSkins.SilverDragon then return end
 
-	local SilverDragon = LibStub("AceAddon-3.0"):GetAddon("SilverDragon")
+	local SilverDragon = LibStub("AceAddon-3.0"):GetAddon("SilverDragon", true)
 	if not SilverDragon then return end
 
-	local ClickTarget = SilverDragon:GetModule("ClickTarget")
+	local ClickTarget = SilverDragon:GetModule("ClickTarget", true)
 	if ClickTarget then
 		ClickTarget.popup:SetParent(UIParent)
 

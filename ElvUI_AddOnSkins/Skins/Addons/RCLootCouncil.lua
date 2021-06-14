@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("RCLootCouncil") then return end
 S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 	if not E.private.addOnSkins.RCLootCouncil then return end
 
-	local addon = LibStub("AceAddon-3.0"):GetAddon("RCLootCouncil")
+	local addon = LibStub("AceAddon-3.0"):GetAddon("RCLootCouncil", true)
 	if not addon then return end
 
 	AS:SkinLibrary("DropDownMenu")
@@ -50,7 +50,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 		hooksecurefunc(button, "SetNormalTexture", updateTexCoord)
 	end
 
-	local votingFrame = addon:GetModule("RCVotingFrame")
+	local votingFrame = addon:GetModule("RCVotingFrame", true)
 	if votingFrame then
 		local function moreInfoSetTexture(self, texture)
 			local normalTexture = self:GetNormalTexture()
@@ -100,7 +100,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 		end)
 	end
 
-	local lootFrame = addon:GetModule("RCLootFrame")
+	local lootFrame = addon:GetModule("RCLootFrame", true)
 	if lootFrame then
 		local function updateTexCoord(self)
 			self.icon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
@@ -117,7 +117,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 		end)
 	end
 
-	local sessionFrame = addon:GetModule("RCSessionFrame")
+	local sessionFrame = addon:GetModule("RCSessionFrame", true)
 	if sessionFrame then
 		S:RawHook(sessionFrame, "GetFrame", function(self, ...)
 			local frame = S.hooks[self].GetFrame(self, ...)

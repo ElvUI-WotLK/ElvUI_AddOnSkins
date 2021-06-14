@@ -192,7 +192,7 @@ S:AddCallbackForAddon("AdiBags", "AdiBags", function()
 		end
 	end)
 
-	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight")
+	local AdiBags_SearchHighlight = AdiBags:GetModule("SearchHighlight", true)
 	S:RawHook(AdiBags_SearchHighlight, "UpdateButton", function(self, event, button)
 		button.IconQuestTexture._searchMode = true
 		S.hooks[self].UpdateButton(self, event, button)

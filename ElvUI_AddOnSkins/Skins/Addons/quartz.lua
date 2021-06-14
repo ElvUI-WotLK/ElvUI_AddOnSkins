@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("Quartz") then return end
 S:AddCallbackForAddon("Quartz", "Quartz", function()
 	if not E.private.addOnSkins.Quartz then return end
 
-	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3")
+	local Quartz3 = LibStub("AceAddon-3.0"):GetAddon("Quartz3", true)
 	local CastBar = Quartz3.CastBarTemplate.template
 
 	Quartz3.db.profile.backgroundalpha = 0

@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("oRA3") then return end
 S:AddCallbackForAddon("oRA3", "oRA3", function()
 	if not E.private.addOnSkins.oRA3 then return end
 
-	local addon = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+	local addon = LibStub("AceAddon-3.0"):GetAddon("oRA3", true)
 	if not addon then return end
 
 	AS:SkinLibrary("LibCandyBar-3.0")
@@ -76,7 +76,7 @@ S:AddCallbackForAddon("oRA3", "oRA3", function()
 		header.isSkinned = true
 	end)
 
-	local tanks = addon:GetModule("Tanks")
+	local tanks = addon:GetModule("Tanks", true)
 	if tanks then
 		S:SecureHook(tanks, "CreateFrame", function(self)
 			S:Unhook(self, "CreateFrame")
@@ -112,7 +112,7 @@ S:AddCallbackForAddon("oRA3", "oRA3", function()
 		end)
 	end
 
-	local readycheck = addon:GetModule("ReadyCheck")
+	local readycheck = addon:GetModule("ReadyCheck", true)
 	if readycheck then
 		S:SecureHook(readycheck, "READY_CHECK", function(self)
 			if not (addon:IsPromoted() and self.db.profile.gui) then return end

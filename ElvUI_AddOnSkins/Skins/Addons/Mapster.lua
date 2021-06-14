@@ -137,7 +137,7 @@ S:AddCallbackForAddon("Mapster", "Mapster", function()
 	S:HandleDropDownBox(MapsterQuestObjectivesDropDown)
 
 	do -- Scaler
-		local Scale = Mapster:GetModule("Scale")
+		local Scale = Mapster:GetModule("Scale", true)
 		local scaler = WorldMapPositioningGuide:GetRegions()
 
 		local function updateScalerPoint(mini)
