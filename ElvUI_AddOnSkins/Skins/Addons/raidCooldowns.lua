@@ -60,8 +60,8 @@ S:AddCallbackForAddon("RaidCooldowns", "RaidCooldowns", function()
 				bar.spark:Kill()
 
 				bar.iconButton = CreateFrame("Button", nil, bar)
-				bar.iconButton:Point("TOPLEFT", bar.icon)
-				bar.iconButton:Point("BOTTOMRIGHT", bar)
+				bar.iconButton:SetPoint("TOPLEFT", bar.icon)
+				bar.iconButton:SetPoint("BOTTOMRIGHT", bar)
 				bar.iconButton:RegisterForClicks("LeftButtonUp")
 				bar.iconButton:SetScript("OnClick", onClick)
 

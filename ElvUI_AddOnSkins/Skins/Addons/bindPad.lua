@@ -47,7 +47,7 @@ S:AddCallbackForAddon("BindPad", "BindPad", function()
 
 		slotAddButton.Text = slotAddButton:CreateFontString(nil, "OVERLAY")
 		slotAddButton.Text:FontTemplate(nil, 22)
-		slotAddButton.Text:Point("CENTER", 0, 0)
+		slotAddButton.Text:SetPoint("CENTER", 0, 0)
 		slotAddButton.Text:SetText("+")
 	end
 

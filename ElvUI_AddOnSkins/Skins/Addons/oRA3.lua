@@ -127,8 +127,8 @@ S:AddCallbackForAddon("oRA3", "oRA3", function()
 			closeButton:Point("TOPRIGHT", 1, 2)
 
 			local titlebg = oRA3ReadyCheck:GetRegions()
-			titlebg:SetPoint("TOPLEFT", 6, -6)
-			titlebg:SetPoint("BOTTOMRIGHT", oRA3ReadyCheck, "TOPRIGHT", -6, -23)
+			titlebg:Point("TOPLEFT", 6, -6)
+			titlebg:Point("BOTTOMRIGHT", oRA3ReadyCheck, "TOPRIGHT", -6, -23)
 			titlebg:SetTexture(unpack(E.media.bordercolor))
 		end)
 	end

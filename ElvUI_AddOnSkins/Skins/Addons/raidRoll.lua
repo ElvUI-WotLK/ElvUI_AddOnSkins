@@ -55,8 +55,8 @@ S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	for i = 1, 5 do
 		local f = _G["Raid_Roll_SetSymbol"..i]
 		f:ClearAllPoints()
-		f:SetPoint("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
-		f:SetPoint("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
+		f:Point("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
+		f:Point("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
 
 		local highlight = f:GetHighlightTexture()
 		highlight:SetTexture(E.Media.Textures.Highlight)

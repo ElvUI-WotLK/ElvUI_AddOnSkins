@@ -37,7 +37,7 @@ S:AddCallbackForAddon("Spy", "Spy", function()
 
 	S:HandleNextPrevButton(Spy_MainWindow.LeftButton, "left", nil, true)
 	Spy_MainWindow.LeftButton:Size(20)
-	Spy_MainWindow.LeftButton:Point("RIGHT", Spy_MainWindow.RightButton, "LEFT", 0, 0)
+	Spy_MainWindow.LeftButton:SetPoint("RIGHT", Spy_MainWindow.RightButton, "LEFT", 0, 0)
 
 	Spy_MainWindow.ClearButton:Size(18)
 	Spy_MainWindow.ClearButton:Point("RIGHT", Spy_MainWindow.LeftButton, "LEFT", 1, 0)
