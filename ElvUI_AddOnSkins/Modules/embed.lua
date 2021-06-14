@@ -340,6 +340,7 @@ if AS:IsAddonLODorEnabled("Skada") then
 	local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
 		if not window then return end
 		local barmod = Skada.displays["bar"]
+		local bargroup_backdrop
 
 		window.db.barwidth = width
 
@@ -357,30 +358,34 @@ if AS:IsAddonLODorEnabled("Skada") then
 			local offsety = window.db.reversegrowth and 0 or E.Border
 			window.bargroup.ClearAllPoints = nil
 			window.bargroup:ClearAllPoints()
-			window.bargroup.ClearAllPoints = function() end
+			window.bargroup.ClearAllPoints = E.noop
+
 			window.bargroup.SetPoint = nil
 			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, -offsety)
-			window.bargroup.SetPoint = function() end
+			window.bargroup.SetPoint = E.noop
+
 			window.bargroup:SetParent(relativeFrame)
 			window.bargroup:ClearAllPoints()
 			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
 			window.bargroup:SetFrameStrata("LOW")
 
-			if window.bargroup.backdrop then
-				window.bargroup.backdrop:SetFrameStrata("LOW")
-				window.bargroup.backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
-			end
+			bargroup_backdrop = window.bargroup.backdrop
 		else
 			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
 			window.db.enablebackground = true
 
 			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
 
-			window.bargroup.bgframe:SetFrameStrata("LOW")
-			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			bargroup_backdrop = window.bargroup.bgframe
 		end
 
 		barmod.ApplySettings(barmod, window)
+
+		if bargroup_backdrop then
+			bargroup_backdrop:SetFrameStrata("LOW")
+			bargroup_backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+		end
+
 	end
 
 	function EMB:EmbedSkada()
