@@ -4,6 +4,8 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Talented") then return end
 
+local unpack = unpack
+
 -- Talented r660
 
 S:AddCallbackForAddon("Talented", "Talented", function()
@@ -14,22 +16,6 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 		button.left:Kill()
 		button.middle:Kill()
 		button.right:Kill()
-	end
-
-	local function SkinTabs()
-		if not Talented.tabs then return end
-
-		local tabName
-		for _, tab in ipairs({"spec1", "spec2", "petspec1"}) do
-			tabName = Talented.tabs[tab]
-			if tabName then
-				tabName:SetTemplate("Default")
-				tabName:StyleButton()
-				tabName:DisableDrawLayer("BACKGROUND")
-				tabName:GetNormalTexture():SetInside(tabName.backdrop)
-				tabName:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			end
-		end
 	end
 
 	S:SecureHook(Talented, "CreateBaseFrame", function()
@@ -50,12 +36,6 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 		S:HandleEditBox(TalentedFrame.editname)
 
 		S:HandleCheckBox(TalentedFrame.checkbox)
-
-		if AS:IsAddonEnabled("Talented_SpecTabs") then
-			E:Delay(0.01, SkinTabs)
-		elseif AS:IsAddonLOD("Talented_SpecTabs") then
-			S:AddCallbackForAddon("Talented_SpecTabs", "Talented_SpecTabs", SkinTabs)
-		end
 
 		S:Unhook(Talented, "CreateBaseFrame")
 	end)
@@ -119,47 +99,98 @@ end)
 S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
 	if not E.private.addOnSkins.Talented then return end
 
-	TalentedGlyphs:Size(350, 420)
-	TalentedGlyphs:SetTemplate("Transparent")
-
-	TalentedGlyphs.title:ClearAllPoints()
-	TalentedGlyphs.title:Point("TOP", TalentedGlyphs, 0, -8)
-
-	TalentedGlyphs.portrait:Kill()
-	TalentedGlyphs.background:Kill()
-
 	TalentedGlyphs:CreateBackdrop("Transparent")
-	TalentedGlyphs.backdrop:SetFrameLevel(TalentedGlyphs:GetFrameLevel())
-	TalentedGlyphs.backdrop:Size(338, 364)
-	TalentedGlyphs.backdrop:ClearAllPoints()
-	TalentedGlyphs.backdrop:Point("TOPLEFT", TalentedGlyphs, 6, -28)
+	TalentedGlyphs.backdrop:Point("TOPLEFT", 11, -12)
+	TalentedGlyphs.backdrop:Point("BOTTOMRIGHT", -32, 76)
+	TalentedGlyphs:SetHitRectInsets(0, 0, 0, 0)
 
-	TalentedGlyphs.texture = TalentedGlyphs.backdrop:CreateTexture(nil, "OVERLAY")
-	TalentedGlyphs.texture:SetTexture("Interface\\Spellbook\\UI-GlyphFrame")
-	TalentedGlyphs.texture:SetTexCoord(0.0390625, 0.65625, 0.140625, 0.8046875)
-	TalentedGlyphs.texture:SetInside()
+	S:SetBackdropHitRect(TalentedGlyphs, TalentedGlyphs.backdrop, true)
 
+	S:HandleCloseButton(TalentedGlyphs.close)
+
+	TalentedGlyphs.title:Point("TOP", 0, -15)
+
+	TalentedGlyphs.portrait:Hide()
+
+	TalentedGlyphs.background:SetDrawLayer("ARTWORK")
+	TalentedGlyphs.background:Size(323, 349)
+	TalentedGlyphs.background:Point("TOPLEFT", 20, -59)
+	TalentedGlyphs.background:CreateBackdrop()
+
+
+	TalentedGlyphs.glow:SetDrawLayer("OVERLAY")
+	TalentedGlyphs.glow:SetAllPoints(TalentedGlyphs.background)
+
+	-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 512, 512, 315, 340, 21, 72
+	TalentedGlyphs.background:SetTexCoord(0.041015625, 0.65625, 0.140625, 0.8046875)
+
+	-- texWidth, texHeight, cropWidth, cropHeight, offsetX, offsetY = 512, 512, 315, 340, 30, 34
+	TalentedGlyphs.glow:SetTexCoord(0.05859375, 0.673828125, 0.06640625, 0.73046875)
+
+	local glyphBGScale = 1.0253968
 	local glyphPositions = {
-		{"CENTER", 0, 125},
-		{"CENTER", 0, -128},
-		{"TOPLEFT", 7, -64},
-		{"BOTTOMRIGHT", -21, 81},
-		{"TOPRIGHT", -7, -64},
-		{"BOTTOMLEFT", 21, 81}
+		{"CENTER", -1, 126},
+		{"CENTER", -1, -119},
+		{"TOPLEFT", 8, -62},
+		{"BOTTOMRIGHT", -10, 70},
+		{"TOPRIGHT", -8, -62},
+		{"BOTTOMLEFT", 7, 70}
 	}
 
-	local point, x, y
-	for glyphID in pairs(TalentedGlyphs.glyphs) do
-		point, x, y = unpack(glyphPositions[glyphID])
-		TalentedGlyphs.glyphs[glyphID]:SetScale(1.063291)
-		TalentedGlyphs.glyphs[glyphID]:ClearAllPoints()
-		TalentedGlyphs.glyphs[glyphID]:SetPoint(point, TalentedGlyphs.backdrop, point, x, y)
+	local slotAnimations = {}
+	local TOPLEFT, TOP, TOPRIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT = 3, 1, 5, 4, 2, 6
+	slotAnimations[TOPLEFT] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = -85, ["yStart"] = 17, ["yStop"] = 60}
+	slotAnimations[TOP] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = -13, ["yStart"] = 17, ["yStop"] = 100}
+	slotAnimations[TOPRIGHT] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = 59, ["yStart"] = 17, ["yStop"] = 60}
+	slotAnimations[BOTTOM] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = -13, ["yStart"] = 17, ["yStop"] = -64}
+	slotAnimations[BOTTOMLEFT] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = -87, ["yStart"] = 18, ["yStop"] = -27}
+	slotAnimations[BOTTOMRIGHT] = {["point"] = "CENTER", ["xStart"] = -13, ["xStop"] = 61, ["yStart"] = 18, ["yStop"] = -27}
+
+	for _, animData in ipairs(slotAnimations) do
+		animData.xStart = animData.xStart + 3
+		animData.yStart = animData.yStart + 8
+		animData.xStop = (animData.xStop + 3) * glyphBGScale
+		animData.yStop = (animData.yStop + 8) * glyphBGScale
 	end
 
-	S:HandleCloseButton(TalentedGlyphs.close, TalentedGlyphs)
-	TalentedGlyphs.close:SetFrameLevel(TalentedGlyphs.close:GetFrameLevel() + 1)
+	local glyphFrameLevel = TalentedGlyphs:GetFrameLevel() + 1
+
+	for glyphID, glyph in ipairs(TalentedGlyphs.glyphs) do
+		glyph:SetFrameLevel(glyphFrameLevel)
+		glyph:Size(90)
+		glyph:SetScale(glyphBGScale)
+		local point, x, y = unpack(glyphPositions[glyphID])
+		glyph:Point(point, TalentedGlyphs.background.backdrop, x, y)
+
+		local animation = slotAnimations[glyphID]
+		glyph.sparkle:SetDrawLayer("OVERLAY")
+		glyph.sparkle:Point(animation.point, animation.xStart, animation.yStart)
+		glyph.sparkle.anim.translation:SetOffset(animation.xStop - animation.xStart, animation.yStop - animation.yStart)
+	end
 
 	S:HandleCheckBox(TalentedGlyphs.checkbox)
-	TalentedGlyphs.checkbox:ClearAllPoints()
-	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", TalentedGlyphs, 10, 5)
+	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", 15, 80)
+end)
+
+S:AddCallbackForAddon("Talented_SpecTabs", "Talented_SpecTabs", function()
+	if not E.private.addOnSkins.Talented then return end
+
+	local function skinTabs()
+		Talented.tabs:Point("TOPLEFT", TalentedFrame, "TOPRIGHT", -1, -40)
+
+		for _, tab in ipairs({"spec1", "spec2", "petspec1"}) do
+			tab = Talented.tabs[tab]
+			tab:SetTemplate("Default")
+			tab:StyleButton()
+			tab:DisableDrawLayer("BACKGROUND")
+			tab:GetNormalTexture():SetInside(tab.backdrop)
+			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	if Talented.base then
+		skinTabs()
+	else
+		hooksecurefunc(Talented, "CreateBaseFrame", skinTabs)
+	end
 end)
