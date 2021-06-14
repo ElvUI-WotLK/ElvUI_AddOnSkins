@@ -13,31 +13,41 @@ local pairs = pairs
 S:AddCallbackForAddon("Poisoner", "Poisoner", function()
 	if not E.private.addOnSkins.Poisoner then return end
 
-	local function skinButton(button)
-		if button.isSkinned then return end
+	-- Minimap icon
+	if not PoisonerMinimapButton.isSkinned then
+		PoisonerMinimapButton:SetTemplate()
+		PoisonerMinimapButton:Size(22)
 
-		button:SetTemplate()
-		button:StyleButton(nil, true)
+		local normalTexture = PoisonerMinimapButton:GetNormalTexture()
+		normalTexture:SetTexture("Interface\\Icons\\Ability_Creature_Poison_02")
+		normalTexture:SetTexCoord(unpack(E.TexCoords))
+		normalTexture:SetDrawLayer("ARTWORK")
+		normalTexture:SetInside()
 
-		local texture = button:GetNormalTexture()
-		texture:SetTexCoord(unpack(E.TexCoords))
-		texture:SetInside(button)
+		PoisonerMinimapButton:SetPushedTexture(nil)
+		PoisonerMinimapButton:SetHighlightTexture(nil)
+		PoisonerMinimapButton:SetDisabledTexture(nil)
 
-		texture = button:GetHighlightTexture()
-		texture:SetTexCoord(unpack(E.TexCoords))
-		texture:SetInside(button)
-
-		button.isSkinned = true
+		PoisonerMinimapButton.isSkinned = true
 	end
 
 	hooksecurefunc("Poisoner_CreateButtons", function()
-		local button
-
 		for poison in pairs(Poisoner_PoisonsEverSeen) do
-			button = _G["PoisonerMenuButton"..poison]
+			local button = _G["PoisonerMenuButton"..poison]
 
-			if button then
-				skinButton(button)
+			if button and not button.isSkinned then
+				button:SetTemplate()
+				button:StyleButton(nil, true)
+
+				local texture = button:GetNormalTexture()
+				texture:SetTexCoord(unpack(E.TexCoords))
+				texture:SetInside(button)
+
+				texture = button:GetHighlightTexture()
+				texture:SetTexCoord(unpack(E.TexCoords))
+				texture:SetInside(button)
+
+				button.isSkinned = true
 			end
 		end
 	end)

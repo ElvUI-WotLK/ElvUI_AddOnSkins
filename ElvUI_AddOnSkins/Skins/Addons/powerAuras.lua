@@ -289,7 +289,7 @@ S:AddCallbackForAddon("PowerAuras", "PowerAuras", function()
 	PowaSelected:SetFrameStrata(PowaSelected:GetParent():GetFrameStrata())
 	PowaSelected:SetFrameLevel(PowaSelected:GetParent():GetFrameLevel() + 2)
 	PowaSelected:StripTextures()
-	PowaSelected:SetTemplate()
+	PowaSelected:SetTemplate("Default", nil, true)
 	PowaSelected:SetBackdropColor(0, 0, 0, 0)
 	PowaSelected:SetBackdropBorderColor(1, 0.82, 0)
 	PowaSelected:Hide()
@@ -304,23 +304,14 @@ S:AddCallbackForAddon("PowerAuras", "PowerAuras", function()
 	PowaOptionsFrame:Height(463)
 
 	PowaOptionsSelectorFrame:Height(390)
-	PowaOptionsSelectorNew:ClearAllPoints()
-	PowaOptionsSelectorNew:Point("BOTTOMLEFT", PowaOptionsSelectorFrame, "BOTTOMLEFT", 5, 86)
+	PowaOptionsSelectorNew:Point("BOTTOMLEFT", 5, 86)
 
-	PowaOptionsRename:ClearAllPoints()
 	PowaOptionsRename:Point("TOP", PowaOptionsGlobalListFrame, "BOTTOM", 0, -5)
 
 	PowaOptionsRenameEditBox:Size(88, 20)
-	PowaOptionsRenameEditBox:ClearAllPoints()
-	PowaOptionsRenameEditBox:Point("TOP", PowaOptionsGlobalListFrame, "BOTTOM", 0, -6)
-
-	PowaBarConfigFrame:ClearAllPoints()
-	PowaBarConfigFrame:Point("BOTTOMRIGHT", PowaOptionsFrame, "BOTTOMLEFT", 1, 0)
+	PowaOptionsRenameEditBox:Point("TOP", PowaOptionsRename, "TOP", 0, -1)
 
 	PowaEquipmentSlotsFrame:Height(370)
-	PowaEquipmentSlotsFrame:ClearAllPoints()
-	PowaEquipmentSlotsFrame:Point("BOTTOMRIGHT", PowaBarConfigFrame, "BOTTOMLEFT", 1, 0)
-	PowaEquipmentSlotsFrame:EnableMouse(false)
 
 	PowaHeadSlot:Point("TOPLEFT", 11, -25)
 	PowaHandsSlot:Point("TOPRIGHT", -11, -25)
@@ -333,7 +324,8 @@ S:AddCallbackForAddon("PowerAuras", "PowerAuras", function()
 	S:HandleCloseButton(PowaCloseButton, PowaBarConfigFrame)
 	S:HandleCloseButton(PowaFrameCloseButton, PowaEquipmentSlotsFrame)
 
-	PowaBuffTimerCentsButton:Size(25) --Fix
+	PowaBuffTimerCentsButton:Size(25)
 
-	PowaAuthorText:Kill()
+	PowaAuthorText.Show = E.noop
+	PowaAuthorText:Hide()
 end)
