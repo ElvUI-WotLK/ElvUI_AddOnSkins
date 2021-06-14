@@ -31,19 +31,11 @@ S:AddCallbackForAddon("AtlasQuest", "AtlasQuest", function()
 		AQCompareTooltipOption,
 	}
 
-	local closeButtons = {
-		CLOSEbutton,
-		CLOSEbutton2,
-	}
-
 	for _, button in ipairs(buttons) do
 		S:HandleButton(button)
 	end
 	for _, checkBox in ipairs(checkBoxes) do
 		S:HandleCheckBox(checkBox)
-	end
-	for _, closeButton in ipairs(closeButtons) do
-		S:HandleCloseButton(closeButton)
 	end
 
 	AtlasQuestFrame:StripTextures()
@@ -55,23 +47,34 @@ S:AddCallbackForAddon("AtlasQuest", "AtlasQuest", function()
 	AQ_AllianceTexture:SetTexture("Interface\\TargetingFrame\\UI-PVP-ALLIANCE")
 
 	if AtlasMap then
-		AtlasQuestInsideFrame:Size(AtlasMap:GetSize())
+		AtlasQuestInsideFrame:SetAllPoints(AtlasMap)
 	end
 
 	AtlasQuestOptionFrame:StripTextures()
 	AtlasQuestOptionFrame:SetTemplate("Transparent")
 
-	CLOSEbutton:ClearAllPoints()
-	CLOSEbutton:Point("TOPLEFT", AtlasQuestFrame, "TOPLEFT", 4, -4)
-	CLOSEbutton:Size(32)
+	S:HandleCloseButton(CLOSEbutton)
+	CLOSEbutton:Point("TOPLEFT", 1, 0)
 
-	CLOSEbutton2:Size(32)
+	S:HandleCloseButton(CLOSEbutton2, AtlasQuestInsideFrame)
 
-	AtlasQuestTooltip:SetTemplate("Transparent")
+	E:GetModule("Tooltip"):HookScript(AtlasQuestTooltip, "OnShow", "SetStyle")
 
 	for i = 1, 6 do
 		_G["AtlasQuestItemframe"..i.."_Icon"]:SetTexCoord(unpack(E.TexCoords))
 	end
+
+	hooksecurefunc("AQLEFTOption_OnClick", function()
+		if not AtlasFrame then return end
+		AtlasQuestFrame:ClearAllPoints()
+		AtlasQuestFrame:Point("BOTTOMRIGHT", AtlasFrame, "BOTTOMLEFT", 1, 0)
+	end)
+
+	hooksecurefunc("AQRIGHTOption_OnClick", function()
+		if not AtlasFrame then return end
+		AtlasQuestFrame:ClearAllPoints()
+		AtlasQuestFrame:Point("BOTTOMLEFT", AtlasFrame, "BOTTOMRIGHT", -1, 0)
+	end)
 
 	AQ_AtlasOrAlphamap = function()
 		if AtlasFrame and AtlasFrame:IsVisible() then
@@ -87,8 +90,7 @@ S:AddCallbackForAddon("AtlasQuest", "AtlasQuest", function()
 			end
 
 			AtlasQuestInsideFrame:SetParent(AtlasFrame)
-			AtlasQuestInsideFrame:ClearAllPoints()
-			AtlasQuestInsideFrame:Point("TOPLEFT", "AtlasFrame", 18, -84)
+			AtlasQuestInsideFrame:SetAllPoints(AtlasMap)
 		elseif AlphaMapFrame and AlphaMapFrame:IsVisible() then
 			AtlasORAlphaMap = "AlphaMap"
 			AtlasQuestFrame:SetParent(AlphaMapFrame)
