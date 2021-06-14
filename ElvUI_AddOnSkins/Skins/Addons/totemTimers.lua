@@ -5,6 +5,7 @@ local AS = E:GetModule("AddOnSkins")
 if not AS:IsAddonLODorEnabled("TotemTimers") then return end
 
 local _G = _G
+local pairs, ipairs = pairs, ipairs
 local unpack = unpack
 
 -- TotemTimers 10.2.4
@@ -12,6 +13,7 @@ local unpack = unpack
 
 S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 	if not E.private.addOnSkins.TotemTimers then return end
+	if E.myclass ~= "SHAMAN" then return end
 
 	local SLOT_EMPTY_TCOORDS = {
 		[EARTH_TOTEM_SLOT] = {
@@ -40,7 +42,7 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 		}
 	}
 
-	hooksecurefunc("TotemTimers_SetupGlobals", function()
+	S:SecureHook("TotemTimers_SetupGlobals", function()
 		for i, f in pairs(TTActionBars.bars) do
 			for j in pairs(f.buttons) do
 				local button = _G["TT_ActionButton" .. i .. j]
@@ -72,6 +74,8 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 		TotemTimers_MultiSpell.backdrop:SetAllPoints()
 		TotemTimers_MultiSpellIcon:SetTexCoord(unpack(E.TexCoords))
 		TotemTimers_MultiSpellIcon:SetInside()
+
+		S:Unhook("TotemTimers_SetupGlobals")
 	end)
 
 	hooksecurefunc(TotemTimers, "SetEmptyTexCoord", function(icon, nr)
@@ -90,10 +94,11 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 		end
 	end)
 
-	hooksecurefunc(XiTimers, "ShowTimerBar", function(self, nr)
-		self.timerbars[nr]:GetStatusBarTexture():ClearAllPoints()
-		if self.visibleTimerBars then
-			self.timerbars[nr].background:SetTemplate("Default")
+	hooksecurefunc(XiTimers, "new", function(self)
+		for _, bar in ipairs(self.timers[#self.timers].timerbars) do
+			bar:SetTemplate("Default")
+			bar.background.Show = E.noop
+			bar.background:Hide()
 		end
 	end)
 end)

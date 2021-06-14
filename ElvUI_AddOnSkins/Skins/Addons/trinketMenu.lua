@@ -5,6 +5,7 @@ local AS = E:GetModule("AddOnSkins")
 if not AS:IsAddonLODorEnabled("TrinketMenu") then return end
 
 local _G = _G
+local unpack = unpack
 
 -- TrinketMenu 3.81
 -- https://www.curseforge.com/wow/addons/trinket-menu/files/305868
@@ -12,9 +13,25 @@ local _G = _G
 S:AddCallbackForAddon("TrinketMenu", "TrinketMenu", function()
 	if not E.private.addOnSkins.TrinketMenu then return end
 
+--	TrinketMenu_TimersFrame:SetScript("OnUpdate", nil)
+	TrinketMenu.WriteWornCooldowns = E.noop
+	TrinketMenu.WriteMenuCooldowns = E.noop
+	TrinketMenu.WriteCooldown = E.noop
+
+	TrinketMenu_MainFrame:SetTemplate("Transparent", nil, true)
+	TrinketMenu_MenuFrame:SetTemplate("Transparent", nil, true)
+
 	hooksecurefunc(TrinketMenu, "ReflectLock", function()
-		TrinketMenu_MainFrame:SetTemplate("Transparent")
-		TrinketMenu_MenuFrame:SetTemplate("Transparent")
+		if TrinketMenuOptions.Locked == "ON" then return end
+
+		local r, g, b = unpack(E.media.bordercolor)
+		TrinketMenu_MainFrame:SetBackdropBorderColor(r, g, b, 1)
+		TrinketMenu_MenuFrame:SetBackdropBorderColor(r, g, b, 1)
+
+		local a
+		r, g, b, a = unpack(E.media.backdropfadecolor)
+		TrinketMenu_MainFrame:SetBackdropColor(r, g, b, a)
+		TrinketMenu_MenuFrame:SetBackdropColor(r, g, b, a)
 	end)
 
 	local AB = E:GetModule("ActionBars")
@@ -28,11 +45,6 @@ S:AddCallbackForAddon("TrinketMenu", "TrinketMenu", function()
 		cooldown.timer = E:CreateCooldownTimer(cooldown)
 		_G[name .. "Time"] = cooldown.timer.text
 	end
-
---	TrinketMenu_TimersFrame:SetScript("OnUpdate", nil)
-	TrinketMenu.WriteWornCooldowns = E.noop
-	TrinketMenu.WriteMenuCooldowns = E.noop
-	TrinketMenu.WriteCooldown = E.noop
 
 	for i = 0, 1 do
 		skinButton(_G["TrinketMenu_Trinket" .. i])

@@ -10,7 +10,9 @@ if not AS:IsAddonLODorEnabled("TipTac") then return end
 S:AddCallbackForAddon("TipTac", "TipTac", function()
 	if not E.private.addOnSkins.TipTac then return end
 
-	if not TipTac_Config then TipTac_Config = {} end
+	if not TipTac_Config then
+		TipTac_Config = {}
+	end
 
 	TipTac_Config.barTexture = E.media.normTex
 	TipTac_Config.tipBackdropEdge = E.media.blankTex
@@ -113,15 +115,5 @@ S:AddCallbackForAddon("TipTacOptions", "TipTacOptions", function()
 		S:HandleButton(TipTacOptions[button])
 	end
 
-	if not S:IsHooked(AzDropDown, "ToggleMenu") then
-		S:SecureHook(AzDropDown, "ToggleMenu", function()
-			local scrollBar = _G["AzDropDownScroll"..AzDropDown.vers]
-			if scrollBar then
-				scrollBar:GetParent():SetTemplate("Default")
-				S:HandleScrollBar(scrollBar)
-
-				S:Unhook(AzDropDown, "ToggleMenu")
-			end
-		end)
-	end
+	AS:SkinLibrary("AzOptionsFactory")
 end)
