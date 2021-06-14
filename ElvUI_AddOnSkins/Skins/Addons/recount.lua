@@ -21,9 +21,9 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 		frame.Title:FontTemplate()
 		frame.Title:SetTextColor(1, 0.82, 0, 1)
 
+		S:HandleCloseButton(frame.CloseButton)
 		frame.CloseButton:ClearAllPoints()
 		frame.CloseButton:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
-		S:HandleCloseButton(frame.CloseButton)
 	end
 
 	local function skinMainFrame(frame)
@@ -44,11 +44,11 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 		frame.header = header
 
 		frame.Title:ClearAllPoints()
-		frame.Title:SetPoint("LEFT", header, 6, 0)
+		frame.Title:Point("LEFT", header, 6, 0)
 
+		S:HandleCloseButton(frame.CloseButton)
 		frame.CloseButton:ClearAllPoints()
 		frame.CloseButton:Point("RIGHT", header, -6, 0)
-		S:HandleCloseButton(frame.CloseButton)
 		frame.CloseButton.Texture:Size(10)
 
 		frame.RightButton:Size(18)
@@ -132,7 +132,15 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 	}
 
 	for _, button in ipairs(buttons) do
-		AS:DesaturateButton(button)
+		if button:GetNormalTexture() then
+			button:GetNormalTexture():SetDesaturated(true)
+		end
+		if button:GetPushedTexture() then
+			button:GetPushedTexture():SetDesaturated(true)
+		end
+		if button:GetHighlightTexture() then
+			button:GetHighlightTexture():SetDesaturated(true)
+		end
 	end
 
 	local RecountLocale = LibStub("AceLocale-3.0"):GetLocale("Recount")
