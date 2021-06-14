@@ -15,7 +15,12 @@ S:AddCallbackForAddon("AllStats", "AllStats", function()
 	AllStatsFrame:Height(424)
 	AllStatsFrame:Point("TOPLEFT", PaperDollFrame, "TOPLEFT", 351, -12)
 
-	AllStatsButtonShowFrame:Height(21)
-	AllStatsButtonShowFrame:Point("BOTTOMRIGHT", -40, 84)
 	S:HandleButton(AllStatsButtonShowFrame)
+	AllStatsButtonShowFrame:Height(21)
+
+	if CharacterFrameExpandButton then
+		AllStatsButtonShowFrame:Point("BOTTOMRIGHT", -40, 84)
+	else
+		AllStatsButtonShowFrame:Point("BOTTOMRIGHT", -60, 84)
+	end
 end)

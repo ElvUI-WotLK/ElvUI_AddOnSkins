@@ -4,8 +4,13 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Altoholic") then return end
 
+local _G = _G
+local pairs = pairs
+local unpack = unpack
+
+local hooksecurefunc = hooksecurefunc
+
 -- Altoholic 3.3.002b
--- https://www.curseforge.com/wow/addons/altoholic/files/437603
 
 S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	if not E.private.addOnSkins.Altoholic then return end
@@ -25,20 +30,6 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 		end
 	end
 
-	local function SkinCollapse(button)
-		button:SetNormalTexture(E.Media.Textures.Minus)
-		button:SetPushedTexture(nil)
-		button:SetHighlightTexture(nil)
-
-		hooksecurefunc(button, "SetNormalTexture", function(_, tex)
-			if tex == "Interface\\Buttons\\UI-MinusButton-Up" then
-				button:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-			else
-				button:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-			end
-		end)
-	end
-
 	AltoTooltip:HookScript("OnShow", function(self)
 		self:SetTemplate("Transparent", nil, true) --ignore updates
 
@@ -47,20 +38,30 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	end)
 
 	AltoholicFrame:StripTextures()
-	AltoholicFramePortrait:Kill()
 	AltoholicFrame:CreateBackdrop("Transparent")
-	AltoholicFrame.backdrop:Point("TOPLEFT", 11, -11)
-	AltoholicFrame.backdrop:Point("BOTTOMRIGHT", 0, 9)
+	AltoholicFrame.backdrop:Point("TOPLEFT", 11, -12)
+	AltoholicFrame.backdrop:Point("BOTTOMRIGHT", -1, 11)
+
+	AltoholicFramePortrait:Hide()
+
+	S:HandleCloseButton(AltoholicFrameCloseButton, AltoholicFrame.backdrop)
 
 	for i = 1, 5 do
-		S:HandleTab(_G["AltoholicFrameTab"..i])
+		local tab = _G["AltoholicFrameTab"..i]
+
+		if i == 1 then
+			tab:Point("TOPLEFT", AltoholicFrame, "BOTTOMLEFT", 11, 13)
+		else
+			tab:Point("TOPLEFT", _G["AltoholicFrameTab"..(i - 1)], "TOPRIGHT", -15, 0)
+		end
+
+		S:HandleTab(tab)
 	end
 
 	S:HandleEditBox(AltoholicFrame_SearchEditBox)
 	S:HandleButton(AltoholicFrame_ResetButton)
 	AltoholicFrame_ResetButton:Point("TOPLEFT", "$parent_SearchEditBox", "BOTTOMLEFT", -40, -3)
 	S:HandleButton(AltoholicFrame_SearchButton)
-	S:HandleCloseButton(AltoholicFrameCloseButton)
 
 	local function ClassesItemItemTexure_SetTexCoord(self, left, right, top, bottom)
 		if self.customTexCoord then return end
@@ -102,7 +103,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleButton(AltoAccountSharing_SendButton)
 	S:HandleButton(AltoAccountSharing_CancelButton)
 
-	SkinCollapse(AltoAccountSharing_ToggleAll)
+	S:HandleCollapseExpandButton(AltoAccountSharing_ToggleAll, "-")
 
 	S:HandleCheckBox(AltoAccountSharing_CheckAll)
 
@@ -111,7 +112,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameSummaryScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameSummaryEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameSummaryEntry"..i.."Collapse"], "-")
 	end
 
 	-- Activity
@@ -119,7 +120,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameActivityScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameActivityEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameActivityEntry"..i.."Collapse"], "-")
 	end
 
 	-- AuctionHouse
@@ -135,7 +136,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameBagUsageScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameBagUsageEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameBagUsageEntry"..i.."Collapse"], "-")
 	end
 
 	-- Calendar
@@ -194,7 +195,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameGuildBankTabsScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameGuildBankTabsEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameGuildBankTabsEntry"..i.."Collapse"], "-")
 		S:HandleButton(_G["AltoholicFrameGuildBankTabsEntry"..i.."UpdateTab"])
 	end
 
@@ -203,7 +204,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameGuildMembersScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameGuildMembersEntry"..i.."Collapse"], "-")
 	end
 
 	for i = 1, 19 do
@@ -215,7 +216,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameGuildProfessionsScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameGuildProfessionsEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameGuildProfessionsEntry"..i.."Collapse"], "-")
 	end
 
 	-- Mails
@@ -255,11 +256,11 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameQuestsScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameQuestsEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameQuestsEntry"..i.."Collapse"], "-")
 	end
 
 	-- Recipes
-	SkinCollapse(AltoholicFrameRecipesInfo_ToggleAll)
+	S:HandleCollapseExpandButton(AltoholicFrameRecipesInfo_ToggleAll, "-")
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectColor)
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectSubclass)
 	S:HandleDropDownBox(AltoholicFrameRecipesInfo_SelectInvSlot)
@@ -268,7 +269,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameRecipesScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameRecipesEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameRecipesEntry"..i.."Collapse"], "-")
 		AltoItem(_G["AltoholicFrameRecipesEntry"..i.."Craft"])
 
 		for j = 1, 8 do
@@ -309,7 +310,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 	S:HandleScrollBar(AltoholicFrameSkillsScrollFrameScrollBar)
 
 	for i = 1, 14 do
-		SkinCollapse(_G["AltoholicFrameSkillsEntry"..i.."Collapse"])
+		S:HandleCollapseExpandButton(_G["AltoholicFrameSkillsEntry"..i.."Collapse"], "-")
 	end
 
 	-- TabCharacters
@@ -357,7 +358,7 @@ S:AddCallbackForAddon("Altoholic", "Altoholic", function()
 		_G["AltoholicTabSummary_Sort"..i]:StripTextures()
 	end
 
-	SkinCollapse(AltoholicTabSummaryToggleView)
+	S:HandleCollapseExpandButton(AltoholicTabSummaryToggleView, "-")
 
 	S:HandleDropDownBox(AltoholicTabSummary_SelectLocation, 200)
 	S:HandleButton(AltoholicTabSummary_OptionsDataStore)
