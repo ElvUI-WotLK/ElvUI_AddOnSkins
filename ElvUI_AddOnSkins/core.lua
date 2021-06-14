@@ -137,6 +137,8 @@ do
 		end
 	end
 
+	V.addOnSkins = {}
+
 	for _, addonName in ipairs(addonList) do
 		V.addOnSkins[addonName] = true
 	end
