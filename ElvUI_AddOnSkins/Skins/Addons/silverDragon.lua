@@ -29,4 +29,6 @@ S:AddCallbackForAddon("SilverDragon", "SilverDragon", function()
 		ClickTarget.popup.details:SetTextColor(1, 1, 1)
 		ClickTarget.popup.subtitle:SetTextColor(0.5, 0.5, 0.5)
 	end
+
+	AS:SkinLibrary("LibQTip-1.0")
 end)

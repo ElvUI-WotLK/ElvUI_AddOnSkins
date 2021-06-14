@@ -78,10 +78,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 			frame.moreInfoBtn.SetNormalTexture = moreInfoSetTexture
 			frame.moreInfoBtn.SetPushedTexture = E.noop
 
-			local TT = E:GetModule("Tooltip")
-			frame.moreInfo:HookScript("OnShow", function(self)
-				TT:SetStyle(self)
-			end)
+			E:GetModule("Tooltip"):HookScript(frame.moreInfo, "OnShow", "SetStyle")
 
 			frame.filter:HookScript("OnEnter", S.SetModifiedBackdrop)
 			frame.filter:HookScript("OnLeave", S.SetOriginalBackdrop)
