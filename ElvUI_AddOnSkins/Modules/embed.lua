@@ -342,22 +342,45 @@ if AS:IsAddonLODorEnabled("Skada") then
 		local barmod = Skada.displays["bar"]
 
 		window.db.barwidth = width
-		window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
 
 		window.db.spark = false
 		window.db.barslocked = true
-		window.db.enablebackground = true
-
-		window.bargroup:SetParent(relativeFrame)
-		window.bargroup:ClearAllPoints()
-		window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
 
 		window.bargroup:SetFrameStrata("LOW")
+		window.bargroup:SetParent(relativeFrame)
+		window.bargroup:ClearAllPoints()
+
+		if Skada.revisited then
+			window.db.scale = 1
+			window.db.background.height = height - (E.Border + E.Spacing)
+
+			local offsety = window.db.reversegrowth and 0 or E.Border
+			window.bargroup.ClearAllPoints = nil
+			window.bargroup:ClearAllPoints()
+			window.bargroup.ClearAllPoints = function() end
+			window.bargroup.SetPoint = nil
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, -offsety)
+			window.bargroup.SetPoint = function() end
+			window.bargroup:SetParent(relativeFrame)
+			window.bargroup:ClearAllPoints()
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, ofsy)
+			window.bargroup:SetFrameStrata("LOW")
+
+			if window.bargroup.backdrop then
+				window.bargroup.backdrop:SetFrameStrata("LOW")
+				window.bargroup.backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			end
+		else
+			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
+			window.db.enablebackground = true
+
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
+
+			window.bargroup.bgframe:SetFrameStrata("LOW")
+			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+		end
 
 		barmod.ApplySettings(barmod, window)
-
-		window.bargroup.bgframe:SetFrameStrata("LOW")
-		window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
 	end
 
 	function EMB:EmbedSkada()

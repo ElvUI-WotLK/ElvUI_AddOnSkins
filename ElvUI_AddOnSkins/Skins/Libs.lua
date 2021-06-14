@@ -609,6 +609,72 @@ local function SkinDropDownMenu(libName)
 	return true
 end
 
+local function SkinL_DropDownMenu(libName)
+	if not _G.Lib_UIDropDownMenu_Initialize then return end
+
+	local checkBoxSkin = E.private.skins.dropdownCheckBoxSkin
+	local menuLevel = 0
+	local maxButtons = 0
+
+	local function dropDownButtonShow(self)
+		if self.notCheckable then
+			self.check.backdrop:Hide()
+		else
+			self.check.backdrop:Show()
+		end
+	end
+
+	local function skinL_DropDownMenu()
+		local updateButtons = maxButtons < LIB_UIDROPDOWNMENU_MAXBUTTONS
+
+		if updateButtons or menuLevel < LIB_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
+				local frame = _G["L_DropDownList" .. i]
+
+				if frame and not frame.isSkinned then
+					_G["L_DropDownList" .. i .. "Backdrop"]:SetTemplate("Transparent")
+					_G["L_DropDownList" .. i .. "MenuBackdrop"]:SetTemplate("Transparent")
+
+					frame.isSkinned = true
+				end
+
+				if updateButtons then
+					for j = 1, LIB_UIDROPDOWNMENU_MAXBUTTONS do
+						local button = _G["L_DropDownList" .. i .. "Button" .. j]
+
+						if button and not button.isSkinned then
+							S:HandleButtonHighlight(_G["L_DropDownList" .. i .. "Button" .. j .. "Highlight"])
+
+							if checkBoxSkin then
+								local check = _G["L_DropDownList" .. i .. "Button" .. j .. "Check"]
+								check:Size(12)
+								check:Point("LEFT", 1, 0)
+								check:CreateBackdrop()
+								check:SetTexture(E.media.normTex)
+								check:SetVertexColor(1, 0.82, 0, 0.8)
+
+								button.check = check
+								hooksecurefunc(button, "Show", dropDownButtonShow)
+							end
+
+							button.isSkinned = true
+						end
+					end
+				end
+			end
+
+			menuLevel = LIB_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = LIB_UIDROPDOWNMENU_MAXBUTTONS
+		end
+	end
+
+	skinL_DropDownMenu()
+	hooksecurefunc("L_UIDropDownMenu_InitializeHelper", skinL_DropDownMenu)
+
+	return true
+end
+
+
 AS.libSkins = {
 	["AceAddon-2.0"] = {
 		stub = true,
@@ -661,6 +727,10 @@ AS.libSkins = {
 	["ZFrame-1.0"] = {
 		stub = true,
 		func = SkinZFrame
+	},
+	["LibUIDropDownMenu"] = {
+		stub = true,
+		func = SkinL_DropDownMenu
 	},
 }
 
