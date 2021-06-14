@@ -11,6 +11,7 @@ S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 	if not E.private.addOnSkins.Enchantrix then return end
 
 	AS:SkinLibrary("Configator")
+	AS:SkinLibrary("LibExtraTip-1")
 
 	S:SecureHook(Enchantrix_Manifest, "ShowMessage", function()
 		Enchantrix_Manifest.messageFrame:SetTemplate("Transparent")
@@ -30,7 +31,7 @@ S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 		S:HandleButton(AutoDEPromptIgnore)
 	end
 
-	if _G["AutoDEPromptYes"] then
+	if AutoDEPromptYes then
 		SkinAutoDePrompt(AutoDEPromptYes:GetParent())
 	else
 		S:SecureHook(Enchantrix.AutoDisenchant, "AddonLoaded", function()
@@ -38,6 +39,4 @@ S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 			S:Unhook(Enchantrix.AutoDisenchant, "AddonLoaded")
 		end)
 	end
-
-	AS:SkinLibrary("LibExtraTip-1")
 end)

@@ -80,6 +80,7 @@
 	<Script file="swatter.lua"/>
 	<Script file="beanCounter.lua"/>
 	<Script file="informant.lua"/>
+	<Script file="SlideBar.lua"/>
 	<Script file="auctioneerSuite.lua"/>
 	<Script file="altoholic.lua"/>
 	<Script file="loseControl.lua"/>

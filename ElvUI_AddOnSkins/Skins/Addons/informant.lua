@@ -11,4 +11,5 @@ S:AddCallbackForAddon("Informant", "Informant", function()
 	if not E.private.addOnSkins.Informant then return end
 
 	AS:SkinLibrary("Configator")
+	AS:SkinLibrary("LibExtraTip-1")
 end)
