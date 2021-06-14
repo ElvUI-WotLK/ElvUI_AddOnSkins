@@ -54,7 +54,8 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local fontSize = db.dbmFontSize * scale
 
 		background:Hide()
-		spark:Kill()
+		spark:Hide()
+		frame._SetPoint = frame.SetPoint
 
 		self._bar = bar
 		self._icon1 = icon1
@@ -106,6 +107,16 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		end
 	end
 
+	local function correctPoint(self, p1, a, p2, x, y)
+		self._SetPoint(self, p1, a, p2, x, y - 40)
+		self.SetPoint = nil
+	end
+	local function preUpdate(self, elapsed)
+		if (self.timer - elapsed > 0) and self.moving == "move" and self.moveElapsed <= 0.5 and self.owner.options.ExpandUpwards then
+			self.frame.SetPoint = correctPoint
+		end
+	end
+
 	local function setPosition(self)
 		if self.moving == "enlarge" then return end
 
@@ -128,8 +139,12 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
+			self.movePoint = "BOTTOM"
+			self.moveRelPoint = "TOP"
 			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
 		else
+			self.movePoint = "TOP"
+			self.moveRelPoint = "BOTTOM"
 			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 		end
 
@@ -142,16 +157,8 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		self.moveOffsetY = -(newY - oldY)
 		self.moveElapsed = 0
 
-		if self.owner.options.ExpandUpwards then
-			self.movePoint = "BOTTOM"
-			self.moveRelPoint = "TOP"
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.moveOffsetX, self.moveOffsetY)
-		else
-			self.movePoint = "TOP"
-			self.moveRelPoint = "BOTTOM"
-			self.moveOffsetY = -self.moveOffsetY
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, self.moveOffsetY)
-		end
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, self.moveOffsetX, self.moveOffsetY)
 	end
 
 	local function enlarge(self)
@@ -161,8 +168,12 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
+			self.movePoint = "BOTTOM"
+			self.moveRelPoint = "TOP"
 			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
 		else
+			self.movePoint = "TOP"
+			self.moveRelPoint = "BOTTOM"
 			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 		end
 
@@ -170,31 +181,33 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local newY = self.frame:GetTop()
 
 		self.moving = "enlarge"
-		self.movePoint = "TOP"
-		self.moveRelPoint = "BOTTOM"
 		self.moveAnchor = newAnchor
 		self.moveOffsetX = -(newX - oldX)
 		self.moveOffsetY = -(newY - oldY)
 		self.moveElapsed = 0
 
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, -self.moveOffsetY)
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.moveOffsetX, self.moveOffsetY)
 	end
 
 	local function animateEnlarge(self, elapsed)
 		self.moveElapsed = self.moveElapsed + elapsed
 
-		local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
-		local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+		if self.moveElapsed < 1 then
+			local options = self.owner.options
+			local newX = self.moveOffsetX + (options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+			local newY = self.moveOffsetY + (options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+			local newWidth = options.Width + (options.HugeWidth - options.Width) * (self.moveElapsed / 1)
+			local newScale = options.Scale + (options.HugeScale - options.Scale) * (self.moveElapsed / 1)
 
-		local db = E.db.addOnSkins
-		local scale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
-		local width = self.owner.options.Width * scale
-		local height = db.dbmBarHeight * scale
-		local fontSize = db.dbmFontSize * scale
-
-		if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
 			self.frame:ClearAllPoints()
 			self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+
+			local db = E.db.addOnSkins
+			local width = newWidth
+			local height = db.dbmBarHeight * newScale
+			local fontSize = db.dbmFontSize * newScale
+
 			self.frame:Size(width, height)
 			self._bar:Size(width, height)
 
@@ -212,23 +225,29 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		end
 	end
 
-	local function SkinBars(self)
-		for bar in self:GetBarIterator() do
-			if not bar.injected then
-				hooksecurefunc(bar, "ApplyStyle", applyStyle)
+	S:SecureHook(DBT, "CreateBar", function(self)
+		local hooked
+		for bar in pairs(self.bars) do
+			if not hooked then
+				local mt = getmetatable(bar).__index
 
-				bar.SetPosition = setPosition
-				bar.MoveToNextPosition = moveToNextPosition
-				bar.Enlarge = enlarge
-				bar.AnimateEnlarge = animateEnlarge
+				hooksecurefunc(mt, "ApplyStyle", applyStyle)
+				S:Hook(mt, "Update", preUpdate)
 
-				bar.injected = true
+				mt.SetPosition = setPosition
+				mt.MoveToNextPosition = moveToNextPosition
+				mt.Enlarge = enlarge
+				mt.AnimateEnlarge = animateEnlarge
 
-				bar:ApplyStyle()
-				bar:SetPosition()
+				hooked = true
 			end
+
+			bar:ApplyStyle()
+			bar:SetPosition()
 		end
-	end
+
+		S:Unhook(DBT, "CreateBar")
+	end)
 
 	local function SkinBoss()
 		local db = E.db.addOnSkins
@@ -255,7 +274,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 			background:SetNormalTexture(nil)
 
-			progress:SetStatusBarTexture(E["media"].normTex)
+			progress:SetStatusBarTexture(E.media.normTex)
 			progress:ClearAllPoints()
 			progress:SetInside(bar)
 
@@ -278,13 +297,16 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		end
 	end
 
-	hooksecurefunc(DBT, "CreateBar", SkinBars)
 	hooksecurefunc(DBM.BossHealth, "Show", SkinBoss)
 	hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss)
 	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss)
 
 	S:SecureHook(DBM.RangeCheck, "Show", function(self)
+		if not DBMRangeCheck then return end
+
 		DBMRangeCheck:SetTemplate("Transparent")
+		E:GetModule("Tooltip"):HookScript(DBMRangeCheck, "OnShow", "SetStyle")
+
 		S:Unhook(self, "Show")
 	end)
 
@@ -295,24 +317,162 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
 	end, true)
+
+	if DBM.ShowUpdateReminder then
+		S:SecureHook(DBM, "ShowUpdateReminder", function(self)
+			DBMUpdateReminder:SetTemplate("Transparent")
+			DBMUpdateReminder:EnableMouse(true)
+
+			local editBox, button = DBMUpdateReminder:GetChildren()
+
+			local left, right, middle = select(6, DBMUpdateReminder:GetChildren():GetRegions())
+			left:Hide()
+			right:Hide()
+			middle:Hide()
+			editBox:Height(22)
+			S:HandleEditBox(editBox)
+
+			S:HandleButton(button)
+
+			S:Unhook(self, "ShowUpdateReminder")
+		end)
+	end
 end)
 
 S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 	if not E.private.addOnSkins.DBM then return end
 
-	DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
-		self:StripTextures()
-		self:SetTemplate("Transparent")
-		DBM_GUI_OptionsFrameBossMods:StripTextures()
-		DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
-		DBM_GUI_OptionsFrameDBMOptions:StripTextures()
-		DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent")
-		DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent")
-	end)
+	DBM_GUI_OptionsFrame:SetTemplate("Transparent")
 
-	S:HandleButton(DBM_GUI_OptionsFrameOkay)
-	S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar)
+	DBM_GUI_OptionsFrameHeader:Point("TOP", 0, 7)
+	DBM_GUI_OptionsFrameHeader:Hide()
+
+	DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent")
 
 	S:HandleTab(DBM_GUI_OptionsFrameTab1)
 	S:HandleTab(DBM_GUI_OptionsFrameTab2)
+
+	DBM_GUI_OptionsFrameTab1:Point("BOTTOMLEFT", DBM_GUI_OptionsFrameBossMods, "TOPLEFT", 6, -4)
+	DBM_GUI_OptionsFrameTab1Text:SetPoint("CENTER", 0, 0)
+	DBM_GUI_OptionsFrameTab2Text:SetPoint("CENTER", 0, 0)
+
+	S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar)
+	DBM_GUI_OptionsFramePanelContainerFOVScrollBar:Point("TOPRIGHT", 18, -16)
+	DBM_GUI_OptionsFramePanelContainerFOVScrollBar:Point("BOTTOMRIGHT", 18, 14)
+
+	S:HandleButton(DBM_GUI_OptionsFrameOkay)
+
+	if DBM_GUI_OptionsFrameWebsiteButton then
+		S:HandleButton(DBM_GUI_OptionsFrameWebsiteButton)
+	end
+
+	S:SecureHookScript(DBM_GUI_OptionsFrame, "OnShow", function(self)
+		DBM_GUI_OptionsFrameBossMods:StripTextures()
+		DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
+
+		DBM_GUI_OptionsFrameBossModsList:StripTextures()
+		S:HandleScrollBar(DBM_GUI_OptionsFrameBossModsListScrollBar)
+		DBM_GUI_OptionsFrameBossModsListScrollBar:Point("TOPRIGHT", 1, -18)
+		DBM_GUI_OptionsFrameBossModsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+
+		for _, button in ipairs(DBM_GUI_OptionsFrameBossMods.buttons) do
+			S:HandleCollapseExpandButton(button.toggle, "auto")
+			button.toggle:Point("TOPLEFT", 3, 0)
+		end
+
+		DBM_GUI_OptionsFrameDBMOptions:StripTextures()
+		DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent")
+
+		DBM_GUI_OptionsFrameDBMOptionsList:StripTextures()
+		S:HandleScrollBar(DBM_GUI_OptionsFrameDBMOptionsListScrollBar)
+		DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("TOPRIGHT", 1, -18)
+		DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+
+		for _, button in ipairs(DBM_GUI_OptionsFrameDBMOptions.buttons) do
+			S:HandleCollapseExpandButton(button.toggle, "auto")
+			button.toggle:Point("TOPLEFT", 3, 0)
+		end
+
+		S:Unhook(self, "OnShow")
+	end)
+
+	hooksecurefunc(DBM_GUI_OptionsFrame, "DisplayButton", function(self, button, element)
+		button.toggle:Point("LEFT", 8 * element.depth - 5, 2);
+	end)
+
+	S:RawHook(DBM_GUI, "CreateNewPanel", function(self, ...)
+		local panel = S.hooks[DBM_GUI].CreateNewPanel(self, ...)
+
+		local PanelPrototype = getmetatable(panel).__index
+
+		hooksecurefunc(PanelPrototype, "CreateArea", function(this)
+			this.areas[#this.areas].frame:SetTemplate("Transparent", nil, true)
+			this.areas[#this.areas].frame:SetBackdropColor(0, 0, 0, 0)
+		end)
+
+		S:RawHook(PanelPrototype, "CreateCheckButton", function(this, name, autoplace, ...)
+			local button = S.hooks[PanelPrototype].CreateCheckButton(this, name, autoplace, ...)
+
+			if button then
+				S:HandleCheckBox(button, true)
+
+				if autoplace then
+					local _, lastObj = button:GetPoint()
+					if lastObj.mytype == "checkbutton" then
+						button:Point("TOPLEFT", lastObj, "BOTTOMLEFT", 0, -7)
+					end
+				end
+
+				return button
+			end
+		end)
+		S:RawHook(PanelPrototype, "CreateEditBox", function(this, ...)
+			local editbox = S.hooks[PanelPrototype].CreateEditBox(this, ...)
+			S:HandleEditBox(editbox)
+			return editbox
+		end)
+		S:RawHook(PanelPrototype, "CreateSlider", function(this, ...)
+			local slider = S.hooks[PanelPrototype].CreateSlider(this, ...)
+			S:HandleSliderFrame(slider)
+			return slider
+		end)
+		S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
+			local button = S.hooks[PanelPrototype].CreateButton(this, ...)
+			S:HandleButton(button)
+			return button
+		end)
+
+		S:Unhook(DBM_GUI, "CreateNewPanel")
+
+		return panel
+	end)
+
+	DBM_GUI_DropDown:SetTemplate("Transparent")
+
+	local dropdownArrowColor = {1, 0.8, 0}
+	S:RawHook(DBM_GUI, "CreateDropdown", function(self, ...)
+		local dropdown = S.hooks[DBM_GUI].CreateDropdown(self, ...)
+
+		local frameName = dropdown:GetName()
+		local button = _G[frameName.."Button"]
+		local text = _G[frameName.."Text"]
+
+		dropdown:StripTextures()
+		dropdown:SetTemplate()
+		dropdown:Size(dropdown:GetWidth(), 20)
+
+		if button then
+			S:HandleNextPrevButton(button, "down", dropdownArrowColor)
+			button:ClearAllPoints()
+			button:Point("RIGHT", dropdown, "RIGHT", -3, 0)
+			button:Size(16)
+		end
+
+		if text then
+			text:ClearAllPoints()
+			text:Point("RIGHT", button, "LEFT", -3, 0)
+		end
+
+		return dropdown
+	end)
 end)
