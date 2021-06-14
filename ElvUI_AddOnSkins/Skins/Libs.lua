@@ -609,7 +609,7 @@ local function SkinDropDownMenu(libName)
 	return true
 end
 
-local function SkinL_DropDownMenu(libName)
+local function SkinLDropDownMenu(lib)
 	if not _G.Lib_UIDropDownMenu_Initialize then return end
 
 	local checkBoxSkin = E.private.skins.dropdownCheckBoxSkin
@@ -625,10 +625,10 @@ local function SkinL_DropDownMenu(libName)
 	end
 
 	local function skinL_DropDownMenu()
-		local updateButtons = maxButtons < LIB_UIDROPDOWNMENU_MAXBUTTONS
+		local updateButtons = maxButtons < L_UIDROPDOWNMENU_MAXBUTTONS
 
-		if updateButtons or menuLevel < LIB_UIDROPDOWNMENU_MAXLEVELS then
-			for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
+		if updateButtons or menuLevel < L_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, L_UIDROPDOWNMENU_MAXLEVELS do
 				local frame = _G["L_DropDownList" .. i]
 
 				if frame and not frame.isSkinned then
@@ -639,7 +639,7 @@ local function SkinL_DropDownMenu(libName)
 				end
 
 				if updateButtons then
-					for j = 1, LIB_UIDROPDOWNMENU_MAXBUTTONS do
+					for j = 1, L_UIDROPDOWNMENU_MAXBUTTONS do
 						local button = _G["L_DropDownList" .. i .. "Button" .. j]
 
 						if button and not button.isSkinned then
@@ -663,8 +663,8 @@ local function SkinL_DropDownMenu(libName)
 				end
 			end
 
-			menuLevel = LIB_UIDROPDOWNMENU_MAXLEVELS
-			maxButtons = LIB_UIDROPDOWNMENU_MAXBUTTONS
+			menuLevel = L_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = L_UIDROPDOWNMENU_MAXBUTTONS
 		end
 	end
 
@@ -673,7 +673,6 @@ local function SkinL_DropDownMenu(libName)
 
 	return true
 end
-
 
 AS.libSkins = {
 	["AceAddon-2.0"] = {
@@ -730,7 +729,7 @@ AS.libSkins = {
 	},
 	["LibUIDropDownMenu"] = {
 		stub = true,
-		func = SkinL_DropDownMenu
+		func = SkinLDropDownMenu
 	},
 }
 
