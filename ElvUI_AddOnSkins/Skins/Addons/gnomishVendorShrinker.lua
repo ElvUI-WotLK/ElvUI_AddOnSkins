@@ -27,7 +27,7 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 		return
 	end
 
-	local GVS = GCSFrame or AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
+	local GVS = GVSFrame or AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
 	if not GVS then return end
 
 	GVS:Size(304, 294)
