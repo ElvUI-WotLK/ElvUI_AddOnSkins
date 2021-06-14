@@ -4,8 +4,6 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("FishingBuddy") then return end
 
-local find = string.find
-
 -- FishingBuddy 0.9.8 p1
 -- https://www.curseforge.com/wow/addons/fishingbuddy/files/442409
 
@@ -13,8 +11,10 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 	if not E.private.addOnSkins.FishingBuddy then return end
 
 	FishingBuddyFrame:CreateBackdrop("Transparent")
-	FishingBuddyFrame.backdrop:Point("TOPLEFT", 14, -14)
-	FishingBuddyFrame.backdrop:Point("BOTTOMRIGHT", -32, 74)
+	FishingBuddyFrame.backdrop:Point("TOPLEFT", 11, -12)
+	FishingBuddyFrame.backdrop:Point("BOTTOMRIGHT", -32, 76)
+
+	S:SetBackdropHitRect(FishingBuddyFrame)
 
 	FishingBuddyFramePortrait:Kill()
 	FishingLocationsFrame:StripTextures()
@@ -28,6 +28,13 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 
 	S:HandleTab(FishingBuddyFrameTab1)
 	S:HandleTab(FishingBuddyFrameTab2)
+
+	FishingBuddyFrameTab1:Point("CENTER", FishingBuddyFrame, "BOTTOMLEFT", 54, 62)
+	FishingBuddyFrameTab1.ClearAllPoints = E.noop
+	FishingBuddyFrameTab1.SetPoint = E.noop
+	FishingBuddyFrameTab2:Point("LEFT", FishingBuddyFrameTab1, "RIGHT", -15, 0)
+	FishingBuddyFrameTab2.ClearAllPoints = E.noop
+	FishingBuddyFrameTab2.SetPoint = E.noop
 
 	S:HandleButton(FishingLocationsSwitchButton)
 
@@ -69,6 +76,10 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 		FishingBuddyOptionTab3
 	}
 
+	FishingBuddyOptionTab1:Point("TOPLEFT", FishingOptionsFrame, "TOPRIGHT", -33, -65)
+	FishingBuddyOptionTab1.ClearAllPoints = E.noop
+	FishingBuddyOptionTab1.SetPoint = E.noop
+
 	for _, frame in ipairs(optionTabs) do
 		frame:SetTemplate("Default")
 		frame:StyleButton()
@@ -85,34 +96,13 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 	end
 
 	for i = 0, 21 do
-		local c = _G["FishingLocations"..i]
 		if i == 0 then
-			c = FishingLocationsCollapseAllButton
-		end
-		if c then
-			c:SetNormalTexture("")
-			c.SetNormalTexture = E.noop
-			c:SetPushedTexture("")
-			c.SetPushedTexture = E.noop
-			c:SetHighlightTexture("")
-			c.SetHighlightTexture = E.noop
-			c:SetDisabledTexture("")
-			c.SetDisabledTexture = E.noop
-
-			c.Text = c:CreateFontString(nil, "OVERLAY")
-			c.Text:FontTemplate(nil, 22)
-			c.Text:Point("LEFT", 5, 0)
-			c.Text:SetText("")
-
-			hooksecurefunc(c, "SetNormalTexture", function(self, texture)
-				if find(texture, "MinusButton") then
-					self.Text:SetText("-")
-				elseif find(texture, "PlusButton") then
-					self.Text:SetText("+")
-				else
-					self.Text:SetText("")
-				end
-			end)
+			S:HandleCollapseExpandButton(FishingLocationsCollapseAllButton)
+		else
+			local button = _G["FishingLocations"..i]
+			if button then
+				S:HandleCollapseExpandButton(button)
+			end
 		end
 	end
 

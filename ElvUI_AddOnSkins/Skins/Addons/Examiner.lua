@@ -62,12 +62,13 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 		Examiner.bgBottomRight:Size(67, 112)
 	end
 
+	local dropdownArrowColor = {1, 0.8, 0}
 	local function skinAzDropdown(frame)
 		frame:SetTemplate()
 
-		S:HandleNextPrevButton(frame.button, "down")
-		frame.button:ClearAllPoints()
-		frame.button:SetPoint("TOPRIGHT", -2, -2)
+		S:HandleNextPrevButton(frame.button, "down", dropdownArrowColor)
+		frame.button:Point("TOPRIGHT", -2, -2)
+		frame.button:Point("BOTTOMRIGHT", -2, 2)
 		frame.button:Size(20)
 	end
 
@@ -228,24 +229,6 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 		end
 	end
 
-	S:SecureHook(AzDropDown, "ToggleMenu", function(parent)
-		if not parent then return end
-
-		for i = 1, parent:GetNumChildren() do
-			local child = select(i, parent:GetChildren())
-
-			if child.items and child.list and child.scroll then
-				child:SetTemplate("Transparent")
-
-				S:HandleScrollBar(_G[child.scroll:GetName().."ScrollBar"])
-
-				AzDropDown._menu = child
-
-				S:Unhook(AzDropDown, "ToggleMenu")
-				break
-			end
-		end
-	end)
-
-	E:GetModule("AddOnSkins"):SkinLibrary("AzDialog")
+	AS:SkinLibrary("AzDialog")
+	AS:SkinLibrary("AzDropDown")
 end)
