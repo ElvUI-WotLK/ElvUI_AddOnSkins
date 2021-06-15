@@ -29,7 +29,11 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 				frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
 			end
 		else
-			frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
+			if db.DBMSkinHalf then
+				frame:Point("BOTTOMLEFT", parent, "BOTTOMRIGHT", 10 * (E.Border + E.Spacing), 0)
+			else
+				frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
+			end
 		end
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
