@@ -4,12 +4,14 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("QDKP2_GUI") then return end
 
+-- Quick DKP V2 - GUI v 2.6.7
+
 S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
   if not E.private.addOnSkins.QDKP2_GUI then return end
   --Roster Frame
   QDKP2_Frame2:StripTextures()
   QDKP2_Frame2:CreateBackdrop("Transparent")
-  QDKP2_Frame2:Size(780, 380)
+  QDKP2_Frame2:Size(780, 400)
   QDKP2_frame2_title:Size(725, 14)
   QDKP2_frame2_scrollbar:StripTextures()
   --QDKP2_frame2_scrollbar:CreateBackdrop("Transparent")
@@ -20,6 +22,8 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
   QDKP2_frame2_title_net:Size(60, 14)
   QDKP2_frame2_title_total:Size(60, 14)
   QDKP2_frame2_title_spent:Size(60, 14)
+  QDKP2_Frame2_Bid_Item:ClearAllPoints()
+  QDKP2_Frame2_Bid_Item:Point("BottomLeft", QDKP2_frame2_showRaid, "BottomLeft", - 60, - 2)
   for i = 1, 20 do
     _G["QDKP2_frame2_entry" .. i]:Size(725, 14)
     _G["QDKP2_frame2_entry" .. i .. "_name"]:Size(105, 14)
