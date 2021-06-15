@@ -21,15 +21,14 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
 		frame:SetTemplate()
 
-		local db = E.db.addOnSkins
 		if id == 1 then
-			if db.DBMSkinHalf then
+			if E.db.addOnSkins.DBMSkinHalf then
 				frame:Point("BOTTOMRIGHT", parent, "BOTTOMLEFT", -10 * (E.Border + E.Spacing), 0)
 			else
 				frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
 			end
 		else
-			if db.DBMSkinHalf then
+			if E.db.addOnSkins.DBMSkinHalf then
 				frame:Point("BOTTOMLEFT", parent, "BOTTOMRIGHT", 10 * (E.Border + E.Spacing), 0)
 			else
 				frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
@@ -90,7 +89,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		bar:SetInside(frame)
 
-		frame:Size(barWidth, barHeight)
+		frame:Size(barWidth, db.DBMSkinHalf and barHeight / 3 or barHeight)
 		bar:Size(barWidth, barHeight)
 
 		icon1.overlay:Size(barHeight)
@@ -105,11 +104,9 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 				self.owner.options.HugeBarYOffset = 20
 			end
 
-			frame:SetHeight(barHeight / 3)
 			name:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
 			timer:Point('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 3)
 		else
-			frame:SetHeight(barHeight)
 			name:Point('LEFT', frame, 'LEFT', 5, 0)
 			timer:Point('RIGHT', frame, 'RIGHT', -5, 0)
 		end
@@ -118,8 +115,17 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
 
-		if self.owner.options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
-		if self.owner.options.IconRight then icon2.overlay:Show() else icon2.overlay:Hide()	end
+		if self.owner.options.IconLeft then
+			icon1.overlay:Show()
+		else
+			icon1.overlay:Hide()
+		end
+
+		if self.owner.options.IconRight then
+			icon2.overlay:Show()
+		else
+			icon2.overlay:Hide()
+		end
 	end
 
 	local function setPosition(self)
