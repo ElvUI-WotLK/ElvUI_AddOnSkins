@@ -3,6 +3,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
 
 L["AddOn Skins"] = true
 L["AuraBar Backdrop"] = true
+L["DBM Half-bar Skin"] = true
 L["Default"] = true
 L["Double"] = true
 L["Embed Type"] = true
