@@ -106,18 +106,16 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			end
 
 			frame:SetHeight(barHeight / 3)
-			name:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
-			timer:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 3)
+			name:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
+			timer:Point('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 3)
 		else
 			frame:SetHeight(barHeight)
-			name:SetPoint('LEFT', frame, 'LEFT', 4, 0)
-			timer:SetPoint('RIGHT', frame, 'RIGHT', -4, 0)
+			name:Point('LEFT', frame, 'LEFT', 5, 0)
+			timer:Point('RIGHT', frame, 'RIGHT', -5, 0)
 		end
 
-		--name:Point("LEFT", 5, 0)
 		name:SetFont(self._font, fontSize, db.dbmFontOutline)
 
-		--timer:Point("RIGHT", -5, 0)
 		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
 
 		if self.owner.options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
@@ -207,8 +205,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local db = E.db.addOnSkins
 		local scale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 		local width = self.owner.options.Width * scale
-		local height
-		if db.DBMSkinHalf then height = (db.dbmBarHeight * scale) / 3 else height = db.dbmBarHeight * scale end
+		local height = (db.DBMSkinHalf and db.dbmBarHeight * newScale / 3) or db.dbmBarHeight * newScale
 		local fontSize = db.dbmFontSize * scale
 
 		if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
