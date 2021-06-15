@@ -3,6 +3,7 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "deDE")
 
 L["AddOn Skins"] = true
 L["AuraBar Backdrop"] = true
+L["DBM Half-bar Skin"] = "DBM Halbeleisten Skin"
 L["Default"] = true
 L["Double"] = true
 L["Embed Type"] = true
