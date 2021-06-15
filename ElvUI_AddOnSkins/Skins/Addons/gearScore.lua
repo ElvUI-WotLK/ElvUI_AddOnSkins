@@ -17,6 +17,8 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 
 	GS_DisplayFrame:SetTemplate("Transparent")
 
+	S:HandleCloseButton(GSDisplayFrameCloseButton, GS_DisplayFrame)
+
 	S:HandleEditBox(GS_EditBox1)
 	GS_EditBox1:Height(22)
 	GS_EditBox1:ClearAllPoints()
@@ -31,12 +33,12 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 	for i = 1, 4 do
 		frame = _G["GS_SpecBar" .. i]
 		frame:StripTextures()
-		frame:SetStatusBarTexture(E["media"].normTex)
+		frame:SetStatusBarTexture(E.media.normTex)
 		frame:CreateBackdrop("Default")
 		E:RegisterStatusBar(frame)
 	end
 
-	GS_Model:SetTemplate("Default")
+	GS_Model:SetTemplate("Transparent")
 
 	for i = 1, 18 do
 		if i ~= 4 then
@@ -50,20 +52,20 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 	hooksecurefunc("GearScore_DisplayUnit", function(Name)
 		local frame
 
-		if GS_Data[GetRealmName()].Players[Name] then
+		if GS_Data[E.myrealm].Players[Name] then
 			for i = 1, 18 do
 				if i ~= 4 then
 					frame = _G["GS_Frame" .. i]
 					frame:SetTemplate("Default")
 
-					local _, _, rarity, _, _, _, _, _, _, texture = GetItemInfo("item:" .. GS_Data[GetRealmName()].Players[Name].Equip[i])
+					local _, _, rarity, _, _, _, _, _, _, texture = GetItemInfo("item:" .. GS_Data[E.myrealm].Players[Name].Equip[i])
 
 					if texture then
 						frame.texture:SetTexture(texture)
 						frame:SetBackdropBorderColor(GetItemQualityColor(rarity))
 					else
 						frame.texture:SetTexture(GS_TextureFiles[i])
-						frame:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+						frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
 				end
 			end
@@ -73,7 +75,7 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 					frame = _G["GS_Frame" .. i]
 					frame:SetTemplate("Default")
 					frame.texture:SetTexture(GS_TextureFiles[i])
-					frame:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end
 		end
@@ -84,18 +86,19 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 	for i = 1, 14 do
 		frame = _G["GS_XpBar" .. i]
 		frame:StripTextures()
-		frame:SetStatusBarTexture(E["media"].normTex)
+		frame:SetStatusBarTexture(E.media.normTex)
 		frame:CreateBackdrop("Default")
 		E:RegisterStatusBar(frame)
 	end
 
 	GS_DisplayFrameTab1:Point("TOPLEFT", 0, -448)
+	GS_DisplayFrameTab2:Point("TOPLEFT", GS_DisplayFrameTab1, "TOPRIGHT", -15, 0)
 	GS_DisplayFrameTab3:Point("TOPRIGHT", 0, -448)
+	GS_DisplayFrameTab3:Height(32)
+
 	for i = 1, 3 do
 		S:HandleTab(_G["GS_DisplayFrameTab" .. i])
 	end
-
-	S:HandleCloseButton(GSDisplayFrameCloseButton)
 
 	S:HandleCheckBox(GS_ShowPlayerCheck)
 
@@ -128,7 +131,7 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 
 	GS_DatabaseFrame:SetTemplate("Transparent")
 
-	S:HandleCloseButton(GSDatabaseFrameCloseButton)
+	S:HandleCloseButton(GSDatabaseFrameCloseButton, GS_DatabaseFrame)
 
 	GS_DatabaseFrameTab1:Point("TOPLEFT", 0, -468)
 	for i = 1, 4 do
@@ -151,34 +154,23 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 	end
 
 	hooksecurefunc("GearScore_DisplayDatabase", function()
-		if GS_DatabaseFrame.tooltip then
-			GS_DatabaseFrame.tooltip:SetTemplate("Default")
-
-			if GS_DatabaseFrame.tooltip.slider then
-				S:HandleSliderFrame(GS_DatabaseFrame.tooltip.slider)
-			end
-		end
-	end)
-
-	hooksecurefunc("GearScoreClassScan", function()
-		if GS_DatabaseFrame.tooltip then
-			GS_DatabaseFrame.tooltip:SetTemplate("Default")
-
-			if GS_DatabaseFrame.tooltip.slider then
-				S:HandleSliderFrame(GS_DatabaseFrame.tooltip.slider)
-			end
-		end
+		GS_DatabaseFrame.tooltip:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	end)
 
 	GS_ReportFrame:SetTemplate("Transparent")
+	GS_ReportFrame:Point("TOPLEFT", 819, 0)
+
+	S:HandleCloseButton(GSReportFrameCloseButton, GS_ReportFrame)
 
 	S:HandleSliderFrame(GS_Slider)
+
+	GSX_WhisperEditBox:Height(22)
+	GSX_ChannelEditBox:Height(22)
 
 	S:HandleEditBox(GSX_WhisperEditBox)
 	S:HandleEditBox(GSX_ChannelEditBox)
 
 	S:HandleButton(GSXButton1)
-	S:HandleCloseButton(GSReportFrameCloseButton)
 
 	S:HandleCheckBox(GSXSayCheck, true)
 	S:HandleCheckBox(GSXPartyCheck, true)
@@ -188,4 +180,6 @@ S:AddCallbackForAddon("GearScore", "GearScore", function()
 	S:HandleCheckBox(GSXWhisperTargetCheck, true)
 	S:HandleCheckBox(GSXWhisperCheck, true)
 	S:HandleCheckBox(GSXChannelCheck, true)
+
+	AS:SkinLibrary("LibQTip-1.0")
 end)

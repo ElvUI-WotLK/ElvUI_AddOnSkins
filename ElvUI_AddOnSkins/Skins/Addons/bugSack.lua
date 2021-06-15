@@ -25,14 +25,14 @@ S:AddCallbackForAddon("BugSack", "BugSack", function()
 
 		if BugSack.Serialize then
 			S:HandleButton(BugSackSendButton)
-			BugSackSendButton:SetPoint("LEFT", BugSackPrevButton, "RIGHT", E.PixelMode and 1 or 3, 0)
-			BugSackSendButton:SetPoint("RIGHT", BugSackNextButton, "LEFT", -(E.PixelMode and 1 or 3), 0)
+			BugSackSendButton:Point("LEFT", BugSackPrevButton, "RIGHT", E.PixelMode and 1 or 3, 0)
+			BugSackSendButton:Point("RIGHT", BugSackNextButton, "LEFT", -(E.PixelMode and 1 or 3), 0)
 		end
 
 		local scrollBar = BugSackScrollScrollBar or BugSackFrameScrollScrollBar
 		S:HandleScrollBar(scrollBar)
 
-		BugSackTabAll:SetPoint("TOPLEFT", BugSackFrame, "BOTTOMLEFT", 0, 2)
+		BugSackTabAll:Point("TOPLEFT", BugSackFrame, "BOTTOMLEFT", 0, 2)
 		S:HandleTab(BugSackTabAll)
 		S:HandleTab(BugSackTabSession)
 		S:HandleTab(BugSackTabLast)

@@ -51,7 +51,7 @@ end)
 S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
-	local ZBM = ZOMGBuffs:GetModule("ZOMGBlessingsManager")
+	local ZBM = ZOMGBuffs:GetModule("ZOMGBlessingsManager", true)
 	if not ZBM then return end
 
 	S:SecureHook(ZBM, "SplitInitialize", function(self)
@@ -130,7 +130,7 @@ end)
 S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
-	local ZL = ZOMGBuffs:GetModule("ZOMGLog")
+	local ZL = ZOMGBuffs:GetModule("ZOMGLog", true)
 	if not ZL then return end
 
 	S:RawHook(ZL, "CreateLogFrame", function(self)

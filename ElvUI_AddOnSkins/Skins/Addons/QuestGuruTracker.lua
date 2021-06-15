@@ -4,24 +4,22 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("QuestGuru_Tracker") then return end
 
--- QuestGuru_Tracker 1.3
+-- QuestGuru_Tracker 1.4.4
 
 S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 	if not E.private.addOnSkins.QuestGuru_Tracker then return end
-
-	QGT_SetQuestWatchBorder = E.noop
 
 	E:GetModule("Tooltip"):SetStyle(QGT_QuestWatchFrameTooltip)
 	QGT_QuestWatchFrameTooltip.SetBackdropColor = E.noop
 	QGT_QuestWatchFrameTooltip.SetBackdropBorderColor = E.noop
 
 	QGT_QuestWatchFrame:SetBackdrop(nil)
-	QGT_QuestWatchFrame:CreateBackdrop("Transparent")
+	QGT_QuestWatchFrame:CreateBackdrop(QGT_Settings.ShowBorder and "Transparent" or "NoBackdrop")
 	QGT_QuestWatchFrame:SetHitRectInsets(0, 0, 0, 0)
 	QGT_QuestWatchFrameBackground:Hide()
 
 	QGT_AchievementWatchFrame:SetBackdrop(nil)
-	QGT_AchievementWatchFrame:CreateBackdrop("Transparent")
+	QGT_AchievementWatchFrame:CreateBackdrop(QGT_Settings.ShowBorder and "Transparent" or "NoBackdrop")
 	QGT_AchievementWatchFrame:SetHitRectInsets(0, 0, 0, 0)
 	QGT_AchievementWatchFrameBackground:Hide()
 
@@ -38,8 +36,20 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 	QGT_AchievementWatchFrameMinimize:Point("RIGHT", QGT_AchievementWatchFrameOptions, "LEFT", -1, 0)
 	QGT_AchievementWatchFrameToggle:Point("RIGHT", QGT_AchievementWatchFrameMinimize, "LEFT", -2, 0)
 
+	local _SetPoint = QGT_QuestWatchFrameSlider.SetPoint
+	local function sliderSetPoint(self, point)
+		if point == "TOPLEFT" then
+			_SetPoint(self, "TOPLEFT", -12, -17)
+		else
+			_SetPoint(self, "TOPRIGHT", 12, -17)
+		end
+	end
+
 	S:HandleSliderFrame(QGT_QuestWatchFrameSlider)
+	QGT_QuestWatchFrameSlider.SetPoint = sliderSetPoint
+
 	S:HandleSliderFrame(QGT_AchievementWatchFrameSlider)
+	QGT_AchievementWatchFrameSlider.SetPoint = sliderSetPoint
 
 	local function skinOptions(f)
 		for i = 1, f:GetNumChildren() do
@@ -85,6 +95,22 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 		QGT_AchievementWatchFrame.backdrop:SetBackdropBorderColor(borderR, borderG, borderB, alpha)
 	end
 
+	QGT_SetQuestWatchBorder = function(enabled)
+		if enabled then
+			QGT_QuestWatchFrame.backdrop:SetTemplate("Transparent", nil, true)
+		else
+			QGT_QuestWatchFrame.backdrop:SetTemplate("NoBackdrop", nil, true)
+		end
+	end
+
+	QGT_SetAchievementWatchBorder = function(enabled)
+		if enabled then
+			QGT_AchievementWatchFrame.backdrop:SetTemplate("Transparent", nil, true)
+		else
+			QGT_AchievementWatchFrame.backdrop:SetTemplate("NoBackdrop", nil, true)
+		end
+	end
+
 	QGT_OptionsFrameTrackerAlpha:SetScript("OnValueChanged", function(self)
 		local alpha = self:GetValue()
 		local backdropR, backdropG, backdropB = unpack(E.media.backdropfadecolor, 1, 3)
@@ -102,28 +128,54 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 
 	local skinnedButtons = 0
 	hooksecurefunc("QGT_QuestWatch_Update", function()
-		if QGT_WATCHFRAME_NUM_ITEMS > skinnedButtons then
-			for i = skinnedButtons + 1, QGT_WATCHFRAME_NUM_ITEMS do
+		local questItemIcons = QGT_Settings.QuestItemIcons
+
+		if questItemIcons or QGT_WATCHFRAME_NUM_ITEMS > skinnedButtons then
+			local leftSide = (QGT_Settings.QuestWatch.Left * QGT_Settings.Scale) < 32
+			local sliderVisible = QGT_QuestWatchFrameSlider:GetAlpha() > 0
+			local sliderRightVisible = sliderVisible and ((QGT_Settings.QuestWatch.Left + 256) * QGT_Settings.Scale) > (UIParent:GetWidth() - 16)
+
+			for i = questItemIcons and 1 or skinnedButtons + 1, QGT_WATCHFRAME_NUM_ITEMS do
 				local button = _G["WatchFrameItem"..i]
 
-				if button and not button.isSkinned then
-					local icon = _G["WatchFrameItem"..i.."IconTexture"]
-					local normal = _G["WatchFrameItem"..i.."NormalTexture"]
-					local cooldown = _G["WatchFrameItem"..i.."Cooldown"]
+				if button then
+					if not button.isSkinned then
+						local icon = _G["WatchFrameItem"..i.."IconTexture"]
+						local normal = _G["WatchFrameItem"..i.."NormalTexture"]
+						local cooldown = _G["WatchFrameItem"..i.."Cooldown"]
 
-					button:CreateBackdrop()
-					button.backdrop:SetAllPoints()
-					button:StyleButton()
-					button:Size(25)
+						button:CreateBackdrop()
+						button.backdrop:SetAllPoints()
+						button:StyleButton()
+						button:Size(25)
 
-					normal:SetAlpha(0)
+						normal:SetAlpha(0)
 
-					icon:SetInside()
-					icon:SetTexCoord(unpack(E.TexCoords))
+						icon:SetInside()
+						icon:SetTexCoord(unpack(E.TexCoords))
 
-					E:RegisterCooldown(cooldown)
+						E:RegisterCooldown(cooldown)
 
-					button.isSkinned = true
+						button.isSkinned = true
+					end
+
+					if questItemIcons then
+						local _, watchText = button:GetPoint()
+
+						if leftSide then
+							if sliderVisible then
+								button:Point("TOPLEFT", watchText, "TOPRIGHT", 19, 0)
+							else
+								button:Point("TOPLEFT", watchText, "TOPRIGHT", 8, 0)
+							end
+						else
+							if sliderRightVisible then
+								button:Point("TOPRIGHT", watchText, "TOPLEFT", -19, 0)
+							else
+								button:Point("TOPRIGHT", watchText, "TOPLEFT", -8, 0)
+							end
+						end
+					end
 				end
 			end
 
@@ -311,14 +363,16 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 
 				QGT_QuestWatchQuestName:Point("RIGHT", QGT_QuestWatchNumQuests, "LEFT", -12, 0)
 
-				width = width + QGT_QuestWatchQuestName:GetWidth() + QGT_QuestWatchNumQuests:GetWidth()
+			--	width = width + QGT_QuestWatchQuestName:GetWidth() + QGT_QuestWatchNumQuests:GetWidth()
+				width = width + QGT_QuestWatchQuestName:GetWidth() + 32
 
 				QGT_QuestWatchFrame.backdrop:ClearAllPoints()
-				QGT_QuestWatchFrame.backdrop:Point("TOPRIGHT")
-				QGT_QuestWatchFrame.backdrop:Point("BOTTOMLEFT", QGT_QuestWatchFrame:GetWidth() - width, 0)
+				QGT_QuestWatchFrame.backdrop:Point("TOPRIGHT", 1, 1)
+				QGT_QuestWatchFrame.backdrop:Point("BOTTOMLEFT", QGT_QuestWatchFrame:GetWidth() - width, 1)
 			else
 				QGT_QuestWatchFrame.backdrop:ClearAllPoints()
-				QGT_QuestWatchFrame.backdrop:SetAllPoints()
+				QGT_QuestWatchFrame.backdrop:Point("TOPLEFT", -1, 1)
+				QGT_QuestWatchFrame.backdrop:Point("BOTTOMRIGHT", 1, -1)
 
 				QGT_QuestWatchQuestName:ClearAllPoints()
 				QGT_QuestWatchQuestName:Point("TOPLEFT", 8, -6)
@@ -344,14 +398,16 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 
 				QGT_AchievementWatchName:Point("RIGHT", QGT_AchievementWatchNum, "LEFT", -12, 0)
 
-				width = width + QGT_AchievementWatchName:GetWidth() + QGT_AchievementWatchNum:GetWidth()
+			--	width = width + QGT_AchievementWatchName:GetWidth() + QGT_AchievementWatchNum:GetWidth()
+				width = width + QGT_AchievementWatchName:GetWidth() + 8
 
 				QGT_AchievementWatchFrame.backdrop:ClearAllPoints()
-				QGT_AchievementWatchFrame.backdrop:Point("TOPRIGHT")
-				QGT_AchievementWatchFrame.backdrop:Point("BOTTOMLEFT", QGT_AchievementWatchFrame:GetWidth() - width, 0)
+				QGT_AchievementWatchFrame.backdrop:Point("TOPRIGHT", 1, 1)
+				QGT_AchievementWatchFrame.backdrop:Point("BOTTOMLEFT", QGT_AchievementWatchFrame:GetWidth() - width, 1)
 			else
 				QGT_AchievementWatchFrame.backdrop:ClearAllPoints()
-				QGT_AchievementWatchFrame.backdrop:SetAllPoints()
+				QGT_AchievementWatchFrame.backdrop:Point("TOPLEFT", -1, 1)
+				QGT_AchievementWatchFrame.backdrop:Point("BOTTOMRIGHT", 1, -1)
 
 				QGT_AchievementWatchName:ClearAllPoints()
 				QGT_AchievementWatchName:Point("TOPLEFT", 8, -6)

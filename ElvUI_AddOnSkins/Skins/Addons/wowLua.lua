@@ -14,20 +14,19 @@ S:AddCallbackForAddon("WowLua", "WowLua", function()
 	WowLuaFrame:SetTemplate("Transparent")
 	WowLuaFrameLineNumScrollFrame:StripTextures()
 
-	WowLuaFrameResizeBar:StripTextures()
-	WowLuaFrameResizeBar:Height(10)
-
 	S:HandleCloseButton(WowLuaButton_Close, WowLuaFrame)
 
 	WowLuaFrameTitle:Point("TOP", 0, -5)
 
 	WowLuaFrameDragHeader:Height(55)
-	WowLuaFrameDragHeader:Point("TOPLEFT", 0, 0)
+	WowLuaFrameDragHeader:SetPoint("TOPLEFT", 0, 0)
 
-	WowLuaFrameToolbar:Point("TOPLEFT", 50, -20)
-	WowLuaButton_New:Point("LEFT", WowLuaFrameToolbar, "LEFT", 0, 0)
+	WowLuaFrameToolbar:Point("TOPLEFT", 30, -21)
+	WowLuaButton_New:SetPoint("LEFT", WowLuaFrameToolbar, "LEFT", 0, 0)
 
-	WowLuaFrameEditFocusGrabber:SetTemplate("Transparent") -- Default
+	WowLuaFrameLineNumEditBox:EnableMouse(false)
+
+	WowLuaFrameEditFocusGrabber:SetTemplate("Transparent")
 	WowLuaFrameEditFocusGrabber:Point("TOPLEFT", 8, -55)
 	WowLuaFrameEditFocusGrabber:Point("BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -6)
 
@@ -37,6 +36,7 @@ S:AddCallbackForAddon("WowLua", "WowLua", function()
 	WowLuaFrameEditScrollFrameScrollBar:Point("TOPLEFT", WowLuaFrameEditScrollFrame, "TOPRIGHT", 3, -17)
 	WowLuaFrameEditScrollFrameScrollBar:Point("BOTTOMLEFT", WowLuaFrameEditScrollFrame, "BOTTOMRIGHT", 3, 16)
 
+	WowLuaFrameResizeBar:StripTextures()
 	WowLuaFrameResizeBar:Height(20)
 
 	WowLuaFrameOutput:Point("TOPLEFT", WowLuaFrameResizeBar, "BOTTOMLEFT", -6, 7)
@@ -55,7 +55,7 @@ S:AddCallbackForAddon("WowLua", "WowLua", function()
 	WowLuaFrameCommand:Point("BOTTOMLEFT", 8, 9)
 	WowLuaFrameCommand:Point("BOTTOMRIGHT", -29, 0)
 	WowLuaFrameCommand:CreateBackdrop()
-	WowLuaFrameCommand.backdrop:Point("TOPLEFT", 0, 0)
+	WowLuaFrameCommand.backdrop:SetPoint("TOPLEFT", 0, 0)
 	WowLuaFrameCommand.backdrop:Point("BOTTOMRIGHT", 0, -1)
 
 	local buttons = {

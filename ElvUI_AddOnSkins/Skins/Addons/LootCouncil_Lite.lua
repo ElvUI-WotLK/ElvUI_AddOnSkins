@@ -82,6 +82,7 @@ S:AddCallbackForAddon("LootCouncil_Lite", "LootCouncil_Lite", function()
 	end
 
 	-- RankFrame
+	RankFrame:EnableMouse(true)
 	RankFrame:SetTemplate("Transparent")
 
 	S:HandleDropDownBox(RankDropDown)

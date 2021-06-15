@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
-local NP = E:GetModule("NamePlates")
 
 if not AS:IsAddonLODorEnabled("PlateBuffs") then return end
 
@@ -18,6 +17,8 @@ S:AddCallbackForAddon("PlateBuffs", "PlateBuffs", function()
 	local core = LibStub("AceAddon-3.0"):GetAddon("PlateBuffs", true)
 	if not core then return end
 
+	local NP = E:GetModule("NamePlates")
+
 	local buffBars = core.buffBars
 	local buffFrames = core.buffFrames
 
@@ -26,7 +27,8 @@ S:AddCallbackForAddon("PlateBuffs", "PlateBuffs", function()
 			NP:StyleFrame(frame, true, frame.texture)
 
 			frame.texture:SetTexCoord(unpack(E.TexCoords))
-			frame.cdbg:Kill()
+			frame.cdbg.Show = E.noop
+			frame.cdbg:Hide()
 
 			hooksecurefunc(frame.border, "SetVertexColor", function(self, r, g, b)
 				local parent = self:GetParent():GetParent()

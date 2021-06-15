@@ -24,7 +24,7 @@ S:AddCallbackForAddon("_NPCScan", "_NPCScan", function()
 		if child and child:IsObjectType("Button") then
 			S:HandleCloseButton(child)
 			child:ClearAllPoints()
-			child:SetPoint("TOPRIGHT", _NPCScanButton, "TOPRIGHT", 4, 4)
+			child:Point("TOPRIGHT", _NPCScanButton, "TOPRIGHT", 4, 5)
 			child:SetScale(1)
 		end
 	end

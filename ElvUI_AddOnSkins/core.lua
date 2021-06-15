@@ -88,9 +88,10 @@ local addonList = {
 	"PowerAuras",
 	"Quartz",
 	"TipTac",
-	"!Swatter",
+	"Swatter",
 	"BeanCounter",
 	"Informant",
+	"SlideBar",
 	"AuctioneerSuite",
 	"Altoholic",
 	"LoseControl",
@@ -110,6 +111,7 @@ local addonList = {
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
+	["Swatter"] = "!Swatter",
 	["AuctioneerSuite"] = "Auc-Advanced",
 	["_NPCScanOverlay"] = "_NPCScan.Overlay",
 	["ElvinCDs"] = "!ElvinCDs",
@@ -135,6 +137,8 @@ do
 			end
 		end
 	end
+
+	V.addOnSkins = {}
 
 	for _, addonName in ipairs(addonList) do
 		V.addOnSkins[addonName] = true

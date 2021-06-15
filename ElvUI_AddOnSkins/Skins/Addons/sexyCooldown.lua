@@ -13,8 +13,8 @@ S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", function()
 	if not E.private.addOnSkins.SexyCooldown then return end
 
 	local function SkinSexyCooldownIcon(_, icon)
-		icon:SetTemplate("Default", true)
-		icon.overlay:SetTemplate("Default", true)
+		icon:SetTemplate("Default")
+		icon.overlay:SetTemplate("Default")
 		icon.overlay.tex:SetInside()
 		icon.tex:SetInside()
 		icon.overlay.tex:SetTexCoord(unpack(E.TexCoords))
@@ -25,24 +25,22 @@ S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", function()
 		bar:SetTemplate("Transparent")
 	end
 
-	local function HookSCDBar(bar)
+	local function HookBar(bar)
 		if bar.hooked then return end
 
 		hooksecurefunc(bar, "UpdateSingleIconLook", SkinSexyCooldownIcon)
 		hooksecurefunc(bar, "UpdateBarBackdrop", SkinSexyCooldownBackdrop)
 
+		bar:UpdateBarLook()
+
 		bar.hooked = true
 	end
 
 	for _, bar in ipairs(SexyCooldown.bars) do
-		HookSCDBar(bar)
-		bar:UpdateBarLook()
+		HookBar(bar)
 	end
 
 	hooksecurefunc(SexyCooldown, "CreateBar", function(self)
-		for _, bar in ipairs(self.bars) do
-			HookSCDBar(bar)
-			bar:UpdateBarLook()
-		end
+		HookBar(self.bars[#self.bars])
 	end)
 end)

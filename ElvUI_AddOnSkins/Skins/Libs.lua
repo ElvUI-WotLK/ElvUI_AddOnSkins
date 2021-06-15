@@ -5,10 +5,13 @@ local AS = E:GetModule("AddOnSkins")
 local _G = _G
 local ipairs = ipairs
 local select = select
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 
 AS.skinnedLibs = {}
+
+local dropdownArrowColor = {1, 0.8, 0}
 
 local function SkinDewdrop(lib, libName)
 	local dewdropEditBoxFrame
@@ -182,7 +185,7 @@ local function SkinConfigator(lib)
 		obj:StripTextures()
 		obj:SetTemplate("Default")
 		obj:Height(12)
-		obj:SetThumbTexture(E["media"].blankTex)
+		obj:SetThumbTexture(E.media.blankTex)
 		obj:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 		obj:GetThumbTexture():Size(10)
 	end
@@ -212,7 +215,7 @@ local function SkinConfigator(lib)
 
 	--	if objType == "FontString" then
 		if objType == "CheckButton" then
-			S:HandleCheckBox(obj)
+			S:HandleCheckBox(obj, true)
 		elseif objType == "Slider" then
 			skinSlider(obj)
 
@@ -225,17 +228,16 @@ local function SkinConfigator(lib)
 			S:HandleButton(obj, true)
 		elseif objType == "Frame" then
 			if obj.stype == "SelectBox" then
-				obj.clearance = 3
-
 				obj:StripTextures()
-				obj:CreateBackdrop("Default")
-				obj.backdrop:SetPoint("TOPLEFT", 15, -1)
-				obj.backdrop:SetPoint("BOTTOMRIGHT", -16, -1)
-				_G[obj:GetName().."Text"]:SetParent(obj.backdrop)
+				obj:SetTemplate("Default")
+				obj:Size(159, 22)
+				local _, _, _, x = obj:GetPoint(2)
+				obj:Point("LEFT", x + 15, 0)
 
-				obj.button:SetPoint("TOPRIGHT", -18, -3)
-				S:HandleNextPrevButton(obj.button)
-				S:SetNextPrevButtonDirection(obj.button)
+				_G[obj:GetName().."Text"]:Point("RIGHT", -26, 0)
+
+				S:HandleNextPrevButton(obj.button, "down", dropdownArrowColor)
+				obj.button:Point("TOPRIGHT", -2, -2)
 			elseif obj.stype == "MoneyFrame"
 			or obj.stype == "PinnedMoney"
 			or obj.stype == "MoneyFramePinned" then
@@ -256,8 +258,33 @@ local function SkinConfigator(lib)
 		end
 	end
 
+	local function fullsizeSetNormalTexture(self, texture)
+		if texture == "Interface\\Minimap\\UI-Minimap-ZoomInButton-Up" then
+			self.normalTexture:SetTexture(E.Media.Textures.Plus)
+			self.pushedTexture:SetTexture(E.Media.Textures.Plus)
+		else
+			self.normalTexture:SetTexture(E.Media.Textures.Minus)
+			self.pushedTexture:SetTexture(E.Media.Textures.Minus)
+		end
+	end
 	local function skinTab(self)
-		self.tabs[#self.tabs].frame:SetTemplate("Transparent")
+		local frame = self.tabs[#self.tabs].frame
+
+		frame:SetTemplate("Default")
+
+		S:HandleButton(frame.fullsize)
+		frame.fullsize:Size(18)
+		frame.fullsize:Point("BOTTOMLEFT", 4, 4)
+
+		frame.fullsize.normalTexture = frame.fullsize:GetNormalTexture()
+		frame.fullsize.pushedTexture = frame.fullsize:GetPushedTexture()
+
+		frame.fullsize.SetNormalTexture = fullsizeSetNormalTexture
+		frame.fullsize:SetNormalTexture(frame.fullsize.normalTexture:GetTexture())
+
+		frame.fullsize:SetHighlightTexture("")
+		frame.fullsize.SetPushedTexture = E.noop
+		frame.fullsize.SetHighlightTexture = E.noop
 	end
 
 	local function skinScroll(self, id)
@@ -266,9 +293,13 @@ local function SkinConfigator(lib)
 
 		if tab.scroll.vScroll then
 			S:HandleScrollBar(tab.scroll.vScroll)
+			tab.scroll.vScroll:Point("TOPLEFT", tab.scroll, "TOPRIGHT", 3, -16)
+			tab.scroll.vScroll:Point("BOTTOMLEFT", tab.scroll, "BOTTOMRIGHT", 3, 14)
 		end
 		if tab.scroll.hScroll then
 			S:HandleScrollBar(tab.scroll.hScroll, true)
+			tab.scroll.hScroll:Point("TOPLEFT", tab.scroll, "BOTTOMLEFT", 18, -3)
+			tab.scroll.hScroll:Point("TOPRIGHT", tab.scroll, "BOTTOMRIGHT", -19, -3)
 		end
 
 		tab.scroll.isSkinned = true
@@ -285,8 +316,16 @@ local function SkinConfigator(lib)
 	S:RawHook(lib, "Create", function(self, ...)
 		local gui = S.hooks[self].Create(self, ...)
 
-		_G[gui:GetName() .. "Backdrop"]:SetTemplate("Transparent")
+		gui.Backdrop:SetTemplate("Transparent")
+
+		gui.DragTop:Point("TOPLEFT", 10, -1)
+		gui.DragTop:Point("TOPRIGHT", -10, -1)
+
+		gui.DragBottom:Point("BOTTOMLEFT", 10, 1)
+		gui.DragBottom:Point("BOTTOMRIGHT", -10, 1)
+
 		S:HandleButton(gui.Done)
+		gui.Done:Point("BOTTOMRIGHT", gui, "BOTTOMRIGHT", -8, 8)
 
 		hooksecurefunc(gui, "AddTab", skinTab)
 		hooksecurefunc(gui, "MakeScrollable", skinScroll)
@@ -308,9 +347,13 @@ local function SkinConfigator(lib)
 				if tab.scroll then
 					if tab.scroll.vScroll then
 						S:HandleScrollBar(tab.scroll.vScroll)
+						tab.scroll.vScroll:Point("TOPLEFT", tab.scroll, "TOPRIGHT", 3, -16)
+						tab.scroll.vScroll:Point("BOTTOMLEFT", tab.scroll, "BOTTOMRIGHT", 3, 14)
 					end
 					if tab.scroll.hScroll then
 						S:HandleScrollBar(tab.scroll.hScroll, true)
+						tab.scroll.hScroll:Point("TOPLEFT", tab.scroll, "BOTTOMLEFT", 18, -3)
+						tab.scroll.hScroll:Point("TOPRIGHT", tab.scroll, "BOTTOMRIGHT", -19, -3)
 					end
 				end
 
@@ -325,16 +368,37 @@ local function SkinConfigator(lib)
 		end
 	end
 
-	lib.tooltip:SetTemplate("Transparent")
+	do	-- tooltip
+		lib.tooltip:SetTemplate("Transparent")
+		lib.tooltip._SetBackdropColor = lib.tooltip.SetBackdropColor
+		lib.tooltip.SetBackdropColor = function(self)
+			self:SetBackdropBorderColor(unpack(E.media.bordercolor, 1, 3))
+			local r, g, b = unpack(E.media.backdropfadecolor, 1, 3)
+			self:_SetBackdropColor(r, g, b, E.db.tooltip.colorAlpha)
+		end
+	end
 
-	lib.help:SetTemplate("Transparent")
-	lib.help.scroll:SetTemplate("Transparent")
-	S:HandleScrollBar(lib.help.scroll.vScroll)
-	S:HandleCloseButton(lib.help.close)
+	do	-- help
+		lib.help:SetTemplate("Transparent")
 
-	local SelectBox = LibStub("SelectBox")
-	SelectBox.menu.back:SetTemplate("Transparent")
-	SelectBox.menu.isSkinned = true
+		lib.help.scroll:SetTemplate("Transparent")
+		lib.help.scroll:Point("TOPLEFT", 8, -25)
+		lib.help.scroll:Point("BOTTOMRIGHT", -29, 8)
+
+		lib.help.content:Width(416)
+
+		S:HandleScrollBar(lib.help.scroll.vScroll)
+		lib.help.scroll.vScroll:Point("TOPLEFT", lib.help.scroll, "TOPRIGHT", 3, -19)
+		lib.help.scroll.vScroll:Point("BOTTOMLEFT", lib.help.scroll, "BOTTOMRIGHT", 3, 19)
+
+		S:HandleCloseButton(lib.help.close)
+	end
+
+	local SelectBox = LibStub("SelectBox", true)
+	if SelectBox then
+		SelectBox.menu.back:SetTemplate("Transparent")
+		SelectBox.menu.isSkinned = true
+	end
 
 	local ScrollSheet = LibStub("ScrollSheet", true)
 	if ScrollSheet then
@@ -344,9 +408,13 @@ local function SkinConfigator(lib)
 			if not sheet.panel.isSkinned then
 				if sheet.panel.vScroll then
 					S:HandleScrollBar(sheet.panel.vScroll)
+					sheet.panel.vScroll:Point("TOPLEFT", sheet.panel, "TOPRIGHT", 3, -18)
+					sheet.panel.vScroll:Point("BOTTOMLEFT", sheet.panel, "BOTTOMRIGHT", 3, 19)
 				end
 				if sheet.panel.hScroll then
 					S:HandleScrollBar(sheet.panel.hScroll, true)
+					sheet.panel.hScroll:Point("TOPLEFT", sheet.panel, "BOTTOMLEFT", 18, -3)
+					sheet.panel.hScroll:Point("TOPRIGHT", sheet.panel, "BOTTOMRIGHT", -19, -3)
 				end
 
 				sheet.panel.isSkinned = true
@@ -408,6 +476,87 @@ local function SkinAzDialog(libName)
 	return true
 end
 
+local function SkinAzDropDown(libName)
+	local lib = _G[libName]
+	if not lib then return end
+
+	S:RawHook(lib, "CreateDropDown", function(parent, ...)
+		local f = S.hooks[lib].CreateDropDown(parent, ...)
+
+		f:SetTemplate()
+
+		S:HandleNextPrevButton(f.button, "down", dropdownArrowColor)
+		f.button:Point("TOPRIGHT", -2, -2)
+		f.button:Point("BOTTOMRIGHT", -2, 2)
+		f.button:Size(20)
+
+		return f
+	end)
+
+	S:SecureHook(lib, "ToggleMenu", function(parent, width, isAutoSelect, initFunc, selectValueFunc)
+		local scrollFrame = _G["AzDropDownScroll"..lib.vers]
+		if scrollFrame then
+			scrollFrame:GetParent():SetTemplate("Default")
+			S:HandleScrollBar(_G["AzDropDownScroll"..lib.vers.."ScrollBar"])
+
+			S:Unhook(lib, "ToggleMenu")
+		end
+	end)
+
+	return true
+end
+
+local function SkinAzOptionsFactory(libName)
+	local lib = _G[libName]
+	if not lib then return end
+
+	AS:SkinLibrary("AzDropDown")
+
+	S:RawHook(lib.makers, "Slider", function(self)
+		local f = S.hooks[lib.makers].Slider(self)
+
+		S:HandleEditBox(f.edit)
+		S:HandleSliderFrame(f.slider)
+
+		f.slider:Point("TOPLEFT", f.edit, "TOPRIGHT", 5, -10)
+		f.slider:Point("BOTTOMRIGHT", 0, -1)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Check", function(self)
+		local f = S.hooks[lib.makers].Check(self)
+
+		S:HandleCheckBox(f)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Color", function(self)
+		local f = S.hooks[lib.makers].Color(self)
+
+		S:HandleColorSwatch(f)
+
+		return f
+	end)
+
+	S:RawHook(lib.makers, "Text", function(self)
+		local f = S.hooks[lib.makers].Text(self)
+
+		f:SetBackdrop(nil)
+
+		f:CreateBackdrop()
+		f.backdrop:SetFrameLevel(f:GetFrameLevel())
+
+		f.backdrop:Point("TOPLEFT", 2, -2)
+		f.backdrop:Point("BOTTOMRIGHT", -2, 2)
+
+		return f
+	end)
+
+	return true
+end
+
 local function SkinLibExtraTip(lib)
 	S:RawHook(lib, "GetFreeExtraTipObject", function(self)
 		local tooltip = S.hooks[self].GetFreeExtraTipObject(self)
@@ -441,7 +590,7 @@ local function SkinLibCandyBar(lib)
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 	local function setPoint(self, point, attachTo, anchorPoint, xOffset, yOffset)
 		if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
-			self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
+			self:Point(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
 		end
 	end
 
@@ -515,7 +664,7 @@ end
 local function SkinScrollingTable(lib)
 	local function updateRows(self, num)
 		if num and num > 0 and #self.rows ~= 0 then
-			self.rows[1]:SetPoint("TOPRIGHT", self.frame, "TOPRIGHT", -21, -5)
+			self.rows[1]:Point("TOPRIGHT", self.frame, "TOPRIGHT", -21, -5)
 		end
 	end
 
@@ -609,6 +758,233 @@ local function SkinDropDownMenu(libName)
 	return true
 end
 
+local function SkinLibQTip(lib)
+	hooksecurefunc(lib, "Acquire", function(self, key)
+		if self.activeTooltips[key] then
+			self.activeTooltips[key]:SetTemplate("Transparent")
+		end
+	end)
+
+	S:Hook(lib.LabelPrototype, "SetupCell", function(self)
+		self.fontString:FontTemplate()
+	end)
+
+	hooksecurefunc(lib.tipPrototype, "UpdateScrolling", function(self)
+		if self.slider and not self.slider.isSkinned then
+			S:HandleSliderFrame(self.slider)
+			self.slider.isSkinned = true
+		end
+	end)
+
+	return true
+end
+
+local function SkinWaterfall(lib)
+	hooksecurefunc(WaterfallFrame.prototype, "init", function(self)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		self.titlebar:Point("TOPLEFT", self.frame, "TOPLEFT", 4, -4)
+		self.titlebar:Point("TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
+
+		S:HandleCloseButton(self.closebutton)
+		self.closebutton:SetPoint("TOPRIGHT", 0, 0)
+
+		self.treeview:Point("TOPLEFT", self.frame, "TOPLEFT", 8, -33)
+		self.treeview:Point("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 8, 8)
+
+		self.mainpane:Point("TOPLEFT", self.treeview.frame, "TOPRIGHT", 3, 0)
+		self.mainpane:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", -8, 8)
+	end)
+	S:RawHook(WaterfallFrame.prototype, "ReAnchorTree", function(self)
+		self.treeview:Point("TOPLEFT", self.frame, "TOPLEFT", 8, -33)
+		self.treeview:Point("BOTTOMLEFT", self.frame, "BOTTOMLEFT", 8, 8)
+	end)
+
+	hooksecurefunc(WaterfallPane.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		S:HandleScrollBar(self.scrollbar)
+	end)
+
+	hooksecurefunc(WaterfallTreeView.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		S:HandleScrollBar(self.scrollbar)
+
+		self.sizer:ClearAllPoints()
+		self.sizer:Point("TOPLEFT", self.frame, "TOPRIGHT", -2, 0)
+		self.sizer:Point("BOTTOMLEFT", self.frame, "BOTTOMRIGHT", -2, 0)
+	end)
+	hooksecurefunc(WaterfallTreeLine.prototype, "init", function(self)
+		S:HandleCollapseExpandButton(self.expand)
+	end)
+	hooksecurefunc(WaterfallTreeSection.prototype, "init", function(self, parent)
+		self.frame:SetTemplate("Transparent")
+
+		self.titlebar:SetDrawLayer("ARTWORK")
+		self.titlebar2:SetDrawLayer("ARTWORK")
+
+		self.titlebar:Point("TOPLEFT", self.frame, "TOPLEFT", 4, -4)
+		self.titlebar:Point("TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
+
+		S:HandleCloseButton(self.closebutton)
+		self.closebutton:SetPoint("TOPRIGHT", 0, 0)
+	end)
+
+	hooksecurefunc(WaterfallColorSwatch.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:SetOutside(self.colorSwatch)
+
+		self.colorSwatch:SetTexture(nil)
+		self.colorSwatch:Size(18)
+
+		self.colorSwatch.texture:SetParent(self.frame.backdrop)
+		self.colorSwatch.texture:SetInside()
+
+		self.text:Point("LEFT", self.colorSwatch, "RIGHT", 4, 0)
+		self.text.SetPoint = E.noop
+	end)
+
+	hooksecurefunc(WaterfallCheckBox.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:SetOutside(self.checkbg)
+
+		self.checkbg:Hide()
+		self.checkbg:Size(18)
+
+		self.check:SetParent(self.frame.backdrop)
+		self.check:SetAllPoints()
+
+		self.text:Point("LEFT", self.check, "RIGHT", 3, 0)
+		self.text.SetPoint = E.noop
+	end)
+	hooksecurefunc(WaterfallCheckBox.prototype, "UpdateTexture", function(self)
+		if self.isRadio then
+			self.frame.backdrop:Hide()
+			self.checkbg:Show()
+		else
+			self.frame.backdrop:Show()
+			self.checkbg:Hide()
+		end
+	end)
+
+	hooksecurefunc(WaterfallDragLink.prototype, "init", function(self)
+		self.frame:CreateBackdrop("Default")
+		self.frame.backdrop:ClearAllPoints()
+		self.frame.backdrop:SetPoint("LEFT")
+		self.frame.backdrop:Width(self.iconWidth or WaterfallDragLink.defaultIconSize)
+		self.frame.backdrop:Height(self.iconHeight or WaterfallDragLink.defaultIconSize)
+
+		self.linkIcon:SetParent(self.frame.backdrop)
+		self.linkIcon:SetInside()
+		self.linkIcon:SetTexCoord(unpack(E.TexCoords))
+	end)
+
+	hooksecurefunc(WaterfallButton.prototype, "init", function(self)
+		S:HandleButton(self.frame)
+	end)
+
+	hooksecurefunc(WaterfallKeybinding.prototype, "init", function(self)
+		S:HandleButton(self.frame)
+		self.msgframe:SetTemplate("Transparent")
+	end)
+
+	hooksecurefunc(WaterfallSlider.prototype, "init", function(self)
+		S:HandleSliderFrame(self.slider)
+	end)
+
+	hooksecurefunc(WaterfallTextBox.prototype, "init", function(self)
+		self.frame:Height(22)
+		self.frame:SetTemplate("Default")
+	end)
+
+	hooksecurefunc(WaterfallDropdown.prototype, "init", function(self)
+		self.editbox:SetTemplate("Default")
+
+		self.frame:Size(200, 20)
+		self.frame.SetWidth = E.noop
+
+		S:HandleNextPrevButton(self.button, "down", dropdownArrowColor)
+		self.button:Size(16)
+		self.button:Point("RIGHT", self.frame, "RIGHT", -22, 0)
+
+		self.pullout:SetTemplate("Default")
+	end)
+
+	return true
+end
+
+local function SkinLDropDownMenu(lib)
+	if not _G.Lib_UIDropDownMenu_Initialize then return end
+
+	local checkBoxSkin = E.private.skins.dropdownCheckBoxSkin
+	local menuLevel = 0
+	local maxButtons = 0
+
+	local function dropDownButtonShow(self)
+		if self.notCheckable then
+			self.check.backdrop:Hide()
+		else
+			self.check.backdrop:Show()
+		end
+	end
+
+	local function skinL_DropDownMenu()
+		local updateButtons = maxButtons < L_UIDROPDOWNMENU_MAXBUTTONS
+
+		if updateButtons or menuLevel < L_UIDROPDOWNMENU_MAXLEVELS then
+			for i = 1, L_UIDROPDOWNMENU_MAXLEVELS do
+				local frame = _G["L_DropDownList" .. i]
+
+				if frame and not frame.isSkinned then
+					_G["L_DropDownList" .. i .. "Backdrop"]:SetTemplate("Transparent")
+					_G["L_DropDownList" .. i .. "MenuBackdrop"]:SetTemplate("Transparent")
+
+					frame.isSkinned = true
+				end
+
+				if updateButtons then
+					for j = 1, L_UIDROPDOWNMENU_MAXBUTTONS do
+						local button = _G["L_DropDownList" .. i .. "Button" .. j]
+
+						if button and not button.isSkinned then
+							S:HandleButtonHighlight(_G["L_DropDownList" .. i .. "Button" .. j .. "Highlight"])
+
+							if checkBoxSkin then
+								local check = _G["L_DropDownList" .. i .. "Button" .. j .. "Check"]
+								check:Size(12)
+								check:Point("LEFT", 1, 0)
+								check:CreateBackdrop()
+								check:SetTexture(E.media.normTex)
+								check:SetVertexColor(1, 0.82, 0, 0.8)
+
+								button.check = check
+								hooksecurefunc(button, "Show", dropDownButtonShow)
+							end
+
+							button.isSkinned = true
+						end
+					end
+				end
+			end
+
+			menuLevel = L_UIDROPDOWNMENU_MAXLEVELS
+			maxButtons = L_UIDROPDOWNMENU_MAXBUTTONS
+		end
+	end
+
+	skinL_DropDownMenu()
+	hooksecurefunc("L_UIDropDownMenu_InitializeHelper", skinL_DropDownMenu)
+
+	return true
+end
+
 AS.libSkins = {
 	["AceAddon-2.0"] = {
 		stub = true,
@@ -621,6 +997,14 @@ AS.libSkins = {
 	["AzDialog"] = {
 		stub = false,
 		func = SkinAzDialog
+	},
+	["AzDropDown"] = {
+		stub = false,
+		func = SkinAzDropDown
+	},
+	["AzOptionsFactory"] = {
+		stub = false,
+		func = SkinAzOptionsFactory
 	},
 	["Configator"] = {
 		stub = true,
@@ -650,6 +1034,10 @@ AS.libSkins = {
 		stub = true,
 		func = SkinLibRockConfig
 	},
+	["LibQTip-1.0"] = {
+		stub = true,
+		func = SkinLibQTip
+	},
 	["ScrollingTable"] = {
 		stub = true,
 		func = SkinScrollingTable
@@ -658,9 +1046,17 @@ AS.libSkins = {
 		stub = true,
 		func = SkinTablet2
 	},
+	["Waterfall-1.0"] = {
+		stub = true,
+		func = SkinWaterfall
+	},
 	["ZFrame-1.0"] = {
 		stub = true,
 		func = SkinZFrame
+	},
+	["LibUIDropDownMenu"] = {
+		stub = true,
+		func = SkinLDropDownMenu
 	},
 }
 

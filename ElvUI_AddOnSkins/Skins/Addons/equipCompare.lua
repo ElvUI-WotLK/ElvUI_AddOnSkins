@@ -5,7 +5,6 @@ local AS = E:GetModule("AddOnSkins")
 if not AS:IsAddonLODorEnabled("EquipCompare") then return end
 
 -- EquipCompare 2.17
--- https://www.wowinterface.com/downloads/getfile.php?id=4392&aid=46750
 
 S:AddCallbackForAddon("EquipCompare", "EquipCompare", function()
 	if not E.private.addOnSkins.EquipCompare then return end

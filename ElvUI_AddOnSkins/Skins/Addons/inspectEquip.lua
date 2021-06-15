@@ -11,7 +11,7 @@ S:AddCallbackForAddon("InspectEquip", "InspectEquip", function()
 	if not E.private.addOnSkins.InspectEquip then return end
 
 	InspectEquip_InfoWindow:SetTemplate("Transparent")
-	S:HandleCloseButton(InspectEquip_InfoWindow_CloseButton)
+	S:HandleCloseButton(InspectEquip_InfoWindow_CloseButton, InspectEquip_InfoWindow)
 
 	S:SecureHook(InspectEquip, "SetParent", function(self, frame)
 		InspectEquip_InfoWindow:ClearAllPoints()

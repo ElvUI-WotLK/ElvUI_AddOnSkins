@@ -9,46 +9,43 @@ if not AS:IsAddonLODorEnabled("OpenGF") then return end
 S:AddCallbackForAddon("OpenGF", "OpenGF", function()
 	if not E.private.addOnSkins.OpenGF then return end
 
-	ogf_OpenGF_MainFrame:StripTextures()
-	ogf_playerList:StripTextures()
-	ogf_plyContextMenu:StripTextures()
-
 	ogf_OpenGF_MainFrame:SetTemplate("Transparent")
-	ogf_playerList:SetTemplate("Transparent")
-	ogf_plyContextMenu:SetTemplate("Transparent")
 
-	S:HandleDropDownBox(ogf_categorySelect)
-	S:HandleDropDownBox(ogf_vanInstances)
-	S:HandleDropDownBox(ogf_tbcInstances)
-	S:HandleDropDownBox(ogf_tbcHeroic)
-	S:HandleDropDownBox(ogf_wotlkInstances)
-	S:HandleDropDownBox(ogf_wotlkHeroic)
+	S:HandleCloseButton(ogf_minimizeButton, ogf_OpenGF_MainFrame)
 
-	ogf_categorySelect:Width(200)
-	ogf_vanInstances:Width(200)
-	ogf_tbcInstances:Width(200)
-	ogf_tbcHeroic:Width(200)
-	ogf_wotlkInstances:Width(200)
-	ogf_wotlkHeroic:Width(200)
+	S:HandleCheckBox(ogf_dpsCheck)
+	S:HandleCheckBox(ogf_tankCheck)
+	S:HandleCheckBox(ogf_healCheck)
 
-	ogf_searchButton:Point("LEFT", ogf_vanInstances, "RIGHT")
+	S:HandleEditBox(ogf_noteText)
+	ogf_noteText:Height(22)
 
-	S:HandleScrollBar(scrollFrameScrollBar)
+	S:HandleDropDownBox(ogf_categorySelect, 200)
+	S:HandleDropDownBox(ogf_vanInstances, 200)
+	S:HandleDropDownBox(ogf_tbcInstances, 200)
+	S:HandleDropDownBox(ogf_tbcHeroic, 200)
+	S:HandleDropDownBox(ogf_wotlkInstances, 200)
+	S:HandleDropDownBox(ogf_wotlkHeroic, 200)
+
+	ogf_categorySelect:Point("TOPLEFT", 0, -100)
+	ogf_vanInstances:Point("TOPLEFT", 175, -100)
+	ogf_tbcInstances:Point("TOPLEFT", 175, -100)
+	ogf_tbcHeroic:Point("TOPLEFT", 175, -100)
+	ogf_wotlkInstances:Point("TOPLEFT", 175, -100)
+	ogf_wotlkHeroic:Point("TOPLEFT", 175, -100)
 
 	S:HandleButton(ogf_searchButton)
 	S:HandleButton(ogf_enlistButton)
+	S:HandleButton(ogf_unlistButton)
+	S:HandleButton(ogf_unlistAllButton)
 
-	S:HandleCloseButton(ogf_minimizeButton)
+	ogf_searchButton:Point("TOPRIGHT", -192, -101)
+	ogf_enlistButton:Point("TOPRIGHT", -103, -101)
+	ogf_unlistButton:Point("TOPRIGHT", -103, -101)
+	ogf_unlistAllButton:Point("TOPRIGHT", -14, -101)
 
-	S:HandleEditBox(ogf_noteText)
+	ogf_playerList:SetTemplate("Transparent")
+	ogf_plyContextMenu:SetTemplate("Transparent")
 
-	local OpenGFConfigCheck = {
-		"ogf_dpsCheck",
-		"ogf_tankCheck",
-		"ogf_healCheck",
-	}
-
-	for i = 1, #OpenGFConfigCheck do
-		S:HandleCheckBox(_G[OpenGFConfigCheck[i]])
-	end
+	S:HandleScrollBar(scrollFrameScrollBar)
 end)

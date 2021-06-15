@@ -4,8 +4,8 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("_NPCScan.Overlay") then return end
 
--- NPCScan 3.3.5.5
--- https://www.curseforge.com/wow/addons/npcscan/files/441050
+-- NPCScan Overlay 3.3.5.1
+-- https://www.curseforge.com/wow/addons/npcscan-overlay/files/434851
 
 S:AddCallbackForAddon("_NPCScan.Overlay", "_NPCScan.Overlay", function()
 	if not E.private.addOnSkins._NPCScanOverlay then return end
@@ -23,9 +23,13 @@ S:AddCallbackForAddon("_NPCScan.Overlay", "_NPCScan.Overlay", function()
 	worldMapKey:SetScript("OnEnter", function(self)
 		bottomPoint = not bottomPoint
 		self:ClearAllPoints()
-		self:SetPoint(bottomPoint and "BOTTOMRIGHT" or "TOPRIGHT")
+		if bottomPoint then
+			self:Point("BOTTOMRIGHT", 1, -1)
+		else
+			self:Point("TOPRIGHT", 1, 1)
+		end
 	end)
 
 	worldMapKey:ClearAllPoints()
-	worldMapKey:SetPoint("TOPRIGHT")
+	worldMapKey:Point("TOPRIGHT", 1, 1)
 end)

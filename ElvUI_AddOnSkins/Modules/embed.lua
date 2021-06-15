@@ -349,15 +349,42 @@ if AS:IsAddonLODorEnabled("Skada") then
 		window.db.enablebackground = true
 
 		window.bargroup:SetParent(relativeFrame)
-		window.bargroup:ClearAllPoints()
-		window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
-
 		window.bargroup:SetFrameStrata("LOW")
 
-		barmod.ApplySettings(barmod, window)
+		if Skada.revisited then
+			local offsety = window.db.reversegrowth and 0 or E.Border
 
-		window.bargroup.bgframe:SetFrameStrata("LOW")
-		window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			window.db.scale = 1
+			window.db.background.height = height - (E.Border + E.Spacing)
+
+			window.bargroup.ClearAllPoints = nil
+			window.bargroup:ClearAllPoints()
+			window.bargroup.ClearAllPoints = E.noop
+
+			window.bargroup.SetPoint = nil
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, -offsety)
+			window.bargroup.SetPoint = E.noop
+
+			barmod.ApplySettings(barmod, window)
+
+			if window.bargroup.backdrop then
+				window.bargroup.backdrop:SetFrameStrata("LOW")
+				window.bargroup.backdrop:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+			end
+
+		else
+			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing)
+			window.db.enablebackground = true
+
+			window.bargroup:ClearAllPoints()
+			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy)
+
+			barmod.ApplySettings(barmod, window)
+
+			window.bargroup.bgframe:SetFrameStrata("LOW")
+			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1)
+		end
+
 	end
 
 	function EMB:EmbedSkada()

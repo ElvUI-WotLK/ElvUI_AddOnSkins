@@ -26,6 +26,16 @@ S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	S:HandleButton(RR_Next)
 	S:HandleButton(RaidRoll_OptionButton)
 
+	RR_Roll_5SecAndAnnounce:ClearAllPoints()
+	RR_Roll_5SecAndAnnounce:Point("BOTTOM", 0, 31)
+
+	RR_Clear:Point("BOTTOM", 0, 8)
+	RR_Last:Point("BOTTOM", -45, 8)
+	RR_Roll_RollButton:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -65, 8)
+	RR_Next:Point("BOTTOM", 45, 8)
+	RaidRoll_OptionButton:Size(20)
+	RaidRoll_OptionButton:Point("BOTTOM", 75, 8)
+
 	RR_Frame:SetTemplate("Transparent")
 	RR_Frame:Width(185)
 	RR_Frame:Point("TOP", RR_RollFrame, "BOTTOM", 0, 1)
@@ -45,8 +55,8 @@ S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	for i = 1, 5 do
 		local f = _G["Raid_Roll_SetSymbol"..i]
 		f:ClearAllPoints()
-		f:SetPoint("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
-		f:SetPoint("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
+		f:Point("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
+		f:Point("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
 
 		local highlight = f:GetHighlightTexture()
 		highlight:SetTexture(E.Media.Textures.Highlight)
@@ -97,6 +107,7 @@ S:AddCallbackForAddon("RaidRoll_LootTracker", "RaidRoll_LootTracker", function()
 		local child = select(i, RR_LOOT_FRAME:GetChildren())
 		if child and child:IsObjectType("Button") and child:GetName() == "Close_Button" then
 			S:HandleCloseButton(child)
+			break
 		end
 	end
 end)

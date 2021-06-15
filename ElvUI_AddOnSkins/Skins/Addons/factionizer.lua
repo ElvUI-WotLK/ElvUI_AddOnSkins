@@ -16,7 +16,7 @@ S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	FIZ_OptionsFrame:ClearAllPoints()
 	FIZ_OptionsFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
 
-	S:HandleCloseButton(FIZ_OptionsFrameClose)
+	S:HandleCloseButton(FIZ_OptionsFrameClose, FIZ_OptionsFrame)
 
 	FIZ_ReputationDetailFrame:StripTextures()
 	FIZ_ReputationDetailFrame:SetTemplate("Transparent")
@@ -24,7 +24,7 @@ S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	FIZ_ReputationDetailFrame:ClearAllPoints()
 	FIZ_ReputationDetailFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
 
-	S:HandleCloseButton(FIZ_ReputationDetailCloseButton)
+	S:HandleCloseButton(FIZ_ReputationDetailCloseButton, FIZ_ReputationDetailFrame)
 
 	S:HandleSliderFrame(FIZ_ChatFrameSlider)
 
@@ -63,4 +63,19 @@ S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	for _, checkbox in ipairs(checkboxes) do
 		S:HandleCheckBox(checkbox)
 	end
+
+	FIZ_OptionsButton:Point("TOPRIGHT", -40, -35)
+
+	FIZ_UpdateListScrollFrame:Point("TOPLEFT", FIZ_ReputationDetailDivider2, "BOTTOMLEFT", 5, 18)
+	FIZ_UpdateListScrollFrame:Size(363, 211)
+
+	FIZ_UpdateListScrollFrameScrollBar:Point("TOPLEFT", FIZ_UpdateListScrollFrame, "TOPRIGHT", 3, -19)
+	FIZ_UpdateListScrollFrameScrollBar:Point("BOTTOMLEFT", FIZ_UpdateListScrollFrame, "BOTTOMRIGHT", 3, 19)
+
+	FIZ_UpdateEntry1:Point("TOPLEFT", FIZ_UpdateListScrollFrame, "TOPLEFT", 0, -1)
+
+	FIZ_ShowAllButton:Point("TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 25)
+	FIZ_ShowNoneButton:Point("TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 0)
+
+	FIZ_SupressNoneGlobalButton:Point("TOPLEFT", FIZ_SupressNoneFactionButton, "BOTTOMLEFT", 0, -5)
 end)

@@ -4,175 +4,185 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("CallToArms") then return end
 
+local _G = _G
+local ipairs = ipairs
+local select = select
+
+-- CallToArms r303
+
 S:AddCallbackForAddon("CallToArms", "CallToArms", function()
 	if not E.private.addOnSkins.CallToArms then return end
 
-	CTA_MainFrame:SetHeight(CTA_MainFrame:GetHeight() + 20)
-
-	CTA_MainFrame:StripTextures()
-	CTA_SearchFrame_Filters_PlayerInternalFrame:StripTextures()
-	CTA_SearchFrame_Filters_GroupInternalFrame:StripTextures()
-	CTA_SettingsFrameMinimapSettings:StripTextures()
-	CTA_SettingsFrameLFxSettings:StripTextures()
-	CTA_LogFrameInternalFrame:StripTextures()
-	CTA_GreyListItemEditFrame:StripTextures()
-	CTA_SearchFrameDescriptionEditBox:StripTextures()
-	CTA_GreyListItemEditFrameEditBox:StripTextures()
-	CTA_PlayerMinLevelEditBox:StripTextures()
-	CTA_PlayerMaxLevelEditBox:StripTextures()
-	CTA_ChatFrameNumberEditBox:StripTextures()
-	CTA_MyRaidFrameDescriptionEditBox:StripTextures()
-	CTA_MyRaidFrameMaxSizeEditBox:StripTextures()
-	CTA_MyRaidFrameMinLevelEditBox:StripTextures()
-	CTA_MyRaidFramePasswordEditBox:StripTextures()
-	CTA_LFGDescriptionEditBox:StripTextures()
-	CTA_ChatFrameNumberEditBox:StripTextures()
-	CTA_LogFrameButton:StripTextures()
-	CTA_ShowResultsButton:StripTextures()
-	CTA_ShowOptionsButton:StripTextures()
-	CTA_ShowSearchButton:StripTextures()
-	CTA_ShowMyRaidButton:StripTextures()
-	CTA_ShowMFFButton:StripTextures()
-	CTA_ShowLFGButton:StripTextures()
-	CTA_ShowBlacklistButton:StripTextures()
-	CTA_SettingsFrameButton:StripTextures()
-	CTA_Acid0barBorder:StripTextures()
-	CTA_Acid1barBorder:StripTextures()
-	CTA_Acid2barBorder:StripTextures()
-	CTA_Acid3barBorder:StripTextures()
-	CTA_Acid4barBorder:StripTextures()
-	CTA_Acid5barBorder:StripTextures()
-	CTA_Acid6barBorder:StripTextures()
-	CTA_Acid7barBorder:StripTextures()
-	CTA_Acid8barBorder:StripTextures()
-	CTA_AcidEditDialog:StripTextures()
-
-	CTA_MainFrame:SetTemplate("Transparent")
-	CTA_SearchFrame_Filters_PlayerInternalFrame:SetTemplate("Transparent")
-	CTA_SearchFrame_Filters_GroupInternalFrame:SetTemplate("Transparent")
-	CTA_SettingsFrameMinimapSettings:SetTemplate("Transparent")
-	CTA_SettingsFrameLFxSettings:SetTemplate("Transparent")
-	CTA_LogFrameInternalFrame:SetTemplate("Transparent")
-	CTA_GreyListItemEditFrame:SetTemplate("Transparent")
-	CTA_Acid0barBorder:SetTemplate("Transparent")
-	CTA_Acid1barBorder:SetTemplate("Transparent")
-	CTA_Acid2barBorder:SetTemplate("Transparent")
-	CTA_Acid3barBorder:SetTemplate("Transparent")
-	CTA_Acid4barBorder:SetTemplate("Transparent")
-	CTA_Acid5barBorder:SetTemplate("Transparent")
-	CTA_Acid6barBorder:SetTemplate("Transparent")
-	CTA_Acid7barBorder:SetTemplate("Transparent")
-	CTA_Acid8barBorder:SetTemplate("Transparent")
-	CTA_AcidEditDialog:SetTemplate("Default")
-
-	S:HandleDropDownBox(CTA_SearchDropDown)
-	S:HandleDropDownBox(CTA_PlayerClassDropDown)
-	S:HandleDropDownBox(CTA_RoleplayDropDown)
-
-	S:HandleCloseButton(CTA_MainFrameCloseButton)
-
-	S:HandleNextPrevButton(CTA_SearchFrame_ResultsPrev)
-	S:HandleNextPrevButton(CTA_SearchFrame_ResultsNext)
-	S:HandleNextPrevButton(CTA_GreyListFramePrev)
-	S:HandleNextPrevButton(CTA_GreyListFrameNext)
-	S:HandleNextPrevButton(CTA_LogUpButton)
-	S:HandleNextPrevButton(CTA_LogDownButton)
-	S:HandleNextPrevButton(CTA_LogBottomButton)
-
-	local callToArmsTabs = {
-		"CTA_ShowSearchButton",
-		"CTA_ShowMyRaidButton",
-		"CTA_ShowMFFButton",
-		"CTA_ShowLFGButton"
+	local frames = {
+		CTA_SearchFrame_Filters_PlayerInternalFrame,
+		CTA_SearchFrame_Filters_GroupInternalFrame,
+		CTA_SettingsFrameMinimapSettings,
+		CTA_SettingsFrameLFxSettings,
+		CTA_LogFrameInternalFrame,
+		CTA_GreyListItemEditFrame,
+		CTA_AddPlayerFrame,
+	}
+	local buttons = {
+		CTA_SearchButton,
+		CTA_RequestInviteButton,
+		CTA_GreyListItemEditFrameDeleteButton,
+		CTA_GreyListItemEditFrameCloseButton,
+		CTA_GreyListItemEditFrameEditButton,
+		CTA_AddPlayerButton,
+		CTA_AnnounceToLFGButton,
+		CTA_AnnounceToLFGButton2,
+		CTA_StopHostingButton,
+		CTA_ConvertToRaidButton,
+		CTA_ConvertToPartyButton,
+		CTA_ToggleViewableButton,
+		CTA_StartAPartyButton,
+		CTA_StartARaidButton,
+		CTA_AcidEditDialogCloseButton,
+		CTA_AcidEditDialogOkButton,
+		CTA_AddPlayerFrameCloseButton,
+		CTA_AddPlayerFrameOkButton,
+	}
+	local checkBoxes = {
+		CTA_MuteLFGChannelCheckButton,
+		CTA_ShowFilteredMessagesInChatCheckButton,
+		CTA_ShowOnMinimapCheckButton,
+		CTA_PlaySoundOnNewResultCheckButton,
+		CTA_ScanGuildChat,
+		CTA_DisableBroadcast,
+		CTA_MyRaidFramePVPCheckButton,
+		CTA_MyRaidFramePVECheckButton,
+		CTA_LFGCheckButton,
+		CTA_AcidClassCheckButton1,
+		CTA_AcidClassCheckButton2,
+		CTA_AcidClassCheckButton3,
+		CTA_AcidClassCheckButton4,
+		CTA_AcidClassCheckButton5,
+		CTA_AcidClassCheckButton6,
+		CTA_AcidClassCheckButton7,
+		CTA_AcidClassCheckButton8,
+		CTA_AcidClassCheckButton9,
+		CTA_AcidClassCheckButton10
+	}
+	local editBoxes = {
+		CTA_SearchFrameDescriptionEditBox,
+		CTA_GreyListItemEditFrameEditBox,
+		CTA_PlayerMinLevelEditBox,
+		CTA_PlayerMaxLevelEditBox,
+		CTA_ChatFrameNumberEditBox,
+		CTA_MyRaidFrameDescriptionEditBox,
+		CTA_MyRaidFrameMaxSizeEditBox,
+		CTA_MyRaidFrameMinLevelEditBox,
+		CTA_MyRaidFramePasswordEditBox,
+		CTA_LFGDescriptionEditBox,
+		CTA_AddPlayerFrameEditBox,
+	}
+	local sliders = {
+		CTA_MinimapArcSlider,
+		CTA_MinimapRadiusSlider,
+		CTA_MinimapMsgArcSlider,
+		CTA_MinimapMsgRadiusSlider,
+		CTA_FrameTransparencySlider,
+		CTA_FilterLevelSlider,
+	}
+	local nextPrevButtons = {
+		CTA_SearchFrame_ResultsPrev,
+		CTA_SearchFrame_ResultsNext,
+		CTA_GreyListFramePrev,
+		CTA_GreyListFrameNext,
+		CTA_LogUpButton,
+		CTA_LogDownButton,
+		CTA_LogBottomButton,
+	}
+	local tabNames = {
+		CTA_ShowResultsButton,
+		CTA_ShowOptionsButton,
+		CTA_ShowBlacklistButton,
+		CTA_SettingsFrameButton,
+		CTA_LogFrameButton,
+		CTA_ShowSearchButton,
+		CTA_ShowMyRaidButton,
+		CTA_ShowMFFButton,
+		CTA_ShowLFGButton,
 	}
 
-	for i = 1, #callToArmsTabs do
-		S:HandleTab(_G[callToArmsTabs[i]])
-		_G[callToArmsTabs[i].."Text"]:SetPoint("CENTER", 0, 1)
+	for _, frame in ipairs(frames) do
+		frame:SetTemplate("Transparent")
+	end
+	for _, button in ipairs(buttons) do
+		S:HandleButton(button)
+	end
+	for _, checkbox in ipairs(checkBoxes) do
+		S:HandleCheckBox(checkbox)
+	end
+	for _, slider in ipairs(sliders) do
+		S:HandleSliderFrame(slider)
+	end
+	for _, nextPrevButton in ipairs(nextPrevButtons) do
+		S:HandleNextPrevButton(nextPrevButton)
+	end
+	for _, tab in ipairs(tabNames) do
+		S:HandleTab(tab)
+
+		local text = _G[tab:GetName().."Text"]
+		text:ClearAllPoints()
+		text:Point("CENTER", 0, 1)
 	end
 
-	S:HandleButton(CTA_ShowResultsButton)
-	S:HandleButton(CTA_ShowOptionsButton)
-	S:HandleButton(CTA_SearchButton)
-	S:HandleButton(CTA_RequestInviteButton)
-	S:HandleButton(CTA_ShowBlacklistButton)
-	S:HandleButton(CTA_SettingsFrameButton)
-	S:HandleButton(CTA_LogFrameButton)
-	S:HandleButton(CTA_GreyListItemEditFrameDeleteButton)
-	S:HandleButton(CTA_GreyListItemEditFrameCloseButton)
-	S:HandleButton(CTA_GreyListItemEditFrameEditButton)
-	S:HandleButton(CTA_AddPlayerButton)
-	S:HandleButton(CTA_AnnounceToLFGButton)
-	S:HandleButton(CTA_AnnounceToLFGButton2)
-	S:HandleButton(CTA_StopHostingButton)
-	S:HandleButton(CTA_ToggleViewableButton)
-	S:HandleButton(CTA_StartAPartyButton)
-	S:HandleButton(CTA_StartARaidButton)
-	S:HandleButton(CTA_Acid1DeleteButton)
-	S:HandleButton(CTA_Acid2DeleteButton)
-	S:HandleButton(CTA_Acid3DeleteButton)
-	S:HandleButton(CTA_Acid4DeleteButton)
-	S:HandleButton(CTA_Acid5DeleteButton)
-	S:HandleButton(CTA_Acid6DeleteButton)
-	S:HandleButton(CTA_Acid7DeleteButton)
-	S:HandleButton(CTA_Acid8DeleteButton)
-	S:HandleButton(CTA_AcidEditDialogCloseButton)
-	S:HandleButton(CTA_AcidEditDialogOkButton)
+	local function editboxClearFocus(self)
+		self:ClearFocus()
+	end
+	for _, editBox in ipairs(editBoxes) do
+		local backdrop, border = select(6, editBox:GetRegions())
+		backdrop:Hide()
+		border:Hide()
 
-	S:HandleEditBox(CTA_SearchFrameDescriptionEditBox)
-	S:HandleEditBox(CTA_GreyListItemEditFrameEditBox)
-	S:HandleEditBox(CTA_PlayerMinLevelEditBox)
-	S:HandleEditBox(CTA_PlayerMaxLevelEditBox)
-	S:HandleEditBox(CTA_ChatFrameNumberEditBox)
-	S:HandleEditBox(CTA_MyRaidFrameDescriptionEditBox)
-	S:HandleEditBox(CTA_MyRaidFrameMaxSizeEditBox)
-	S:HandleEditBox(CTA_MyRaidFrameMinLevelEditBox)
-	S:HandleEditBox(CTA_MyRaidFramePasswordEditBox)
-	S:HandleEditBox(CTA_LFGDescriptionEditBox)
+		S:HandleEditBox(editBox)
 
-	S:HandleSliderFrame(CTA_MinimapArcSlider)
-	S:HandleSliderFrame(CTA_MinimapRadiusSlider)
-	S:HandleSliderFrame(CTA_MinimapMsgArcSlider)
-	S:HandleSliderFrame(CTA_MinimapMsgRadiusSlider)
-	S:HandleSliderFrame(CTA_FrameTransparencySlider)
-	S:HandleSliderFrame(CTA_FilterLevelSlider)
+		if not editBox:GetScript("OnEnterPressed") then
+			editBox:SetScript("OnEnterPressed", editboxClearFocus)
+		end
+		if not editBox:GetScript("OnEscapePressed") then
+			editBox:SetScript("OnEscapePressed", editboxClearFocus)
+		end
+	end
 
-	CTA_ShowSearchButton:ClearAllPoints()
-	CTA_ShowSearchButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 20)
-	CTA_ShowSearchButton:Point("BOTTOMLEFT", 0, -31)
-	CTA_ShowMyRaidButton:ClearAllPoints()
-	CTA_ShowMyRaidButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 20)
-	CTA_ShowMyRaidButton:Point("LEFT", CTA_ShowSearchButton, "RIGHT", 0, 0)
-	CTA_ShowLFGButton:ClearAllPoints()
-	CTA_ShowLFGButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 20)
-	CTA_ShowLFGButton:Point("LEFT", CTA_ShowMyRaidButton, "RIGHT", 0, 0)
-	CTA_ShowMFFButton:ClearAllPoints()
-	CTA_ShowMFFButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 20)
-	CTA_ShowMFFButton:Point("BOTTOMRIGHT", 0, -31)
+	CTA_MainFrame:StripTextures()
+	CTA_MainFrame:SetTemplate("Transparent")
+	CTA_MainFrame:Height(500)
 
-	local callToArmsConfigCheck = {
-		"CTA_MuteLFGChannelCheckButton",
-		"CTA_ShowFilteredMessagesInChatCheckButton",
-		"CTA_ShowOnMinimapCheckButton",
-		"CTA_PlaySoundOnNewResultCheckButton",
-		"CTA_ScanGuildChat",
-		"CTA_DisableBroadcast",
-		"CTA_MyRaidFramePVPCheckButton",
-		"CTA_MyRaidFramePVECheckButton",
-		"CTA_LFGCheckButton",
-		"CTA_AcidClassCheckButton1",
-		"CTA_AcidClassCheckButton2",
-		"CTA_AcidClassCheckButton3",
-		"CTA_AcidClassCheckButton4",
-		"CTA_AcidClassCheckButton5",
-		"CTA_AcidClassCheckButton6",
-		"CTA_AcidClassCheckButton7",
-		"CTA_AcidClassCheckButton8",
-		"CTA_AcidClassCheckButton9",
-		"CTA_AcidClassCheckButton10"
-	}
+	S:HandleCloseButton(CTA_MainFrameCloseButton, CTA_MainFrame)
 
-	for i = 1, #callToArmsConfigCheck do
-		S:HandleCheckBox(_G[callToArmsConfigCheck[i]])
+	CTA_SearchDropDown:Point("TOPLEFT", 4, -48)
+	S:HandleDropDownBox(CTA_SearchDropDown, 200)
+	S:HandleDropDownBox(CTA_PlayerClassDropDown, 100)
+	S:HandleDropDownBox(CTA_RoleplayDropDown, 100)
+
+	CTA_SearchFrame_ResultsPrev:Point("BOTTOM", -60, 7)
+	CTA_SearchFrame_ResultsNext:Point("BOTTOM", 60, 7)
+
+	CTA_GreyListFramePrev:Point("BOTTOM", -60, 7)
+	CTA_GreyListFrameNext:Point("BOTTOM", 60, 7)
+
+	CTA_ShowSearchButton:Point("TOPLEFT", CTA_MainFrame, "BOTTOMLEFT", 0, 2)
+	CTA_ShowMyRaidButton:Point("TOPLEFT", CTA_ShowSearchButton, "TOPRIGHT", -15, 0)
+	CTA_ShowLFGButton:Point("TOPLEFT", CTA_ShowMyRaidButton, "TOPRIGHT", -15, 0)
+	CTA_ShowMFFButton:Point("TOPRIGHT", CTA_MainFrame, "BOTTOMRIGHT", 0, 2)
+
+	CTA_AnnounceToLFGButton2:Point("BOTTOM", 0, 90)
+
+	CTA_AcidEditDialog:StripTextures()
+	CTA_AcidEditDialog:SetTemplate("Default")
+
+	for i = 0, 10 do
+		_G["CTA_Acid"..i.."barBorder"]:SetTemplate("Transparent")
+		S:HandleButton(_G["CTA_Acid"..i.."DeleteButton"])
+
+		local button = _G["CTA_Acid"..i.."MoreButton"]
+		button:Point("TOPLEFT", 43, 0)
+		S:HandleNextPrevButton(button, "up")
+
+		button = _G["CTA_Acid"..i.."LessButton"]
+		button:Point("TOPLEFT", 43, -30)
+		S:HandleNextPrevButton(button, "down")
 	end
 end)

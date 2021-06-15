@@ -24,11 +24,11 @@ S:AddCallbackForAddon("Omen", "Omen", function()
 		self.BarList:ClearAllPoints()
 
 		if not Omen.db.profile.TitleBar.ShowTitleBar then
-			self.BarList:Point("TOPLEFT", self.Title, "BOTTOMLEFT", 0, 0)
+			self.BarList:SetPoint("TOPLEFT", self.Title, "BOTTOMLEFT", 0, 0)
 		else
 			self.BarList:Point("TOPLEFT", self.Title, "BOTTOMLEFT", 0, -(E.PixelMode and 1 or 3))
 		end
-		self.BarList:Point("BOTTOMRIGHT", self.Anchor, "BOTTOMRIGHT", 0, 0)
+		self.BarList:SetPoint("BOTTOMRIGHT", self.Anchor, "BOTTOMRIGHT", 0, 0)
 	end)
 
 	hooksecurefunc(Omen, "UpdateBackdrop", function(self)

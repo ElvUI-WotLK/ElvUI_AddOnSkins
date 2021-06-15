@@ -4,6 +4,10 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("PAB") then return end
 
+local _G = _G
+local ipairs = ipairs
+local unpack = unpack
+
 -- Party Ability Bars r7
 -- https://www.wowace.com/projects/pab/files/353353
 
@@ -27,7 +31,7 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 	S:HandleEditBox(_G["PABScrollFrameAbility name"])
 	S:HandleEditBox(_G["PABScrollFrameCD (s)"])
 
-	PAB_Panel_Button1:SetPoint("TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
+	PAB_Panel_Button1:Point("TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
 	S:HandleButton(PAB_Panel_Button1)
 	S:HandleButton(PAB_Panel_Button2)
 
@@ -41,18 +45,19 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 		E:RegisterCooldown(frame.cd)
 	end
 
-	local PABIcons, iconSize, scale
-	local border = E.Border
+	local PABIcons
+	local ICON_SIZE = 30
+	local SCALE = 1
 
 	hooksecurefunc(PAB, "ApplyAnchorSettings", function()
-		if not (PABIcons and iconSize) then return end
+		if not PABIcons then return end
 
-		scale = PABDB.scale
+		SCALE = PABIcons:GetScale()
 		PABIcons:SetScale(1)
 
 		for i = 1, 4 do
-			for _, iconFrame in pairs(_G["PABAnchor"..i].icons) do
-				iconFrame:Size(iconSize * scale)
+			for _, iconFrame in ipairs(_G["PABAnchor"..i].icons) do
+				iconFrame:Size(ICON_SIZE * SCALE)
 			end
 		end
 	end)
@@ -60,18 +65,13 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 	S:RawHook(PAB, "AppendIcon", function(self, icons, anchor, ...)
 		local iconFrame = S.hooks[self].AppendIcon(self, icons, anchor, ...)
 
-		if not PABIcons then
-			PABIcons = iconFrame:GetParent()
-			PAB:ApplyAnchorSettings()
-		end
-
 		SkinIcon(iconFrame)
-		iconFrame:Size(iconSize * scale)
+		iconFrame:Size(ICON_SIZE * SCALE)
 
 		if #icons == 0 then
-			iconFrame:Point("TOPLEFT", anchor, "BOTTOMRIGHT", border, -border)
+			iconFrame:Point("TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
 		else
-			iconFrame:Point("LEFT", icons[#icons - 1], "RIGHT", border, 0)
+			iconFrame:Point("LEFT", icons[#icons - 1], "RIGHT", E.Border, 0)
 		end
 
 		return iconFrame
@@ -82,20 +82,20 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 		frame:SetBackdrop(nil)
 		frame:CreateBackdrop("Transparent")
 
-		for _, iconFrame in pairs(frame.icons) do
-			if not (PABIcons and iconSize) then
+		for _, iconFrame in ipairs(frame.icons) do
+			if not PABIcons then
 				PABIcons = iconFrame:GetParent()
-				iconSize = iconFrame:GetSize()
-				PAB:ApplyAnchorSettings()
+				ICON_SIZE = math.floor(iconFrame:GetSize() + 0.5)
 			end
 
 			SkinIcon(iconFrame)
+			iconFrame:Size(ICON_SIZE * SCALE)
 
-			local point, parent = iconFrame:GetPoint()
+			local point, anchor = iconFrame:GetPoint()
 			if point == "LEFT" then
-				iconFrame:Point("LEFT", parent, "RIGHT", border, 0)
+				iconFrame:Point("LEFT", anchor, "RIGHT", E.Border, 0)
 			elseif point == "TOPLEFT" then
-				iconFrame:Point("TOPLEFT", parent, "BOTTOMRIGHT", border, -border)
+				iconFrame:Point("TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
 			end
 		end
 	end

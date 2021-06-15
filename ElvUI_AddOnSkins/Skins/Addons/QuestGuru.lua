@@ -7,14 +7,13 @@ if not AS:IsAddonLODorEnabled("QuestGuru") then return end
 local _G = _G
 local select = select
 local unpack = unpack
-local find = string.find
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetQuestLogChoiceInfo = GetQuestLogChoiceInfo
 local hooksecurefunc = hooksecurefunc
 
--- QuestGuru 1.3
+-- QuestGuru 1.4.1
 
 S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	if not E.private.addOnSkins.QuestGuru then return end
@@ -50,25 +49,25 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 
 	QuestGuruShowMapButton:StripTextures()
 	S:HandleButton(QuestGuruShowMapButton)
+	QuestGuruShowMapButton:Width(82)
+	QuestGuruShowMapButton:Point("TOPRIGHT", 1, 32)
 	QuestGuruShowMapButton.text:ClearAllPoints()
-	QuestGuruShowMapButton.text:Point("CENTER")
-	QuestGuruShowMapButton:Point("TOPRIGHT", -98, 35)
-	QuestGuruShowMapButton:Size(QuestGuruShowMapButton:GetWidth() - 30, QuestGuruShowMapButton:GetHeight(), - 40)
+	QuestGuruShowMapButton.text:SetPoint("CENTER")
 
 	QuestGuru_QuestLogCount:StripTextures()
-	QuestGuru_QuestLogCount:Point("TOPRIGHT", -31, -23)
+	QuestGuru_QuestLogCount:Point("TOPRIGHT", -118, -23)
 	QuestGuru_QuestLogCount.SetPoint = E.noop
 	QuestGuru_QuestLogCount:CreateBackdrop("Transparent")
 	QuestGuru_QuestLogCount.backdrop:Point("TOPLEFT", -1, 0)
 	QuestGuru_QuestLogCount.backdrop:Point("BOTTOMRIGHT", 1, -4)
 
 	S:HandleButton(QuestGuru_QuestFrameExpandCollapseButton)
-	QuestGuru_QuestFrameExpandCollapseButton:Point("TOPLEFT", 19, -40)
+	QuestGuru_QuestFrameExpandCollapseButton:Point("TOPLEFT", 19, -39)
 
 	QuestGuru_QuestLogFrameTab1:StripTextures()
 	QuestGuru_QuestLogFrameTab1:SetTemplate()
 	QuestGuru_QuestLogFrameTab1:Height(24)
-	QuestGuru_QuestLogFrameTab1:Point("TOPLEFT", 39, -35)
+	QuestGuru_QuestLogFrameTab1:Point("TOPLEFT", 40, -35)
 	QuestGuru_QuestLogFrameTab1.SetPoint = E.noop
 	QuestGuru_QuestLogFrameTab1:SetHitRectInsets(0, 0, 0, 0)
 	QuestGuru_QuestLogFrameTab1:HookScript("OnEnter", S.SetModifiedBackdrop)
@@ -84,7 +83,7 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_QuestLogFrameTab2:HookScript("OnLeave", S.SetOriginalBackdrop)
 
 	QuestGuru_QuestLogTitle1:ClearAllPoints()
-	QuestGuru_QuestLogTitle1:Point("TOPLEFT", QuestGuru_QuestLogListScrollFrame)
+	QuestGuru_QuestLogTitle1:SetPoint("TOPLEFT", QuestGuru_QuestLogListScrollFrame)
 
 	QuestGuru_QuestLogListScrollFrame:Size(305, 335)
 	QuestGuru_QuestLogListScrollFrame:ClearAllPoints()
@@ -129,7 +128,7 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 
 	-- Abandoned
 	QuestGuru_QuestAbandonTitle1:ClearAllPoints()
-	QuestGuru_QuestAbandonTitle1:Point("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame)
+	QuestGuru_QuestAbandonTitle1:SetPoint("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame)
 
 	QuestGuru_QuestAbandonListScrollFrame:Size(305, 335)
 	QuestGuru_QuestAbandonListScrollFrame:ClearAllPoints()
@@ -199,22 +198,7 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 			questLogTitle.check:SetHighlightTexture(nil)
 		end
 
-		questLogTitle:SetNormalTexture(E.Media.Textures.Plus)
-		questLogTitle.SetNormalTexture = E.noop
-		questLogTitle:GetNormalTexture():Size(16)
-		questLogTitle:GetNormalTexture():Point("LEFT", 3, 0)
-		questLogTitle:SetHighlightTexture("")
-		questLogTitle.SetHighlightTexture = E.noop
-
-		hooksecurefunc(questLogTitle, "SetNormalTexture", function(self, texture)
-			if find(texture, "MinusButton") then
-				self:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-			elseif find(texture, "PlusButton") then
-				self:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-			else
-				self:GetNormalTexture():SetTexture(0, 0, 0, 0)
-			end
-		end)
+		S:HandleCollapseExpandButton(questLogTitle)
 	end
 
 	for i = 1, QUESTS_DISPLAYED do
@@ -375,7 +359,7 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 	QuestGuru_QuestLogFrameTab2.SetPoint = E.noop
 
 	QuestGuru_QuestHistoryTitle1:ClearAllPoints()
-	QuestGuru_QuestHistoryTitle1:Point("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame)
+	QuestGuru_QuestHistoryTitle1:SetPoint("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame)
 
 	QuestGuru_QuestHistoryListScrollFrame:Size(305, 335)
 	QuestGuru_QuestHistoryListScrollFrame:ClearAllPoints()
@@ -387,8 +371,8 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 	QuestGuru_QuestHistoryListScrollFrame.Hide = QuestGuru_QuestHistoryListScrollFrame.Show
 
 	S:HandleScrollBar(QuestGuru_QuestHistoryListScrollFrameScrollBar)
-	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame, "TOPRIGHT", 4, -16)
-	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryListScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame, "TOPRIGHT", 3, -17)
+	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	QuestGuru_QuestHistoryDetailScrollFrame:Size(304, 336)
 	QuestGuru_QuestHistoryDetailScrollFrame:ClearAllPoints()
@@ -399,11 +383,15 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 	QuestGuru_QuestHistoryDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
 	S:HandleScrollBar(QuestGuru_QuestHistoryDetailScrollFrameScrollBar)
-	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "TOPRIGHT", 4, -17)
-	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "BOTTOMRIGHT", 4, 16)
+	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "TOPRIGHT", 3, -18)
+	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
 	S:HandleEditBox(QuestGuru_QuestHistorySearch)
+	QuestGuru_QuestHistorySearch:Width(143)
 	QuestGuru_QuestHistorySearch:Point("LEFT", QuestGuru_QuestHistorySearchText, "RIGHT", 4, -1)
+
+	S:HandleButton(QuestGuru_HistoryListFrameShowButton)
+	QuestGuru_HistoryListFrameShowButton:Point("LEFT", QuestGuru_QuestHistorySearch, "RIGHT", 4, 0)
 
 	local function skinLogEntry(questLogTitle, index)
 		questLogTitle:Width(300)
@@ -420,22 +408,7 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 			questLogTitle.check:SetHighlightTexture(nil)
 		end
 
-		questLogTitle:SetNormalTexture(E.Media.Textures.Plus)
-		questLogTitle.SetNormalTexture = E.noop
-		questLogTitle:GetNormalTexture():Size(16)
-		questLogTitle:GetNormalTexture():Point("LEFT", 3, 0)
-		questLogTitle:SetHighlightTexture("")
-		questLogTitle.SetHighlightTexture = E.noop
-
-		hooksecurefunc(questLogTitle, "SetNormalTexture", function(self, texture)
-			if find(texture, "MinusButton") then
-				self:GetNormalTexture():SetTexture(E.Media.Textures.Minus)
-			elseif find(texture, "PlusButton") then
-				self:GetNormalTexture():SetTexture(E.Media.Textures.Plus)
-			else
-				self:GetNormalTexture():SetTexture(0, 0, 0, 0)
-			end
-		end)
+		S:HandleCollapseExpandButton(questLogTitle)
 	end
 
 	for i = 1, QUESTS_DISPLAYED do

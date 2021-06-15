@@ -19,7 +19,7 @@ S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 		_G["MAMover" .. i .. "Backdrop"]:SetTemplate("Transparent")
 
 		_G["MAMover" .. i]:HookScript("OnShow", function(self)
-			_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
+			_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
 		_G["MAMover" .. i]:SetScript("OnEnter", function(self)
@@ -27,7 +27,7 @@ S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 		end)
 
 		_G["MAMover" .. i]:SetScript("OnLeave", function(self)
-			_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(unpack(E["media"].rgbvaluecolor))
+			_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end)
 	end
 
