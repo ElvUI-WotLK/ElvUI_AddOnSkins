@@ -22,7 +22,13 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		frame:SetTemplate()
 
 		if id == 1 then
-			frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
+			if E.db.addOnSkins.DBMSkinHalf then
+				frame:Point("BOTTOMRIGHT", parent, "BOTTOMLEFT", -10 * (E.Border + E.Spacing), 0)
+			else
+				frame:Point("RIGHT", parent, "LEFT", -(E.Border + E.Spacing), 0)
+			end
+		elseif E.db.addOnSkins.DBMSkinHalf then
+			frame:Point("BOTTOMLEFT", parent, "BOTTOMRIGHT", 10 * (E.Border + E.Spacing), 0)
 		else
 			frame:Point("LEFT", parent, "RIGHT", (E.Border + E.Spacing), 0)
 		end
@@ -82,16 +88,29 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		bar:SetInside(frame)
 
-		frame:Size(barWidth, barHeight)
+		frame:Size(barWidth, db.DBMSkinHalf and barHeight / 3 or barHeight)
 		bar:Size(barWidth, barHeight)
 
 		icon1.overlay:Size(barHeight)
 		icon2.overlay:Size(barHeight)
 
-		name:Point("LEFT", 5, 0)
-		name:SetFont(self._font, fontSize, db.dbmFontOutline)
+		if db.DBMSkinHalf then
+			if not self.owner.options.BarYOffset or self.owner.options.BarYOffset < 20 then
+				self.owner.options.BarYOffset = 20
+			end
 
-		timer:Point("RIGHT", -5, 0)
+			if not self.owner.options.HugeBarYOffset or self.owner.options.HugeBarYOffset < 20 then
+				self.owner.options.HugeBarYOffset = 20
+			end
+
+			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -1, 3)
+		else
+			name:Point("LEFT", 5, 0)
+			timer:Point("RIGHT", -5, 0)
+		end
+
+		name:SetFont(self._font, fontSize, db.dbmFontOutline)
 		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
 
 		if self.owner.options.IconLeft then
@@ -205,14 +224,15 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 			local db = E.db.addOnSkins
 			local width = newWidth
-			local height = db.dbmBarHeight * newScale
+			local iconHeight = db.dbmBarHeight * newScale
+			local height = (db.DBMSkinHalf and iconHeight / 3) or iconHeight
 			local fontSize = db.dbmFontSize * newScale
 
 			self.frame:Size(width, height)
 			self._bar:Size(width, height)
 
-			self._icon1.overlay:Size(height)
-			self._icon2.overlay:Size(height)
+			self._icon1.overlay:Size(iconHeight)
+			self._icon2.overlay:Size(iconHeight)
 
 			self._name:SetFont(self._font, fontSize, db.dbmFontOutline)
 			self._timer:SetFont(self._font, fontSize, db.dbmFontOutline)

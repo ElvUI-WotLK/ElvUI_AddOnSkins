@@ -6,6 +6,8 @@ if not AS:IsAddonLODorEnabled("GnomishVendorShrinker") then return end
 
 local unpack = unpack
 
+local hooksecurefunc = hooksecurefunc
+
 -- GnomishVendorShrinker 3.3.0.6
 -- https://www.curseforge.com/wow/addons/gnomishvendorshrinker/files/426171
 
@@ -27,7 +29,7 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 		return
 	end
 
-	local GVS = GVSFrame or AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
+	local GVS = AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
 	if not GVS then return end
 
 	GVS:Size(304, 294)
@@ -39,6 +41,14 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 
 	local popoutButtonOnEnter = function(self) self.icon:SetVertexColor(unpack(E.media.rgbvaluecolor)) end
 	local popoutButtonOnLeave = function(self) self.icon:SetVertexColor(1, 1, 1) end
+	local skinCurrencyIcons = function(self)
+		if self.altframesSkinned < #self.altframes then
+			for _, frame in ipairs(self.altframes) do
+				frame.icon:SetTexCoord(unpack(E.TexCoords))
+			end
+			self.altframesSkinned = #self.altframes
+		end
+	end
 
 	for _, child in ipairs({GVS:GetChildren()}) do
 		local objType = child:GetObjectType()
@@ -63,6 +73,9 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 				child.popout.icon:SetTexture(E.Media.Textures.ArrowUp)
 				child.popout.icon:SetRotation(S.ArrowRotation.right)
 			end
+
+			child.altframesSkinned = 0
+			hooksecurefunc(child, "AddAltCurrency", skinCurrencyIcons)
 		elseif objType == "EditBox" then
 			for _, region in ipairs({child:GetRegions()}) do
 				if region:GetDrawLayer() == "BACKGROUND" then

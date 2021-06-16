@@ -398,6 +398,11 @@ local function getOptions()
 								type = "select",
 								name = L["Template"],
 								values = backdropValues
+							},
+							DBMSkinHalf = {
+								order = 6,
+								type = "toggle",
+								name = L["DBM Half-bar Skin"]
 							}
 						}
 					},
