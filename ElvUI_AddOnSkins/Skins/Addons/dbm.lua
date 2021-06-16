@@ -417,11 +417,11 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 
 		S:Unhook(self, "OnShow")
 	end)
-
+--[[
 	hooksecurefunc(DBM_GUI_OptionsFrame, "DisplayButton", function(self, button, element)
 		button.toggle:Point("LEFT", 8 * element.depth - 5, 2);
 	end)
-
+--]]
 	S:RawHook(DBM_GUI, "CreateNewPanel", function(self, ...)
 		local panel = S.hooks[DBM_GUI].CreateNewPanel(self, ...)
 
@@ -431,7 +431,7 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			this.areas[#this.areas].frame:SetTemplate("Transparent", nil, true)
 			this.areas[#this.areas].frame:SetBackdropColor(0, 0, 0, 0)
 		end)
-
+--[[
 		S:RawHook(PanelPrototype, "CreateCheckButton", function(this, name, autoplace, ...)
 			local button = S.hooks[PanelPrototype].CreateCheckButton(this, name, autoplace, ...)
 
@@ -463,12 +463,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			S:HandleButton(button)
 			return button
 		end)
-
+--]]
 		S:Unhook(DBM_GUI, "CreateNewPanel")
 
 		return panel
 	end)
-
+--[[
 	DBM_GUI_DropDown:SetTemplate("Transparent")
 
 	local dropdownArrowColor = {1, 0.8, 0}
@@ -497,4 +497,5 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 
 		return dropdown
 	end)
+--]]
 end)
