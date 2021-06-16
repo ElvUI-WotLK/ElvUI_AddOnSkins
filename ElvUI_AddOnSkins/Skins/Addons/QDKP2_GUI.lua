@@ -4,7 +4,7 @@ local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("QDKP2_GUI") then return end
 
--- Quick DKP V2 - GUI v 2.6.7
+-- Quick DKP V2 - GUI v 2.6.7 and v 2.7.5
 
 S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
   if not E.private.addOnSkins.QDKP2_GUI then return end
@@ -59,7 +59,11 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
   S:HandleButton(QDKP2_Frame2_SortBtn_value)
   S:HandleEditBox(QDKP2_Frame2_Bid_Item)
   S:HandleCheckBox(QDKP2frame2_selectList_guild)
-  S:HandleCheckBox(QDKP2frame2_selectList_guildOnline)
+  if QDKP2frame2_selectList_guildOnline then
+    S:HandleCheckBox(QDKP2frame2_selectList_guildOnline)
+  elseif QDKP2frame2_selectList_Custom then
+    S:HandleCheckBox(QDKP2frame2_selectList_Custom)
+  end
   S:HandleCheckBox(QDKP2frame2_selectList_Raid)
   S:HandleCheckBox(QDKP2frame2_selectList_Bid)
   S:HandleCloseButton(QDKP2_Frame2_Button1, QDKP2_Frame2)
