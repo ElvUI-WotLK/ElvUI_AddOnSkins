@@ -15,20 +15,21 @@ S:AddCallbackForAddon("MoveAnything", "MoveAnything", function()
 
 	local SPACING = 1 + (E.Spacing * 2)
 
+	local moverOnShow = function(self)
+		_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	end
+	local moverOnEnter = function(self)
+		_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(1, 1, 1)
+	end
+	local moverOnLeave = function(self)
+		_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
+
 	for i = 1, 20 do
 		_G["MAMover" .. i .. "Backdrop"]:SetTemplate("Transparent")
-
-		_G["MAMover" .. i]:HookScript("OnShow", function(self)
-			_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		end)
-
-		_G["MAMover" .. i]:SetScript("OnEnter", function(self)
-			_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(1, 1, 1)
-		end)
-
-		_G["MAMover" .. i]:SetScript("OnLeave", function(self)
-			_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(unpack(E.media.rgbvaluecolor))
-		end)
+		_G["MAMover" .. i]:HookScript("OnShow", moverOnShow)
+		_G["MAMover" .. i]:SetScript("OnEnter", moverOnEnter)
+		_G["MAMover" .. i]:SetScript("OnLeave", moverOnLeave)
 	end
 
 	MAOptions:StripTextures()
