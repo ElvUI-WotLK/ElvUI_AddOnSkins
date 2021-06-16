@@ -24,38 +24,32 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 
 	hooksecurefunc(Skada.displays["bar"], "ApplySettings", function(_, win)
 		local skada = win.bargroup
+
 		if win.db.enabletitle then
 			skada.button:SetBackdrop(nil)
 
 			if not skada.button.backdrop then
 				skada.button:CreateBackdrop()
-				skada.button.backdrop:SetFrameLevel(skada.button:GetFrameLevel())
 			end
 
-			skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false)
+			if skada.button.backdrop then
+				skada.button.backdrop:SetFrameLevel(skada.button:GetFrameLevel())
+				skada.button.backdrop:SetTemplate(E.db.addOnSkins.skadaTitleTemplate, E.db.addOnSkins.skadaTitleTemplate == "Default" and E.db.addOnSkins.skadaTitleTemplateGloss or false)
+
+				skada.button.backdrop:ClearAllPoints()
+				skada.button.backdrop:Point("TOPLEFT", skada.button, -E.Border, win.db.reversegrowth and 0 or E.Border)
+				skada.button.backdrop:Point("BOTTOMRIGHT", skada.button, E.Border, win.db.reversegrowth and -E.Border or E.Border)
+			end
 		end
 
 		if Skada.revisited then
 			skada:SetBackdrop(nil) -- remove default backdrop
+
 			if not skada.backdrop then
 				skada:CreateBackdrop(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false)
-			end
-
-			if skada.backdrop then
+			else
 				skada.backdrop:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false)
-				skada.backdrop:ClearAllPoints()
-
-				if win.db.reversegrowth then
-					skada.backdrop:SetPoint("LEFT", skada, "LEFT", -E.Border, 0)
-					skada.backdrop:SetPoint("RIGHT", skada, "RIGHT", E.Border, 0)
-					skada.backdrop:SetPoint("BOTTOM", skada.button, "TOP", 0, -(win.db.title.height + E.Border))
-				else
-					skada.backdrop:SetPoint("LEFT", skada, "LEFT", -E.Border, 0)
-					skada.backdrop:SetPoint("RIGHT", skada, "RIGHT", E.Border, 0)
-					skada.backdrop:SetPoint("TOP", skada.button, "BOTTOM", 0, win.db.title.height + E.Border)
-				end
 			end
-
 		elseif win.db.enablebackground then
 			skada.bgframe:SetTemplate(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false)
 
