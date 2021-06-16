@@ -170,14 +170,16 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local newY = self.frame:GetTop()
 
-		self.moving = "move"
 		self.moveAnchor = newAnchor
 		self.moveOffsetX = -(newX - oldX)
 		self.moveOffsetY = -(newY - oldY)
 		self.moveElapsed = 0
 
-		self.frame:ClearAllPoints()
-		self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, self.moveOffsetX, self.moveOffsetY)
+		if self.owner.options.BarStyle ~= "NoAnim" then
+			self.frame:ClearAllPoints()
+			self.frame:SetPoint(self.movePoint, newAnchor, self.moveRelPoint, self.moveOffsetX, self.moveOffsetY)
+			self.moving = "move"
+		end
 	end
 
 	local function enlarge(self)
@@ -199,7 +201,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local newY = self.frame:GetTop()
 
-		self.moving = "enlarge"
+		self.moving = self.owner.options.BarStyle == "NoAnim" and "nextEnlarge" or "enlarge"
 		self.moveAnchor = newAnchor
 		self.moveOffsetX = -(newX - oldX)
 		self.moveOffsetY = -(newY - oldY)
