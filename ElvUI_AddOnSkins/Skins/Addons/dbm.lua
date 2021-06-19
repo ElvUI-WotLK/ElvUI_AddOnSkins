@@ -94,6 +94,9 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		icon1.overlay:Size(barHeight)
 		icon2.overlay:Size(barHeight)
 
+		name:ClearAllPoints()
+		timer:ClearAllPoints()
+
 		if db.DBMSkinHalf then
 			if not self.owner.options.BarYOffset or self.owner.options.BarYOffset < 20 then
 				self.owner.options.BarYOffset = 20
@@ -104,7 +107,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			end
 
 			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
-			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -1, 3)
+			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
 		else
 			name:Point("LEFT", 5, 0)
 			timer:Point("RIGHT", -5, 0)
