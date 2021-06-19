@@ -107,7 +107,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			end
 
 			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
-			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -1, 3)
+			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
 		else
 			name:Point("LEFT", 5, 0)
 			timer:Point("RIGHT", -5, 0)
