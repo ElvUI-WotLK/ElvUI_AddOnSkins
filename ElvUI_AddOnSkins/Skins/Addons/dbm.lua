@@ -159,7 +159,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 		oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
-		oldY = oldY or (self.frame:GetTop())
+		oldY = oldY or (self.frame:GetTop() + (self.owner.options.ExpandUpwards and self.owner.options.BarYOffset or -self.owner.options.BarYOffset))
 
 		self.frame:ClearAllPoints()
 		if self.owner.options.ExpandUpwards then
