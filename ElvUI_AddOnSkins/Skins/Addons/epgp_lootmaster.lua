@@ -52,7 +52,7 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 	hooksecurefunc(EPGPLM, "UpdateLootUI", function(self)
 		for _, frame in ipairs(self.lootSelectFrames) do
-			if frame and not frame.isSkinned then
+			if not frame.isSkinned then
 				frame:SetTemplate("Transparent")
 
 				frame.itemIcon:SetTemplate("Default")
@@ -62,9 +62,6 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 				hooksecurefunc(frame.itemIcon, "SetNormalTexture", UpdateLootUI_Icon_SetNormalTexture)
 
-				for _, button in ipairs(frame.buttons) do
-					S:HandleButton(button)
-				end
 				S:HandleButton(frame.btnPass)
 
 				frame.timerFrame:SetBackdrop(nil)
@@ -96,6 +93,10 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 				S:HandleButton(buttonSave)
 
 				frame.isSkinned = true
+			end
+
+			for _, button in ipairs(frame.buttons) do
+				S:HandleButton(button)
 			end
 		end
 	end)
