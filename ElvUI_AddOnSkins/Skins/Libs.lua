@@ -590,7 +590,7 @@ local function SkinLibCandyBar(lib)
 	local offset = E:Scale(E.PixelMode and 1 or 3)
 	local function setPoint(self, point, attachTo, anchorPoint, xOffset, yOffset)
 		if (point == "BOTTOMLEFT" and yOffset ~= offset) or (point == "TOPLEFT" and yOffset ~= -offset) then
-			self:Point(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
+			self:SetPoint(point, attachTo, anchorPoint, 0, point == "BOTTOMLEFT" and offset or -offset)
 		end
 	end
 
