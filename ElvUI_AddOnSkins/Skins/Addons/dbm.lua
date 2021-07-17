@@ -109,9 +109,15 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			end
 
 			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+			if backportVersion then
+				name:Point("BOTTOMRIGHT", timer, "BOTTOMLEFT")
+			end
 			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
 		else
 			name:Point("LEFT", 5, 0)
+			if backportVersion then
+				name:Point("RIGHT", timer, "LEFT")
+			end
 			timer:Point("RIGHT", -5, 0)
 		end
 
