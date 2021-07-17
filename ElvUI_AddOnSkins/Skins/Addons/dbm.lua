@@ -109,9 +109,15 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			end
 
 			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+			if backportVersion then
+				name:Point("BOTTOMRIGHT", timer, "BOTTOMLEFT")
+			end
 			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
 		else
 			name:Point("LEFT", 5, 0)
+			if backportVersion then
+				name:Point("RIGHT", timer, "LEFT")
+			end
 			timer:Point("RIGHT", -5, 0)
 		end
 
@@ -144,32 +150,41 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	local function setPosition(self)
 		if self.moving == "enlarge" then return end
 
+		local enlarged = self.enlarged
+		local expandUpwards = backportVersion and (enlarged and self.owner.options.ExpandUpwardsLarge or self.owner.options.ExpandUpwards) or self.owner.options.ExpandUpwards
 		local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 
 		self.frame:ClearAllPoints()
-		if self.owner.options.ExpandUpwards then
-			self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		if expandUpwards then
+			self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
-			self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 	end
 
 	local function moveToNextPosition(self, oldX, oldY)
 		if self.moving == "enlarge" then return end
 
+		local enlarged = self.enlarged
+		local expandUpwards = backportVersion and (enlarged and self.owner.options.ExpandUpwardsLarge or self.owner.options.ExpandUpwards) or self.owner.options.ExpandUpwards
 		local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
+
 		oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth() / 2)
-		oldY = oldY or (self.frame:GetTop())
+		if expandUpwards then
+			oldY = oldY or self.frame:GetTop() + self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"]
+		else
+			oldY = oldY or self.frame:GetTop() - self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"]
+		end
 
 		self.frame:ClearAllPoints()
-		if self.owner.options.ExpandUpwards then
+		if expandUpwards then
 			self.movePoint = "BOTTOM"
 			self.moveRelPoint = "TOP"
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
 			self.movePoint = "TOP"
 			self.moveRelPoint = "BOTTOM"
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
@@ -192,15 +207,18 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local oldX = self.frame:GetRight() - self.frame:GetWidth() / 2
 		local oldY = self.frame:GetTop()
 
+		local enlarged = self.enlarged
+		local expandUpwards = backportVersion and (enlarged and self.owner.options.ExpandUpwardsLarge or self.owner.options.ExpandUpwards) or self.owner.options.ExpandUpwards
+
 		self.frame:ClearAllPoints()
-		if self.owner.options.ExpandUpwards then
+		if expandUpwards then
 			self.movePoint = "BOTTOM"
 			self.moveRelPoint = "TOP"
-			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+			self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		else
 			self.movePoint = "TOP"
 			self.moveRelPoint = "BOTTOM"
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[enlarged and "HugeBarYOffset" or "BarYOffset"])
 		end
 
 		local newX = self.frame:GetRight() - self.frame:GetWidth() / 2
@@ -221,8 +239,8 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		if self.moveElapsed < 1 then
 			local options = self.owner.options
-			local newX = self.moveOffsetX + (options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
-			local newY = self.moveOffsetY + (options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+			local newX = self.moveOffsetX + (options.HugeBarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+			local newY = self.moveOffsetY + (options.HugeBarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 			local newWidth = options.Width + (options.HugeWidth - options.Width) * (self.moveElapsed / 1)
 			local newScale = options.Scale + (options.HugeScale - options.Scale) * (self.moveElapsed / 1)
 
