@@ -108,6 +108,7 @@ local addonList = {
 	"oRA3",
 	"RCLootCouncil",
 	"QDKP2_GUI",
+	"RaidBrowserRU",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
