@@ -109,6 +109,10 @@ local addonList = {
 	"RCLootCouncil",
 	"QDKP2_GUI",
 	"RaidBrowserRU",
+	"BakerySpammer",
+	"TwitchEmotes",
+	"BigBrother",
+	
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",

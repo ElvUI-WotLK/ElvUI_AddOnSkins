@@ -98,4 +98,8 @@
 	<Script file="RCLootCouncil.lua"/>
 	<Script file="QDKP2_GUI.lua"/>
 	<Script file="RaidBrowser.lua"/>
+	<Script file="BakerySpammer.lua"/>
+	<Script file="TwitchEmotes.lua"/>
+	<Script file="BigBrother.lua"/>
+	
 </Ui>
