@@ -101,3 +101,4 @@ ElvUI_AddOnSkins is a plugin for [ElvUI](https://github.com/ElvUI-WotLK/ElvUI) w
 1. ZygorGuidesViewer
 1. ZygorTalentAdvisor
 1. Quick DKP V2
+1. RaidBrowser
