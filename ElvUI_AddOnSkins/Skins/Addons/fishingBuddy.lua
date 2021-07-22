@@ -26,24 +26,40 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 	FishingLocsScrollFrame:StripTextures()
 	S:HandleScrollBar(FishingLocsScrollFrameScrollBar)
 
-	S:HandleTab(FishingBuddyFrameTab1)
-	S:HandleTab(FishingBuddyFrameTab2)
-
-	FishingBuddyFrameTab1:Point("CENTER", FishingBuddyFrame, "BOTTOMLEFT", 54, 62)
-	FishingBuddyFrameTab1.ClearAllPoints = E.noop
-	FishingBuddyFrameTab1.SetPoint = E.noop
-	FishingBuddyFrameTab2:Point("LEFT", FishingBuddyFrameTab1, "RIGHT", -15, 0)
-	FishingBuddyFrameTab2.ClearAllPoints = E.noop
-	FishingBuddyFrameTab2.SetPoint = E.noop
-
 	S:HandleButton(FishingLocationsSwitchButton)
 
 	S:HandleSliderFrame(FishingBuddyOption_MinimapRadSlider)
 	S:HandleSliderFrame(FishingBuddyOption_MinimapPosSlider)
 
+	S:HandleDropDownBox(FishingFluffPetMenu, 187)
 	S:HandleDropDownBox(FishingBuddyOption_OutfitMenu, 210)
 
 	S:HandleCheckBox(FishingBuddyOptionSLZ)
+
+	local skinnedTabs = 0
+	local function skinTabs()
+		local id = skinnedTabs + 1
+		local tab = _G["FishingBuddyFrameTab"..id]
+		while tab do
+			S:HandleTab(tab)
+
+			if id == 1 then
+				tab:Point("CENTER", FishingBuddyFrame, "BOTTOMLEFT", 54, 62)
+			else
+				tab:Point("LEFT", _G["FishingBuddyFrameTab" .. (id - 1)], "RIGHT", -15, 0)
+			end
+
+			tab.ClearAllPoints = E.noop
+			tab.SetPoint = E.noop
+
+			skinnedTabs = id
+			id = id + 1
+			tab = _G["FishingBuddyFrameTab"..id]
+		end
+	end
+
+	hooksecurefunc(FishingBuddy, "ManageFrame", skinTabs)
+	skinTabs()
 
 	if FishingBuddyOption_EasyCastKeys then
 		S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
