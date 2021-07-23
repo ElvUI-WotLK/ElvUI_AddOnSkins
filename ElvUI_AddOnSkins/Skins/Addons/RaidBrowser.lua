@@ -24,14 +24,14 @@ S:AddCallbackForAddon("RaidBrowserRU", "RaidBrowserRU", function()
 
 	BARaidBrowserRaidSet:SetTemplate("Transparent")
 
-	S:HandleButton(BARaidBrowserRaidSetButton)
-
+	local dropdownArrowColor = {1, 0.8, 0}
+	S:HandleNextPrevButton(BARaidBrowserRaidSetButton, "down", dropdownArrowColor)
+	BARaidBrowserRaidSetButton:Size(25)
 
 	S:HandleButton(RaidBrowserRaidSetSaveButton)
 	S:HandleCloseButton(BARaidBrowserEditSpecCloseButton)
 	S:HandleButton(BARaidBrowserEditSpecSaveButton)
-
-
+	S:HandleButton(BARaidBrowserEditCurrentSpecButton)
 	BARaidBrowserEditNameEditBox:Height(20)
 	BARaidBrowserEditGearScoreEditBox:Height(20)
 			
