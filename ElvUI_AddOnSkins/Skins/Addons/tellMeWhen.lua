@@ -9,13 +9,16 @@ local unpack = unpack
 
 -- TellMeWhen 1.2.5b1
 -- https://www.curseforge.com/wow/addons/tellmewhen/files/448968
+-- TellMeWhen 1.1 ru
+--https://github.com/fxpw/TWM-ru
+
 
 S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", function()
 	if not E.private.addOnSkins.TellMeWhen then return end
 
 	TELLMEWHEN_ICONSPACING = E.Border
 
-	if TELLMEWHEN_VERSION == "1.2.4" then
+	if TELLMEWHEN_VERSION == "1.1" or TELLMEWHEN_VERSION == "1.2.4"  then
 		hooksecurefunc("TellMeWhen_Group_Update", function(groupID)
 			local group = TellMeWhen_Settings.Groups[groupID]
 			if not group.Enabled then return end
