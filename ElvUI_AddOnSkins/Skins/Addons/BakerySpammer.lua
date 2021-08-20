@@ -15,8 +15,7 @@ S:AddCallbackForAddon("BakerySpammer", "BakerySpammer", function()
 		BakerySpammerSettingChanel:SetTemplate("Transparent")
 		BakerySpammerSettingTextPattern:SetTemplate("Transparent")
 
-		S:HandleButton(BakerySpammerSettingChanelButton)
-		S:HandleButton(BakerySpammerSettingTextPatternButton)
+		
 
 		S:HandleButton(BakerySpammerSettingStartButton)
 		S:HandleButton(BakerySpammerSettingStoptButton)
@@ -35,5 +34,15 @@ S:AddCallbackForAddon("BakerySpammer", "BakerySpammer", function()
 		S:HandleEditBox(BakerySpammerSettingTextBox)
 		BakerySpammerSettingIntervalEditBox:Height(22)
 --		print("222222222222222222")
+
+
+	local dropdownArrowColor = {1, 0.8, 0}
+
+	S:HandleNextPrevButton(BakerySpammerSettingTextPatternButton, "down", dropdownArrowColor)
+	BakerySpammerSettingTextPatternButton:Size(25)
+
+	S:HandleNextPrevButton(BakerySpammerSettingChanelButton, "down", dropdownArrowColor)
+	BakerySpammerSettingChanelButton:Size(25)
+
 
 	end)

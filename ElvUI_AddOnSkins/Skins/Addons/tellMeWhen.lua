@@ -89,4 +89,144 @@ S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", function()
 			end
 		end)
 	end
+	local dropdownArrowColor = {1, 0.8, 0}
+	----------------buttons
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup1GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup2GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup3GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup4GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup5GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup6GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup7GroupResetButton)
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelGroup8GroupResetButton)
+
+	S:HandleButton(InterfaceOptionsTellMeWhenPanelLockUnlockButton)
+
+
+
+
+
+
+	------arrow right
+	
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup1ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup1ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup2ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup2ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup3ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup3ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup4ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup4ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup5ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup5ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup6ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup6ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup7ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup7ColumnsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup8ColumnsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup8ColumnsWidgetRightButton:Size(20)
+
+
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup1RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup1RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup2RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup2RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup3RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup3RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup4RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup4RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup5RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup5RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup6RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup6RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup7RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup7RowsWidgetRightButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup8RowsWidgetRightButton, "right", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup8RowsWidgetRightButton:Size(20)
+
+
+
+
+
+	------arriw left
+
+
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup1ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup1ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup2ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup2ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup3ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup3ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup4ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup4ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup5ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup5ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup6ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup6ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup7ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup7ColumnsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup8ColumnsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup8ColumnsWidgetLeftButton:Size(20)
+
+
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup1RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup1RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup2RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup2RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup3RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup3RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup4RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup4RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup5RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup5RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup6RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup6RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup7RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup7RowsWidgetLeftButton:Size(20)
+	S:HandleNextPrevButton(InterfaceOptionsTellMeWhenPanelGroup8RowsWidgetLeftButton, "left", dropdownArrowColor)
+	InterfaceOptionsTellMeWhenPanelGroup8RowsWidgetLeftButton:Size(20)
+
+	------ group button
+	--in comb button
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup1EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup2EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup3EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup4EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup5EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup6EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup7EnableButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup8EnableButton)
+	--in comb button
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup1OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup2OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup3OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup4OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup5OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup6OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup7OnlyInCombatButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup8OnlyInCombatButton)
+
+
+
+	---main spec
+	
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup1PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup2PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup3PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup4PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup5PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup6PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup7PrimarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup8PrimarySpecButton)
+
+	-----sec spec
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup1SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup2SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup3SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup4SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup5SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup6SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup7SecondarySpecButton)
+	S:HandleCheckBox(InterfaceOptionsTellMeWhenPanelGroup8SecondarySpecButton)
+
 end)

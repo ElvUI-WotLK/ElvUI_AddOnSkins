@@ -3,7 +3,7 @@ local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
 -- Twitch Emotes
---
+-- https://github.com/fxpw/TwitchEmotes
 
 
 if not AS:IsAddonLODorEnabled("TwitchEmotes") then return end
@@ -15,7 +15,9 @@ S:AddCallbackForAddon("TwitchEmotes", "TwitchEmotes", function()
 	L_DropDownList2:SetTemplate("Transparent")
 	L_DropDownList1MenuBackdrop:SetTemplate("Transparent")
 	L_DropDownList2MenuBackdrop:SetTemplate("Transparent")
---	print("tw zagr")
 
+		
+
+	
 
 	end)
