@@ -31,9 +31,14 @@ S:AddCallbackForAddon("RaidBrowserRU", "RaidBrowserRU", function()
 	S:HandleButton(RaidBrowserRaidSetSaveButton)
 	S:HandleCloseButton(BARaidBrowserEditSpecCloseButton)
 	S:HandleButton(BARaidBrowserEditSpecSaveButton)
-	S:HandleButton(BARaidBrowserEditCurrentSpecButton)
+	--S:HandleButton(BARaidBrowserEditCurrentSpecButton)
 	BARaidBrowserEditNameEditBox:Height(20)
 	BARaidBrowserEditGearScoreEditBox:Height(20)
-			
+	
+	local function lfrhk(self)
+			S:HandleScrollBar(LFRBrowseFrameListScrollFrameScrollBar)		
+		end
+
+	LFRBrowseFrameListScrollFrameScrollBar:HookScript("OnShow", lfrhk)	
 	
 end)
