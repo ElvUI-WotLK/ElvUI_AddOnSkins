@@ -1,0 +1,10 @@
+{
+    "Lua.diagnostics.globals": [
+        "WeakAurasOptions",
+        "WeakAuras",
+        "ElvUI"
+    ],
+    "Lua.diagnostics.disable": [
+        "deprecated"
+    ]
+}

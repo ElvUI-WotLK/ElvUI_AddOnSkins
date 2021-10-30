@@ -61,4 +61,8 @@ S:AddCallbackForAddon("WeakAuras", "WeakAuras", function()
 			Skin_WeakAuras(WeakAuras.regions[weakAura].region, WeakAuras.regions[weakAura].regionType)
 		end
 	end
+
+	WeakAurasOptions:StripTextures()
+	WeakAurasOptions:CreateBackdrop("Transparent")
+	S:HandleEditBox("WeakAurasFilterInput")
 end)
