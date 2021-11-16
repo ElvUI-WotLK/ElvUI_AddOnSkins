@@ -1,6 +1,6 @@
 ## Interface: 30300
 ## Author: Bunny, Azilroka, Sortokk, fxpw
-## Version: 1.08
+## Version: 1.09
 ## Title: |cff1784d1E|r|cffe5e3e3lvUI|r |cff1784d1A|r|cffe5e3e3dd|r|cff1784d1O|r|cffe5e3e3n|r |cff1784d1S|r|cffe5e3e3kins|r for sirus
 ## Notes: AddOn skins for ElvUI :)
 ## RequiredDeps: ElvUI

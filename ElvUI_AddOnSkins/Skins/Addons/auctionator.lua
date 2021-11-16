@@ -10,7 +10,7 @@ if not AS:IsAddonLODorEnabled("Auctionator") then return end
 
 local _G = _G
 
-
+SetTexCoord = SetTexCoord
 -- TimeSinceLastUpdate = 0
 -- MyAddon_UpdateInterval = 11.1
 local proverkafuncfirsttab = 1
@@ -31,51 +31,55 @@ local addframefirsttabcheck = 1
 
 local function handlebuttonsselltab()
 	if handlebuttonsselltabcheck == 1 then
+
+		local function handleaucbicon(button)
+					button.Icon:StripTextures()
+					button.IconBorder:StripTextures()
+					button.Icon:SetTexture(button.itemInfo.iconTexture)
+    				button.Icon:Show()
+					button.Icon:SetTexCoord(unpack(E.TexCoords))
+					button.Text:SetDrawLayer("BORDER")
+					button.Text:SetText(button.itemInfo.count)
+		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameWeaponItems ~= nil  then
-			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameWeaponItems.buttons) do
+			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameWeaponItems.buttons) do				
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameArmorItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameArmorItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameContainerItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameContainerItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameGemItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameGemItems.buttons) do
 					if button then
-						button.Icon:SetDrawLayer("BORDER")
-						S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 					end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameConsumableItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameConsumableItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if 	AuctionatorSellingFrameBagListingScrollFrameItemListingFrameGlyphItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameGlyphItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
@@ -84,48 +88,42 @@ local function handlebuttonsselltab()
 
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameTradeGoodItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameRecipeItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameRecipeItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameQuestItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameQuestItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameAmmoItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameAmmoItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameQuiverItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameQuiverItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
 		if AuctionatorSellingFrameBagListingScrollFrameItemListingFrameMiscItems ~= nil then
 			for _, button in ipairs(AuctionatorSellingFrameBagListingScrollFrameItemListingFrameMiscItems.buttons) do
 				if button then
-					button.Icon:SetDrawLayer("BORDER")
-					S:HandleIcon(button.Icon)
+					handleaucbicon(button)
 				end
 			end
 		end
@@ -323,12 +321,12 @@ local function additemtabfirst()
 	end
 
 
-			
-end	
+
+end
 
 
 
-	
+
 local function firsauctttab()
 	if proverkafuncfirsttab == 1 then
 	--buttons 1
@@ -715,18 +713,18 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		if funcionshow1 == nil then
 			if AuctionatorTabs_ShoppingLists ~= nil then
 				AuctionatorTabs_ShoppingLists:SetScript("OnUpdate",firsauctttab )
-				
+
 		end
 		if funcionshow2 == nil then
 			if AuctionatorEditItemFrame ~= nil then
 				AuctionatorEditItemFrame:HookScript("OnUpdate",  auceditframe)
-			end					
+			end
 		end
 		if funcionshow7 == nil then
 				if AuctionatorAddItemFrame ~= nil then
 					AuctionatorAddItemFrame:HookScript("OnUpdate",  additemtabfirst)
 				end
-			end				
+			end
 		end
 		if funcionshow3 == nil then
 			if AuctionatorTabs_Selling ~= nil then
