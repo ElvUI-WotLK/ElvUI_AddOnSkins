@@ -19,6 +19,7 @@ local proverkafuncitframe = 1
 local handlebuttonsselltabcheck = 1
 local handlebuttonscanctabcheck = 1
 local fourperemchec = 1
+local addframefirsttabcheck = 1
 
 -----------------------------
 -----------------------------
@@ -228,8 +229,106 @@ local function auceditframe()
 						AuctionatorEditItemFrameFilterKeySelectorResetButton:ClearAllPoints()
 						AuctionatorEditItemFrameFilterKeySelectorResetButton:SetPoint("TOPLEFT", AuctionatorEditItemFrameFilterKeySelector, "TOPRIGHT", -5, -6)
 			end
+			proverkafuncitframe = 0
 	end
-	proverkafuncitframe = 0
+
+local function additemtabfirst()
+	if addframefirsttabcheck == 1 then
+		local frames = {
+			"AuctionatorAddItemFrame",
+
+			}
+			for _, frame in ipairs(frames) do
+				frame = _G[frame]
+				if frame then
+					frame:StripTextures()
+					frame:CreateBackdrop("Transarent")
+				end
+			end
+			AuctionatorAddItemFrameInset:Hide()
+
+			local buttons = {
+				"AuctionatorAddItemFrameCancel",
+				"AuctionatorAddItemFrameResetAllButton",
+				"AuctionatorAddItemFrameFinished",
+				}
+				for _, button in ipairs(buttons) do
+					S:HandleButton(_G[button])
+				end
+
+				AuctionatorAddItemFrameCancel:ClearAllPoints()
+				AuctionatorAddItemFrameCancel:SetPoint("TOPLEFT", AuctionatorAddItemFrame, "BOTTOMLEFT", 11, 30)
+				AuctionatorAddItemFrameResetAllButton:SetText("Сбросить")
+				AuctionatorAddItemFrameFinished:SetText("Сохранить")
+				AuctionatorAddItemFrameFinished:ClearAllPoints()
+				AuctionatorAddItemFrameFinished:SetPoint("TOPLEFT", AuctionatorAddItemFrameResetAllButton, "TOPRIGHT", 0, 0)
+				AuctionatorAddItemFrameFinished:Width(120)
+
+				local editboxes = {
+					"AuctionatorAddItemFrameSearchContainerSearchString",
+					"AuctionatorAddItemFrameLevelRangeMinBox",
+					"AuctionatorAddItemFrameLevelRangeMaxBox",
+					"AuctionatorAddItemFramePriceRangeMinBox",
+					"AuctionatorAddItemFramePriceRangeMaxBox",
+					"AuctionatorAddItemFrameItemLevelRangeMinBox",
+					"AuctionatorAddItemFrameItemLevelRangeMaxBox",
+					"AuctionatorAddItemFrameCraftedLevelRangeMinBox",
+					"AuctionatorAddItemFrameCraftedLevelRangeMaxBox",
+					}
+					for _, editbox in ipairs(editboxes) do
+						editbox = _G[editbox]
+						if editbox then
+							S:HandleEditBox(editbox)
+						end
+					end
+				local refreshbuttons ={
+					"AuctionatorAddItemFrameSearchContainerAuctionatorResetButton",
+					"AuctionatorAddItemFrameFilterKeySelectorResetButton",
+					"AuctionatorAddItemFrameLevelRangeResetButton",
+					"AuctionatorAddItemFramePriceRangeResetButton",
+					"AuctionatorAddItemFrameItemLevelRangeResetButton",
+					"AuctionatorAddItemFrameCraftedLevelRangeResetButton",
+				}
+
+					for _, refreshbutton in ipairs(refreshbuttons) do
+						refreshbutton = _G[refreshbutton]
+						if refreshbutton then
+							S:HandleButton(refreshbutton)
+
+						end
+					end
+					local dropdowns = {
+						"AuctionatorAddItemFrameFilterKeySelector",
+						}
+						for _, dropdown in ipairs(dropdowns) do
+							dropdown = _G[dropdown]
+							if dropdown then
+								S:HandleDropDownBox(dropdown)
+							end
+						end
+					local checkboxes = {
+						"AuctionatorAddItemFrameSearchContainerIsExact"
+					}
+					for _, checkbox in ipairs(checkboxes) do
+						checkbox = _G[checkbox]
+						if checkbox then
+							S:HandleCheckBox(checkbox)
+						end
+					end
+
+						AuctionatorAddItemFrameFilterKeySelector:SetWidth(200)
+						AuctionatorAddItemFrameFilterKeySelectorResetButton:ClearAllPoints()
+						AuctionatorAddItemFrameFilterKeySelectorResetButton:SetPoint("TOPLEFT", AuctionatorAddItemFrameFilterKeySelector, "TOPRIGHT", -5, -6)
+		addframefirsttabcheck = 0
+	end
+
+
+			
+end	
+
+
+
+	
 local function firsauctttab()
 	if proverkafuncfirsttab == 1 then
 	--buttons 1
@@ -607,6 +706,7 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 
 		local funcionshow1 = AuctionatorTabs_ShoppingLists:GetScript("OnUpdate")
 		local funcionshow2 = AuctionatorEditItemFrame:GetScript("OnUpdate")
+		local funcionshow7 = AuctionatorEditItemFrame:GetScript("OnUpdate")
 		local funcionshow3 = AuctionatorTabs_Selling:GetScript("OnUpdate")
 		local funcionshow4 = AuctionatorSellingFrameBagListingScrollFrame:GetScript("OnUpdate")
 		local funcionshow5 = AuctionatorTabs_Cancelling:GetScript("OnUpdate")
@@ -615,12 +715,18 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		if funcionshow1 == nil then
 			if AuctionatorTabs_ShoppingLists ~= nil then
 				AuctionatorTabs_ShoppingLists:SetScript("OnUpdate",firsauctttab )
-				if funcionshow2 == nil then
-					if AuctionatorEditItemFrame ~= nil then
-						AuctionatorEditItemFrame:SetScript("OnUpdate",  auceditframe)
-					end
+				
+		end
+		if funcionshow2 == nil then
+			if AuctionatorEditItemFrame ~= nil then
+				AuctionatorEditItemFrame:HookScript("OnUpdate",  auceditframe)
+			end					
+		end
+		if funcionshow7 == nil then
+				if AuctionatorAddItemFrame ~= nil then
+					AuctionatorAddItemFrame:HookScript("OnUpdate",  additemtabfirst)
 				end
-			end
+			end				
 		end
 		if funcionshow3 == nil then
 			if AuctionatorTabs_Selling ~= nil then
