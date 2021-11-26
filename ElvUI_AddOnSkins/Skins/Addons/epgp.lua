@@ -2,10 +2,84 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
+local epgpaisload = IsAddOnLoaded("EPGPAttandance")
+
 if not AS:IsAddonLODorEnabled("epgp") then return end
 
--- EPGP 5.5.19
--- https://www.curseforge.com/wow/addons/epgp-dkp-reloaded/files/442647
+--
+--
+
+
+local function epgpat_onshow()
+	-- if EPGPAttendanceFrame then
+	-- 	if EPGPAttendanceFrame:IsShown() then
+			S:HandleScrollBar(ScrollTable1ScrollFrameScrollBar)
+			S:HandleScrollBar(ScrollTable2ScrollFrameScrollBar)
+			S:HandleScrollBar(ScrollTable3ScrollFrameScrollBar)
+			S:HandleScrollBar(ScrollTable4ScrollFrameScrollBar)
+	-- 	end
+	-- end
+	
+
+		local frames = {
+			-- "ScrollTable1ScrollFrame",
+			"ScrollTable1",
+			"ScrollTable2",
+			"ScrollTable3",
+			"ScrollTable4",
+			-- "ScrollTable1ScrollFrameScrollChildFrame",
+			-- "ScrollTable2",
+			-- "ScrollTable3",
+
+		}
+		for _,frame in ipairs(frames) do
+			frame = _G[frame]
+			if frame then
+				-- print(frame)
+				frame:StripTextures()
+				frame:CreateBackdrop("Transparent")
+			end
+		end
+
+		local framess = {
+			-- "ScrollTable1ScrollFrame",
+			-- "ScrollTable1",
+			-- "ScrollTable2",
+			-- "ScrollTable3",
+			-- "ScrollTable4",
+			"ScrollTable1ScrollThroughBorder",
+			"ScrollTable2ScrollThroughBorder",
+			"ScrollTable3ScrollThroughBorder",
+			"ScrollTable1ScrollTrough",
+			"ScrollTable2ScrollTrough",
+			"ScrollTable3ScrollTrough",
+			-- "ScrollTable2",
+			-- "ScrollTable3",
+
+		}
+		for _,sframe in ipairs(framess) do
+			sframe = _G[sframe]
+			if sframe then
+				-- print(frame)
+				sframe:StripTextures()
+				-- frame:CreateBackdrop("Transparent")
+			end
+		end
+
+		
+		-- local frames = {
+		-- 	"ScrollTable1ScrollFrameScrollChildFrame",
+		-- 	"ScrollTable2ScrollFrameScrollChildFrame",
+		-- 	"ScrollTable3ScrollFrameScrollChildFrame",
+
+		-- }
+		-- for frame in ipairs(frames) do
+		-- 	if frame then
+		-- 		frame:StripTextures()
+		-- 		frame:SetBackdrop("Transparent")
+		-- 	end
+		-- end
+end
 
 S:AddCallbackForAddon("epgp", "epgp", function()
 	if not E.private.addOnSkins.EPGP then return end
@@ -135,11 +209,11 @@ S:AddCallbackForAddon("epgp", "epgp", function()
 		EPGPLogFrame:StripTextures()
 		EPGPLogFrame:SetTemplate("Transparent")
 		EPGPLogFrame:Height(424)
-		EPGPLogFrame:SetMinResize(435, 424)
+		EPGPLogFrame:SetMinResize(540, 424)
 		EPGPLogFrame:SetMaxResize(1200, 424)
 		EPGPLogFrame:Point("TOPLEFT", EPGPFrame, "TOPRIGHT", -33, -12)
 
-		local sizer, closeButton2, export, import, trimLog, undo, redo, scrollParent = EPGPLogFrame:GetChildren()
+		local sizer, closeButton2, export, import, trimLog, undo, redo, scrollParent,epgpa = EPGPLogFrame:GetChildren()
 
 		S:HandleCloseButton(closeButton2, EPGPLogFrame)
 
@@ -225,7 +299,21 @@ S:AddCallbackForAddon("epgp", "epgp", function()
 				end
 			end)
 		end
+		-- if epgpaisload == 1 then
+			if EPGPAT then
+				S:HandleButton(EPGPAT)
+				EPGPAT:SetPoint("RIGHT", import, "RIGHT",90,0)
+				hooksecurefunc(EPGPAttendance,"ShowFrameAndCurrentPage",epgpat_onshow)
+			end
+
+			
+		-- end
+
 	end
+	-- EPGPAttendanceFrame = _G[EPGPAttendanceFrame]
+	
+		-- EPGPAttendanceFrame:SetScript("OnShow",epgpat_onshow)
+	
 
 	if EPGPFrame then
 		SkinEPGP()
@@ -235,4 +323,8 @@ S:AddCallbackForAddon("epgp", "epgp", function()
 			S:Unhook(self, "OnEnable")
 		end)
 	end
+
+
+	
+
 end)

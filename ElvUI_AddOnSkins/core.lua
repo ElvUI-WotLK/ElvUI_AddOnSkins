@@ -112,6 +112,8 @@ local addonList = {
 	"BakerySpammer",
 	"TwitchEmotes",
 	"BigBrother",
+	"ItemRack",
+
 	
 }
 local addonAlias = {

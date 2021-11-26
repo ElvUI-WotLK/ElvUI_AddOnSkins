@@ -101,5 +101,6 @@
 	<Script file="BakerySpammer.lua"/>
 	<Script file="TwitchEmotes.lua"/>
 	<Script file="BigBrother.lua"/>
+	<Script file="ItemRack.lua"/>
 	
 </Ui>
