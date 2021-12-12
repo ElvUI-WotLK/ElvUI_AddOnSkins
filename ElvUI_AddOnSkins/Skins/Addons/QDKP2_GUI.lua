@@ -23,14 +23,6 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
 	QDKP2_frame2_title_spent:Size(60, 14)
 	QDKP2_Frame2_Bid_Item:ClearAllPoints()
 	QDKP2_Frame2_Bid_Item:Point("BottomLeft", QDKP2_frame2_showRaid, "BottomLeft", - 60, - 2)
-	for i = 1, 20 do
-		_G["QDKP2_frame2_entry" .. i]:Size(725, 14)
-		_G["QDKP2_frame2_entry" .. i .. "_name"]:Size(105, 14)
-		_G["QDKP2_frame2_entry" .. i .. "_class"]:Size(80, 14)
-		_G["QDKP2_frame2_entry" .. i .. "_net"]:Size(60, 14)
-		_G["QDKP2_frame2_entry" .. i .. "_total"]:Size(60, 14)
-		_G["QDKP2_frame2_entry" .. i .. "_spent"]:Size(60, 14)
-	end
 
 	for i = 10, 29 do
 		local child = select(i, QDKP2_Frame2:GetChildren())
@@ -40,6 +32,21 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
 			S:HandleButtonHighlight(child, 1, 0.8, 0.1)
 		end
 	end
+
+	for i = 1, 20 do
+		_G["QDKP2_frame2_entry" .. i]:Size(725, 14)
+		_G["QDKP2_frame2_entry" .. i .. "_name"]:Size(105, 14)
+		_G["QDKP2_frame2_entry" .. i .. "_class"]:Size(80, 14)
+		_G["QDKP2_frame2_entry" .. i .. "_net"]:Size(60, 14)
+		_G["QDKP2_frame2_entry" .. i .. "_total"]:Size(60, 14)
+		_G["QDKP2_frame2_entry" .. i .. "_spent"]:Size(60, 14)
+
+		local highlight = _G["QDKP2_frame2_entry" .. i .. "_Highlight"]
+		highlight:SetAllPoints(true)
+		highlight:SetTexture(E.Media.Textures.Highlight)
+		highlight:SetVertexColor(0.8, 0.6, 0.2, 0.5)
+	end
+
 	S:HandleScrollBar(QDKP2_frame2_scrollbarScrollBar)
 	S:HandleButton(QDKP2_Frame2_SortBtn_name)
 	S:HandleButton(QDKP2_Frame2_SortBtn_rank)
