@@ -34,9 +34,6 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
 	end
 
 	for i = 1, 20 do
-		local name = "QDKP2_frame2_entry"..i
-		local highlight = _G[name.."_Highlight"]
-
 		_G["QDKP2_frame2_entry" .. i]:Size(725, 14)
 		_G["QDKP2_frame2_entry" .. i .. "_name"]:Size(105, 14)
 		_G["QDKP2_frame2_entry" .. i .. "_class"]:Size(80, 14)
@@ -44,6 +41,7 @@ S:AddCallbackForAddon("QDKP2_GUI", "QDKP2_GUI", function()
 		_G["QDKP2_frame2_entry" .. i .. "_total"]:Size(60, 14)
 		_G["QDKP2_frame2_entry" .. i .. "_spent"]:Size(60, 14)
 
+		local highlight = _G["QDKP2_frame2_entry" .. i .. "_Highlight"]
 		highlight:SetAllPoints(true)
 		highlight:SetTexture(E.Media.Textures.Highlight)
 		highlight:SetVertexColor(0.8, 0.6, 0.2, 0.5)
