@@ -335,7 +335,7 @@ if AS:IsAddonLODorEnabled("Omen") then
 end
 
 if AS:IsAddonLODorEnabled("Skada") then
-	EMB["skadaWindows"] = {}
+	EMB.skadaWindows = {}
 
 	local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
 		if not window then return end
@@ -380,11 +380,15 @@ if AS:IsAddonLODorEnabled("Skada") then
 		end
 
 		barmod.ApplySettings(barmod, window)
+
+		if Skada.revisited then
+			window:Toggle()
+		end
 	end
 
 	function EMB:EmbedSkada()
-		wipe(self["skadaWindows"])
-		for _, window in pairs(Skada:GetWindows()) do
+		wipe(self.skadaWindows)
+		for _, window in ipairs(Skada:GetWindows()) do
 			tinsert(self.skadaWindows, window)
 		end
 
