@@ -108,6 +108,7 @@ local addonList = {
 	"oRA3",
 	"RCLootCouncil",
 	"QDKP2_GUI",
+	"LootWonAlert",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
