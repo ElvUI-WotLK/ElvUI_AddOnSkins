@@ -1,8 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
-local unpack, select = unpack, select
+local select = select
+local unpack = unpack
 
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
 -- LootWonAlert 1.3
@@ -11,34 +14,61 @@ local hooksecurefunc = hooksecurefunc
 S:AddCallbackForAddon("LootWonAlert", "LootWonAlert", function()
 	if not E.private.addOnSkins.LootWonAlert then return end
 
-	hooksecurefunc("LootWonAlertFrame_SetUp", function(self, itemLink)
-		local frame = self
+	local function skinFrame(frame)
+		if frame.isSkinned then return end
 
-		frame.Background:StripTextures()
-		frame.lootItem.IconBorder:StripTextures()
+		frame:Size(300, 88)
+		frame.Background:Hide()
+		frame.lootItem.IconBorder:Hide()
+
+		frame:CreateBackdrop("Transparent")
+		frame.backdrop:Point("TOPLEFT", 0, -6)
+		frame.backdrop:Point("BOTTOMRIGHT", 0, 6)
+
+		S:SetBackdropHitRect(frame)
+
+		frame.glow:Size(336, 116)
+
+		frame.shine:Size(158, 66)
+		frame.shine:Point("TOPLEFT", -10, -12)
 
 		frame.lootItem:SetTemplate("Transparent")
+		frame.lootItem:Point("TOPLEFT", 12, -18)
 
-		frame.Background:CreateBackdrop("Transparent")
 		frame.lootItem.Icon:CreateBackdrop("Transparent")
 
-		frame.Background:SetSize(258, 76)
-		frame.glow:SetSize(296, 116)
-		frame.shine:SetSize(158, 66)
+		frame.isSkinned = true
+	end
 
-		frame.lootItem:SetPoint("TOPLEFT", 22, -22)
-		frame.shine:SetPoint("TOPLEFT", -10, -12)
+	S:RawHook("LootWonAlertFrame_Create", function(self, ...)
+		local frame = S.hooks.LootWonAlertFrame_Create(self, ...)
+		skinFrame(frame)
+		return frame
+	end)
 
+	hooksecurefunc("LootWonAlertFrame_SetUp", function(self, itemLink)
 		if itemLink then
 			local quality = select(3, GetItemInfo(itemLink))
 			if quality then
 				local r, g, b = GetItemQualityColor(quality)
-				frame.Background.backdrop:SetBackdropBorderColor(r, g, b)
-				frame.lootItem.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+				self:SetBackdropBorderColor(r, g, b)
+				-- self.backdrop:SetBackdropBorderColor(r, g, b)
+				self.lootItem.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			else
-				frame.Background.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				frame.lootItem.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				-- self.backdrop:SetBackdropBorderColor(r, g, b)
+				self.lootItem.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
+
+	do
+		local i = 1
+		local frame = _G["LootWonAlertFrame"..i]
+		while frame do
+			skinFrame(frame)
+			i = i + 1
+			frame = _G["LootWonAlertFrame"..i]
+		end
+	end
 end)
