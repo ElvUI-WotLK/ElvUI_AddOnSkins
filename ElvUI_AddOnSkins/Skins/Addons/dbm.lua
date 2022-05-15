@@ -18,6 +18,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	if not E.private.addOnSkins.DBM then return end
 
 	local backportVersion = DBM.ReleaseRevision > 7000
+	local backportVersion2 = DBM.ReleaseRevision >= 20220412000000 -- 9.2.14
 
 	local function createIconOverlay(id, parent)
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
@@ -58,7 +59,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		local scale = self.enlarged and self.owner.options.HugeScale or self.owner.options.Scale
 		local barWidth = (self.enlarged and self.owner.options.HugeWidth or self.owner.options.Width) * scale
-		local barHeight = db.dbmBarHeight * scale
+		local barHeight = (backportVersion2 and (self.enlarged and self.owner.options.HugeHeight or self.owner.options.Height) or db.dbmBarHeight) * scale
 		local fontSize = db.dbmFontSize * scale
 
 		background:Hide()
@@ -121,8 +122,10 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			timer:Point("RIGHT", -5, 0)
 		end
 
-		name:SetFont(self._font, fontSize, db.dbmFontOutline)
-		timer:SetFont(self._font, fontSize, db.dbmFontOutline)
+		if not backportVersion then
+			name:SetFont(self._font, fontSize, db.dbmFontOutline)
+			timer:SetFont(self._font, fontSize, db.dbmFontOutline)
+		end
 
 		if self.owner.options.IconLeft then
 			icon1.overlay:Show()
@@ -388,6 +391,7 @@ end)
 
 S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 	if not E.private.addOnSkins.DBM then return end
+	local backportVersion2 = DBM.ReleaseRevision >= 20220412000000 -- 9.2.14
 
 	DBM_GUI_OptionsFrame:SetTemplate("Transparent")
 
@@ -396,10 +400,16 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 
 	DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent")
 
-	S:HandleTab(DBM_GUI_OptionsFrameTab1)
-	S:HandleTab(DBM_GUI_OptionsFrameTab2)
+	if backportVersion2 then
+		for i = 1, #DBM_GUI.tabs do -- can be variable
+			S:HandleTab(_G["DBM_GUI_OptionsFrameTab" .. i])
+		end
+	else
+		S:HandleTab(DBM_GUI_OptionsFrameTab1)
+		S:HandleTab(DBM_GUI_OptionsFrameTab2)
+	end
 
-	DBM_GUI_OptionsFrameTab1:Point("BOTTOMLEFT", DBM_GUI_OptionsFrameBossMods, "TOPLEFT", 6, -4)
+	DBM_GUI_OptionsFrameTab1:Point("BOTTOMLEFT", backportVersion2 and DBM_GUI_OptionsFrameList or DBM_GUI_OptionsFrameBossMods, "TOPLEFT", 6, -4)
 	DBM_GUI_OptionsFrameTab1Text:SetPoint("CENTER", 0, 0)
 	DBM_GUI_OptionsFrameTab2Text:SetPoint("CENTER", 0, 0)
 
@@ -414,30 +424,44 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 	end
 
 	S:SecureHookScript(DBM_GUI_OptionsFrame, "OnShow", function(self)
-		DBM_GUI_OptionsFrameBossMods:StripTextures()
-		DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
+		if backportVersion2 then
+			DBM_GUI_OptionsFrameList:StripTextures()
+			DBM_GUI_OptionsFrameList:SetTemplate("Transparent")
+			S:HandleScrollBar(DBM_GUI_OptionsFrameListListScrollBar)
+			DBM_GUI_OptionsFrameListListScrollBar:Point("TOPRIGHT", 1, -18)
+			DBM_GUI_OptionsFrameListListScrollBar:Point("BOTTOMLEFT", 7, 18)
 
-		DBM_GUI_OptionsFrameBossModsList:StripTextures()
-		S:HandleScrollBar(DBM_GUI_OptionsFrameBossModsListScrollBar)
-		DBM_GUI_OptionsFrameBossModsListScrollBar:Point("TOPRIGHT", 1, -18)
-		DBM_GUI_OptionsFrameBossModsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+			-- CollapseExpandButton skinning doesn't work for UIPanelButtonTemplate2
+			-- for _, button in ipairs(DBM_GUI_OptionsFrameList.buttons) do
+			-- 	S:HandleCollapseExpandButton(button.toggle, "auto")
+			-- 	button.toggle:Point("TOPLEFT", 3, 0)
+			-- end
+		else
+			DBM_GUI_OptionsFrameBossMods:StripTextures()
+			DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
 
-		for _, button in ipairs(DBM_GUI_OptionsFrameBossMods.buttons) do
-			S:HandleCollapseExpandButton(button.toggle, "auto")
-			button.toggle:Point("TOPLEFT", 3, 0)
-		end
+			DBM_GUI_OptionsFrameBossModsList:StripTextures()
+			S:HandleScrollBar(DBM_GUI_OptionsFrameBossModsListScrollBar)
+			DBM_GUI_OptionsFrameBossModsListScrollBar:Point("TOPRIGHT", 1, -18)
+			DBM_GUI_OptionsFrameBossModsListScrollBar:Point("BOTTOMLEFT", 7, 18)
 
-		DBM_GUI_OptionsFrameDBMOptions:StripTextures()
-		DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent")
+			for _, button in ipairs(DBM_GUI_OptionsFrameBossMods.buttons) do
+				S:HandleCollapseExpandButton(button.toggle, "auto")
+				button.toggle:Point("TOPLEFT", 3, 0)
+			end
 
-		DBM_GUI_OptionsFrameDBMOptionsList:StripTextures()
-		S:HandleScrollBar(DBM_GUI_OptionsFrameDBMOptionsListScrollBar)
-		DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("TOPRIGHT", 1, -18)
-		DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+			DBM_GUI_OptionsFrameDBMOptions:StripTextures()
+			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent")
 
-		for _, button in ipairs(DBM_GUI_OptionsFrameDBMOptions.buttons) do
-			S:HandleCollapseExpandButton(button.toggle, "auto")
-			button.toggle:Point("TOPLEFT", 3, 0)
+			DBM_GUI_OptionsFrameDBMOptionsList:StripTextures()
+			S:HandleScrollBar(DBM_GUI_OptionsFrameDBMOptionsListScrollBar)
+			DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("TOPRIGHT", 1, -18)
+			DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+
+			for _, button in ipairs(DBM_GUI_OptionsFrameDBMOptions.buttons) do
+				S:HandleCollapseExpandButton(button.toggle, "auto")
+				button.toggle:Point("TOPLEFT", 3, 0)
+			end
 		end
 
 		S:Unhook(self, "OnShow")
@@ -483,12 +507,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			S:HandleSliderFrame(slider)
 			return slider
 		end)
-		S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
+--]]	S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
 			local button = S.hooks[PanelPrototype].CreateButton(this, ...)
 			S:HandleButton(button)
 			return button
 		end)
---]]
+
 		S:Unhook(DBM_GUI, "CreateNewPanel")
 
 		return panel

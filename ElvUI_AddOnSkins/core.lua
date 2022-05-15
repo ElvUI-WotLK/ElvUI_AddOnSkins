@@ -368,20 +368,23 @@ local function getOptions()
 								order = 1,
 								type = "range",
 								min = 6, max = 60, step = 1,
-								name = "Bar Height"
+								name = "Bar Height",
+								hidden = function() return DBM.ReleaseRevision >= 20220412000000 end
 							},
 							dbmFont = {
 								order = 2,
 								type = "select",
 								dialogControl = "LSM30_Font",
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font
+								values = AceGUIWidgetLSMlists.font,
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontSize = {
 								order = 3,
 								type = "range",
 								min = 6, max = 22, step = 1,
-								name = L["Font Size"]
+								name = L["Font Size"],
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontOutline = {
 								order = 4,
@@ -392,7 +395,8 @@ local function getOptions()
 									["OUTLINE"] = "OUTLINE",
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
-								}
+								},
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmTemplate = {
 								order = 5,
