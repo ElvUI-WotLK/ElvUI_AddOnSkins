@@ -423,6 +423,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		S:HandleButton(DBM_GUI_OptionsFrameWebsiteButton)
 	end
 
+	if backportVersion2 then
+		for _, button in ipairs(DBM_GUI_OptionsFrameList.buttons) do
+			S:HandleCollapseTexture(button.toggle)
+		end
+	end
+
 	S:SecureHookScript(DBM_GUI_OptionsFrame, "OnShow", function(self)
 		if backportVersion2 then
 			DBM_GUI_OptionsFrameList:StripTextures()
@@ -431,11 +437,6 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			DBM_GUI_OptionsFrameListListScrollBar:Point("TOPRIGHT", 1, -18)
 			DBM_GUI_OptionsFrameListListScrollBar:Point("BOTTOMLEFT", 7, 18)
 
-			-- CollapseExpandButton skinning doesn't work for UIPanelButtonTemplate2
-			-- for _, button in ipairs(DBM_GUI_OptionsFrameList.buttons) do
-			-- 	S:HandleCollapseExpandButton(button.toggle, "auto")
-			-- 	button.toggle:Point("TOPLEFT", 3, 0)
-			-- end
 		else
 			DBM_GUI_OptionsFrameBossMods:StripTextures()
 			DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
