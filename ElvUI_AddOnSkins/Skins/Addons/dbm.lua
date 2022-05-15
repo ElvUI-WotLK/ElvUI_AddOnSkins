@@ -507,12 +507,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			S:HandleSliderFrame(slider)
 			return slider
 		end)
---]]	S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
+		S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
 			local button = S.hooks[PanelPrototype].CreateButton(this, ...)
 			S:HandleButton(button)
 			return button
 		end)
-
+--]]
 		S:Unhook(DBM_GUI, "CreateNewPanel")
 
 		return panel
