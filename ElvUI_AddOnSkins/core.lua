@@ -359,7 +359,11 @@ local function getOptions()
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
 						set = function(info, value)
 							E.db.addOnSkins[info[#info]] = value
-							DBM.Bars:ApplyStyle()
+							if DBM.ReleaseRevision >= 20220412000000 then -- 9.2.14
+								DBT:ApplyStyle()
+							else
+								DBM.Bars:ApplyStyle()
+							end
 							DBM.BossHealth:UpdateSettings()
 						end,
 						disabled = function() return not AS:IsAddonLODorEnabled("DBM-Core") end,
@@ -398,14 +402,20 @@ local function getOptions()
 								},
 								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
-							dbmTemplate = {
+							dbmIconSize = {
 								order = 5,
+								type = "range",
+								min = 0.1, max = 2, step = 0.1,
+								name = L["Icon Size"],
+							},
+							dbmTemplate = {
+								order = 6,
 								type = "select",
 								name = L["Template"],
 								values = backdropValues
 							},
 							DBMSkinHalf = {
-								order = 6,
+								order = 7,
 								type = "toggle",
 								name = L["DBM Half-bar Skin"]
 							}

@@ -140,6 +140,79 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		end
 	end
 
+	local function skinBars(self)
+		local db = E.db.addOnSkins
+
+		for bar in self:GetBarIterator() do
+			if not bar.injected then
+				hooksecurefunc(bar, "Update", function()
+					local sparkEnabled = DBT.Options.Spark
+					if not (db.DBMSkinHalf and sparkEnabled) then return end
+					local spark = _G[bar.frame:GetName().."BarSpark"]
+					spark:SetSize(12, ((bar.enlarged and DBT.Options.HugeHeight or DBT.Options.Height) * 3) - 2)
+					local a, b, c, d = spark:GetPoint()
+					spark:SetPoint(a, b, c, d, 0)
+				end)
+				hooksecurefunc(bar, "ApplyStyle", function()
+					local frame = bar.frame
+					local tbar = _G[frame:GetName()..'Bar']
+					local icon1 = _G[frame:GetName()..'BarIcon1']
+					local icon2 = _G[frame:GetName()..'BarIcon2']
+					local name = _G[frame:GetName()..'BarName']
+					local timer = _G[frame:GetName()..'BarTimer']
+					local iconSize = (bar.enlarged and DBT.Options.HugeHeight or DBT.Options.Height) * db.dbmIconSize
+					if db.DBMSkinHalf then
+						iconSize = iconSize * 2
+					end
+
+					if not icon1.overlay then
+						icon1.overlay = createIconOverlay(1, frame)
+						icon1:SetTexCoord(unpack(E.TexCoords))
+						icon1:SetParent(icon1.overlay)
+						icon1:SetInside(icon1.overlay)
+					end
+					icon1.overlay:SetSize(iconSize, iconSize)
+
+					if not icon2.overlay then
+						icon2.overlay = createIconOverlay(2, frame)
+						icon2:SetTexCoord(unpack(E.TexCoords))
+						icon2:SetParent(icon2.overlay)
+						icon2:SetInside(icon2.overlay)
+					end
+					icon2.overlay:SetSize(iconSize, iconSize)
+
+					frame:SetTemplate(db.dbmTemplate)
+
+					tbar:SetInside(frame)
+
+					name:ClearAllPoints()
+					name:SetWidth(165)
+					name:SetHeight(8)
+					name:SetJustifyH('LEFT')
+					name:SetShadowColor(0, 0, 0, 0)
+
+					timer:ClearAllPoints()
+					timer:SetJustifyH('RIGHT')
+					timer:SetShadowColor(0, 0, 0, 0)
+
+					if db.DBMSkinHalf then
+						name:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
+						timer:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 1)
+					else
+						name:SetPoint('LEFT', frame, 'LEFT', 4, 0)
+						timer:SetPoint('RIGHT', frame, 'RIGHT', -4, 0)
+					end
+
+					if DBT.Options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
+					if DBT.Options.IconRight then icon2.overlay:Show() else icon2.overlay:Hide() end
+
+					bar.injected = true
+				end)
+				bar:ApplyStyle()
+			end
+		end
+	end
+
 	local function correctPoint(self, p1, a, p2, x, y)
 		self._SetPoint(self, p1, a, p2, x, y - 40)
 		self.SetPoint = nil
@@ -273,31 +346,35 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		end
 	end
 
-	S:SecureHook(DBT, "CreateBar", function(self)
-		local hooked
-		for bar in pairs(self.bars) do
-			if not hooked then
-				local mt = getmetatable(bar).__index
+	if backportVersion2 then
+		hooksecurefunc(DBT, 'CreateBar', skinBars)
+	else
+		S:SecureHook(DBT, "CreateBar", function(self)
+			local hooked
+			for bar in pairs(self.bars) do
+				if not hooked then
+					local mt = getmetatable(bar).__index
 
-				hooksecurefunc(mt, "ApplyStyle", applyStyle)
-				if not backportVersion then
-					S:Hook(mt, "Update", preUpdate)
+					hooksecurefunc(mt, "ApplyStyle", applyStyle)
+					if not backportVersion then
+						S:Hook(mt, "Update", preUpdate)
+					end
+
+					mt.SetPosition = setPosition
+					mt.MoveToNextPosition = moveToNextPosition
+					mt.Enlarge = enlarge
+					mt.AnimateEnlarge = animateEnlarge
+
+					hooked = true
 				end
 
-				mt.SetPosition = setPosition
-				mt.MoveToNextPosition = moveToNextPosition
-				mt.Enlarge = enlarge
-				mt.AnimateEnlarge = animateEnlarge
-
-				hooked = true
+				bar:ApplyStyle()
+				bar:SetPosition()
 			end
 
-			bar:ApplyStyle()
-			bar:SetPosition()
-		end
-
-		S:Unhook(DBT, "CreateBar")
-	end)
+			S:Unhook(DBT, "CreateBar")
+		end)
+	end
 
 	local function SkinBoss()
 		local db = E.db.addOnSkins
