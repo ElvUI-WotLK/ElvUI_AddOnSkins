@@ -369,7 +369,7 @@ local function getOptions()
 								type = "range",
 								min = 6, max = 60, step = 1,
 								name = "Bar Height",
-								hidden = function() return DBM.ReleaseRevision >= 20220412000000 end
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFont = {
 								order = 2,
