@@ -26,18 +26,18 @@ S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	S:HandleButton(RR_Next)
 	S:HandleButton(RaidRoll_OptionButton)
 
-	RR_Roll_5SecAndAnnounce:ClearAllPoints()
-	RR_Roll_5SecAndAnnounce:Point("BOTTOM", 0, 31)
+	RR_Roll_5SecAndAnnounce:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", 85, 25)
+	RaidRoll_AnnounceWinnerButton:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -63, 25)
 
-	RR_Clear:Point("BOTTOM", 0, 8)
-	RR_Last:Point("BOTTOM", -45, 8)
-	RR_Roll_RollButton:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -65, 8)
-	RR_Next:Point("BOTTOM", 45, 8)
+	RR_Clear:Point("BOTTOM", 0, 4)
+	RR_Last:Point("BOTTOM", -43, 4)
+	RR_Roll_RollButton:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -63, 4)
+	RR_Next:Point("BOTTOM", 43, 4)
 	RaidRoll_OptionButton:Size(20)
-	RaidRoll_OptionButton:Point("BOTTOM", 75, 8)
+	RaidRoll_OptionButton:Point("BOTTOM", 75, 4)
 
 	RR_Frame:SetTemplate("Transparent")
-	RR_Frame:Width(185)
+	RR_Frame:Width(180)
 	RR_Frame:Point("TOP", RR_RollFrame, "BOTTOM", 0, 1)
 
 	local rrframeLevel = RR_Frame:GetFrameLevel()
@@ -51,6 +51,12 @@ S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	S:HandleButton(Raid_Roll_ClearSymbols)
 	S:HandleButton(Raid_Roll_ClearRolls)
 	S:HandleButton(RaidRoll_ExtraOptionButton)
+	
+	Raid_Roll_ClearSymbols:Width(88)
+	Raid_Roll_ClearRolls:Width(90)
+	
+	Raid_Roll_ClearSymbols:Point("BOTTOMLEFT", RR_BottomFrame, "BOTTOMLEFT", 1, 30)
+	Raid_Roll_ClearRolls:Point("BOTTOMLEFT", RR_BottomFrame, "BOTTOMLEFT", 89, 30)
 
 	for i = 1, 5 do
 		local f = _G["Raid_Roll_SetSymbol"..i]
