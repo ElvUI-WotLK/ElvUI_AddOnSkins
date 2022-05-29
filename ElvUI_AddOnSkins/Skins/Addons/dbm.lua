@@ -155,11 +155,11 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 				end)
 				hooksecurefunc(bar, "ApplyStyle", function()
 					local frame = bar.frame
-					local tbar = _G[frame:GetName()..'Bar']
-					local icon1 = _G[frame:GetName()..'BarIcon1']
-					local icon2 = _G[frame:GetName()..'BarIcon2']
-					local name = _G[frame:GetName()..'BarName']
-					local timer = _G[frame:GetName()..'BarTimer']
+					local tbar = _G[frame:GetName().."Bar"]
+					local icon1 = _G[frame:GetName().."BarIcon1"]
+					local icon2 = _G[frame:GetName().."BarIcon2"]
+					local name = _G[frame:GetName().."BarName"]
+					local timer = _G[frame:GetName().."BarTimer"]
 					local iconSize = (bar.enlarged and DBT.Options.HugeHeight or DBT.Options.Height) * db.dbmIconSize
 					if db.DBMSkinHalf then
 						iconSize = iconSize * 2
@@ -188,19 +188,21 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 					name:ClearAllPoints()
 					name:SetWidth(165)
 					name:SetHeight(8)
-					name:SetJustifyH('LEFT')
+					name:SetJustifyH("LEFT")
 					name:SetShadowColor(0, 0, 0, 0)
 
 					timer:ClearAllPoints()
-					timer:SetJustifyH('RIGHT')
+					timer:SetJustifyH("RIGHT")
 					timer:SetShadowColor(0, 0, 0, 0)
 
 					if db.DBMSkinHalf then
-						name:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)
-						timer:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', -1, 1)
+						name:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+						name:SetPoint("BOTTOMRIGHT", timer, "BOTTOMLEFT") -- truncation
+						timer:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -1, 1)
 					else
-						name:SetPoint('LEFT', frame, 'LEFT', 4, 0)
-						timer:SetPoint('RIGHT', frame, 'RIGHT', -4, 0)
+						name:SetPoint("LEFT", frame, "LEFT", 4, 0)
+						name:SetPoint("RIGHT", timer, "LEFT") -- truncation
+						timer:SetPoint("RIGHT", frame, "RIGHT", -4, 0)
 					end
 
 					if DBT.Options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
@@ -347,7 +349,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	end
 
 	if backportVersion2 then
-		hooksecurefunc(DBT, 'CreateBar', skinBars)
+		hooksecurefunc(DBT, "CreateBar", skinBars)
 	else
 		S:SecureHook(DBT, "CreateBar", function(self)
 			local hooked
