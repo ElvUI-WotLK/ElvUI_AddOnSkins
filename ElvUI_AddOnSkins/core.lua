@@ -359,7 +359,11 @@ local function getOptions()
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
 						set = function(info, value)
 							E.db.addOnSkins[info[#info]] = value
-							DBM.Bars:ApplyStyle()
+							if DBM.ReleaseRevision >= 20220412000000 then -- 9.2.14
+								DBT:ApplyStyle()
+							else
+								DBM.Bars:ApplyStyle()
+							end
 							DBM.BossHealth:UpdateSettings()
 						end,
 						disabled = function() return not AS:IsAddonLODorEnabled("DBM-Core") end,
@@ -368,20 +372,23 @@ local function getOptions()
 								order = 1,
 								type = "range",
 								min = 6, max = 60, step = 1,
-								name = "Bar Height"
+								name = "Bar Height",
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFont = {
 								order = 2,
 								type = "select",
 								dialogControl = "LSM30_Font",
 								name = L["Font"],
-								values = AceGUIWidgetLSMlists.font
+								values = AceGUIWidgetLSMlists.font,
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontSize = {
 								order = 3,
 								type = "range",
 								min = 6, max = 22, step = 1,
-								name = L["Font Size"]
+								name = L["Font Size"],
+								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontOutline = {
 								order = 4,
@@ -392,16 +399,23 @@ local function getOptions()
 									["OUTLINE"] = "OUTLINE",
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
-								}
+								},
+								hidden = function() return DBM.ReleaseRevision > 7000 end
+							},
+							dbmIconSize = {
+								order = 5,
+								type = "range",
+								min = 0.1, max = 2, step = 0.1,
+								name = L["Icon Size"],
 							},
 							dbmTemplate = {
-								order = 5,
+								order = 6,
 								type = "select",
 								name = L["Template"],
 								values = backdropValues
 							},
 							DBMSkinHalf = {
-								order = 6,
+								order = 7,
 								type = "toggle",
 								name = L["DBM Half-bar Skin"]
 							}
