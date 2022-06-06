@@ -439,13 +439,23 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		S:Unhook(self, "Show")
 	end)
 
-	S:RawHook("RaidNotice_AddMessage", function(noticeFrame, textString, colorInfo)
-		if find(textString, " |T") then
-			textString = gsub(textString, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59")
-		end
+	if backportVersion then
+		S:RawHook(DBM, "AddWarning", function(self, text, ...)
+			if find(text, " |T") then
+				text = gsub(text, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59")
+			end
 
-		return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
-	end, true)
+			return S.hooks[DBM].AddWarning(self, text, ...)
+		end)
+	else
+		S:RawHook("RaidNotice_AddMessage", function(noticeFrame, textString, colorInfo)
+			if find(textString, " |T") then
+				textString = gsub(textString, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59")
+			end
+
+			return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
+		end, true)
+	end
 
 	if DBM.ShowUpdateReminder then
 		S:SecureHook(DBM, "ShowUpdateReminder", function(self)
