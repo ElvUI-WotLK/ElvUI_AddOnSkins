@@ -516,6 +516,15 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		for _, button in ipairs(DBM_GUI_OptionsFrameList.buttons) do
 			S:HandleCollapseTexture(button.toggle)
 		end
+
+		-- Dropdown list & scrollbar
+		DBM_GUI_DropDownList:StripTextures() -- removes UI-Tooltip-Border
+		S:HandleScrollBar(DBM_GUI_DropDownListScrollBar) -- original position and size are ruined, so rebuild them below
+		DBM_GUI_DropDownListScrollBar:Point("TOPRIGHT", -3, -16)
+		DBM_GUI_DropDownListScrollBar:Point("BOTTOMLEFT", 2, 16)
+		DBM_GUI_DropDownListScrollBarScrollUpButton:SetSize(12, 12)
+		DBM_GUI_DropDownListScrollBarScrollDownButton:SetSize(12, 12)
+		DBM_GUI_DropDownListScrollBarThumbTexture:SetSize(14, 18)
 	end
 
 	S:SecureHookScript(DBM_GUI_OptionsFrame, "OnShow", function(self)
