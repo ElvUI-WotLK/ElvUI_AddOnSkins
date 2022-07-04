@@ -518,6 +518,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			S:HandleCollapseTexture(button.toggle)
 		end
 
+		-- Panel Container FOV Scrollbar backdrop
+		local child = select(3, DBM_GUI_OptionsFramePanelContainerFOVScrollBar:GetChildren())
+		if child and child:IsObjectType("Frame") then
+			child:StripTextures()
+		end
+
 		-- Dropdown list & scrollbar
 		DBM_GUI_DropDownList:StripTextures() -- removes UI-Tooltip-Border
 		S:HandleScrollBar(DBM_GUI_DropDownListScrollBar) -- original position and size are ruined, so rebuild them below
@@ -532,6 +538,8 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		if backportVersion2 then
 			DBM_GUI_OptionsFrameList:StripTextures()
 			DBM_GUI_OptionsFrameList:SetTemplate("Transparent")
+
+			DBM_GUI_OptionsFrameListList:StripTextures()
 			S:HandleScrollBar(DBM_GUI_OptionsFrameListListScrollBar)
 			DBM_GUI_OptionsFrameListListScrollBar:Point("TOPRIGHT", 1, -18)
 			DBM_GUI_OptionsFrameListListScrollBar:Point("BOTTOMLEFT", 7, 18)
