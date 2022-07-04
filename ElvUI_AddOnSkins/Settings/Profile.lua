@@ -17,9 +17,11 @@ P.addOnSkins = {
 	omenTitleTemplateGloss = true,
 
 	dbmBarHeight = 22,
+	dbmBarTextYOffset = 3,
 	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
+	dbmIconXOffset = E.Border + E.Spacing,
 	dbmIconSize = 1,
 	dbmTemplate = "Default",
 	DBMSkinHalf = false,
