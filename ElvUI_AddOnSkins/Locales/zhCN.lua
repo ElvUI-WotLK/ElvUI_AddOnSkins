@@ -3,12 +3,14 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
 L["AddOn Skins"] = "插件皮肤"
 L["AuraBar Backdrop"] = "光环条背景"
+L["Bar Text Y-Offset"] = true
 L["DBM Half-bar Skin"] = "DBM 半高计时条"
 L["Default"] = "默认"
 L["Double"] = "双内嵌"
 L["Embed Type"] = "内嵌样式"
 L["Font Size"] = "字体大小"
 L["Icon Cooldown"] = "图标冷却"
+L["Icon X-Offset"] = true
 L["Left Panel"] = "左面板"
 L["Left Window Width"] = "左窗口宽度"
 L["Misc Options"] = "其它选项"
