@@ -90,7 +90,8 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 	end
 
 	hooksecurefunc(Skada, "SetTooltipPosition", function(self, tt, frame)
-		if self.db.profile.tooltippos == "default" then
+		local profile = self.data and self.db or self.db.profile
+		if profile.tooltippos == "default" then
 			if not E:HasMoverBeenMoved("ElvTooltipMover") then
 				if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
 					tt:Point("BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18)
