@@ -142,11 +142,10 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	end
 
 	local function skinBars(self)
-		local db = E.db.addOnSkins
-
 		for bar in self:GetBarIterator() do
 			if not bar.injected then
 				hooksecurefunc(bar, "Update", function()
+					local db = E.db.addOnSkins
 					local sparkEnabled = DBT.Options.Spark
 					if not (db.DBMSkinHalf and sparkEnabled) then return end
 					local spark = _G[bar.frame:GetName().."BarSpark"]
@@ -155,6 +154,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 					spark:SetPoint(a, b, c, d, 0)
 				end)
 				hooksecurefunc(bar, "ApplyStyle", function()
+					local db = E.db.addOnSkins
 					local frame = bar.frame
 					local tbar = _G[frame:GetName().."Bar"]
 					local icon1 = _G[frame:GetName().."BarIcon1"]
