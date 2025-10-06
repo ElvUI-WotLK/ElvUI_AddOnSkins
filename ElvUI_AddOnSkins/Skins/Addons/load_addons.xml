@@ -98,4 +98,7 @@
 	<Script file="RCLootCouncil.lua"/>
 	<Script file="QDKP2_GUI.lua"/>
 	<Script file="LootWonAlert.lua"/>
+	<Script file="KRT.lua"/>
+	<Script file="RaidBuffStatus.lua"/>
+	<Script file="Peace.lua"/>
 </Ui>

@@ -109,6 +109,9 @@ local addonList = {
 	"RCLootCouncil",
 	"QDKP2_GUI",
 	"LootWonAlert",
+	"KRT",
+	"RaidBuffStatus",
+	"Peace",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
@@ -116,6 +119,8 @@ local addonAlias = {
 	["AuctioneerSuite"] = "Auc-Advanced",
 	["_NPCScanOverlay"] = "_NPCScan.Overlay",
 	["ElvinCDs"] = "!ElvinCDs",
+	["KRT"] = "!KRT",
+	["Auctionator"] = "Auctionator+",
 }
 
 AS.addons = {}
