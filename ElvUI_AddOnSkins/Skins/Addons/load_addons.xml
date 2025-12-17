@@ -98,4 +98,5 @@
 	<Script file="RCLootCouncil.lua"/>
 	<Script file="QDKP2_GUI.lua"/>
 	<Script file="LootWonAlert.lua"/>
+	<Script file="AwesomeCVar.lua"/>AwesomeCVar
 </Ui>

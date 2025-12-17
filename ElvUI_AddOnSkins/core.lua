@@ -109,6 +109,7 @@ local addonList = {
 	"RCLootCouncil",
 	"QDKP2_GUI",
 	"LootWonAlert",
+	"AwesomeCVar",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
@@ -375,15 +376,8 @@ local function getOptions()
 								name = "Bar Height",
 								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
-							dbmBarTextYOffset = {
-								order = 2,
-								type = "range",
-								min = -5, max = 10, step = 1,
-								name = L["Bar Text Y-Offset"],
-								disabled = function() return not E.db.addOnSkins.DBMSkinHalf end
-							},
 							dbmFont = {
-								order = 3,
+								order = 2,
 								type = "select",
 								dialogControl = "LSM30_Font",
 								name = L["Font"],
@@ -391,14 +385,14 @@ local function getOptions()
 								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontSize = {
-								order = 4,
+								order = 3,
 								type = "range",
 								min = 6, max = 22, step = 1,
 								name = L["Font Size"],
 								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmFontOutline = {
-								order = 5,
+								order = 4,
 								type = "select",
 								name = L["Font Outline"],
 								values = {
@@ -410,26 +404,19 @@ local function getOptions()
 								hidden = function() return DBM.ReleaseRevision > 7000 end
 							},
 							dbmIconSize = {
-								order = 6,
+								order = 5,
 								type = "range",
 								min = 0.1, max = 2, step = 0.1,
 								name = L["Icon Size"],
 							},
-							dbmIconXOffset = {
-								order = 7,
-								type = "range",
-								min = -10, max = 10, step = 1,
-								name = L["Icon X-Offset"],
-								set = function(info, value) E.db.addOnSkins[info[#info]] = value E:StaticPopup_Show("PRIVATE_RL") end -- dbm skin should probably be recoded to avoid a UI reload for this option to apply.
-							},
 							dbmTemplate = {
-								order = 8,
+								order = 6,
 								type = "select",
 								name = L["Template"],
 								values = backdropValues
 							},
 							DBMSkinHalf = {
-								order = 9,
+								order = 7,
 								type = "toggle",
 								name = L["DBM Half-bar Skin"]
 							}
