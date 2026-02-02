@@ -100,4 +100,5 @@
 	<Script file="LootWonAlert.lua"/>
 	<Script file="RaidBuffStatus.lua"/>
 	<Script file="GuildManager.lua"/>
+	<Script file="MP-Reporter.lua"/>
 </Ui>
