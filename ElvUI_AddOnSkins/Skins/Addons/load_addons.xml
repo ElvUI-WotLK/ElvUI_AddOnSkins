@@ -99,4 +99,5 @@
 	<Script file="QDKP2_GUI.lua"/>
 	<Script file="LootWonAlert.lua"/>
 	<Script file="RaidBuffStatus.lua"/>
+	<Script file="GuildManager.lua"/>
 </Ui>

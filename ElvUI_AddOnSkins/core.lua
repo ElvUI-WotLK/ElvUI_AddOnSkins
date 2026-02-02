@@ -110,6 +110,7 @@ local addonList = {
 	"QDKP2_GUI",
 	"LootWonAlert",
     "RaidBuffStatus",
+    "GuildManager",
 }
 local addonAlias = {
 	["DBM"] = "DBM-Core",
