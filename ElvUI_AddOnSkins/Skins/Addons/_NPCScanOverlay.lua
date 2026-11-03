@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("_NPCScan.Overlay") then return end
@@ -10,26 +19,26 @@ if not AS:IsAddonLODorEnabled("_NPCScan.Overlay") then return end
 S:AddCallbackForAddon("_NPCScan.Overlay", "_NPCScan.Overlay", function()
 	if not E.private.addOnSkins._NPCScanOverlay then return end
 
-	S:HandleCheckBox(_NPCScanOverlayWorldMapToggle)
-	_NPCScanOverlayWorldMapToggle:Size(24)
+	SkinControl("HandleCheckBox", _NPCScanOverlayWorldMapToggle)
+	SkinFrame(_NPCScanOverlayWorldMapToggle, "Size", 24)
 
 	local worldMapKey = _NPCScan.Overlay.Modules.List.WorldMap.KeyParent.Key
 
-	worldMapKey:SetTemplate("Transparent")
+	SkinFrame(worldMapKey, "SetTemplate", "Transparent")
 	worldMapKey.Body:SetBackdrop(nil)
 	worldMapKey.Body:DisableDrawLayer("BORDER")
 
 	local bottomPoint
-	worldMapKey:SetScript("OnEnter", function(self)
+	SkinFrame(worldMapKey, "SetScript", "OnEnter", function(self)
 		bottomPoint = not bottomPoint
-		self:ClearAllPoints()
+		SkinFrame(self, "ClearAllPoints")
 		if bottomPoint then
-			self:Point("BOTTOMRIGHT", 1, -1)
+			SkinFrame(self, "Point", "BOTTOMRIGHT", 1, -1)
 		else
-			self:Point("TOPRIGHT", 1, 1)
+			SkinFrame(self, "Point", "TOPRIGHT", 1, 1)
 		end
 	end)
 
-	worldMapKey:ClearAllPoints()
-	worldMapKey:Point("TOPRIGHT", 1, 1)
+	SkinFrame(worldMapKey, "ClearAllPoints")
+	SkinFrame(worldMapKey, "Point", "TOPRIGHT", 1, 1)
 end)

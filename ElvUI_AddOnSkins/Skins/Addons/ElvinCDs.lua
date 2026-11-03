@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("!ElvinCDs") then return end
@@ -21,14 +30,14 @@ S:AddCallbackForAddon("!ElvinCDs", "!ElvinCDs", function()
 				local bars = _G[format("%sBars", objName)]
 
 				if bars then
-					_G[format("%sBackground", objName)]:StripTextures()
+					SkinFrame(_G[format("%sBackground", objName)], "StripTextures")
 
 					local title = _G[format("%sTitle", objName)]
-					title:SetBackdrop(nil)
+					SkinFrame(title, "SetBackdrop", nil)
 					title:CreateBackdrop("Transparent")
 					title.backdrop:Point("TOPRIGHT", 19, -1)
 
-					bars:Point("TOPLEFT", title, "BOTTOMLEFT", 0, -1)
+					SkinFrame(bars, "Point", "TOPLEFT", title, "BOTTOMLEFT", 0, -1)
 				end
 			elseif objectType == "StatusBar" then
 				obj:CreateBackdrop("Transparent")
@@ -41,40 +50,40 @@ S:AddCallbackForAddon("!ElvinCDs", "!ElvinCDs", function()
 	end)
 
 	-- logs
-	ElvinCDs_Logs:SetTemplate("Transparent")
-	ElvinCDs_LogsList:SetBackdrop(nil)
+	SkinFrame(ElvinCDs_Logs, "SetTemplate", "Transparent")
+	SkinFrame(ElvinCDs_LogsList, "SetBackdrop", nil)
 
-	S:HandleCloseButton(ElvinCDs_LogsCloseButton, ElvinCDs_Logs)
-	S:HandleScrollBar(ElvinCDs_LogsListScrollFrameScrollBar)
+	SkinControl("HandleCloseButton", ElvinCDs_LogsCloseButton, ElvinCDs_Logs)
+	SkinControl("HandleScrollBar", ElvinCDs_LogsListScrollFrameScrollBar)
 
-	ElvinCDs_LogsListScrollFrameScrollBar:Point("TOPLEFT", ElvinCDs_LogsListScrollFrame, "TOPRIGHT", 5, -13)
-	ElvinCDs_LogsListScrollFrameScrollBar:Point("BOTTOMLEFT", ElvinCDs_LogsListScrollFrame, "BOTTOMRIGHT", 5, 19)
+	SkinFrame(ElvinCDs_LogsListScrollFrameScrollBar, "Point", "TOPLEFT", ElvinCDs_LogsListScrollFrame, "TOPRIGHT", 5, -13)
+	SkinFrame(ElvinCDs_LogsListScrollFrameScrollBar, "Point", "BOTTOMLEFT", ElvinCDs_LogsListScrollFrame, "BOTTOMRIGHT", 5, 19)
 
 	-- options
 	E:GetModule("Tooltip"):HookScript(ElvinCDs_Tooltip, "OnShow", "SetStyle")
 
-	ElvinCDs_Config:SetTemplate("Transparent")
-	ElvinCDs_ConfigTitleBG:StripTextures()
+	SkinFrame(ElvinCDs_Config, "SetTemplate", "Transparent")
+	SkinFrame(ElvinCDs_ConfigTitleBG, "StripTextures")
 
-	ElvinCDs_Config_SpellsList:SetTemplate("Transparent")
+	SkinFrame(ElvinCDs_Config_SpellsList, "SetTemplate", "Transparent")
 
-	S:HandleTab(ElvinCDs_ConfigTab1)
-	S:HandleTab(ElvinCDs_ConfigTab2)
+	SkinControl("HandleTab", ElvinCDs_ConfigTab1)
+	SkinControl("HandleTab", ElvinCDs_ConfigTab2)
 
-	S:HandleButton(ElvinCDs_ConfigClose)
-	S:HandleButton(ElvinCDs_Config_GeneralDefault)
-	S:HandleButton(ElvinCDs_Config_SpellsSave)
+	SkinControl("HandleButton", ElvinCDs_ConfigClose)
+	SkinControl("HandleButton", ElvinCDs_Config_GeneralDefault)
+	SkinControl("HandleButton", ElvinCDs_Config_SpellsSave)
 
-	S:HandleSliderFrame(ElvinCDs_Config_General_width)
-	S:HandleSliderFrame(ElvinCDs_Config_General_height)
-	S:HandleSliderFrame(ElvinCDs_Config_General_opacity)
-	S:HandleSliderFrame(ElvinCDs_Config_General_spacing)
+	SkinControl("HandleSliderFrame", ElvinCDs_Config_General_width)
+	SkinControl("HandleSliderFrame", ElvinCDs_Config_General_height)
+	SkinControl("HandleSliderFrame", ElvinCDs_Config_General_opacity)
+	SkinControl("HandleSliderFrame", ElvinCDs_Config_General_spacing)
 
-	S:HandleEditBox(ElvinCDs_Config_SpellsSearch)
-	S:HandleEditBox(ElvinCDs_Config_SpellsSpellId)
-	S:HandleEditBox(ElvinCDs_Config_SpellsCooldown)
+	SkinControl("HandleEditBox", ElvinCDs_Config_SpellsSearch)
+	SkinControl("HandleEditBox", ElvinCDs_Config_SpellsSpellId)
+	SkinControl("HandleEditBox", ElvinCDs_Config_SpellsCooldown)
 
-	S:HandleScrollBar(ElvinCDs_Config_SpellsListScrollFrameScrollBar)
+	SkinControl("HandleScrollBar", ElvinCDs_Config_SpellsListScrollFrameScrollBar)
 
 	local checkBoxes = {
 		ElvinCDs_Config_General_enabled,
@@ -101,20 +110,20 @@ S:AddCallbackForAddon("!ElvinCDs", "!ElvinCDs", function()
 	}
 
 	for _, checkBox in ipairs(checkBoxes) do
-		S:HandleCheckBox(checkBox)
+		SkinControl("HandleCheckBox", checkBox)
 	end
 
-	ElvinCDs_Config_SpellsSearch:Height(22)
-	ElvinCDs_Config_SpellsSpellId:Height(22)
-	ElvinCDs_Config_SpellsCooldown:Height(22)
+	SkinFrame(ElvinCDs_Config_SpellsSearch, "Height", 22)
+	SkinFrame(ElvinCDs_Config_SpellsSpellId, "Height", 22)
+	SkinFrame(ElvinCDs_Config_SpellsCooldown, "Height", 22)
 
-	ElvinCDs_ConfigTab1:Point("CENTER", ElvinCDs_Config, "BOTTOMLEFT", 60, -14)
-	ElvinCDs_ConfigClose:Point("TOPRIGHT", -6, -6)
+	SkinFrame(ElvinCDs_ConfigTab1, "Point", "CENTER", ElvinCDs_Config, "BOTTOMLEFT", 60, -14)
+	SkinFrame(ElvinCDs_ConfigClose, "Point", "TOPRIGHT", -6, -6)
 
-	ElvinCDs_Config_SpellsListScrollFrameScrollBar:Point("TOPLEFT", ElvinCDs_Config_SpellsListScrollFrame, "TOPRIGHT", 5, -15)
-	ElvinCDs_Config_SpellsListScrollFrameScrollBar:Point("BOTTOMLEFT", ElvinCDs_Config_SpellsListScrollFrame, "BOTTOMRIGHT", 5, 14)
+	SkinFrame(ElvinCDs_Config_SpellsListScrollFrameScrollBar, "Point", "TOPLEFT", ElvinCDs_Config_SpellsListScrollFrame, "TOPRIGHT", 5, -15)
+	SkinFrame(ElvinCDs_Config_SpellsListScrollFrameScrollBar, "Point", "BOTTOMLEFT", ElvinCDs_Config_SpellsListScrollFrame, "BOTTOMRIGHT", 5, 14)
 
-	ElvinCDs_Config_SpellsSpellId:Point("TOPLEFT", ElvinCDs_Config_SpellsList, "BOTTOMLEFT", 8, -10)
+	SkinFrame(ElvinCDs_Config_SpellsSpellId, "Point", "TOPLEFT", ElvinCDs_Config_SpellsList, "BOTTOMLEFT", 8, -10)
 
 --[[
 	local options = {
@@ -132,7 +141,7 @@ S:AddCallbackForAddon("!ElvinCDs", "!ElvinCDs", function()
 		local button = _G["ElvinCDs_Config_Spells_SpellBtn_"..i]
 		while button do
 			for _, affix in ipairs(options) do
-				S:HandleCheckBox(_G["ElvinCDs_Config_Spells_SpellBtn_"..i..affix])
+				SkinControl("HandleCheckBox", _G["ElvinCDs_Config_Spells_SpellBtn_"..i..affix])
 			end
 			i = i + 1
 			button = _G["ElvinCDs_Config_Spells_SpellBtn_"..i]

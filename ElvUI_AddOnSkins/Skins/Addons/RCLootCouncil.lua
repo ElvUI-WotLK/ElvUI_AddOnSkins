@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("RCLootCouncil") then return end
@@ -20,7 +29,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 	S:RawHook(addon, "CreateFrame", function(self, ...)
 		local frame = S.hooks[self].CreateFrame(self, ...)
 
-		frame:SetScale(UIParent:GetScale())
+		SkinFrame(frame, "SetScale", UIParent:GetScale())
 		frame.title:SetTemplate("Default")
 		frame.content:SetTemplate("Transparent")
 
@@ -32,20 +41,20 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 	S:RawHook(addon, "CreateButton", function(self, ...)
 		local button = S.hooks[self].CreateButton(self, ...)
 
-		S:HandleButton(button)
+		SkinControl("HandleButton", button)
 
 		return button
 	end)
 
 	local function updateTexCoord(self)
 		local normalTexture = self:GetNormalTexture()
-		normalTexture:SetTexCoord(unpack(E.TexCoords))
-		normalTexture:SetInside()
+		SkinFrame(normalTexture, "SetTexCoord", unpack(E.TexCoords))
+		SkinFrame(normalTexture, "SetInside")
 	end
 
 	local function skinIconButton(button)
-		button:SetTemplate()
-		button:StyleButton(nil, true, true)
+		SkinFrame(button, "SetTemplate")
+		SkinFrame(button, "StyleButton", nil, true, true)
 		button:GetNormalTexture():SetDrawLayer("ARTWORK")
 		hooksecurefunc(button, "SetNormalTexture", updateTexCoord)
 	end
@@ -63,7 +72,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 
 		local function setBackdropBorderColor(self, r, g, b)
 			if r == 1 and g == 1 and b == 1 then
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				SkinFrame(self, "SetBackdropBorderColor", unpack(E.media.bordercolor))
 			end
 		end
 
@@ -73,7 +82,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 
 			skinIconButton(frame.itemIcon)
 
-			S:HandleNextPrevButton(frame.moreInfoBtn, "right")
+			SkinControl("HandleNextPrevButton", frame.moreInfoBtn, "right")
 
 			frame.moreInfoBtn.SetNormalTexture = moreInfoSetTexture
 			frame.moreInfoBtn.SetPushedTexture = E.noop
@@ -109,7 +118,7 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 		S:RawHook(lootFrame, "GetEntry", function(self, ...)
 			local frame = S.hooks[self].GetEntry(self, ...)
 
-			frame:SetTemplate("Transparent")
+			SkinFrame(frame, "SetTemplate", "Transparent")
 			skinIconButton(frame.icon)
 			hooksecurefunc(frame, "Show", updateTexCoord)
 
@@ -123,18 +132,18 @@ S:AddCallbackForAddon("RCLootCouncil", "RCLootCouncil", function()
 			local frame = S.hooks[self].GetFrame(self, ...)
 			S:Unhook(self, "GetFrame")
 
-			S:HandleCheckBox(frame.toggle)
+			SkinControl("HandleCheckBox", frame.toggle)
 
 			return frame
 		end)
 
 		S:SecureHook(sessionFrame, "SetCellItemIcon", function(_, frame)
-			frame:SetTemplate()
-			frame:StyleButton(nil, true, true)
+			SkinFrame(frame, "SetTemplate")
+			SkinFrame(frame, "StyleButton", nil, true, true)
 			local normalTexture = frame:GetNormalTexture()
 			normalTexture:SetDrawLayer("ARTWORK")
-			normalTexture:SetTexCoord(unpack(E.TexCoords))
-			normalTexture:SetInside()
+			SkinFrame(normalTexture, "SetTexCoord", unpack(E.TexCoords))
+			SkinFrame(normalTexture, "SetInside")
 		end)
 	end
 end)

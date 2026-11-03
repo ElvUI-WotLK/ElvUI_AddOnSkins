@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("ChatBar") then return end
@@ -21,8 +30,8 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 	ChatBar_UpdateArt = E.noop
 	ChatBar_Toggle_LargeButtons = E.noop
 
-	ChatBarFrameBackground:SetOutside()
-	ChatBarFrameBackground:SetTemplate("Transparent")
+	SkinFrame(ChatBarFrameBackground, "SetOutside")
+	SkinFrame(ChatBarFrameBackground, "SetTemplate", "Transparent")
 
 	for i = 1, 20 do
 		local button = _G["ChatBarFrameButton" .. i]
@@ -30,14 +39,14 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 		local highlight = _G["ChatBarFrameButton" .. i .. "Highlight"]
 		local flash = _G["ChatBarFrameButton" .. i .. "Flash"]
 
-		button:StripTextures()
-		button:SetTemplate()
-		button:SetScale(1)
-		button:Size(db.chatBarSize)
+		SkinFrame(button, "StripTextures")
+		SkinFrame(button, "SetTemplate")
+		SkinFrame(button, "SetScale", 1)
+		SkinFrame(button, "Size", db.chatBarSize)
 
-		center:SetInside()
-		highlight:SetInside()
-		flash:SetInside()
+		SkinFrame(center, "SetInside")
+		SkinFrame(highlight, "SetInside")
+		SkinFrame(flash, "SetInside")
 
 		center:SetTexture(1, 1, 1)
 		highlight:SetTexture(1, 1, 1, 0.5)
@@ -47,7 +56,7 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 		flash:SetTexture("MOD")
 	end
 
-	ChatBarFrame:SetScript("OnUpdate", function(self, elapsed)
+	SkinFrame(ChatBarFrame, "SetScript", "OnUpdate", function(self, elapsed)
 		if self.slidingEnabled and self.isSliding and self.velocity and self.endsize then
 			local currSize = ChatBar_GetSize()
 
@@ -84,9 +93,9 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 			for i = 1, CHAT_BAR_MAX_BUTTONS do
 				frame = _G["ChatBarFrameButton" .. i]
 				if currSize >= (i * (db.chatBarSize + db.chatBarSpacing) - db.chatBarSpacing) then
-					frame:Show()
+					SkinFrame(frame, "Show")
 				else
-					frame:Hide()
+					SkinFrame(frame, "Hide")
 				end
 			end
 		elseif self.count then
@@ -102,41 +111,41 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 
 	function ChatBar_UpdateButtonOrientation()
 		local button = ChatBarFrameButton1
-		button:ClearAllPoints()
+		SkinFrame(button, "ClearAllPoints")
 		button.Text:ClearAllPoints()
 		button.Text:SetPoint(db.chatBarTextPoint, button, db.chatBarTextPoint, db.chatBarTextXOffset, db.chatBarTextYOffset)
 
 		if ChatBar_VerticalDisplay then
 			if ChatBar_AlternateOrientation then
-				button:SetPoint("TOP", "ChatBarFrame", "TOP", 0, -db.chatBarSpacing)
+				SkinFrame(button, "SetPoint", "TOP", "ChatBarFrame", "TOP", 0, -db.chatBarSpacing)
 			else
-				button:SetPoint("BOTTOM", "ChatBarFrame", "BOTTOM", 0, db.chatBarSpacing)
+				SkinFrame(button, "SetPoint", "BOTTOM", "ChatBarFrame", "BOTTOM", 0, db.chatBarSpacing)
 			end
 		else
 			if ChatBar_AlternateOrientation then
-				button:SetPoint("RIGHT", "ChatBarFrame", "RIGHT", -db.chatBarSpacing, 0)
+				SkinFrame(button, "SetPoint", "RIGHT", "ChatBarFrame", "RIGHT", -db.chatBarSpacing, 0)
 			else
-				button:SetPoint("LEFT", "ChatBarFrame", "LEFT", db.chatBarSpacing, 0)
+				SkinFrame(button, "SetPoint", "LEFT", "ChatBarFrame", "LEFT", db.chatBarSpacing, 0)
 			end
 		end
 
 		for i = 2, CHAT_BAR_MAX_BUTTONS do
 			button = _G["ChatBarFrameButton"..i]
-			button:ClearAllPoints()
+			SkinFrame(button, "ClearAllPoints")
 			button.Text:ClearAllPoints()
 			button.Text:SetPoint(db.chatBarTextPoint, button, db.chatBarTextPoint, db.chatBarTextXOffset, db.chatBarTextYOffset)
 
 			if ChatBar_VerticalDisplay then
 				if ChatBar_AlternateOrientation then
-					button:SetPoint("TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -db.chatBarSpacing)
+					SkinFrame(button, "SetPoint", "TOP", "ChatBarFrameButton"..(i-1), "BOTTOM", 0, -db.chatBarSpacing)
 				else
-					button:SetPoint("BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, db.chatBarSpacing)
+					SkinFrame(button, "SetPoint", "BOTTOM", "ChatBarFrameButton"..(i-1), "TOP", 0, db.chatBarSpacing)
 				end
 			else
 				if ChatBar_AlternateOrientation then
-					button:SetPoint("RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -db.chatBarSpacing, 0)
+					SkinFrame(button, "SetPoint", "RIGHT", "ChatBarFrameButton"..(i-1), "LEFT", -db.chatBarSpacing, 0)
 				else
-					button:SetPoint("LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", db.chatBarSpacing, 0)
+					SkinFrame(button, "SetPoint", "LEFT", "ChatBarFrameButton"..(i-1), "RIGHT", db.chatBarSpacing, 0)
 				end
 			end
 		end
@@ -148,8 +157,8 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 		if not ChatBar_HideAllButtons then
 			while ChatBar_ChatTypes[i] and buttonIndex <= 20 do
 				if ChatBar_ChatTypes[i].show() then
-					_G["ChatBarFrameButton" .. buttonIndex]:Size(db.chatBarSize)
-					_G["ChatBarFrameButton" .. buttonIndex]:SetAlpha(1)
+					SkinFrame(_G["ChatBarFrameButton" .. buttonIndex], "Size", db.chatBarSize)
+					SkinFrame(_G["ChatBarFrameButton" .. buttonIndex], "SetAlpha", 1)
 					buttonIndex = buttonIndex + 1
 				end
 
@@ -159,25 +168,25 @@ S:AddCallbackForAddon("ChatBar", "ChatBar", function()
 
 		local size = (buttonIndex - 1) * (db.chatBarSize + db.chatBarSpacing) + db.chatBarSpacing
 		if ChatBar_VerticalDisplay then
-			ChatBarFrame:SetWidth(db.chatBarSize + (db.chatBarSpacing * 2))
+			SkinFrame(ChatBarFrame, "SetWidth", db.chatBarSize + (db.chatBarSpacing * 2))
 
 			if ChatBarFrame:GetTop() then
 				ChatBar_StartSlidingTo(size)
 			else
-				ChatBarFrame:SetHeight(size)
+				SkinFrame(ChatBarFrame, "SetHeight", size)
 			end
 		else
-			ChatBarFrame:SetHeight(db.chatBarSize + (db.chatBarSpacing * 2))
+			SkinFrame(ChatBarFrame, "SetHeight", db.chatBarSize + (db.chatBarSpacing * 2))
 
 			if ChatBarFrame:GetRight() then
 				ChatBar_StartSlidingTo(size)
 			else
-				ChatBarFrame:SetWidth(size)
+				SkinFrame(ChatBarFrame, "SetWidth", size)
 			end
 		end
 
 		while buttonIndex <= 20 do
-			_G["ChatBarFrameButton" .. buttonIndex]:SetAlpha(0)
+			SkinFrame(_G["ChatBarFrameButton" .. buttonIndex], "SetAlpha", 0)
 			buttonIndex = buttonIndex + 1
 		end
 	end)

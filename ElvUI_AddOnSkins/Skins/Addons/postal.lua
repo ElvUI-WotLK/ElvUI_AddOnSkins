@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Postal") then return end
@@ -21,26 +30,26 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 	local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal", true)
 	if not Postal then return end
 
-	S:HandleNextPrevButton(Postal_ModuleMenuButton, "down", nil, true)
-	Postal_ModuleMenuButton:Point("TOPRIGHT", MailFrame, -60, -12)
-	Postal_ModuleMenuButton:Size(26)
+	SkinControl("HandleNextPrevButton", Postal_ModuleMenuButton, "down", nil, true)
+	SkinFrame(Postal_ModuleMenuButton, "Point", "TOPRIGHT", MailFrame, -60, -12)
+	SkinFrame(Postal_ModuleMenuButton, "Size", 26)
 
 	hooksecurefunc(Postal, "CreateAboutFrame", function(self)
 		self.aboutFrame:SetTemplate("Transparent")
 
-		PostalAboutScroll:Point("TOPLEFT", 8, -26)
-		PostalAboutScroll:Point("BOTTOMRIGHT", -29, 8)
+		SkinFrame(PostalAboutScroll, "Point", "TOPLEFT", 8, -26)
+		SkinFrame(PostalAboutScroll, "Point", "BOTTOMRIGHT", -29, 8)
 
-		S:HandleScrollBar(PostalAboutScrollScrollBar)
-		PostalAboutScrollScrollBar:Point("TOPLEFT", PostalAboutScroll, "TOPRIGHT", 3, -19)
-		PostalAboutScrollScrollBar:Point("BOTTOMLEFT", PostalAboutScroll, "BOTTOMRIGHT", 3, 19)
+		SkinControl("HandleScrollBar", PostalAboutScrollScrollBar)
+		SkinFrame(PostalAboutScrollScrollBar, "Point", "TOPLEFT", PostalAboutScroll, "TOPRIGHT", 3, -19)
+		SkinFrame(PostalAboutScrollScrollBar, "Point", "BOTTOMLEFT", PostalAboutScroll, "BOTTOMRIGHT", 3, 19)
 
 		self.aboutFrame.editBox:Width(461)
 		self.aboutFrame.editBox:Point("TOPLEFT", 1, -1)
 
 		local closeButton = select(2, PostalAboutFrame:GetChildren())
 		if closeButton then
-			S:HandleCloseButton(closeButton, PostalAboutFrame)
+			SkinControl("HandleCloseButton", closeButton, PostalAboutFrame)
 		end
 	end)
 
@@ -48,28 +57,28 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 	if Postal_Select then
 		local skinModule
 		skinModule = function()
-			S:HandleButton(PostalSelectOpenButton, true)
-			PostalSelectOpenButton:Point("RIGHT", InboxFrame, "TOP", -29, -57)
+			SkinControl("HandleButton", PostalSelectOpenButton, true)
+			SkinFrame(PostalSelectOpenButton, "Point", "RIGHT", InboxFrame, "TOP", -29, -57)
 
-			S:HandleButton(PostalSelectReturnButton, true)
-			PostalSelectReturnButton:Point("LEFT", InboxFrame, "TOP", 8, -57)
+			SkinControl("HandleButton", PostalSelectReturnButton, true)
+			SkinFrame(PostalSelectReturnButton, "Point", "LEFT", InboxFrame, "TOP", 8, -57)
 
 			for i = 1, INBOXITEMS_TO_DISPLAY do
 				local mail = _G["MailItem"..i]
 				local inboxCB = _G["PostalInboxCB"..i]
 
-				S:HandleCheckBox(inboxCB)
-				inboxCB:Point("RIGHT", mail, "LEFT", 6, -5)
+				SkinControl("HandleCheckBox", inboxCB)
+				SkinFrame(inboxCB, "Point", "RIGHT", mail, "LEFT", 6, -5)
 			end
 
 			skinModule = nil
 		end
 
 		local function setPosition()
-			MailItem1:Point("TOPLEFT", 38, -80)
+			SkinFrame(MailItem1, "Point", "TOPLEFT", 38, -80)
 
 			for i = 1, INBOXITEMS_TO_DISPLAY do
-				_G["MailItem"..i.."ExpireTime"]:Point("TOPRIGHT", -4, -4)
+				SkinFrame(_G["MailItem"..i.."ExpireTime"], "Point", "TOPRIGHT", -4, -4)
 			end
 		end
 
@@ -86,7 +95,7 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 		end)
 
 		hooksecurefunc(Postal_Select, "OnDisable", function(self)
-			MailItem1:Point("TOPLEFT", 24, -80)
+			SkinFrame(MailItem1, "Point", "TOPLEFT", 24, -80)
 		end)
 	end
 
@@ -95,11 +104,11 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 		local function skinModule()
 			for i = 1, 7 do
 				local returnIcon = _G["MailItem"..i.."ExpireTime"].returnicon
-				returnIcon:StripTextures(true)
-				S:HandleCloseButton(returnIcon)
-				returnIcon:Size(26)
-				returnIcon:ClearAllPoints()
-				returnIcon:Point("TOPRIGHT", 32, -3)
+				SkinFrame(returnIcon, "StripTextures", true)
+				SkinControl("HandleCloseButton", returnIcon)
+				SkinFrame(returnIcon, "Size", 26)
+				SkinFrame(returnIcon, "ClearAllPoints")
+				SkinFrame(returnIcon, "Point", "TOPRIGHT", 32, -3)
 			end
 		end
 
@@ -116,12 +125,12 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 	local Postal_OpenAll = Postal:GetModule("OpenAll", true)
 	if Postal_OpenAll then
 		local function skinModule()
-			S:HandleButton(PostalOpenAllButton, true)
-			PostalOpenAllButton:Point("CENTER", InboxFrame, "TOP", -24, -408)
+			SkinControl("HandleButton", PostalOpenAllButton, true)
+			SkinFrame(PostalOpenAllButton, "Point", "CENTER", InboxFrame, "TOP", -24, -408)
 
-			S:HandleNextPrevButton(Postal_OpenAllMenuButton)
-			Postal_OpenAllMenuButton:Size(25)
-			Postal_OpenAllMenuButton:Point("LEFT", PostalOpenAllButton, "RIGHT", 3, 0)
+			SkinControl("HandleNextPrevButton", Postal_OpenAllMenuButton)
+			SkinFrame(Postal_OpenAllMenuButton, "Size", 25)
+			SkinFrame(Postal_OpenAllMenuButton, "Point", "LEFT", PostalOpenAllButton, "RIGHT", 3, 0)
 		end
 
 		if PostalOpenAllButton then
@@ -137,9 +146,9 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 	local Postal_BlackBook = Postal:GetModule("BlackBook", true)
 	if Postal_BlackBook then
 		local function skinModule()
-			S:HandleNextPrevButton(Postal_BlackBookButton)
-			Postal_BlackBookButton:Size(20)
-			Postal_BlackBookButton:Point("LEFT", SendMailNameEditBox, "RIGHT", 4, 0)
+			SkinControl("HandleNextPrevButton", Postal_BlackBookButton)
+			SkinFrame(Postal_BlackBookButton, "Size", 20)
+			SkinFrame(Postal_BlackBookButton, "Point", "LEFT", SendMailNameEditBox, "RIGHT", 4, 0)
 		end
 
 		if Postal_BlackBookButton then
@@ -160,8 +169,8 @@ S:AddCallbackForAddon("Postal", "Postal", function()
 			self.button:Point("TOPRIGHT", 1, 3)
 
 			local normalTexture = self.button:GetNormalTexture()
-			normalTexture:SetTexCoord(unpack(E.TexCoords))
-			normalTexture:SetInside()
+			SkinFrame(normalTexture, "SetTexCoord", unpack(E.TexCoords))
+			SkinFrame(normalTexture, "SetInside")
 		end
 
 		if Postal_CarbonCopy.button then

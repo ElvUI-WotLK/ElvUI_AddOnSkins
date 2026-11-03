@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("ArkInventory") then return end
@@ -20,11 +29,11 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 
 		local icon = frame:GetNormalTexture()
 
-		frame:SetTemplate("Default", true)
-		frame:StyleButton()
+		SkinFrame(frame, "SetTemplate", "Default", true)
+		SkinFrame(frame, "StyleButton")
 
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(icon, "SetInside")
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 		icon.SetTexCoord = E.noop
 
 		frame.isSkinned = true
@@ -36,7 +45,7 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 
 		if frame then
 			-- Title
-			S:HandleCloseButton(_G[format("%s%s%s", frameName, ArkInventory.Const.Frame.Title.Name, "Close")])
+			SkinControl("HandleCloseButton", _G[format("%s%s%s", frameName, ArkInventory.Const.Frame.Title.Name, "Close")])
 
 			skinIcon(_G[format("%s%s%s", frameName, ArkInventory.Const.Frame.Title.Name, "Location0")])
 			skinIcon(_G[format("%s%s%s", frameName, ArkInventory.Const.Frame.Title.Name, "ActionButton11")])
@@ -49,7 +58,7 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 			skinIcon(_G[format("%s%s%s", frameName, ArkInventory.Const.Frame.Title.Name, "ActionButton24")])
 
 			-- Search
-			S:HandleEditBox(_G[format("%s%s%s", frame:GetName(), ArkInventory.Const.Frame.Search.Name, "Filter")])
+			SkinControl("HandleEditBox", _G[format("%s%s%s", frame:GetName(), ArkInventory.Const.Frame.Search.Name, "Filter")])
 		end
 	end
 
@@ -65,25 +74,25 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 		local status = _G[format("%s%s", frameName, ArkInventory.Const.Frame.Status.Name)]
 
 		if anchor == ArkInventory.Const.Anchor.BottomRight then
-			changer:Point("BOTTOMRIGHT", status, "TOPRIGHT", 0, -1)
-			container:Point("BOTTOMRIGHT", changer, "TOPRIGHT", 0, -1)
-			search:Point("BOTTOMRIGHT", container, "TOPRIGHT", 0, -1)
-			title:Point("BOTTOMRIGHT", search, "TOPRIGHT", 0, -1)
+			SkinFrame(changer, "Point", "BOTTOMRIGHT", status, "TOPRIGHT", 0, -1)
+			SkinFrame(container, "Point", "BOTTOMRIGHT", changer, "TOPRIGHT", 0, -1)
+			SkinFrame(search, "Point", "BOTTOMRIGHT", container, "TOPRIGHT", 0, -1)
+			SkinFrame(title, "Point", "BOTTOMRIGHT", search, "TOPRIGHT", 0, -1)
 		elseif anchor == ArkInventory.Const.Anchor.BottomLeft then
-			changer:Point("BOTTOMLEFT", status, "TOPLEFT", 0, -1)
-			container:Point("BOTTOMLEFT", changer, "TOPLEFT", 0, -1)
-			search:Point("BOTTOMLEFT", container, "TOPLEFT", 0, -1)
-			title:Point("BOTTOMLEFT", search, "TOPLEFT", 0, -1)
+			SkinFrame(changer, "Point", "BOTTOMLEFT", status, "TOPLEFT", 0, -1)
+			SkinFrame(container, "Point", "BOTTOMLEFT", changer, "TOPLEFT", 0, -1)
+			SkinFrame(search, "Point", "BOTTOMLEFT", container, "TOPLEFT", 0, -1)
+			SkinFrame(title, "Point", "BOTTOMLEFT", search, "TOPLEFT", 0, -1)
 		elseif anchor == ArkInventory.Const.Anchor.TopLeft then
-			search:Point("TOPLEFT", title, "BOTTOMLEFT", 0, 1)
-			container:Point("TOPLEFT", search, "BOTTOMLEFT", 0, 1)
-			changer:Point("TOPLEFT", container, "BOTTOMLEFT", 0, 1)
-			status:Point("TOPLEFT", changer, "BOTTOMLEFT", 0, 1)
+			SkinFrame(search, "Point", "TOPLEFT", title, "BOTTOMLEFT", 0, 1)
+			SkinFrame(container, "Point", "TOPLEFT", search, "BOTTOMLEFT", 0, 1)
+			SkinFrame(changer, "Point", "TOPLEFT", container, "BOTTOMLEFT", 0, 1)
+			SkinFrame(status, "Point", "TOPLEFT", changer, "BOTTOMLEFT", 0, 1)
 		else
-			search:Point("TOPRIGHT", title, "BOTTOMRIGHT", 0, 1)
-			container:Point("TOPRIGHT", search, "BOTTOMRIGHT", 0, 1)
-			changer:Point("TOPRIGHT", container, "BOTTOMRIGHT", 0, 1)
-			status:Point("TOPRIGHT", changer, "BOTTOMRIGHT", 0, 1)
+			SkinFrame(search, "Point", "TOPRIGHT", title, "BOTTOMRIGHT", 0, 1)
+			SkinFrame(container, "Point", "TOPRIGHT", search, "BOTTOMRIGHT", 0, 1)
+			SkinFrame(changer, "Point", "TOPRIGHT", container, "BOTTOMRIGHT", 0, 1)
+			SkinFrame(status, "Point", "TOPRIGHT", changer, "BOTTOMRIGHT", 0, 1)
 		end
 	end)
 
@@ -92,7 +101,7 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 
 		for _, child in ipairs({frame:GetChildren()}) do
 			if not child.isSkinned then
-				child:SetTemplate("Transparent")
+				SkinFrame(child, "SetTemplate", "Transparent")
 
 				local frameName = child:GetName()
 				if frameName then
@@ -100,10 +109,10 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 					local border = _G[format("%s%s", frameName, "ArkBorder")]
 
 					if bg then
-						bg:Hide()
+						SkinFrame(bg, "Hide")
 					end
 					if border then
-						border:Hide()
+						SkinFrame(border, "Hide")
 					end
 				end
 
@@ -134,10 +143,10 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 	local function updateQuestIcon(self, texture)
 		if texture == TEXTURE_ITEM_QUEST_BORDER then
 			self.parent:SetBackdropBorderColor(unpack(questColors.questItem))
-			self:SetAlpha(0)
+			SkinFrame(self, "SetAlpha", 0)
 		else
 			self.parent:SetBackdropBorderColor(unpack(questColors.questStarter))
-			self:SetAlpha(1)
+			SkinFrame(self, "SetAlpha", 1)
 		end
 	end
 
@@ -150,19 +159,19 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 		local questIcon = _G[format("%s%s", frameName, "IconQuestTexture")]
 		local cooldown = _G[format("%s%s", frameName, "Cooldown")]
 
-		frame:SetNormalTexture(nil)
-		frame:SetTemplate("Default", true)
-		frame:StyleButton()
+		SkinFrame(frame, "SetNormalTexture", nil)
+		SkinFrame(frame, "SetTemplate", "Default", true)
+		SkinFrame(frame, "StyleButton")
 
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(icon, "SetInside")
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 		icon.SetTexCoord = E.noop
 
-		border:Kill()
+		SkinFrame(border, "Kill")
 		border.parent = frame
 
 		if questIcon then
-			questIcon:SetInside()
+			SkinFrame(questIcon, "SetInside")
 			questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
 			questIcon.SetTexture = updateQuestIcon
 			questIcon.parent = frame
@@ -182,29 +191,29 @@ S:AddCallbackForAddon("ArkInventory", "ArkInventory", function()
 	end)
 
 	-- GuildBank
-	S:HandleButton(ARKINV_Frame4ChangerWindowPurchaseInfoPurchaseButton)
-	S:HandleButton(ARKINV_Frame4ChangerWindowDepositButton)
-	S:HandleButton(ARKINV_Frame4ChangerWindowWithdrawButton)
+	SkinControl("HandleButton", ARKINV_Frame4ChangerWindowPurchaseInfoPurchaseButton)
+	SkinControl("HandleButton", ARKINV_Frame4ChangerWindowDepositButton)
+	SkinControl("HandleButton", ARKINV_Frame4ChangerWindowWithdrawButton)
 
-	S:HandleNextPrevButton(ARKINV_Frame4LogScrollUp, "up")
-	S:HandleNextPrevButton(ARKINV_Frame4LogScrollDown, "down")
+	SkinControl("HandleNextPrevButton", ARKINV_Frame4LogScrollUp, "up")
+	SkinControl("HandleNextPrevButton", ARKINV_Frame4LogScrollDown, "down")
 
-	S:HandleButton(ARKINV_Frame4InfoSave)
-	S:HandleScrollBar(ARKINV_Frame4InfoScrollScrollBar)
+	SkinControl("HandleButton", ARKINV_Frame4InfoSave)
+	SkinControl("HandleScrollBar", ARKINV_Frame4InfoScrollScrollBar)
 
 	-- Search Frame
-	ARKINV_SearchTitleBackground:Kill()
-	ARKINV_SearchFrameBackground:Kill()
+	SkinFrame(ARKINV_SearchTitleBackground, "Kill")
+	SkinFrame(ARKINV_SearchFrameBackground, "Kill")
 
-	ARKINV_SearchTitle:SetTemplate("Transparent")
-	ARKINV_SearchFrame:SetTemplate("Transparent")
+	SkinFrame(ARKINV_SearchTitle, "SetTemplate", "Transparent")
+	SkinFrame(ARKINV_SearchFrame, "SetTemplate", "Transparent")
 
-	ARKINV_Rules:SetHeight(570)
-	ARKINV_SearchFrame:Point("TOPLEFT", ARKINV_SearchTitle, "BOTTOMLEFT", 0, 1)
+	SkinFrame(ARKINV_Rules, "SetHeight", 570)
+	SkinFrame(ARKINV_SearchFrame, "Point", "TOPLEFT", ARKINV_SearchTitle, "BOTTOMLEFT", 0, 1)
 
-	S:HandleCloseButton(ARKINV_SearchTitleClose)
-	S:HandleEditBox(ARKINV_SearchFrameViewSearchFilter)
-	S:HandleScrollBar(ARKINV_SearchFrameViewTableScrollScrollBar)
+	SkinControl("HandleCloseButton", ARKINV_SearchTitleClose)
+	SkinControl("HandleEditBox", ARKINV_SearchFrameViewSearchFilter)
+	SkinControl("HandleScrollBar", ARKINV_SearchFrameViewTableScrollScrollBar)
 
 	AS:SkinLibrary("ArkDewdrop-3.0")
 end)
@@ -215,44 +224,44 @@ S:AddCallbackForAddon("ArkInventoryRules", "ArkInventoryRules", function()
 	ArkInventoryRules.Frame_Rules_Paint_Border = E.noop
 
 	-- Rules
-	ARKINV_RulesTitleBackground:Kill()
-	ARKINV_RulesFrameBackground:Kill()
+	SkinFrame(ARKINV_RulesTitleBackground, "Kill")
+	SkinFrame(ARKINV_RulesFrameBackground, "Kill")
 
-	ARKINV_RulesTitle:SetTemplate("Transparent")
-	ARKINV_RulesFrame:SetTemplate("Transparent")
+	SkinFrame(ARKINV_RulesTitle, "SetTemplate", "Transparent")
+	SkinFrame(ARKINV_RulesFrame, "SetTemplate", "Transparent")
 
-	ARKINV_RulesFrameViewSearch:SetTemplate("Transparent")
-	ARKINV_RulesFrameViewTable:SetTemplate("Transparent")
+	SkinFrame(ARKINV_RulesFrameViewSearch, "SetTemplate", "Transparent")
+	SkinFrame(ARKINV_RulesFrameViewTable, "SetTemplate", "Transparent")
 
-	ARKINV_RulesFrame:Point("TOPLEFT", ARKINV_RulesTitle, "BOTTOMLEFT", 0, 1)
-	ARKINV_RulesFrameViewTitle:SetPoint("TOP")
+	SkinFrame(ARKINV_RulesFrame, "Point", "TOPLEFT", ARKINV_RulesTitle, "BOTTOMLEFT", 0, 1)
+	SkinFrame(ARKINV_RulesFrameViewTitle, "SetPoint", "TOP")
 
-	S:HandleCloseButton(ARKINV_RulesTitleClose)
+	SkinControl("HandleCloseButton", ARKINV_RulesTitleClose)
 
-	S:HandleEditBox(ARKINV_RulesFrameViewSearchFilter)
-	S:HandleScrollBar(ARKINV_RulesFrameViewTableScrollScrollBar)
+	SkinControl("HandleEditBox", ARKINV_RulesFrameViewSearchFilter)
+	SkinControl("HandleScrollBar", ARKINV_RulesFrameViewTableScrollScrollBar)
 
-	S:HandleButton(ARKINV_RulesFrameViewMenuAdd)
-	S:HandleButton(ARKINV_RulesFrameViewMenuEdit)
-	S:HandleButton(ARKINV_RulesFrameViewMenuRemove)
+	SkinControl("HandleButton", ARKINV_RulesFrameViewMenuAdd)
+	SkinControl("HandleButton", ARKINV_RulesFrameViewMenuEdit)
+	SkinControl("HandleButton", ARKINV_RulesFrameViewMenuRemove)
 
 	-- Add Rule
-	ARKINV_RulesFrameModifyTitle:SetPoint("TOP")
+	SkinFrame(ARKINV_RulesFrameModifyTitle, "SetPoint", "TOP")
 
-	S:HandleCheckBox(ARKINV_RulesFrameModifyDataEnabled)
+	SkinControl("HandleCheckBox", ARKINV_RulesFrameModifyDataEnabled)
 
-	ARKINV_RulesFrameModifyDataOrder:Height(22)
-	S:HandleEditBox(ARKINV_RulesFrameModifyDataOrder)
-	ARKINV_RulesFrameModifyDataDescription:Height(22)
-	S:HandleEditBox(ARKINV_RulesFrameModifyDataDescription)
+	SkinFrame(ARKINV_RulesFrameModifyDataOrder, "Height", 22)
+	SkinControl("HandleEditBox", ARKINV_RulesFrameModifyDataOrder)
+	SkinFrame(ARKINV_RulesFrameModifyDataDescription, "Height", 22)
+	SkinControl("HandleEditBox", ARKINV_RulesFrameModifyDataDescription)
 
-	ARKINV_RulesFrameModifyDataScrollTextBorder:SetTemplate("Transparent")
+	SkinFrame(ARKINV_RulesFrameModifyDataScrollTextBorder, "SetTemplate", "Transparent")
 
-	S:HandleScrollBar(ARKINV_RulesFrameModifyDataScrollScrollBar)
+	SkinControl("HandleScrollBar", ARKINV_RulesFrameModifyDataScrollScrollBar)
 
-	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("TOPLEFT", ARKINV_RulesFrameModifyDataScroll, "TOPRIGHT", 8, -13)
-	ARKINV_RulesFrameModifyDataScrollScrollBar:Point("BOTTOMLEFT", ARKINV_RulesFrameModifyDataScroll, "BOTTOMRIGHT", 8, 13)
+	SkinFrame(ARKINV_RulesFrameModifyDataScrollScrollBar, "Point", "TOPLEFT", ARKINV_RulesFrameModifyDataScroll, "TOPRIGHT", 8, -13)
+	SkinFrame(ARKINV_RulesFrameModifyDataScrollScrollBar, "Point", "BOTTOMLEFT", ARKINV_RulesFrameModifyDataScroll, "BOTTOMRIGHT", 8, 13)
 
-	S:HandleButton(ARKINV_RulesFrameModifyMenuOk)
-	S:HandleButton(ARKINV_RulesFrameModifyMenuCancel)
+	SkinControl("HandleButton", ARKINV_RulesFrameModifyMenuOk)
+	SkinControl("HandleButton", ARKINV_RulesFrameModifyMenuCancel)
 end)

@@ -1,5 +1,14 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("TrinketMenu") then return end
@@ -18,20 +27,20 @@ S:AddCallbackForAddon("TrinketMenu", "TrinketMenu", function()
 	TrinketMenu.WriteMenuCooldowns = E.noop
 	TrinketMenu.WriteCooldown = E.noop
 
-	TrinketMenu_MainFrame:SetTemplate("Transparent", nil, true)
-	TrinketMenu_MenuFrame:SetTemplate("Transparent", nil, true)
+	SkinFrame(TrinketMenu_MainFrame, "SetTemplate", "Transparent", nil, true)
+	SkinFrame(TrinketMenu_MenuFrame, "SetTemplate", "Transparent", nil, true)
 
 	hooksecurefunc(TrinketMenu, "ReflectLock", function()
 		if TrinketMenuOptions.Locked == "ON" then return end
 
 		local r, g, b = unpack(E.media.bordercolor)
-		TrinketMenu_MainFrame:SetBackdropBorderColor(r, g, b, 1)
-		TrinketMenu_MenuFrame:SetBackdropBorderColor(r, g, b, 1)
+		SkinFrame(TrinketMenu_MainFrame, "SetBackdropBorderColor", r, g, b, 1)
+		SkinFrame(TrinketMenu_MenuFrame, "SetBackdropBorderColor", r, g, b, 1)
 
 		local a
 		r, g, b, a = unpack(E.media.backdropfadecolor)
-		TrinketMenu_MainFrame:SetBackdropColor(r, g, b, a)
-		TrinketMenu_MenuFrame:SetBackdropColor(r, g, b, a)
+		SkinFrame(TrinketMenu_MainFrame, "SetBackdropColor", r, g, b, a)
+		SkinFrame(TrinketMenu_MenuFrame, "SetBackdropColor", r, g, b, a)
 	end)
 
 	local AB = E:GetModule("ActionBars")
@@ -40,7 +49,7 @@ S:AddCallbackForAddon("TrinketMenu", "TrinketMenu", function()
 		local name = button:GetName()
 		local cooldown = _G[name .. "Cooldown"]
 
-		AB:StyleButton(button)
+		SkinFrame(AB, "StyleButton", button)
 
 		cooldown.timer = E:CreateCooldownTimer(cooldown)
 		_G[name .. "Time"] = cooldown.timer.text

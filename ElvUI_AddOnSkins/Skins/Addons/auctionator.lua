@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Auctionator") then return end
@@ -19,64 +28,64 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 	if not E.private.addOnSkins.Auctionator then return end
 
 	-- Error Frame
-	Atr_Error_Frame:SetTemplate("Transparent")
-	S:HandleButton((Atr_Error_Frame:GetChildren()))
+	SkinFrame(Atr_Error_Frame, "SetTemplate", "Transparent")
+	SkinControl("HandleButton", (Atr_Error_Frame:GetChildren()))
 
 	-- BuyConfirm Frame
-	Atr_Buy_Confirm_Frame:SetTemplate("Transparent")
+	SkinFrame(Atr_Buy_Confirm_Frame, "SetTemplate", "Transparent")
 
-	S:HandleEditBox(Atr_Buy_Confirm_Numstacks)
+	SkinControl("HandleEditBox", Atr_Buy_Confirm_Numstacks)
 
-	S:HandleButton(Atr_Buy_Confirm_OKBut)
-	S:HandleButton(Atr_Buy_Confirm_CancelBut)
+	SkinControl("HandleButton", Atr_Buy_Confirm_OKBut)
+	SkinControl("HandleButton", Atr_Buy_Confirm_CancelBut)
 
 	-- Advanced Search
-	Atr_Adv_Search_Dialog:StripTextures()
-	Atr_Adv_Search_Dialog:SetTemplate("Transparent")
-	Atr_Adv_Search_Dialog:Point("TOPLEFT", 215, -183)
+	SkinFrame(Atr_Adv_Search_Dialog, "StripTextures")
+	SkinFrame(Atr_Adv_Search_Dialog, "SetTemplate", "Transparent")
+	SkinFrame(Atr_Adv_Search_Dialog, "Point", "TOPLEFT", 215, -183)
 
-	S:HandleEditBox(Atr_AS_Searchtext)
-	S:HandleEditBox(Atr_AS_Minlevel)
-	S:HandleEditBox(Atr_AS_Maxlevel)
+	SkinControl("HandleEditBox", Atr_AS_Searchtext)
+	SkinControl("HandleEditBox", Atr_AS_Minlevel)
+	SkinControl("HandleEditBox", Atr_AS_Maxlevel)
 
-	S:HandleDropDownBox(Atr_ASDD_Class, 180)
-	S:HandleDropDownBox(Atr_ASDD_Subclass, 180)
+	SkinControl("HandleDropDownBox", Atr_ASDD_Class, 180)
+	SkinControl("HandleDropDownBox", Atr_ASDD_Subclass, 180)
 
-	S:HandleButton(Atr_Adv_Search_ResetBut)
-	S:HandleButton(Atr_Adv_Search_OKBut)
-	S:HandleButton(Atr_Adv_Search_CancelBut)
+	SkinControl("HandleButton", Atr_Adv_Search_ResetBut)
+	SkinControl("HandleButton", Atr_Adv_Search_OKBut)
+	SkinControl("HandleButton", Atr_Adv_Search_CancelBut)
 
 	hooksecurefunc("Atr_FullScanAnalyze", function()
-		Atr_FullScanResults:SetBackdropColor(unpack(E.media.backdropfadecolor))
+		SkinFrame(Atr_FullScanResults, "SetBackdropColor", unpack(E.media.backdropfadecolor))
 	end)
 
 	-- Full Scan
-	Atr_FullScanFrame:StripTextures()
-	Atr_FullScanFrame:SetTemplate("Transparent")
-	Atr_FullScanFrame:Height(424)
-	Atr_FullScanFrame:Point("TOPLEFT", 215, -116)
+	SkinFrame(Atr_FullScanFrame, "StripTextures")
+	SkinFrame(Atr_FullScanFrame, "SetTemplate", "Transparent")
+	SkinFrame(Atr_FullScanFrame, "Height", 424)
+	SkinFrame(Atr_FullScanFrame, "Point", "TOPLEFT", 215, -116)
 
-	Atr_FullScanResults:SetTemplate("Transparent")
+	SkinFrame(Atr_FullScanResults, "SetTemplate", "Transparent")
 
-	S:HandleButton(Atr_FullScanStartButton)
-	S:HandleButton(Atr_FullScanDone)
+	SkinControl("HandleButton", Atr_FullScanStartButton)
+	SkinControl("HandleButton", Atr_FullScanDone)
 
 	hooksecurefunc("Atr_ShowFullScanFrame", function()
-		Atr_FullScanFrame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+		SkinFrame(Atr_FullScanFrame, "SetBackdropColor", unpack(E.media.backdropfadecolor))
 	end)
 
 	-- Check Actives
-	Atr_CheckActives_Frame:StripTextures()
-	Atr_CheckActives_Frame:SetTemplate("Transparent")
+	SkinFrame(Atr_CheckActives_Frame, "StripTextures")
+	SkinFrame(Atr_CheckActives_Frame, "SetTemplate", "Transparent")
 
 	local checkActivesButton1, checkActivesButton2 = Atr_CheckActives_Frame:GetChildren()
-	S:HandleButton(checkActivesButton1)
-	S:HandleButton(checkActivesButton2)
+	SkinControl("HandleButton", checkActivesButton1)
+	SkinControl("HandleButton", checkActivesButton2)
 
 	-- Confirm Frame
-	Atr_Confirm_Frame:SetTemplate("Transparent")
-	S:HandleButton(Atr_Confirm_Cancel)
-	S:HandleButton((select(2, Atr_Confirm_Frame:GetChildren())))
+	SkinFrame(Atr_Confirm_Frame, "SetTemplate", "Transparent")
+	SkinControl("HandleButton", Atr_Confirm_Cancel)
+	SkinControl("HandleButton", (select(2, Atr_Confirm_Frame:GetChildren())))
 
 	local SELL_TAB = 1
 	local BUY_TAB = 3
@@ -87,15 +96,15 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 
 		if Atr_IsAuctionatorTab(index) then
 			if index == Atr_FindTabIndex(BUY_TAB) then
-				Atr_Hlist:Height(242)
-				Atr_Hlist_ScrollFrame:Height(242)
+				SkinFrame(Atr_Hlist, "Height", Atr_SrchSListButton and 220 or 242)
+				SkinFrame(Atr_Hlist_ScrollFrame, "Height", Atr_SrchSListButton and 220 or 242)
 			else
-				Atr_Hlist:Height(330)
-				Atr_Hlist_ScrollFrame:Height(330)
+				SkinFrame(Atr_Hlist, "Height", 330)
+				SkinFrame(Atr_Hlist_ScrollFrame, "Height", 330)
 
 				if index == Atr_FindTabIndex(SELL_TAB) then
 					Atr_Hlist_ScrollFrame:_Hide()
-					AuctionFrameMoneyFrame:Show()
+					SkinFrame(AuctionFrameMoneyFrame, "Show")
 				end
 			end
 		end
@@ -110,20 +119,20 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 			if quality then
 				local r, g, b = GetItemQualityColor(quality)
 
-				button:SetBackdropBorderColor(r, g, b)
+				SkinFrame(button, "SetBackdropBorderColor", r, g, b)
 				if buttonName then
-					buttonName:SetTextColor(r, g, b)
+					SkinFrame(buttonName, "SetTextColor", r, g, b)
 				end
 			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				SkinFrame(button, "SetBackdropBorderColor", unpack(E.media.bordercolor))
 				if buttonName then
-					buttonName:SetTextColor(1, 0.82, 0)
+					SkinFrame(buttonName, "SetTextColor", 1, 0.82, 0)
 				end
 			end
 		else
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			SkinFrame(button, "SetBackdropBorderColor", unpack(E.media.bordercolor))
 			if buttonName then
-				buttonName:SetTextColor(1, 0.82, 0)
+				SkinFrame(buttonName, "SetTextColor", 1, 0.82, 0)
 			end
 		end
 	end)
@@ -132,11 +141,11 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		self.normalTexture:SetTexture(texture)
 	end
 	local function skinItemButtom(frame)
-		frame:StripTextures()
-		frame:SetTemplate("Default", true)
-		frame:StyleButton(nil, true)
+		SkinFrame(frame, "StripTextures")
+		SkinFrame(frame, "SetTemplate", "Default", true)
+		SkinFrame(frame, "StyleButton", nil, true)
 
-		frame:SetNormalTexture("")
+		SkinFrame(frame, "SetNormalTexture", "")
 		frame.normalTexture = frame:GetNormalTexture()
 		frame.normalTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.normalTexture:SetInside()
@@ -145,12 +154,12 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 
 	local function skinButtonHighlight(button)
 		local highlight = button:GetHighlightTexture()
-		highlight:SetTexCoord(0, 1, 0, 1)
+		SkinFrame(highlight, "SetTexCoord", 0, 1, 0, 1)
 		highlight:SetTexture(E.Media.Textures.Highlight)
 		highlight:SetVertexColor(0.9, 0.9, 0.9, 0.35)
 
 		local pushed = button:GetPushedTexture()
-		pushed:SetTexCoord(0, 1, 0, 1)
+		SkinFrame(pushed, "SetTexCoord", 0, 1, 0, 1)
 		pushed:SetTexture(E.Media.Textures.Highlight)
 		pushed:SetVertexColor(0.9, 0.9, 0.9, 0.35)
 	end
@@ -161,238 +170,291 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.auctionhouse then
 			for i = AuctionFrame.numTabs - 2, AuctionFrame.numTabs do
 				local tab = _G["AuctionFrameTab"..i]
-				S:HandleTab(tab)
-				tab:Point("LEFT", _G["AuctionFrameTab"..(i - 1)], "RIGHT", -15, 0)
+				SkinControl("HandleTab", tab)
+				SkinFrame(tab, "Point", "LEFT", _G["AuctionFrameTab"..(i - 1)], "RIGHT", -15, 0)
 			end
 		end
 
-		Atr_Main_Panel:Size(412, 424)
+		SkinFrame(Atr_Main_Panel, "Size", 412, 424)
 
-		Atr_Mask:Size(819, 422)
-		Atr_Mask:Point("TOPLEFT", 12, -117)
+		SkinFrame(Atr_Mask, "Size", 819, 422)
+		SkinFrame(Atr_Mask, "Point", "TOPLEFT", 12, -117)
 
-		AuctionatorTitle:Point("TOP", 0, -5)
+		SkinFrame(AuctionatorTitle, "Point", "TOP", 0, -5)
 
-		S:HandleButton(Atr_FullScanButton)
-		Atr_FullScanButton:Height(22)
-		Atr_FullScanButton:Point("RIGHT", Auctionator1Button, "LEFT", -5, 0)
+		SkinControl("HandleButton", Atr_FullScanButton)
+		SkinFrame(Atr_FullScanButton, "Height", 22)
+		SkinFrame(Atr_FullScanButton, "Point", "RIGHT", Auctionator1Button, "LEFT", -5, 0)
 
-		S:HandleButton(Auctionator1Button)
-		Auctionator1Button:Height(22)
-		Auctionator1Button:Point("LEFT", Atr_Search_Button, "RIGHT", 177, 0)
+		SkinControl("HandleButton", Auctionator1Button)
+		SkinFrame(Auctionator1Button, "Height", 22)
+		SkinFrame(Auctionator1Button, "Point", "LEFT", Atr_Search_Button, "RIGHT", 177, 0)
 
-		S:HandleButton(AuctionatorCloseButton)
-		S:HandleButton(Atr_CancelSelectionButton)
-		S:HandleButton(Atr_Buy1_Button)
+		SkinControl("HandleButton", AuctionatorCloseButton)
+		SkinControl("HandleButton", Atr_CancelSelectionButton)
+		SkinControl("HandleButton", Atr_Buy1_Button)
 
-		AuctionatorCloseButton:Point("BOTTOMRIGHT", 202, 8)
-		Atr_Buy1_Button:Point("RIGHT", AuctionatorCloseButton, "LEFT", -5, 0)
-		Atr_CancelSelectionButton:Point("RIGHT", Atr_Buy1_Button, "LEFT", -5, 0)
+		SkinFrame(AuctionatorCloseButton, "Point", "BOTTOMRIGHT", 202, 8)
+		SkinFrame(Atr_Buy1_Button, "Point", "RIGHT", AuctionatorCloseButton, "LEFT", -5, 0)
+		SkinFrame(Atr_CancelSelectionButton, "Point", "RIGHT", Atr_Buy1_Button, "LEFT", -5, 0)
 
 		-- Left panel
-		Atr_Hlist:StripTextures()
-		Atr_Hlist:SetTemplate("Transparent")
-		Atr_Hlist:Width(172)
-		Atr_Hlist:Point("TOPLEFT", -191, -57)
+		SkinFrame(Atr_Hlist, "StripTextures")
+		SkinFrame(Atr_Hlist, "SetTemplate", "Transparent")
+		SkinFrame(Atr_Hlist, "Width", 172)
+		SkinFrame(Atr_Hlist, "Point", "TOPLEFT", -191, -57)
 
-		Atr_Hlist_ScrollFrame:Width(172)
-		Atr_Hlist_ScrollFrame:Point("TOPLEFT", -191, -57)
+		SkinFrame(Atr_Hlist_ScrollFrame, "Width", 172)
+		SkinFrame(Atr_Hlist_ScrollFrame, "Point", "TOPLEFT", -191, -57)
 		Atr_Hlist_ScrollFrame._Hide = Atr_Hlist_ScrollFrame.Hide
 		Atr_Hlist_ScrollFrame.Hide = E.noop
 
-		S:HandleScrollBar(Atr_Hlist_ScrollFrameScrollBar)
-		Atr_Hlist_ScrollFrameScrollBar:Point("TOPLEFT", Atr_Hlist_ScrollFrame, "TOPRIGHT", 3, -19)
-		Atr_Hlist_ScrollFrameScrollBar:Point("BOTTOMLEFT", Atr_Hlist_ScrollFrame, "BOTTOMRIGHT", 3, 19)
+		SkinControl("HandleScrollBar", Atr_Hlist_ScrollFrameScrollBar)
+		SkinFrame(Atr_Hlist_ScrollFrameScrollBar, "Point", "TOPLEFT", Atr_Hlist_ScrollFrame, "TOPRIGHT", 3, -19)
+		SkinFrame(Atr_Hlist_ScrollFrameScrollBar, "Point", "BOTTOMLEFT", Atr_Hlist_ScrollFrame, "BOTTOMRIGHT", 3, 19)
 
 		for i = 1, 20 do -- ITEM_HIST_NUM_LINES
 			local button = _G["AuctionatorHEntry"..i]
 
-			button:Width(170)
+			SkinFrame(button, "Width", 170)
 			skinButtonHighlight(button)
 
-			_G["AuctionatorHEntry"..i.."_EntryText"]:Width(168)
+			SkinFrame(_G["AuctionatorHEntry"..i.."_EntryText"], "Width", 168)
 
 			if i == 1 then
-				button:Point("TOPLEFT", 1, -1)
+				SkinFrame(button, "Point", "TOPLEFT", 1, -1)
 			else
-				button:Point("TOPLEFT", 1, -1 - (i - 1) * 16)
+				SkinFrame(button, "Point", "TOPLEFT", 1, -1 - (i - 1) * 16)
 			end
 		end
 
 		-- Right panel
-		Atr_Hilite1:SetTemplate("Transparent", nil, true)
-		Atr_Hilite1:SetBackdropColor(0, 0, 0, 0)
-		Atr_Hilite1:Height(112)
-		Atr_Hilite1:Point("TOPLEFT", 5, -57)
-		Atr_Hilite1:Point("RIGHT", 202, 0)
+		SkinFrame(Atr_Hilite1, "SetTemplate", "Transparent", nil, true)
+		SkinFrame(Atr_Hilite1, "SetBackdropColor", 0, 0, 0, 0)
+		SkinFrame(Atr_Hilite1, "Height", 112)
+		SkinFrame(Atr_Hilite1, "ClearAllPoints")
+		SkinFrame(Atr_Hilite1, "Point", "TOPLEFT", 5, -57)
+		SkinFrame(Atr_Hilite1, "Point", "RIGHT", 202, 0)
 
 		skinItemButtom(Atr_RecommendItem_Tex)
 
-		AuctionatorMessageFrame:Point("TOP", 100, -65)
-		AuctionatorMessage2Frame:Point("TOP", 100, -55)
+		SkinFrame(AuctionatorMessageFrame, "Point", "TOP", 100, -65)
+		if Atr_Hilite1_btn and AuctionatorMessage2Frame and Atr_Recommend_Text then
+			-- Auctionator+ keeps the posted-item title visible with its status.
+			-- The legacy 100-high centered message lands on that title's row.
+			AuctionatorMessage2Frame:ClearAllPoints()
+			AuctionatorMessage2Frame:Point("TOPLEFT", Atr_Recommend_Text, "BOTTOMLEFT", 0, -6)
+			AuctionatorMessage2Frame:Size(525, 30)
+			AuctionatorMessage2Frame:SetJustifyH("LEFT")
+			AuctionatorMessage2Frame:SetJustifyV("TOP")
+		else
+			SkinFrame(AuctionatorMessage2Frame, "Point", "TOP", 100, -55)
+		end
 
 		for i = 1, 3 do
 			local tab = _G["Atr_ListTabsTab"..i]
-			tab:StripTextures()
-			S:HandleButton(tab)
-			tab:Height(22)
+			SkinFrame(tab, "StripTextures")
+			SkinControl("HandleButton", tab)
+			SkinFrame(tab, "Height", 22)
 
 			if i ~= 3 then
-				tab:Point("RIGHT", _G["Atr_ListTabsTab"..(i + 1)], "LEFT", -3, 0)
+				SkinFrame(tab, "Point", "RIGHT", _G["Atr_ListTabsTab"..(i + 1)], "LEFT", -3, 0)
 			end
 		end
 
-		Atr_HeadingsBar:StripTextures()
-		Atr_HeadingsBar:Point("TOPLEFT", 6, -152)
+		SkinFrame(Atr_HeadingsBar, "StripTextures")
+		SkinFrame(Atr_HeadingsBar, "Point", "TOPLEFT", 6, -152)
 		Atr_HeadingsBar:CreateBackdrop("Transparent")
 		Atr_HeadingsBar.backdrop:Point("TOPLEFT", -1, -41)
 		Atr_HeadingsBar.backdrop:Point("BOTTOMRIGHT", 3, -171)
 
-		Atr_ListTabs:Point("BOTTOMRIGHT", Atr_HeadingsBar, "TOPRIGHT", 11, -22)
+		SkinFrame(Atr_ListTabs, "Point", "BOTTOMRIGHT", Atr_HeadingsBar, "TOPRIGHT", 11, -22)
 
-		AuctionatorScrollFrame:Height(194)
-		AuctionatorScrollFrame:Point("TOPLEFT", 5, -193)
+		SkinFrame(AuctionatorScrollFrame, "Height", 194)
+		SkinFrame(AuctionatorScrollFrame, "Point", "TOPLEFT", 5, -193)
 
-		S:HandleScrollBar(AuctionatorScrollFrameScrollBar)
-		AuctionatorScrollFrameScrollBar:Point("TOPLEFT", AuctionatorScrollFrame, "TOPRIGHT", 3, -19)
-		AuctionatorScrollFrameScrollBar:Point("BOTTOMLEFT", AuctionatorScrollFrame, "BOTTOMRIGHT", 3, 19)
+		SkinControl("HandleScrollBar", AuctionatorScrollFrameScrollBar)
+		SkinFrame(AuctionatorScrollFrameScrollBar, "Point", "TOPLEFT", AuctionatorScrollFrame, "TOPRIGHT", 3, -19)
+		SkinFrame(AuctionatorScrollFrameScrollBar, "Point", "BOTTOMLEFT", AuctionatorScrollFrame, "BOTTOMRIGHT", 3, 19)
 
 		for _, tab in ipairs({Atr_Col1_Heading_Button, Atr_Col3_Heading_Button}) do
-			tab:StripTextures()
-			tab:SetNormalTexture([[Interface\Buttons\UI-SortArrow]])
-			tab:StyleButton()
+			SkinFrame(tab, "StripTextures")
+			SkinFrame(tab, "SetNormalTexture", [[Interface\Buttons\UI-SortArrow]])
+			SkinFrame(tab, "StyleButton")
 		end
 
-		AuctionatorEntry1:Point("TOPLEFT", AuctionatorScrollFrame, "TOPLEFT", 1, -1)
+		SkinFrame(AuctionatorEntry1, "Point", "TOPLEFT", AuctionatorScrollFrame, "TOPLEFT", 1, -1)
 
 		for i = 1, 12 do
 			local button = _G["AuctionatorEntry"..i]
-			button:Width(586)
+			SkinFrame(button, "Width", 586)
 			skinButtonHighlight(button)
 		end
 
-		AuctionatorScrollFrame:HookScript("OnShow", function(self)
+		SkinFrame(AuctionatorScrollFrame, "HookScript", "OnShow", function(self)
 			Atr_HeadingsBar.backdrop:Point("BOTTOMRIGHT", -18, -171)
 		end)
-		AuctionatorScrollFrame:HookScript("OnHide", function(self)
+		SkinFrame(AuctionatorScrollFrame, "HookScript", "OnHide", function(self)
 			Atr_HeadingsBar.backdrop:Point("BOTTOMRIGHT", 3, -171)
 		end)
 
 		-- Buy tab
-		S:HandleDropDownBox(Atr_DropDownSL, 221)
-		Atr_DropDownSL:Point("TOPLEFT", -211, -29)
+		SkinControl("HandleDropDownBox", Atr_DropDownSL, 221)
+		SkinFrame(Atr_DropDownSL, "Point", "TOPLEFT", -211, -29)
 
-		S:HandleEditBox(Atr_Search_Box)
-		S:HandleButton(Atr_Search_Button)
-		S:HandleButton(Atr_Adv_Search_Button)
+		SkinControl("HandleEditBox", Atr_Search_Box)
+		SkinControl("HandleButton", Atr_Search_Button)
+		SkinControl("HandleButton", Atr_Adv_Search_Button)
 
-		Atr_Search_Box:Point("TOPLEFT", 20, -32)
-		Atr_Search_Button:Point("LEFT", Atr_Search_Box, "RIGHT", 6, 0)
+		SkinFrame(Atr_Search_Box, "Point", "TOPLEFT", 20, -32)
+		SkinFrame(Atr_Search_Button, "Point", "LEFT", Atr_Search_Box, "RIGHT", 6, 0)
 
-		Atr_Adv_Search_Button:Height(22)
-		Atr_Adv_Search_Button:Point("LEFT", Atr_Search_Button, "RIGHT", 5, 0)
+		SkinFrame(Atr_Adv_Search_Button, "Height", 22)
+		SkinFrame(Atr_Adv_Search_Button, "Point", "LEFT", Atr_Search_Button, "RIGHT", 5, 0)
 
-		S:HandleButton(Atr_AddToSListButton)
-		Atr_AddToSListButton:Width(193)
-		Atr_AddToSListButton:Point("TOPLEFT", -191, -304)
+		SkinControl("HandleButton", Atr_AddToSListButton)
+		SkinFrame(Atr_AddToSListButton, "Width", 193)
+		SkinFrame(Atr_AddToSListButton, "Point", "TOPLEFT", -191, -304)
 
-		S:HandleButton(Atr_RemFromSListButton)
-		Atr_RemFromSListButton:Width(193)
-		Atr_RemFromSListButton:Point("TOPLEFT", -191, -325)
+		SkinControl("HandleButton", Atr_RemFromSListButton)
+		SkinFrame(Atr_RemFromSListButton, "Width", 193)
+		SkinFrame(Atr_RemFromSListButton, "Point", "TOPLEFT", -191, -325)
 
-		S:HandleButton(Atr_DelSListButton)
-		Atr_DelSListButton:Width(193)
-		Atr_DelSListButton:Point("TOPLEFT", -191, -346)
+		SkinControl("HandleButton", Atr_DelSListButton)
+		SkinFrame(Atr_DelSListButton, "Width", 193)
+		SkinFrame(Atr_DelSListButton, "Point", "TOPLEFT", -191, -346)
 
-		S:HandleButton(Atr_NewSListButton)
-		Atr_NewSListButton:Width(193)
-		Atr_NewSListButton:Point("TOPLEFT", -191, -367)
+		SkinControl("HandleButton", Atr_NewSListButton)
+		SkinFrame(Atr_NewSListButton, "Width", 193)
+		SkinFrame(Atr_NewSListButton, "Point", "TOPLEFT", -191, -367)
 
-		S:HandleButton(Atr_Back_Button)
-		Atr_Back_Button:Height(22)
-		Atr_Back_Button:Point("TOPLEFT", 7, 13)
+		if Atr_SrchSListButton and Atr_MngSListsButton then
+			local shoppingButtons = {Atr_AddToSListButton, Atr_RemFromSListButton,
+				Atr_SrchSListButton, Atr_MngSListsButton, Atr_NewSListButton}
+			for i, button in ipairs(shoppingButtons) do
+				SkinControl("HandleButton", button)
+				button:ClearAllPoints()
+				button:Size(193, 20)
+				button:Point("TOPLEFT", Atr_Main_Panel, "TOPLEFT", -191, -282 - (i - 1) * 22)
+			end
+			SkinControl("HandleButton", Atr_SaveThisList_Button)
+		end
+
+		SkinControl("HandleButton", Atr_Back_Button)
+		SkinFrame(Atr_Back_Button, "Height", 22)
+		SkinFrame(Atr_Back_Button, "Point", "TOPLEFT", 7, 13)
 
 		-- Sell tab
-		Atr_SellControls:SetTemplate("Transparent")
-		Atr_SellControls:Size(193, 330)
-		Atr_SellControls:Point("TOPLEFT", -191, -57)
+		SkinFrame(Atr_SellControls, "SetTemplate", "Transparent")
+		SkinFrame(Atr_SellControls, "Size", 193, 330)
+		SkinFrame(Atr_SellControls, "Point", "TOPLEFT", -191, -57)
 
 		skinItemButtom(Atr_SellControls_Tex)
-		Atr_SellControls_Tex:Point("TOPLEFT", 11, -14)
+		SkinFrame(Atr_SellControls_Tex, "Point", "TOPLEFT", 11, -14)
 
-		Atr_StackPriceText:Point("TOPLEFT", 7, -56)
-		Atr_ItemPriceText:Point("TOPLEFT", 7, -96)
+		SkinFrame(Atr_StackPriceText, "Point", "TOPLEFT", 7, -56)
+		SkinFrame(Atr_ItemPriceText, "Point", "TOPLEFT", 7, -96)
 
-		S:HandleButton(Atr_CreateAuctionButton)
-		Atr_CreateAuctionButton:Point("TOPLEFT", 4, -139)
+		SkinControl("HandleButton", Atr_CreateAuctionButton)
+		SkinFrame(Atr_CreateAuctionButton, "Point", "TOPLEFT", 4, -139)
 
-		Atr_Batch_Stacksize_Text:Point("TOPLEFT", 55, -177)
-		Atr_Batch_NumAuctions:Point("TOPLEFT", Atr_Batch_Stacksize_Text, "TOPLEFT", -41, 0)
+		SkinFrame(Atr_Batch_Stacksize_Text, "Point", "TOPLEFT", 55, -177)
+		SkinFrame(Atr_Batch_NumAuctions, "Point", "TOPLEFT", Atr_Batch_Stacksize_Text, "TOPLEFT", -41, 0)
 
-		Atr_Batch_MaxAuctions_Text:ClearAllPoints()
-		Atr_Batch_MaxAuctions_Text:Point("BOTTOM", Atr_Batch_NumAuctions, 0, -14)
-		Atr_Batch_MaxStacksize_Text:ClearAllPoints()
-		Atr_Batch_MaxStacksize_Text:Point("BOTTOM", Atr_Batch_Stacksize, 0, -14)
+		SkinFrame(Atr_Batch_MaxAuctions_Text, "ClearAllPoints")
+		SkinFrame(Atr_Batch_MaxAuctions_Text, "Point", "BOTTOM", Atr_Batch_NumAuctions, 0, -14)
+		SkinFrame(Atr_Batch_MaxStacksize_Text, "ClearAllPoints")
+		SkinFrame(Atr_Batch_MaxStacksize_Text, "Point", "BOTTOM", Atr_Batch_Stacksize, 0, -14)
 
-		Atr_StartingPriceText:Point("TOPLEFT", 13, -229)
-		Atr_StartingPriceDiscountText:Point("TOPLEFT", 10, -238)
+		SkinFrame(Atr_StartingPriceText, "Point", "TOPLEFT", 13, -229)
+		SkinFrame(Atr_StartingPriceDiscountText, "Point", "TOPLEFT", 10, -238)
 
-		Atr_Duration_Text:Point("TOPLEFT", 10, -276)
+		SkinFrame(Atr_Duration_Text, "Point", "TOPLEFT", 10, -276)
 		Atr_Duration_Text.SetPoint = E.noop
-		S:HandleDropDownBox(Atr_Duration, 130)
+		SkinControl("HandleDropDownBox", Atr_Duration, 130)
 
-		Atr_Deposit_Text:Point("TOPLEFT", 10, -304)
+		SkinFrame(Atr_Deposit_Text, "Point", "TOPLEFT", 10, -304)
+		-- Preserve Auctionator's original coin textures, size, and four-pixel
+		-- spacing. Remove only trailing blank glyphs after the final coin.
+		local function formatDeposit()
+			local text = Atr_Deposit_Text:GetText()
+			if not text or text == "" then return end
+			local cleaned = text:gsub("%s+$", "")
+			if cleaned ~= text then Atr_Deposit_Text:SetText(cleaned) end
+		end
+		hooksecurefunc("Atr_SetDepositText", formatDeposit)
+		formatDeposit()
 
-		S:HandleEditBox(Atr_StackPriceGold)
-		S:HandleEditBox(Atr_StackPriceSilver)
-		S:HandleEditBox(Atr_StackPriceCopper)
-		S:HandleEditBox(Atr_ItemPriceGold)
-		S:HandleEditBox(Atr_ItemPriceSilver)
-		S:HandleEditBox(Atr_ItemPriceCopper)
-		S:HandleEditBox(Atr_StartingPriceGold)
-		S:HandleEditBox(Atr_StartingPriceSilver)
-		S:HandleEditBox(Atr_StartingPriceCopper)
-		S:HandleEditBox(Atr_Batch_NumAuctions)
-		S:HandleEditBox(Atr_Batch_Stacksize)
+
+		SkinControl("HandleEditBox", Atr_StackPriceGold)
+		SkinControl("HandleEditBox", Atr_StackPriceSilver)
+		SkinControl("HandleEditBox", Atr_StackPriceCopper)
+		SkinControl("HandleEditBox", Atr_ItemPriceGold)
+		SkinControl("HandleEditBox", Atr_ItemPriceSilver)
+		SkinControl("HandleEditBox", Atr_ItemPriceCopper)
+		SkinControl("HandleEditBox", Atr_StartingPriceGold)
+		SkinControl("HandleEditBox", Atr_StartingPriceSilver)
+		SkinControl("HandleEditBox", Atr_StartingPriceCopper)
+		SkinControl("HandleEditBox", Atr_Batch_NumAuctions)
+		SkinControl("HandleEditBox", Atr_Batch_Stacksize)
 
 		-- More tab
-		S:HandleDropDownBox(Atr_DropDown1, 221)
-		Atr_DropDown1:Point("TOPLEFT", -211, -29)
+		SkinControl("HandleDropDownBox", Atr_DropDown1, 221)
+		SkinFrame(Atr_DropDown1, "Point", "TOPLEFT", -211, -29)
 
-		S:HandleButton(Atr_CheckActiveButton)
-		Atr_CheckActiveButton:Size(193, 22)
-		Atr_CheckActiveButton:Point("TOPLEFT", -191, -394)
+		SkinControl("HandleButton", Atr_CheckActiveButton)
+		SkinFrame(Atr_CheckActiveButton, "Size", 193, 22)
+		SkinFrame(Atr_CheckActiveButton, "Point", "TOPLEFT", -191, -394)
 
 		if Atr_CancelAllUndercutsButton then
-			S:HandleButton(Atr_CancelAllUndercutsButton)
-			Atr_CancelAllUndercutsButton:Height(22)
-			Atr_CancelAllUndercutsButton:Point("TOPLEFT", 7, -394)
+			SkinControl("HandleButton", Atr_CancelAllUndercutsButton)
+			SkinFrame(Atr_CancelAllUndercutsButton, "Height", 22)
+			SkinFrame(Atr_CancelAllUndercutsButton, "Point", "TOPLEFT", 7, -394)
+		end
+
+		-- Auctionator+ changes both sizes on tab switches, completed searches,
+		-- and clearing the sale. Replace its old anchors, then keep the real
+		-- mouse target identical to the visible rectangle on every transition.
+		if Atr_Hilite1_btn then
+			local function syncDropArea()
+				local selling = Atr_SellControls:IsShown()
+				Atr_Hilite1:ClearAllPoints()
+				Atr_Hilite1:Point("TOPLEFT", Atr_Main_Panel, "TOPLEFT", selling and 5 or -191, -57)
+				Atr_Hilite1:Point("BOTTOMRIGHT", Atr_Main_Panel, "TOPLEFT", 614, selling and -169 or -387)
+				Atr_Hilite1_btn:ClearAllPoints()
+				Atr_Hilite1_btn:SetAllPoints(Atr_Hilite1)
+			end
+			hooksecurefunc(Atr_Hilite1, "SetSize", syncDropArea)
+			hooksecurefunc(Atr_Hilite1_btn, "SetSize", syncDropArea)
+			Atr_SellControls:HookScript("OnShow", syncDropArea)
+			Atr_SellControls:HookScript("OnHide", syncDropArea)
+			syncDropArea()
 		end
 	end)
 
 	-- Config
-	Atr_BasicOptionsFrame:SetTemplate("Transparent")
-	Atr_TooltipsOptionsFrame:SetTemplate("Transparent")
-	Atr_UCConfigFrame:SetTemplate("Transparent")
-	Atr_StackingOptionsFrame:SetTemplate("Transparent")
-	Atr_ScanningOptionsFrame:SetTemplate("Transparent")
-	AuctionatorDescriptionFrame:SetTemplate("Transparent")
+	SkinFrame(Atr_BasicOptionsFrame, "SetTemplate", "Transparent")
+	SkinFrame(Atr_TooltipsOptionsFrame, "SetTemplate", "Transparent")
+	SkinFrame(Atr_UCConfigFrame, "SetTemplate", "Transparent")
+	SkinFrame(Atr_StackingOptionsFrame, "SetTemplate", "Transparent")
+	SkinFrame(Atr_ScanningOptionsFrame, "SetTemplate", "Transparent")
+	SkinFrame(AuctionatorDescriptionFrame, "SetTemplate", "Transparent")
 
-	Atr_Stacking_List:SetTemplate("Transparent")
+	SkinFrame(Atr_Stacking_List, "SetTemplate", "Transparent")
 
-	S:HandleCheckBox(AuctionatorOption_Enable_Alt_CB)
-	S:HandleCheckBox(AuctionatorOption_Open_All_Bags_CB)
-	S:HandleCheckBox(AuctionatorOption_Show_StartingPrice_CB)
-	S:HandleCheckBox(AuctionatorOption_Def_Duration_CB)
-	S:HandleCheckBox(ATR_tipsVendorOpt_CB)
-	S:HandleCheckBox(ATR_tipsAuctionOpt_CB)
-	S:HandleCheckBox(ATR_tipsDisenchantOpt_CB)
+	SkinControl("HandleCheckBox", AuctionatorOption_Enable_Alt_CB)
+	SkinControl("HandleCheckBox", AuctionatorOption_Open_All_Bags_CB)
+	SkinControl("HandleCheckBox", AuctionatorOption_Show_StartingPrice_CB)
+	SkinControl("HandleCheckBox", AuctionatorOption_Def_Duration_CB)
+	SkinControl("HandleCheckBox", ATR_tipsVendorOpt_CB)
+	SkinControl("HandleCheckBox", ATR_tipsAuctionOpt_CB)
+	SkinControl("HandleCheckBox", ATR_tipsDisenchantOpt_CB)
 
-	S:HandleDropDownBox(AuctionatorOption_Deftab)
-	S:HandleDropDownBox(Atr_tipsShiftDD)
-	S:HandleDropDownBox(Atr_deDetailsDD, 220)
-	S:HandleDropDownBox(Atr_scanLevelDD)
-	Atr_deDetailsDDText:SetJustifyH("RIGHT")
+	SkinControl("HandleDropDownBox", AuctionatorOption_Deftab)
+	SkinControl("HandleDropDownBox", Atr_tipsShiftDD)
+	SkinControl("HandleDropDownBox", Atr_deDetailsDD, 220)
+	SkinControl("HandleDropDownBox", Atr_scanLevelDD)
+	SkinFrame(Atr_deDetailsDDText, "SetJustifyH", "RIGHT")
 
 	local moneyEditBoxes = {
 		"UC_5000000_MoneyInput",
@@ -404,13 +466,13 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		"UC_500_MoneyInput",
 	}
 	for _, name in ipairs(moneyEditBoxes) do
-		S:HandleEditBox(_G[name.."Gold"])
-		S:HandleEditBox(_G[name.."Silver"])
-		S:HandleEditBox(_G[name.."Copper"])
+		SkinControl("HandleEditBox", _G[name.."Gold"])
+		SkinControl("HandleEditBox", _G[name.."Silver"])
+		SkinControl("HandleEditBox", _G[name.."Copper"])
 	end
-	S:HandleEditBox(Atr_Starting_Discount)
+	SkinControl("HandleEditBox", Atr_Starting_Discount)
 
-	S:HandleButton(Atr_UCConfigFrame_Reset)
-	S:HandleButton(Atr_StackingOptionsFrame_Edit)
-	S:HandleButton(Atr_StackingOptionsFrame_New)
+	SkinControl("HandleButton", Atr_UCConfigFrame_Reset)
+	SkinControl("HandleButton", Atr_StackingOptionsFrame_Edit)
+	SkinControl("HandleButton", Atr_StackingOptionsFrame_New)
 end)

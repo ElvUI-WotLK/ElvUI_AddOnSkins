@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Quartz") then return end
@@ -24,7 +33,7 @@ S:AddCallbackForAddon("Quartz", "Quartz", function()
 			self.IconBorder:SetOutside(self.Icon)
 			self.Icon:SetTexCoord(unpack(E.TexCoords))
 
-			self:SetBackdrop(nil)
+			SkinFrame(self, "SetBackdrop", nil)
 			self.Bar:CreateBackdrop("Transparent")
 
 			self.isSkinned = true
@@ -37,9 +46,9 @@ S:AddCallbackForAddon("Quartz", "Quartz", function()
 	end
 
 	local function SkinQuartzUnlock(self)
-		Quartz3UnlockDialog:StripTextures()
-		Quartz3UnlockDialog:SetTemplate("Transparent")
-		S:HandleButton(Quartz3UnlockDialogLock)
+		SkinFrame(Quartz3UnlockDialog, "StripTextures")
+		SkinFrame(Quartz3UnlockDialog, "SetTemplate", "Transparent")
+		SkinControl("HandleButton", Quartz3UnlockDialogLock)
 	end
 
 	hooksecurefunc(CastBar, "UNIT_SPELLCAST_START", SkinQuartzBar)

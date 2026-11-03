@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Factionizer") then return end
@@ -10,26 +19,26 @@ if not AS:IsAddonLODorEnabled("Factionizer") then return end
 S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	if not E.private.addOnSkins.Factionizer then return end
 
-	FIZ_OptionsFrame:StripTextures()
-	FIZ_OptionsFrame:SetTemplate("Transparent")
+	SkinFrame(FIZ_OptionsFrame, "StripTextures")
+	SkinFrame(FIZ_OptionsFrame, "SetTemplate", "Transparent")
 
-	FIZ_OptionsFrame:ClearAllPoints()
-	FIZ_OptionsFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
+	SkinFrame(FIZ_OptionsFrame, "ClearAllPoints")
+	SkinFrame(FIZ_OptionsFrame, "Point", "TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
 
-	S:HandleCloseButton(FIZ_OptionsFrameClose, FIZ_OptionsFrame)
+	SkinControl("HandleCloseButton", FIZ_OptionsFrameClose, FIZ_OptionsFrame)
 
-	FIZ_ReputationDetailFrame:StripTextures()
-	FIZ_ReputationDetailFrame:SetTemplate("Transparent")
+	SkinFrame(FIZ_ReputationDetailFrame, "StripTextures")
+	SkinFrame(FIZ_ReputationDetailFrame, "SetTemplate", "Transparent")
 
-	FIZ_ReputationDetailFrame:ClearAllPoints()
-	FIZ_ReputationDetailFrame:Point("TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
+	SkinFrame(FIZ_ReputationDetailFrame, "ClearAllPoints")
+	SkinFrame(FIZ_ReputationDetailFrame, "Point", "TOPLEFT", CharacterFrame.backdrop, "TOPRIGHT", -1, 0)
 
-	S:HandleCloseButton(FIZ_ReputationDetailCloseButton, FIZ_ReputationDetailFrame)
+	SkinControl("HandleCloseButton", FIZ_ReputationDetailCloseButton, FIZ_ReputationDetailFrame)
 
-	S:HandleSliderFrame(FIZ_ChatFrameSlider)
+	SkinControl("HandleSliderFrame", FIZ_ChatFrameSlider)
 
-	FIZ_UpdateListScrollFrame:SetTemplate("Transparent")
-	S:HandleScrollBar(FIZ_UpdateListScrollFrameScrollBar)
+	SkinFrame(FIZ_UpdateListScrollFrame, "SetTemplate", "Transparent")
+	SkinControl("HandleScrollBar", FIZ_UpdateListScrollFrameScrollBar)
 
 	local buttons = {
 		FIZ_OptionsButton,
@@ -58,24 +67,24 @@ S:AddCallbackForAddon("Factionizer", "Factionizer", function()
 	}
 
 	for _, button in ipairs(buttons) do
-		S:HandleButton(button)
+		SkinControl("HandleButton", button)
 	end
 	for _, checkbox in ipairs(checkboxes) do
-		S:HandleCheckBox(checkbox)
+		SkinControl("HandleCheckBox", checkbox)
 	end
 
-	FIZ_OptionsButton:Point("TOPRIGHT", -40, -35)
+	SkinFrame(FIZ_OptionsButton, "Point", "TOPRIGHT", -40, -35)
 
-	FIZ_UpdateListScrollFrame:Point("TOPLEFT", FIZ_ReputationDetailDivider2, "BOTTOMLEFT", 5, 18)
-	FIZ_UpdateListScrollFrame:Size(363, 211)
+	SkinFrame(FIZ_UpdateListScrollFrame, "Point", "TOPLEFT", FIZ_ReputationDetailDivider2, "BOTTOMLEFT", 5, 18)
+	SkinFrame(FIZ_UpdateListScrollFrame, "Size", 363, 211)
 
-	FIZ_UpdateListScrollFrameScrollBar:Point("TOPLEFT", FIZ_UpdateListScrollFrame, "TOPRIGHT", 3, -19)
-	FIZ_UpdateListScrollFrameScrollBar:Point("BOTTOMLEFT", FIZ_UpdateListScrollFrame, "BOTTOMRIGHT", 3, 19)
+	SkinFrame(FIZ_UpdateListScrollFrameScrollBar, "Point", "TOPLEFT", FIZ_UpdateListScrollFrame, "TOPRIGHT", 3, -19)
+	SkinFrame(FIZ_UpdateListScrollFrameScrollBar, "Point", "BOTTOMLEFT", FIZ_UpdateListScrollFrame, "BOTTOMRIGHT", 3, 19)
 
-	FIZ_UpdateEntry1:Point("TOPLEFT", FIZ_UpdateListScrollFrame, "TOPLEFT", 0, -1)
+	SkinFrame(FIZ_UpdateEntry1, "Point", "TOPLEFT", FIZ_UpdateListScrollFrame, "TOPLEFT", 0, -1)
 
-	FIZ_ShowAllButton:Point("TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 25)
-	FIZ_ShowNoneButton:Point("TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 0)
+	SkinFrame(FIZ_ShowAllButton, "Point", "TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 25)
+	SkinFrame(FIZ_ShowNoneButton, "Point", "TOPLEFT", FIZ_ReputationDetailDivider3, "BOTTOMLEFT", 230, 0)
 
-	FIZ_SupressNoneGlobalButton:Point("TOPLEFT", FIZ_SupressNoneFactionButton, "BOTTOMLEFT", 0, -5)
+	SkinFrame(FIZ_SupressNoneGlobalButton, "Point", "TOPLEFT", FIZ_SupressNoneFactionButton, "BOTTOMLEFT", 0, -5)
 end)

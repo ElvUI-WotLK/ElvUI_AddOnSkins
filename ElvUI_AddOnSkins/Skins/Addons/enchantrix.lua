@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Enchantrix") then return end
@@ -15,20 +24,20 @@ S:AddCallbackForAddon("Enchantrix", "Enchantrix", function()
 
 	S:SecureHook(Enchantrix_Manifest, "ShowMessage", function()
 		Enchantrix_Manifest.messageFrame:SetTemplate("Transparent")
-		S:HandleButton(Enchantrix_Manifest.messageFrame.done)
+		SkinControl("HandleButton", Enchantrix_Manifest.messageFrame.done)
 		S:Unhook(Enchantrix_Manifest, "ShowMessage")
 	end)
 
 	local function SkinAutoDePrompt(frame)
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "SetTemplate", "Transparent")
 
-		S:HandleItemButton(AutoDisenchantPromptItem, true)
+		SkinControl("HandleItemButton", AutoDisenchantPromptItem, true)
 		AutoDisenchantPromptItem:GetNormalTexture():SetInside(AutoDisenchantPromptItem.backdrop)
 		AutoDisenchantPromptItem:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
-		S:HandleButton(AutoDEPromptYes)
-		S:HandleButton(AutoDEPromptNo)
-		S:HandleButton(AutoDEPromptIgnore)
+		SkinControl("HandleButton", AutoDEPromptYes)
+		SkinControl("HandleButton", AutoDEPromptNo)
+		SkinControl("HandleButton", AutoDEPromptIgnore)
 	end
 
 	if AutoDEPromptYes then

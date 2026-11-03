@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("TellMeWhen") then return end
@@ -37,17 +46,17 @@ S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", function()
 					local icon = _G[iconName]
 
 					if icon and not icon.isSkinned then
-						icon:SetTemplate("Default")
+						SkinFrame(icon, "SetTemplate", "Default")
 
 						icon:GetRegions():SetTexture(nil)
 
-						_G[iconName .. "Texture"]:SetTexCoord(unpack(E.TexCoords))
-						_G[iconName .. "Texture"]:SetInside()
+						SkinFrame(_G[iconName .. "Texture"], "SetTexCoord", unpack(E.TexCoords))
+						SkinFrame(_G[iconName .. "Texture"], "SetInside")
 
-						_G[iconName .. "Count"]:FontTemplate()
+						SkinFrame(_G[iconName .. "Count"], "FontTemplate")
 
 						_G[iconName .. "Highlight"]:SetTexture(1, 1, 1, 0.3)
-						_G[iconName .. "Highlight"]:SetInside()
+						SkinFrame(_G[iconName .. "Highlight"], "SetInside")
 
 						E:RegisterCooldown(_G[iconName .. "Cooldown"])
 
@@ -68,15 +77,15 @@ S:AddCallbackForAddon("TellMeWhen", "TellMeWhen", function()
 					local icon = _G[iconName]
 
 					if icon and not icon.isSkinned then
-						_G[iconName]:StyleButton()
-						icon:SetTemplate("Default")
+						SkinFrame(_G[iconName], "StyleButton")
+						SkinFrame(icon, "SetTemplate", "Default")
 
 						icon:GetRegions():SetTexture(nil)
 
-						_G[iconName .. "Icon"]:SetTexCoord(unpack(E.TexCoords))
-						_G[iconName .. "Icon"]:SetInside()
+						SkinFrame(_G[iconName .. "Icon"], "SetTexCoord", unpack(E.TexCoords))
+						SkinFrame(_G[iconName .. "Icon"], "SetInside")
 
-						_G[iconName .. "Count"]:FontTemplate()
+						SkinFrame(_G[iconName .. "Count"], "FontTemplate")
 
 						E:RegisterCooldown(_G[iconName .. "Cooldown"])
 

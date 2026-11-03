@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("QuestGuru") then return end
@@ -23,8 +32,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QUESTGURU_QUESTS_DISPLAYED = 21
 
 	for i = QUESTS_DISPLAYED + 1, origCount do
-		_G["QuestGuru_QuestLogTitle"..i]:Hide()
-		_G["QuestGuru_QuestAbandonTitle"..i]:Hide()
+		SkinFrame(_G["QuestGuru_QuestLogTitle"..i], "Hide")
+		SkinFrame(_G["QuestGuru_QuestAbandonTitle"..i], "Hide")
 	end
 
 	QuestGuru_UpdateGossipFrame = E.noop
@@ -32,10 +41,10 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	QuestGuru_UpdateDetailFrame = E.noop
 	QuestGuru_QuestFrameGreetingPanel_OnShow = E.noop
 
-	QuestGuru_QuestLogFrame:Size(682, 447)
+	SkinFrame(QuestGuru_QuestLogFrame, "Size", 682, 447)
 
 	if not QuestGuru_QuestLogFrame.backdrop then
-		QuestGuru_QuestLogFrame:StripTextures()
+		SkinFrame(QuestGuru_QuestLogFrame, "StripTextures")
 		QuestGuru_QuestLogFrame:CreateBackdrop("Transparent")
 		QuestGuru_QuestLogFrame.backdrop:Point("TOPLEFT", 11, -12)
 		QuestGuru_QuestLogFrame.backdrop:Point("BOTTOMRIGHT", -1, 11)
@@ -43,137 +52,137 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 
 	S:SetUIPanelWindowInfo(QuestGuru_QuestLogFrame, "xoffset", -50)
 
-	S:HandleCloseButton(QuestGuru_QuestLogFrameCloseButton, QuestLogFrame.backdrop)
+	SkinControl("HandleCloseButton", QuestGuru_QuestLogFrameCloseButton, QuestLogFrame.backdrop)
 
-	QuestGuru_QuestLogTitleText:Point("TOP", 0, -16)
+	SkinFrame(QuestGuru_QuestLogTitleText, "Point", "TOP", 0, -16)
 
-	QuestGuruShowMapButton:StripTextures()
-	S:HandleButton(QuestGuruShowMapButton)
-	QuestGuruShowMapButton:Width(82)
-	QuestGuruShowMapButton:Point("TOPRIGHT", 1, 32)
+	SkinFrame(QuestGuruShowMapButton, "StripTextures")
+	SkinControl("HandleButton", QuestGuruShowMapButton)
+	SkinFrame(QuestGuruShowMapButton, "Width", 82)
+	SkinFrame(QuestGuruShowMapButton, "Point", "TOPRIGHT", 1, 32)
 	QuestGuruShowMapButton.text:ClearAllPoints()
 	QuestGuruShowMapButton.text:SetPoint("CENTER")
 
-	QuestGuru_QuestLogCount:StripTextures()
-	QuestGuru_QuestLogCount:Point("TOPRIGHT", -118, -23)
+	SkinFrame(QuestGuru_QuestLogCount, "StripTextures")
+	SkinFrame(QuestGuru_QuestLogCount, "Point", "TOPRIGHT", -118, -23)
 	QuestGuru_QuestLogCount.SetPoint = E.noop
 	QuestGuru_QuestLogCount:CreateBackdrop("Transparent")
 	QuestGuru_QuestLogCount.backdrop:Point("TOPLEFT", -1, 0)
 	QuestGuru_QuestLogCount.backdrop:Point("BOTTOMRIGHT", 1, -4)
 
-	S:HandleButton(QuestGuru_QuestFrameExpandCollapseButton)
-	QuestGuru_QuestFrameExpandCollapseButton:Point("TOPLEFT", 19, -39)
+	SkinControl("HandleButton", QuestGuru_QuestFrameExpandCollapseButton)
+	SkinFrame(QuestGuru_QuestFrameExpandCollapseButton, "Point", "TOPLEFT", 19, -39)
 
-	QuestGuru_QuestLogFrameTab1:StripTextures()
-	QuestGuru_QuestLogFrameTab1:SetTemplate()
-	QuestGuru_QuestLogFrameTab1:Height(24)
-	QuestGuru_QuestLogFrameTab1:Point("TOPLEFT", 40, -35)
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "StripTextures")
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "SetTemplate")
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "Height", 24)
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "Point", "TOPLEFT", 40, -35)
 	QuestGuru_QuestLogFrameTab1.SetPoint = E.noop
 	QuestGuru_QuestLogFrameTab1:SetHitRectInsets(0, 0, 0, 0)
-	QuestGuru_QuestLogFrameTab1:HookScript("OnEnter", S.SetModifiedBackdrop)
-	QuestGuru_QuestLogFrameTab1:HookScript("OnLeave", S.SetOriginalBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "HookScript", "OnEnter", S.SetModifiedBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab1, "HookScript", "OnLeave", S.SetOriginalBackdrop)
 
-	QuestGuru_QuestLogFrameTab2:StripTextures()
-	QuestGuru_QuestLogFrameTab2:SetTemplate()
-	QuestGuru_QuestLogFrameTab2:Height(24)
-	QuestGuru_QuestLogFrameTab2:Point("LEFT", QuestGuru_QuestLogFrameTab1, "RIGHT", 1, 0)
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "StripTextures")
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "SetTemplate")
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "Height", 24)
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "Point", "LEFT", QuestGuru_QuestLogFrameTab1, "RIGHT", 1, 0)
 	QuestGuru_QuestLogFrameTab2.SetPoint = E.noop
 	QuestGuru_QuestLogFrameTab2:SetHitRectInsets(0, 0, 0, 0)
-	QuestGuru_QuestLogFrameTab2:HookScript("OnEnter", S.SetModifiedBackdrop)
-	QuestGuru_QuestLogFrameTab2:HookScript("OnLeave", S.SetOriginalBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "HookScript", "OnEnter", S.SetModifiedBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "HookScript", "OnLeave", S.SetOriginalBackdrop)
 
-	QuestGuru_QuestLogTitle1:ClearAllPoints()
-	QuestGuru_QuestLogTitle1:SetPoint("TOPLEFT", QuestGuru_QuestLogListScrollFrame)
+	SkinFrame(QuestGuru_QuestLogTitle1, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestLogTitle1, "SetPoint", "TOPLEFT", QuestGuru_QuestLogListScrollFrame)
 
-	QuestGuru_QuestLogListScrollFrame:Size(305, 335)
-	QuestGuru_QuestLogListScrollFrame:ClearAllPoints()
-	QuestGuru_QuestLogListScrollFrame:Point("TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
+	SkinFrame(QuestGuru_QuestLogListScrollFrame, "Size", 305, 335)
+	SkinFrame(QuestGuru_QuestLogListScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestLogListScrollFrame, "Point", "TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
 	QuestGuru_QuestLogListScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestLogListScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
 	QuestGuru_QuestLogListScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
-	QuestGuru_QuestLogListScrollFrame:Show()
+	SkinFrame(QuestGuru_QuestLogListScrollFrame, "Show")
 	QuestGuru_QuestLogListScrollFrame.Hide = QuestGuru_QuestLogListScrollFrame.Show
 
-	S:HandleScrollBar(QuestGuru_QuestLogListScrollFrameScrollBar)
-	QuestGuru_QuestLogListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogListScrollFrame, "TOPRIGHT", 3, -17)
-	QuestGuru_QuestLogListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogListScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestLogListScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestLogListScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestLogListScrollFrame, "TOPRIGHT", 3, -17)
+	SkinFrame(QuestGuru_QuestLogListScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestLogListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	QuestGuru_QuestLogDetailScrollFrame:Size(304, 336)
-	QuestGuru_QuestLogDetailScrollFrame:ClearAllPoints()
-	QuestGuru_QuestLogDetailScrollFrame:Point("TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
-	QuestGuru_QuestLogDetailScrollFrame:StripTextures()
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrame, "Size", 304, 336)
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrame, "Point", "TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrame, "StripTextures")
 	QuestGuru_QuestLogDetailScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestLogDetailScrollFrame.backdrop:Point("TOPLEFT", 0, 1)
 	QuestGuru_QuestLogDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
-	S:HandleScrollBar(QuestGuru_QuestLogDetailScrollFrameScrollBar)
-	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestLogDetailScrollFrame, "TOPRIGHT", 3, -18)
-	QuestGuru_QuestLogDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestLogDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestLogDetailScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestLogDetailScrollFrame, "TOPRIGHT", 3, -18)
+	SkinFrame(QuestGuru_QuestLogDetailScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestLogDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	S:HandleButton(QuestGuru_QuestLogFrameAbandonButton)
-	S:HandleButton(QuestGuru_QuestFramePushQuestButton)
-	S:HandleButton(QuestGuru_QuestFrameOptionsButton)
-	S:HandleButton(QuestGuru_QuestFrameExitButton)
+	SkinControl("HandleButton", QuestGuru_QuestLogFrameAbandonButton)
+	SkinControl("HandleButton", QuestGuru_QuestFramePushQuestButton)
+	SkinControl("HandleButton", QuestGuru_QuestFrameOptionsButton)
+	SkinControl("HandleButton", QuestGuru_QuestFrameExitButton)
 
-	QuestGuru_QuestLogFrameAbandonButton:Height(22)
-	QuestGuru_QuestFramePushQuestButton:Height(22)
-	QuestGuru_QuestFrameOptionsButton:Height(22)
-	QuestGuru_QuestFrameExitButton:Height(22)
+	SkinFrame(QuestGuru_QuestLogFrameAbandonButton, "Height", 22)
+	SkinFrame(QuestGuru_QuestFramePushQuestButton, "Height", 22)
+	SkinFrame(QuestGuru_QuestFrameOptionsButton, "Height", 22)
+	SkinFrame(QuestGuru_QuestFrameExitButton, "Height", 22)
 
-	QuestGuru_QuestLogFrameAbandonButton:Point("BOTTOMLEFT", QuestGuru_QuestLogFrame, "BOTTOMLEFT", 19, 19)
-	QuestGuru_QuestFramePushQuestButton:Point("LEFT", QuestGuru_QuestLogFrameAbandonButton, "RIGHT", 3, 0)
+	SkinFrame(QuestGuru_QuestLogFrameAbandonButton, "Point", "BOTTOMLEFT", QuestGuru_QuestLogFrame, "BOTTOMLEFT", 19, 19)
+	SkinFrame(QuestGuru_QuestFramePushQuestButton, "Point", "LEFT", QuestGuru_QuestLogFrameAbandonButton, "RIGHT", 3, 0)
 
-	QuestGuru_QuestFrameExitButton:Point("BOTTOMRIGHT", -9, 19)
-	QuestGuru_QuestFrameOptionsButton:Point("RIGHT", QuestGuru_QuestFrameExitButton, "LEFT", -3, 0)
+	SkinFrame(QuestGuru_QuestFrameExitButton, "Point", "BOTTOMRIGHT", -9, 19)
+	SkinFrame(QuestGuru_QuestFrameOptionsButton, "Point", "RIGHT", QuestGuru_QuestFrameExitButton, "LEFT", -3, 0)
 
 	-- Abandoned
-	QuestGuru_QuestAbandonTitle1:ClearAllPoints()
-	QuestGuru_QuestAbandonTitle1:SetPoint("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame)
+	SkinFrame(QuestGuru_QuestAbandonTitle1, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestAbandonTitle1, "SetPoint", "TOPLEFT", QuestGuru_QuestAbandonListScrollFrame)
 
-	QuestGuru_QuestAbandonListScrollFrame:Size(305, 335)
-	QuestGuru_QuestAbandonListScrollFrame:ClearAllPoints()
-	QuestGuru_QuestAbandonListScrollFrame:Point("TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrame, "Size", 305, 335)
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrame, "Point", "TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
 	QuestGuru_QuestAbandonListScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestAbandonListScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
 	QuestGuru_QuestAbandonListScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
-	QuestGuru_QuestAbandonListScrollFrame:Show()
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrame, "Show")
 	QuestGuru_QuestAbandonListScrollFrame.Hide = QuestGuru_QuestAbandonListScrollFrame.Show
 
-	S:HandleScrollBar(QuestGuru_QuestAbandonListScrollFrameScrollBar)
-	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonListScrollFrame, "TOPRIGHT", 3, -17)
-	QuestGuru_QuestAbandonListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonListScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestAbandonListScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestAbandonListScrollFrame, "TOPRIGHT", 3, -17)
+	SkinFrame(QuestGuru_QuestAbandonListScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestAbandonListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	QuestGuru_QuestAbandonDetailScrollFrame:Size(304, 336)
-	QuestGuru_QuestAbandonDetailScrollFrame:ClearAllPoints()
-	QuestGuru_QuestAbandonDetailScrollFrame:Point("TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
-	QuestGuru_QuestAbandonDetailScrollFrame:StripTextures()
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrame, "Size", 304, 336)
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrame, "Point", "TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrame, "StripTextures")
 	QuestGuru_QuestAbandonDetailScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestAbandonDetailScrollFrame.backdrop:Point("TOPLEFT", 0, 1)
 	QuestGuru_QuestAbandonDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
-	S:HandleScrollBar(QuestGuru_QuestAbandonDetailScrollFrameScrollBar)
-	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "TOPRIGHT", 3, -18)
-	QuestGuru_QuestAbandonDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestAbandonDetailScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "TOPRIGHT", 3, -18)
+	SkinFrame(QuestGuru_QuestAbandonDetailScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestAbandonDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	S:HandleEditBox(QuestGuru_QuestAbandonSearch)
-	QuestGuru_QuestAbandonSearch:Point("LEFT", QuestGuru_QuestAbandonSearchText, "RIGHT", 4, -1)
+	SkinControl("HandleEditBox", QuestGuru_QuestAbandonSearch)
+	SkinFrame(QuestGuru_QuestAbandonSearch, "Point", "LEFT", QuestGuru_QuestAbandonSearchText, "RIGHT", 4, -1)
 
-	S:HandleButton(QuestGuru_QuestAbandonClearList)
-	QuestGuru_QuestAbandonClearList:Height(22)
-	QuestGuru_QuestAbandonClearList:Point("LEFT", QuestGuru_QuestAbandonSearch, "RIGHT", 8, 0)
+	SkinControl("HandleButton", QuestGuru_QuestAbandonClearList)
+	SkinFrame(QuestGuru_QuestAbandonClearList, "Height", 22)
+	SkinFrame(QuestGuru_QuestAbandonClearList, "Point", "LEFT", QuestGuru_QuestAbandonSearch, "RIGHT", 8, 0)
 
 	local function skinOptions(f)
 		for i = 1, f:GetNumChildren() do
 			local child = select(i, f:GetChildren())
 			if child then
 				if child:IsObjectType("CheckButton") then
-					S:HandleCheckBox(child)
+					SkinControl("HandleCheckBox", child)
 				elseif child:IsObjectType("EditBox") then
-					S:HandleEditBox(child)
+					SkinControl("HandleEditBox", child)
 				elseif child:IsObjectType("Button") then
-					S:HandleButton(child)
+					SkinControl("HandleButton", child)
 				elseif child:IsObjectType("Frame") then
-					S:HandleDropDownBox(child, 240)
+					SkinControl("HandleDropDownBox", child, 240)
 				end
 			end
 		end
@@ -184,10 +193,10 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	skinOptions(QuestGuru_AnnounceFrame)
 
 	local function skinLogEntry(questLogTitle, index)
-		questLogTitle:Width(300)
+		SkinFrame(questLogTitle, "Width", 300)
 
 		if index > 1 then
-			questLogTitle:SetPoint("TOPLEFT", _G["QuestGuru_QuestLogTitle"..(index-1)], "BOTTOMLEFT", 0, 0)
+			SkinFrame(questLogTitle, "SetPoint", "TOPLEFT", _G["QuestGuru_QuestLogTitle"..(index-1)], "BOTTOMLEFT", 0, 0)
 		end
 
 		if questLogTitle.check then
@@ -198,7 +207,7 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 			questLogTitle.check:SetHighlightTexture(nil)
 		end
 
-		S:HandleCollapseExpandButton(questLogTitle)
+		SkinControl("HandleCollapseExpandButton", questLogTitle)
 	end
 
 	for i = 1, QUESTS_DISPLAYED do
@@ -207,8 +216,8 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 	end
 
 	-- QuestStart Tooltip
-	QuestGuru_QuestStartInfoFrame:StripTextures()
-	QuestGuru_QuestStartInfoFrame:SetTemplate("Transparent")
+	SkinFrame(QuestGuru_QuestStartInfoFrame, "StripTextures")
+	SkinFrame(QuestGuru_QuestStartInfoFrame, "SetTemplate", "Transparent")
 
 	-- Quest items
 	local function updateItemQuality(self, texture)
@@ -248,16 +257,16 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 			local icon = _G[frame..i.."IconTexture"]
 			local count = _G[frame..i.."Count"]
 
-			item:StripTextures()
-			item:SetTemplate("Default")
-			item:StyleButton()
-			item:Size(143, 40)
-			item:SetFrameLevel(item:GetFrameLevel() + 2)
+			SkinFrame(item, "StripTextures")
+			SkinFrame(item, "SetTemplate", "Default")
+			SkinFrame(item, "StyleButton")
+			SkinFrame(item, "Size", 143, 40)
+			SkinFrame(item, "SetFrameLevel", item:GetFrameLevel() + 2)
 
-			icon:Size(E.PixelMode and 38 or 32)
+			SkinFrame(icon, "Size", E.PixelMode and 38 or 32)
 			icon:SetDrawLayer("OVERLAY")
-			icon:Point("TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
-			S:HandleIcon(icon)
+			SkinFrame(icon, "Point", "TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
+			SkinControl("HandleIcon", icon)
 
 			item.text = _G[frame..i.."Name"]
 			icon.parent = item
@@ -270,7 +279,7 @@ S:AddCallbackForAddon("QuestGuru", "QuestGuru", function()
 
 	do -- Fonts
 		local function fixFontColor(obj, r, g, b)
-			obj:SetTextColor(r, g, b)
+			SkinFrame(obj, "SetTextColor", r, g, b)
 			obj.SetTextColor = E.noop
 		end
 
@@ -345,59 +354,59 @@ end)
 S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 	if not E.private.addOnSkins.QuestGuru then return end
 
-	QuestGuru_QuestLogFrameTab3:StripTextures()
-	QuestGuru_QuestLogFrameTab3:SetTemplate()
-	QuestGuru_QuestLogFrameTab3:Height(24)
-	QuestGuru_QuestLogFrameTab3:Point("LEFT", QuestGuru_QuestLogFrameTab2, "RIGHT", 1, 0)
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "StripTextures")
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "SetTemplate")
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "Height", 24)
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "Point", "LEFT", QuestGuru_QuestLogFrameTab2, "RIGHT", 1, 0)
 	QuestGuru_QuestLogFrameTab3.SetPoint = E.noop
 	QuestGuru_QuestLogFrameTab3:SetHitRectInsets(0, 0, 0, 0)
-	QuestGuru_QuestLogFrameTab3:HookScript("OnEnter", S.SetModifiedBackdrop)
-	QuestGuru_QuestLogFrameTab3:HookScript("OnLeave", S.SetOriginalBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "HookScript", "OnEnter", S.SetModifiedBackdrop)
+	SkinFrame(QuestGuru_QuestLogFrameTab3, "HookScript", "OnLeave", S.SetOriginalBackdrop)
 
 	QuestGuru_QuestLogFrameTab2.SetPoint = nil
-	QuestGuru_QuestLogFrameTab2:Point("LEFT", QuestGuru_QuestLogFrameTab1, "RIGHT", 1, 0)
+	SkinFrame(QuestGuru_QuestLogFrameTab2, "Point", "LEFT", QuestGuru_QuestLogFrameTab1, "RIGHT", 1, 0)
 	QuestGuru_QuestLogFrameTab2.SetPoint = E.noop
 
-	QuestGuru_QuestHistoryTitle1:ClearAllPoints()
-	QuestGuru_QuestHistoryTitle1:SetPoint("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame)
+	SkinFrame(QuestGuru_QuestHistoryTitle1, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestHistoryTitle1, "SetPoint", "TOPLEFT", QuestGuru_QuestHistoryListScrollFrame)
 
-	QuestGuru_QuestHistoryListScrollFrame:Size(305, 335)
-	QuestGuru_QuestHistoryListScrollFrame:ClearAllPoints()
-	QuestGuru_QuestHistoryListScrollFrame:Point("TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrame, "Size", 305, 335)
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrame, "Point", "TOPLEFT", QuestGuru_QuestLogFrame, 19, -62)
 	QuestGuru_QuestHistoryListScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestHistoryListScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
 	QuestGuru_QuestHistoryListScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
-	QuestGuru_QuestHistoryListScrollFrame:Show()
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrame, "Show")
 	QuestGuru_QuestHistoryListScrollFrame.Hide = QuestGuru_QuestHistoryListScrollFrame.Show
 
-	S:HandleScrollBar(QuestGuru_QuestHistoryListScrollFrameScrollBar)
-	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryListScrollFrame, "TOPRIGHT", 3, -17)
-	QuestGuru_QuestHistoryListScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryListScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestHistoryListScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestHistoryListScrollFrame, "TOPRIGHT", 3, -17)
+	SkinFrame(QuestGuru_QuestHistoryListScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestHistoryListScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	QuestGuru_QuestHistoryDetailScrollFrame:Size(304, 336)
-	QuestGuru_QuestHistoryDetailScrollFrame:ClearAllPoints()
-	QuestGuru_QuestHistoryDetailScrollFrame:Point("TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
-	QuestGuru_QuestHistoryDetailScrollFrame:StripTextures()
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrame, "Size", 304, 336)
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrame, "ClearAllPoints")
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrame, "Point", "TOPRIGHT", QuestGuru_QuestLogFrame, -30, -61)
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrame, "StripTextures")
 	QuestGuru_QuestHistoryDetailScrollFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestHistoryDetailScrollFrame.backdrop:Point("TOPLEFT", 0, 1)
 	QuestGuru_QuestHistoryDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 0, -2)
 
-	S:HandleScrollBar(QuestGuru_QuestHistoryDetailScrollFrameScrollBar)
-	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("TOPLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "TOPRIGHT", 3, -18)
-	QuestGuru_QuestHistoryDetailScrollFrameScrollBar:Point("BOTTOMLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
+	SkinControl("HandleScrollBar", QuestGuru_QuestHistoryDetailScrollFrameScrollBar)
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrameScrollBar, "Point", "TOPLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "TOPRIGHT", 3, -18)
+	SkinFrame(QuestGuru_QuestHistoryDetailScrollFrameScrollBar, "Point", "BOTTOMLEFT", QuestGuru_QuestHistoryDetailScrollFrame, "BOTTOMRIGHT", 3, 17)
 
-	S:HandleEditBox(QuestGuru_QuestHistorySearch)
-	QuestGuru_QuestHistorySearch:Width(143)
-	QuestGuru_QuestHistorySearch:Point("LEFT", QuestGuru_QuestHistorySearchText, "RIGHT", 4, -1)
+	SkinControl("HandleEditBox", QuestGuru_QuestHistorySearch)
+	SkinFrame(QuestGuru_QuestHistorySearch, "Width", 143)
+	SkinFrame(QuestGuru_QuestHistorySearch, "Point", "LEFT", QuestGuru_QuestHistorySearchText, "RIGHT", 4, -1)
 
-	S:HandleButton(QuestGuru_HistoryListFrameShowButton)
-	QuestGuru_HistoryListFrameShowButton:Point("LEFT", QuestGuru_QuestHistorySearch, "RIGHT", 4, 0)
+	SkinControl("HandleButton", QuestGuru_HistoryListFrameShowButton)
+	SkinFrame(QuestGuru_HistoryListFrameShowButton, "Point", "LEFT", QuestGuru_QuestHistorySearch, "RIGHT", 4, 0)
 
 	local function skinLogEntry(questLogTitle, index)
-		questLogTitle:Width(300)
+		SkinFrame(questLogTitle, "Width", 300)
 
 		if index > 1 then
-			questLogTitle:SetPoint("TOPLEFT", _G["QuestGuru_QuestLogTitle"..(index-1)], "BOTTOMLEFT", 0, 0)
+			SkinFrame(questLogTitle, "SetPoint", "TOPLEFT", _G["QuestGuru_QuestLogTitle"..(index-1)], "BOTTOMLEFT", 0, 0)
 		end
 
 		if questLogTitle.check then
@@ -408,7 +417,7 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 			questLogTitle.check:SetHighlightTexture(nil)
 		end
 
-		S:HandleCollapseExpandButton(questLogTitle)
+		SkinControl("HandleCollapseExpandButton", questLogTitle)
 	end
 
 	for i = 1, QUESTS_DISPLAYED do
@@ -451,16 +460,16 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 			local icon = _G[frame..i.."IconTexture"]
 			local count = _G[frame..i.."Count"]
 
-			item:StripTextures()
-			item:SetTemplate("Default")
-			item:StyleButton()
-			item:Size(143, 40)
-			item:SetFrameLevel(item:GetFrameLevel() + 2)
+			SkinFrame(item, "StripTextures")
+			SkinFrame(item, "SetTemplate", "Default")
+			SkinFrame(item, "StyleButton")
+			SkinFrame(item, "Size", 143, 40)
+			SkinFrame(item, "SetFrameLevel", item:GetFrameLevel() + 2)
 
-			icon:Size(E.PixelMode and 38 or 32)
+			SkinFrame(icon, "Size", E.PixelMode and 38 or 32)
 			icon:SetDrawLayer("OVERLAY")
-			icon:Point("TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
-			S:HandleIcon(icon)
+			SkinFrame(icon, "Point", "TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
+			SkinControl("HandleIcon", icon)
 
 			item.text = _G[frame..i.."Name"]
 			icon.parent = item
@@ -473,7 +482,7 @@ S:AddCallbackForAddon("QuestGuru_History", "QuestGuru_History", function()
 
 	do -- Fonts
 		local function fixFontColor(obj, r, g, b)
-			obj:SetTextColor(r, g, b)
+			SkinFrame(obj, "SetTextColor", r, g, b)
 			obj.SetTextColor = E.noop
 		end
 

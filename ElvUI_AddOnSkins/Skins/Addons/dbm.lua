@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("DBM-Core") then return end
@@ -23,24 +32,24 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	local function createIconOverlay(id, parent)
 		local db = E.db.addOnSkins
 		local frame = CreateFrame("Frame", "$parentIcon" .. id .. "Overlay", parent)
-		frame:SetTemplate()
+		SkinFrame(frame, "SetTemplate")
 
 		if id == 1 then
 			if db.DBMSkinHalf then
-				frame:Point("BOTTOMRIGHT", parent, "BOTTOMLEFT", - db.dbmIconXOffset, 0)
+				SkinFrame(frame, "Point", "BOTTOMRIGHT", parent, "BOTTOMLEFT", - db.dbmIconXOffset, 0)
 			else
-				frame:Point("RIGHT", parent, "LEFT", - db.dbmIconXOffset, 0)
+				SkinFrame(frame, "Point", "RIGHT", parent, "LEFT", - db.dbmIconXOffset, 0)
 			end
 		elseif db.DBMSkinHalf then
-			frame:Point("BOTTOMLEFT", parent, "BOTTOMRIGHT", db.dbmIconXOffset, 0)
+			SkinFrame(frame, "Point", "BOTTOMLEFT", parent, "BOTTOMRIGHT", db.dbmIconXOffset, 0)
 		else
-			frame:Point("LEFT", parent, "RIGHT", db.dbmIconXOffset, 0)
+			SkinFrame(frame, "Point", "LEFT", parent, "RIGHT", db.dbmIconXOffset, 0)
 		end
 
 		local backdroptex = frame:CreateTexture(nil, "BORDER")
 		backdroptex:SetTexture("Interface\\Icons\\Spell_Nature_WispSplode")
-		backdroptex:SetInside(frame)
-		backdroptex:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(backdroptex, "SetInside", frame)
+		SkinFrame(backdroptex, "SetTexCoord", unpack(E.TexCoords))
 
 		return frame
 	end
@@ -63,8 +72,8 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 		local barHeight = (backportVersion2 and (self.enlarged and self.owner.options.HugeHeight or self.owner.options.Height) or db.dbmBarHeight) * scale
 		local fontSize = db.dbmFontSize * scale
 
-		background:Hide()
-		spark:Hide()
+		SkinFrame(background, "Hide")
+		SkinFrame(spark, "Hide")
 		frame._SetPoint = frame.SetPoint
 
 		self._bar = bar
@@ -76,30 +85,30 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 		if not icon1.overlay then
 			icon1.overlay = createIconOverlay(1, frame)
-			icon1:SetTexCoord(unpack(E.TexCoords))
+			SkinFrame(icon1, "SetTexCoord", unpack(E.TexCoords))
 			icon1:SetParent(icon1.overlay)
-			icon1:SetInside(icon1.overlay)
+			SkinFrame(icon1, "SetInside", icon1.overlay)
 		end
 		if not icon2.overlay then
 			icon2.overlay = createIconOverlay(2, frame)
-			icon2:SetTexCoord(unpack(E.TexCoords))
+			SkinFrame(icon2, "SetTexCoord", unpack(E.TexCoords))
 			icon2:SetParent(icon2.overlay)
-			icon2:SetInside(icon2.overlay)
+			SkinFrame(icon2, "SetInside", icon2.overlay)
 		end
 
-		frame:SetScale(1)
-		frame:SetTemplate(db.dbmTemplate)
+		SkinFrame(frame, "SetScale", 1)
+		SkinFrame(frame, "SetTemplate", db.dbmTemplate)
 
-		bar:SetInside(frame)
+		SkinFrame(bar, "SetInside", frame)
 
-		frame:Size(barWidth, db.DBMSkinHalf and barHeight / 3 or barHeight)
-		bar:Size(barWidth, barHeight)
+		SkinFrame(frame, "Size", barWidth, db.DBMSkinHalf and barHeight / 3 or barHeight)
+		SkinFrame(bar, "Size", barWidth, barHeight)
 
 		icon1.overlay:Size(barHeight)
 		icon2.overlay:Size(barHeight)
 
-		name:ClearAllPoints()
-		timer:ClearAllPoints()
+		SkinFrame(name, "ClearAllPoints")
+		SkinFrame(timer, "ClearAllPoints")
 
 		if db.DBMSkinHalf then
 			if not self.owner.options.BarYOffset or self.owner.options.BarYOffset < 20 then
@@ -110,22 +119,22 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 				self.owner.options.HugeBarYOffset = 20
 			end
 
-			name:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+			SkinFrame(name, "Point", "BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
 			if backportVersion then
-				name:Point("BOTTOMRIGHT", timer, "BOTTOMLEFT")
+				SkinFrame(name, "Point", "BOTTOMRIGHT", timer, "BOTTOMLEFT")
 			end
-			timer:Point("BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
+			SkinFrame(timer, "Point", "BOTTOMRIGHT", frame, "TOPRIGHT", 1, 3)
 		else
-			name:Point("LEFT", 5, 0)
+			SkinFrame(name, "Point", "LEFT", 5, 0)
 			if backportVersion then
-				name:Point("RIGHT", timer, "LEFT")
+				SkinFrame(name, "Point", "RIGHT", timer, "LEFT")
 			end
-			timer:Point("RIGHT", -5, 0)
+			SkinFrame(timer, "Point", "RIGHT", -5, 0)
 		end
 
 		if not backportVersion then
-			name:SetFont(self._font, fontSize, db.dbmFontOutline)
-			timer:SetFont(self._font, fontSize, db.dbmFontOutline)
+			SkinFrame(name, "SetFont", self._font, fontSize, db.dbmFontOutline)
+			SkinFrame(timer, "SetFont", self._font, fontSize, db.dbmFontOutline)
 		end
 
 		if self.owner.options.IconLeft then
@@ -151,7 +160,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 					local spark = _G[bar.frame:GetName().."BarSpark"]
 					spark:SetSize(12, ((bar.enlarged and DBT.Options.HugeHeight or DBT.Options.Height) * 3) - 2)
 					local a, b, c, d = spark:GetPoint()
-					spark:SetPoint(a, b, c, d, 0)
+					SkinFrame(spark, "SetPoint", a, b, c, d, 0)
 				end)
 				hooksecurefunc(bar, "ApplyStyle", function()
 					local db = E.db.addOnSkins
@@ -168,42 +177,42 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 					if not icon1.overlay then
 						icon1.overlay = createIconOverlay(1, frame)
-						icon1:SetTexCoord(unpack(E.TexCoords))
+						SkinFrame(icon1, "SetTexCoord", unpack(E.TexCoords))
 						icon1:SetParent(icon1.overlay)
-						icon1:SetInside(icon1.overlay)
+						SkinFrame(icon1, "SetInside", icon1.overlay)
 					end
 					icon1.overlay:SetSize(iconSize, iconSize)
 
 					if not icon2.overlay then
 						icon2.overlay = createIconOverlay(2, frame)
-						icon2:SetTexCoord(unpack(E.TexCoords))
+						SkinFrame(icon2, "SetTexCoord", unpack(E.TexCoords))
 						icon2:SetParent(icon2.overlay)
-						icon2:SetInside(icon2.overlay)
+						SkinFrame(icon2, "SetInside", icon2.overlay)
 					end
 					icon2.overlay:SetSize(iconSize, iconSize)
 
-					frame:SetTemplate(db.dbmTemplate)
+					SkinFrame(frame, "SetTemplate", db.dbmTemplate)
 
-					tbar:SetInside(frame)
+					SkinFrame(tbar, "SetInside", frame)
 
-					name:ClearAllPoints()
-					name:SetWidth(165)
-					name:SetHeight(8)
-					name:SetJustifyH("LEFT")
+					SkinFrame(name, "ClearAllPoints")
+					SkinFrame(name, "SetWidth", 165)
+					SkinFrame(name, "SetHeight", 8)
+					SkinFrame(name, "SetJustifyH", "LEFT")
 					name:SetShadowColor(0, 0, 0, 0)
 
-					timer:ClearAllPoints()
-					timer:SetJustifyH("RIGHT")
+					SkinFrame(timer, "ClearAllPoints")
+					SkinFrame(timer, "SetJustifyH", "RIGHT")
 					timer:SetShadowColor(0, 0, 0, 0)
 
 					if db.DBMSkinHalf then
-						name:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 0, db.dbmBarTextYOffset)
-						name:SetPoint("BOTTOMRIGHT", timer, "BOTTOMLEFT") -- truncation
-						timer:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", -1, 1)
+						SkinFrame(name, "SetPoint", "BOTTOMLEFT", frame, "TOPLEFT", 0, db.dbmBarTextYOffset)
+						SkinFrame(name, "SetPoint", "BOTTOMRIGHT", timer, "BOTTOMLEFT") -- truncation
+						SkinFrame(timer, "SetPoint", "BOTTOMRIGHT", frame, "TOPRIGHT", -1, 1)
 					else
-						name:SetPoint("LEFT", frame, "LEFT", 4, 0)
-						name:SetPoint("RIGHT", timer, "LEFT") -- truncation
-						timer:SetPoint("RIGHT", frame, "RIGHT", -4, 0)
+						SkinFrame(name, "SetPoint", "LEFT", frame, "LEFT", 4, 0)
+						SkinFrame(name, "SetPoint", "RIGHT", timer, "LEFT") -- truncation
+						SkinFrame(timer, "SetPoint", "RIGHT", frame, "RIGHT", -4, 0)
 					end
 
 					if DBT.Options.IconLeft then icon1.overlay:Show() else icon1.overlay:Hide() end
@@ -397,29 +406,29 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 			name = _G[barName .. "BarName"]
 			timer = _G[barName .. "BarTimer"]
 
-			bar:ClearAllPoints()
+			SkinFrame(bar, "ClearAllPoints")
 
-			bar:Height(db.dbmBarHeight)
-			bar:SetTemplate("Transparent")
+			SkinFrame(bar, "Height", db.dbmBarHeight)
+			SkinFrame(bar, "SetTemplate", "Transparent")
 
-			background:SetNormalTexture(nil)
+			SkinFrame(background, "SetNormalTexture", nil)
 
 			progress:SetStatusBarTexture(E.media.normTex)
-			progress:ClearAllPoints()
-			progress:SetInside(bar)
+			SkinFrame(progress, "ClearAllPoints")
+			SkinFrame(progress, "SetInside", bar)
 
-			name:ClearAllPoints()
-			name:Point("LEFT", bar, "LEFT", 4, 0)
-			name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+			SkinFrame(name, "ClearAllPoints")
+			SkinFrame(name, "Point", "LEFT", bar, "LEFT", 4, 0)
+			SkinFrame(name, "SetFont", E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
 
-			timer:ClearAllPoints()
-			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
-			timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
+			SkinFrame(timer, "ClearAllPoints")
+			SkinFrame(timer, "Point", "RIGHT", bar, "RIGHT", -4, 0)
+			SkinFrame(timer, "SetFont", E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline)
 
 			if DBM.Options.HealthFrameGrowUp then
-				bar:Point(point1, anchor, point2, 0, count == 1 and 8 or 4)
+				SkinFrame(bar, "Point", point1, anchor, point2, 0, count == 1 and 8 or 4)
 			else
-				bar:Point(point1, anchor, point2, 0, -(count == 1 and 8 or 4))
+				SkinFrame(bar, "Point", point1, anchor, point2, 0, -(count == 1 and 8 or 4))
 			end
 
 			count = count + 1
@@ -434,7 +443,7 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 	S:SecureHook(DBM.RangeCheck, "Show", function(self)
 		if not DBMRangeCheck then return end
 
-		DBMRangeCheck:SetTemplate("Transparent")
+		SkinFrame(DBMRangeCheck, "SetTemplate", "Transparent")
 		E:GetModule("Tooltip"):HookScript(DBMRangeCheck, "OnShow", "SetStyle")
 
 		S:Unhook(self, "Show")
@@ -460,19 +469,19 @@ S:AddCallbackForAddon("DBM-Core", "DBM-Core", function()
 
 	if DBM.ShowUpdateReminder then
 		S:SecureHook(DBM, "ShowUpdateReminder", function(self)
-			DBMUpdateReminder:SetTemplate("Transparent")
+			SkinFrame(DBMUpdateReminder, "SetTemplate", "Transparent")
 			DBMUpdateReminder:EnableMouse(true)
 
 			local editBox, button = DBMUpdateReminder:GetChildren()
 
 			local left, right, middle = select(6, DBMUpdateReminder:GetChildren():GetRegions())
-			left:Hide()
-			right:Hide()
-			middle:Hide()
-			editBox:Height(22)
-			S:HandleEditBox(editBox)
+			SkinFrame(left, "Hide")
+			SkinFrame(right, "Hide")
+			SkinFrame(middle, "Hide")
+			SkinFrame(editBox, "Height", 22)
+			SkinControl("HandleEditBox", editBox)
 
-			S:HandleButton(button)
+			SkinControl("HandleButton", button)
 
 			S:Unhook(self, "ShowUpdateReminder")
 		end)
@@ -483,52 +492,52 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 	if not E.private.addOnSkins.DBM then return end
 	local backportVersion2 = DBM.ReleaseRevision >= 20220412000000 -- 9.2.14
 
-	DBM_GUI_OptionsFrame:SetTemplate("Transparent")
+	SkinFrame(DBM_GUI_OptionsFrame, "SetTemplate", "Transparent")
 
-	DBM_GUI_OptionsFrameHeader:Point("TOP", 0, 7)
-	DBM_GUI_OptionsFrameHeader:Hide()
+	SkinFrame(DBM_GUI_OptionsFrameHeader, "Point", "TOP", 0, 7)
+	SkinFrame(DBM_GUI_OptionsFrameHeader, "Hide")
 
-	DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent")
+	SkinFrame(DBM_GUI_OptionsFramePanelContainer, "SetTemplate", "Transparent")
 
 	if backportVersion2 then
 		for i = 1, #DBM_GUI.tabs do -- can be variable
-			S:HandleTab(_G["DBM_GUI_OptionsFrameTab" .. i])
+			SkinControl("HandleTab", _G["DBM_GUI_OptionsFrameTab" .. i])
 		end
 	else
-		S:HandleTab(DBM_GUI_OptionsFrameTab1)
-		S:HandleTab(DBM_GUI_OptionsFrameTab2)
+		SkinControl("HandleTab", DBM_GUI_OptionsFrameTab1)
+		SkinControl("HandleTab", DBM_GUI_OptionsFrameTab2)
 	end
 
-	DBM_GUI_OptionsFrameTab1:Point("BOTTOMLEFT", backportVersion2 and DBM_GUI_OptionsFrameList or DBM_GUI_OptionsFrameBossMods, "TOPLEFT", 6, -4)
-	DBM_GUI_OptionsFrameTab1Text:SetPoint("CENTER", 0, 0)
-	DBM_GUI_OptionsFrameTab2Text:SetPoint("CENTER", 0, 0)
+	SkinFrame(DBM_GUI_OptionsFrameTab1, "Point", "BOTTOMLEFT", backportVersion2 and DBM_GUI_OptionsFrameList or DBM_GUI_OptionsFrameBossMods, "TOPLEFT", 6, -4)
+	SkinFrame(DBM_GUI_OptionsFrameTab1Text, "SetPoint", "CENTER", 0, 0)
+	SkinFrame(DBM_GUI_OptionsFrameTab2Text, "SetPoint", "CENTER", 0, 0)
 
-	S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar)
-	DBM_GUI_OptionsFramePanelContainerFOVScrollBar:Point("TOPRIGHT", 18, -16)
-	DBM_GUI_OptionsFramePanelContainerFOVScrollBar:Point("BOTTOMRIGHT", 18, 14)
+	SkinControl("HandleScrollBar", DBM_GUI_OptionsFramePanelContainerFOVScrollBar)
+	SkinFrame(DBM_GUI_OptionsFramePanelContainerFOVScrollBar, "Point", "TOPRIGHT", 18, -16)
+	SkinFrame(DBM_GUI_OptionsFramePanelContainerFOVScrollBar, "Point", "BOTTOMRIGHT", 18, 14)
 
-	S:HandleButton(DBM_GUI_OptionsFrameOkay)
+	SkinControl("HandleButton", DBM_GUI_OptionsFrameOkay)
 
 	if DBM_GUI_OptionsFrameWebsiteButton then
-		S:HandleButton(DBM_GUI_OptionsFrameWebsiteButton)
+		SkinControl("HandleButton", DBM_GUI_OptionsFrameWebsiteButton)
 	end
 
 	if backportVersion2 then
 		for _, button in ipairs(DBM_GUI_OptionsFrameList.buttons) do
-			S:HandleCollapseTexture(button.toggle)
+			SkinControl("HandleCollapseTexture", button.toggle)
 		end
 
 		-- Panel Container FOV Scrollbar backdrop
 		local child = select(3, DBM_GUI_OptionsFramePanelContainerFOVScrollBar:GetChildren())
 		if child and child:IsObjectType("Frame") then
-			child:StripTextures()
+			SkinFrame(child, "StripTextures")
 		end
 
 		-- Dropdown list & scrollbar
-		DBM_GUI_DropDownList:StripTextures() -- removes UI-Tooltip-Border
-		S:HandleScrollBar(DBM_GUI_DropDownListScrollBar) -- original position and size are ruined, so rebuild them below
-		DBM_GUI_DropDownListScrollBar:Point("TOPRIGHT", -3, -16)
-		DBM_GUI_DropDownListScrollBar:Point("BOTTOMLEFT", 2, 16)
+		SkinFrame(DBM_GUI_DropDownList, "StripTextures") -- removes UI-Tooltip-Border
+		SkinControl("HandleScrollBar", DBM_GUI_DropDownListScrollBar) -- original position and size are ruined, so rebuild them below
+		SkinFrame(DBM_GUI_DropDownListScrollBar, "Point", "TOPRIGHT", -3, -16)
+		SkinFrame(DBM_GUI_DropDownListScrollBar, "Point", "BOTTOMLEFT", 2, 16)
 		DBM_GUI_DropDownListScrollBarScrollUpButton:SetSize(12, 12)
 		DBM_GUI_DropDownListScrollBarScrollDownButton:SetSize(12, 12)
 		DBM_GUI_DropDownListScrollBarThumbTexture:SetSize(14, 18)
@@ -536,38 +545,38 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 
 	S:SecureHookScript(DBM_GUI_OptionsFrame, "OnShow", function(self)
 		if backportVersion2 then
-			DBM_GUI_OptionsFrameList:StripTextures()
-			DBM_GUI_OptionsFrameList:SetTemplate("Transparent")
+			SkinFrame(DBM_GUI_OptionsFrameList, "StripTextures")
+			SkinFrame(DBM_GUI_OptionsFrameList, "SetTemplate", "Transparent")
 
-			DBM_GUI_OptionsFrameListList:StripTextures()
-			S:HandleScrollBar(DBM_GUI_OptionsFrameListListScrollBar)
-			DBM_GUI_OptionsFrameListListScrollBar:Point("TOPRIGHT", 1, -18)
-			DBM_GUI_OptionsFrameListListScrollBar:Point("BOTTOMLEFT", 7, 18)
+			SkinFrame(DBM_GUI_OptionsFrameListList, "StripTextures")
+			SkinControl("HandleScrollBar", DBM_GUI_OptionsFrameListListScrollBar)
+			SkinFrame(DBM_GUI_OptionsFrameListListScrollBar, "Point", "TOPRIGHT", 1, -18)
+			SkinFrame(DBM_GUI_OptionsFrameListListScrollBar, "Point", "BOTTOMLEFT", 7, 18)
 
 		else
-			DBM_GUI_OptionsFrameBossMods:StripTextures()
-			DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent")
+			SkinFrame(DBM_GUI_OptionsFrameBossMods, "StripTextures")
+			SkinFrame(DBM_GUI_OptionsFrameBossMods, "SetTemplate", "Transparent")
 
-			DBM_GUI_OptionsFrameBossModsList:StripTextures()
-			S:HandleScrollBar(DBM_GUI_OptionsFrameBossModsListScrollBar)
-			DBM_GUI_OptionsFrameBossModsListScrollBar:Point("TOPRIGHT", 1, -18)
-			DBM_GUI_OptionsFrameBossModsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+			SkinFrame(DBM_GUI_OptionsFrameBossModsList, "StripTextures")
+			SkinControl("HandleScrollBar", DBM_GUI_OptionsFrameBossModsListScrollBar)
+			SkinFrame(DBM_GUI_OptionsFrameBossModsListScrollBar, "Point", "TOPRIGHT", 1, -18)
+			SkinFrame(DBM_GUI_OptionsFrameBossModsListScrollBar, "Point", "BOTTOMLEFT", 7, 18)
 
 			for _, button in ipairs(DBM_GUI_OptionsFrameBossMods.buttons) do
-				S:HandleCollapseExpandButton(button.toggle, "auto")
+				SkinControl("HandleCollapseExpandButton", button.toggle, "auto")
 				button.toggle:Point("TOPLEFT", 3, 0)
 			end
 
-			DBM_GUI_OptionsFrameDBMOptions:StripTextures()
-			DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent")
+			SkinFrame(DBM_GUI_OptionsFrameDBMOptions, "StripTextures")
+			SkinFrame(DBM_GUI_OptionsFrameDBMOptions, "SetTemplate", "Transparent")
 
-			DBM_GUI_OptionsFrameDBMOptionsList:StripTextures()
-			S:HandleScrollBar(DBM_GUI_OptionsFrameDBMOptionsListScrollBar)
-			DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("TOPRIGHT", 1, -18)
-			DBM_GUI_OptionsFrameDBMOptionsListScrollBar:Point("BOTTOMLEFT", 7, 18)
+			SkinFrame(DBM_GUI_OptionsFrameDBMOptionsList, "StripTextures")
+			SkinControl("HandleScrollBar", DBM_GUI_OptionsFrameDBMOptionsListScrollBar)
+			SkinFrame(DBM_GUI_OptionsFrameDBMOptionsListScrollBar, "Point", "TOPRIGHT", 1, -18)
+			SkinFrame(DBM_GUI_OptionsFrameDBMOptionsListScrollBar, "Point", "BOTTOMLEFT", 7, 18)
 
 			for _, button in ipairs(DBM_GUI_OptionsFrameDBMOptions.buttons) do
-				S:HandleCollapseExpandButton(button.toggle, "auto")
+				SkinControl("HandleCollapseExpandButton", button.toggle, "auto")
 				button.toggle:Point("TOPLEFT", 3, 0)
 			end
 		end
@@ -593,12 +602,12 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 			local button = S.hooks[PanelPrototype].CreateCheckButton(this, name, autoplace, ...)
 
 			if button then
-				S:HandleCheckBox(button, true)
+				SkinControl("HandleCheckBox", button, true)
 
 				if autoplace then
 					local _, lastObj = button:GetPoint()
 					if lastObj.mytype == "checkbutton" then
-						button:Point("TOPLEFT", lastObj, "BOTTOMLEFT", 0, -7)
+						SkinFrame(button, "Point", "TOPLEFT", lastObj, "BOTTOMLEFT", 0, -7)
 					end
 				end
 
@@ -607,17 +616,17 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		end)
 		S:RawHook(PanelPrototype, "CreateEditBox", function(this, ...)
 			local editbox = S.hooks[PanelPrototype].CreateEditBox(this, ...)
-			S:HandleEditBox(editbox)
+			SkinControl("HandleEditBox", editbox)
 			return editbox
 		end)
 		S:RawHook(PanelPrototype, "CreateSlider", function(this, ...)
 			local slider = S.hooks[PanelPrototype].CreateSlider(this, ...)
-			S:HandleSliderFrame(slider)
+			SkinControl("HandleSliderFrame", slider)
 			return slider
 		end)
 		S:RawHook(PanelPrototype, "CreateButton", function(this, ...)
 			local button = S.hooks[PanelPrototype].CreateButton(this, ...)
-			S:HandleButton(button)
+			SkinControl("HandleButton", button)
 			return button
 		end)
 --]]
@@ -626,7 +635,7 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		return panel
 	end)
 --[[
-	DBM_GUI_DropDown:SetTemplate("Transparent")
+	SkinFrame(DBM_GUI_DropDown, "SetTemplate", "Transparent")
 
 	local dropdownArrowColor = {1, 0.8, 0}
 	S:RawHook(DBM_GUI, "CreateDropdown", function(self, ...)
@@ -636,20 +645,20 @@ S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", function()
 		local button = _G[frameName.."Button"]
 		local text = _G[frameName.."Text"]
 
-		dropdown:StripTextures()
-		dropdown:SetTemplate()
-		dropdown:Size(dropdown:GetWidth(), 20)
+		SkinFrame(dropdown, "StripTextures")
+		SkinFrame(dropdown, "SetTemplate")
+		SkinFrame(dropdown, "Size", dropdown:GetWidth(), 20)
 
 		if button then
-			S:HandleNextPrevButton(button, "down", dropdownArrowColor)
-			button:ClearAllPoints()
-			button:Point("RIGHT", dropdown, "RIGHT", -3, 0)
-			button:Size(16)
+			SkinControl("HandleNextPrevButton", button, "down", dropdownArrowColor)
+			SkinFrame(button, "ClearAllPoints")
+			SkinFrame(button, "Point", "RIGHT", dropdown, "RIGHT", -3, 0)
+			SkinFrame(button, "Size", 16)
 		end
 
 		if text then
-			text:ClearAllPoints()
-			text:Point("RIGHT", button, "LEFT", -3, 0)
+			SkinFrame(text, "ClearAllPoints")
+			SkinFrame(text, "Point", "RIGHT", button, "LEFT", -3, 0)
 		end
 
 		return dropdown

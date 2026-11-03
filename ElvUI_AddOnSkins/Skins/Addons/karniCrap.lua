@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("KarniCrap") then return end
@@ -12,13 +21,13 @@ local _G = _G
 S:AddCallbackForAddon("KarniCrap", "KarniCrap", function()
 	if not E.private.addOnSkins.KarniCrap then return end
 
-	KarniCrap:StripTextures()
-	KarniCrap:SetTemplate("Transparent")
+	SkinFrame(KarniCrap, "StripTextures")
+	SkinFrame(KarniCrap, "SetTemplate", "Transparent")
 
-	KarniCrap_TitleText:Point("TOP", KarniCrap, "TOP", 0, -12)
-	KarniCrapTab1:Point("CENTER", KarniCrap, "BOTTOMLEFT", 80, -14)
+	SkinFrame(KarniCrap_TitleText, "Point", "TOP", KarniCrap, "TOP", 0, -12)
+	SkinFrame(KarniCrapTab1, "Point", "CENTER", KarniCrap, "BOTTOMLEFT", 80, -14)
 
-	KarniCrap_InvHeader1:Point("BOTTOMLEFT", KarniCrap_Inventory, "TOPLEFT", 0, -1)
+	SkinFrame(KarniCrap_InvHeader1, "Point", "BOTTOMLEFT", KarniCrap_Inventory, "TOPLEFT", 0, -1)
 
 	KarniCrap_Poor_GoldTexture:SetParent(KarniCrap_Poor_GoldInputBox)
 	KarniCrap_Poor_SilverTexture:SetParent(KarniCrap_Poor_SilverInputBox)
@@ -26,7 +35,7 @@ S:AddCallbackForAddon("KarniCrap", "KarniCrap", function()
 	KarniCrap_Tab1_CBCommonDesc_GoldTexture:SetParent(KarniCrap_Tab1_CBCommonDesc_GoldInputBox)
 	KarniCrap_Tab1_CBCommonDesc_SilverTexture:SetParent(KarniCrap_Tab1_CBCommonDesc_SilverInputBox)
 	KarniCrap_Tab1_CBCommonDesc_CopperTexture:SetParent(KarniCrap_Tab1_CBCommonDesc_CopperInputBox)
-	KarniCrap_EBDestroyNumDisabled:StripTextures()
+	SkinFrame(KarniCrap_EBDestroyNumDisabled, "StripTextures")
 
 	local frames = {
 		-- General Options
@@ -140,39 +149,39 @@ S:AddCallbackForAddon("KarniCrap", "KarniCrap", function()
 	}
 
 	for _, frame in ipairs(frames) do
-		_G[frame]:StripTextures()
-		_G[frame]:SetTemplate("Transparent")
+		SkinFrame(_G[frame], "StripTextures")
+		SkinFrame(_G[frame], "SetTemplate", "Transparent")
 	end
 
 	for _, scrollBar in ipairs(scrollBars) do
 		_G[scrollBar]:GetParent():StripTextures()
-		S:HandleScrollBar(_G[scrollBar])
+		SkinControl("HandleScrollBar", _G[scrollBar])
 	end
 
 	for _, button in ipairs(buttons) do
-		S:HandleButton(_G[button])
+		SkinControl("HandleButton", _G[button])
 	end
 
 	for _, checkBox in ipairs(checkBoxes) do
-		_G[checkBox]:StripTextures()
-		S:HandleCheckBox(_G[checkBox])
+		SkinFrame(_G[checkBox], "StripTextures")
+		SkinControl("HandleCheckBox", _G[checkBox])
 	end
 
 	for _, editBox in ipairs(editBoxes) do
 		if _G[editBox.."Disabled"] then
-			_G[editBox.."Disabled"]:StripTextures()
+			SkinFrame(_G[editBox.."Disabled"], "StripTextures")
 		end
 
-		_G[editBox]:Size(32, 16)
-		S:HandleEditBox(_G[editBox])
+		SkinFrame(_G[editBox], "Size", 32, 16)
+		SkinControl("HandleEditBox", _G[editBox])
 	end
 
 	for _, tab in ipairs(tabs) do
-		S:HandleTab(_G[tab])
+		SkinControl("HandleTab", _G[tab])
 	end
 
 	for i = 1, 15 do
-		_G["KarniInvEntry"..i.."_BtnCrap"]:Size(30)
-		S:HandleCloseButton(_G["KarniInvEntry"..i.."_BtnCrap"])
+		SkinFrame(_G["KarniInvEntry"..i.."_BtnCrap"], "Size", 30)
+		SkinControl("HandleCloseButton", _G["KarniInvEntry"..i.."_BtnCrap"])
 	end
 end)

@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Doom_CooldownPulse") then return end
@@ -14,7 +23,7 @@ S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", function()
 	if not frame then return end
 
 	Doom_CooldownPulse = frame
-	frame:SetTemplate()
+	SkinFrame(frame, "SetTemplate")
 	frame.icon = frame:GetRegions()
 
 	frame.icon:SetParent(frame)
@@ -29,25 +38,25 @@ S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", function()
 	end)
 
 	hooksecurefunc(frame, "CreateOptionsFrame", function()
-		DCP_OptionsFrame:SetScale(GetCVar("uiScale"))
+		SkinFrame(DCP_OptionsFrame, "SetScale", GetCVar("uiScale"))
 
-		DCP_OptionsFrame:StripTextures()
-		DCP_OptionsFrame:SetTemplate("Transparent")
+		SkinFrame(DCP_OptionsFrame, "StripTextures")
+		SkinFrame(DCP_OptionsFrame, "SetTemplate", "Transparent")
 
-		S:HandleSliderFrame(DCP_OptionsFrameSlider1)
-		S:HandleSliderFrame(DCP_OptionsFrameSlider2)
-		S:HandleSliderFrame(DCP_OptionsFrameSlider3)
-		S:HandleSliderFrame(DCP_OptionsFrameSlider4)
-		S:HandleSliderFrame(DCP_OptionsFrameSlider5)
-		S:HandleSliderFrame(DCP_OptionsFrameSlider6)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider1)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider2)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider3)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider4)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider5)
+		SkinControl("HandleSliderFrame", DCP_OptionsFrameSlider6)
 
-		S:HandleEditBox(DCP_OptionsFrameIgnoreBox)
+		SkinControl("HandleEditBox", DCP_OptionsFrameIgnoreBox)
 		DCP_OptionsFrameIgnoreBox.backdrop:Point("TOPLEFT", -4, -6)
 		DCP_OptionsFrameIgnoreBox.backdrop:Point("BOTTOMRIGHT", 0, 5)
 
-		S:HandleButton(DCP_OptionsFrameButton1)
-		S:HandleButton(DCP_OptionsFrameButton2)
-		S:HandleButton(DCP_OptionsFrameButton3)
-		S:HandleButton(DCP_OptionsFrameButton4)
+		SkinControl("HandleButton", DCP_OptionsFrameButton1)
+		SkinControl("HandleButton", DCP_OptionsFrameButton2)
+		SkinControl("HandleButton", DCP_OptionsFrameButton3)
+		SkinControl("HandleButton", DCP_OptionsFrameButton4)
 	end)
 end)

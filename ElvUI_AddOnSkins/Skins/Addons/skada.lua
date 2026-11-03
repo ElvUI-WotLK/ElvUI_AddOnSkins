@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Skada") then return end
@@ -43,7 +52,7 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 		end
 
 		if Skada.revisited then
-			skada:SetBackdrop(nil) -- remove default backdrop
+			SkinFrame(skada, "SetBackdrop", nil) -- remove default backdrop
 
 			if not skada.backdrop then
 				skada:CreateBackdrop(E.db.addOnSkins.skadaTemplate, E.db.addOnSkins.skadaTemplate == "Default" and E.db.addOnSkins.skadaTemplateGloss or false)
@@ -93,23 +102,23 @@ S:AddCallbackForAddon("Skada", "Skada", function()
 		if self.db.profile.tooltippos == "default" then
 			if not E:HasMoverBeenMoved("ElvTooltipMover") then
 				if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-					tt:Point("BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18)
+					SkinFrame(tt, "Point", "BOTTOMRIGHT", ElvUI_ContainerFrame, "TOPRIGHT", 0, 18)
 				elseif RightChatPanel:IsShown() and RightChatPanel:GetAlpha() == 1 then
-					tt:Point("BOTTOMRIGHT", RightChatPanel, "TOPRIGHT", 0, 18)
+					SkinFrame(tt, "Point", "BOTTOMRIGHT", RightChatPanel, "TOPRIGHT", 0, 18)
 				else
-					tt:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 18)
+					SkinFrame(tt, "Point", "BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", 0, 18)
 				end
 			else
 				local point = E:GetScreenQuadrant(ElvTooltipMover)
 
 				if point == "TOPLEFT" then
-					tt:SetPoint("TOPLEFT", ElvTooltipMover)
+					SkinFrame(tt, "SetPoint", "TOPLEFT", ElvTooltipMover)
 				elseif point == "TOPRIGHT" then
-					tt:SetPoint("TOPRIGHT", ElvTooltipMover)
+					SkinFrame(tt, "SetPoint", "TOPRIGHT", ElvTooltipMover)
 				elseif point == "BOTTOMLEFT" or point == "LEFT" then
-					tt:SetPoint("BOTTOMLEFT", ElvTooltipMover)
+					SkinFrame(tt, "SetPoint", "BOTTOMLEFT", ElvTooltipMover)
 				else
-					tt:SetPoint("BOTTOMRIGHT", ElvTooltipMover)
+					SkinFrame(tt, "SetPoint", "BOTTOMRIGHT", ElvTooltipMover)
 				end
 			end
 		end

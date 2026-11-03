@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Poisoner") then return end
@@ -15,18 +24,18 @@ S:AddCallbackForAddon("Poisoner", "Poisoner", function()
 
 	-- Minimap icon
 	if not PoisonerMinimapButton.isSkinned then
-		PoisonerMinimapButton:SetTemplate()
-		PoisonerMinimapButton:Size(22)
+		SkinFrame(PoisonerMinimapButton, "SetTemplate")
+		SkinFrame(PoisonerMinimapButton, "Size", 22)
 
 		local normalTexture = PoisonerMinimapButton:GetNormalTexture()
 		normalTexture:SetTexture("Interface\\Icons\\Ability_Creature_Poison_02")
-		normalTexture:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(normalTexture, "SetTexCoord", unpack(E.TexCoords))
 		normalTexture:SetDrawLayer("ARTWORK")
-		normalTexture:SetInside()
+		SkinFrame(normalTexture, "SetInside")
 
-		PoisonerMinimapButton:SetPushedTexture(nil)
-		PoisonerMinimapButton:SetHighlightTexture(nil)
-		PoisonerMinimapButton:SetDisabledTexture(nil)
+		SkinFrame(PoisonerMinimapButton, "SetPushedTexture", nil)
+		SkinFrame(PoisonerMinimapButton, "SetHighlightTexture", nil)
+		SkinFrame(PoisonerMinimapButton, "SetDisabledTexture", nil)
 
 		PoisonerMinimapButton.isSkinned = true
 	end
@@ -36,16 +45,16 @@ S:AddCallbackForAddon("Poisoner", "Poisoner", function()
 			local button = _G["PoisonerMenuButton"..poison]
 
 			if button and not button.isSkinned then
-				button:SetTemplate()
-				button:StyleButton(nil, true)
+				SkinFrame(button, "SetTemplate")
+				SkinFrame(button, "StyleButton", nil, true)
 
 				local texture = button:GetNormalTexture()
-				texture:SetTexCoord(unpack(E.TexCoords))
-				texture:SetInside(button)
+				SkinFrame(texture, "SetTexCoord", unpack(E.TexCoords))
+				SkinFrame(texture, "SetInside", button)
 
 				texture = button:GetHighlightTexture()
-				texture:SetTexCoord(unpack(E.TexCoords))
-				texture:SetInside(button)
+				SkinFrame(texture, "SetTexCoord", unpack(E.TexCoords))
+				SkinFrame(texture, "SetInside", button)
 
 				button.isSkinned = true
 			end

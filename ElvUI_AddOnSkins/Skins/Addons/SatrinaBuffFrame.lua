@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("SatrinaBuffFrame") then return end
@@ -30,8 +39,8 @@ S:AddCallbackForAddon("SatrinaBuffFrame", "SatrinaBuffFrame", function()
 	local function skinBar(frame)
 		if frame.isSkinned then return end
 
-		frame:SetFrameLevel(frame:GetFrameLevel() + 1)
-		frame:StripTextures()
+		SkinFrame(frame, "SetFrameLevel", frame:GetFrameLevel() + 1)
+		SkinFrame(frame, "StripTextures")
 		frame:CreateBackdrop("Transparent")
 
 		frame.isSkinned = true

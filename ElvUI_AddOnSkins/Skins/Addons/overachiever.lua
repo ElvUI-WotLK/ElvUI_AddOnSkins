@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Overachiever_Tabs") then return end
@@ -16,8 +25,8 @@ S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", function()
 
 	for i = 3, 5 do
 		local tab = _G["AchievementFrameTab"..i]
-		S:HandleTab(tab)
-		tab:Point("LEFT", _G["AchievementFrameTab"..(i-1)], "RIGHT", -15, 0)
+		SkinControl("HandleTab", tab)
+		SkinFrame(tab, "Point", "LEFT", _G["AchievementFrameTab"..(i-1)], "RIGHT", -15, 0)
 		tab.text:Point("CENTER", 0, 2)
 		tab.text.SetPoint = E.noop
 	end
@@ -27,13 +36,13 @@ S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", function()
 		for _, obj in ipairs({childFrame:GetChildren()}) do
 			local objType = obj:GetObjectType()
 			if objType == "Button" then
-				S:HandleButton(obj)
+				SkinControl("HandleButton", obj)
 			elseif objType == "EditBox" then
-				S:HandleEditBox(obj)
+				SkinControl("HandleEditBox", obj)
 			elseif objType == "CheckButton" then
-				S:HandleCheckBox(obj)
+				SkinControl("HandleCheckBox", obj)
 			elseif objType == "Frame" and obj.TjDDM then
-				S:HandleDropDownBox(obj)
+				SkinControl("HandleDropDownBox", obj)
 			end
 		end
 	end
@@ -46,8 +55,8 @@ S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", function()
 
 	for _, frameName in ipairs(containers) do
 		local frame = _G[frameName]
-		frame:StripTextures()
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "StripTextures")
+		SkinFrame(frame, "SetTemplate", "Transparent")
 
 		frame:GetChildren():StripTextures()
 
@@ -55,23 +64,23 @@ S:AddCallbackForAddon("Overachiever_Tabs", "Overachiever", function()
 		frame.scrollFrame:Point("BOTTOMRIGHT", -2, 4)
 
 		local scrollBar = _G[frame.scrollFrame:GetName() .. "ScrollBar"]
-		S:HandleScrollBar(scrollBar)
+		SkinControl("HandleScrollBar", scrollBar)
 
-		scrollBar:Point("TOPLEFT", frame.scrollFrame, "TOPRIGHT", 5, -17)
-		scrollBar:Point("BOTTOMLEFT", frame.scrollFrame, "BOTTOMRIGHT", 5, 15)
+		SkinFrame(scrollBar, "Point", "TOPLEFT", frame.scrollFrame, "TOPRIGHT", 5, -17)
+		SkinFrame(scrollBar, "Point", "BOTTOMLEFT", frame.scrollFrame, "BOTTOMRIGHT", 5, 15)
 
 		scrollBar.Show = function(self)
-			frame:SetWidth(500)
+			SkinFrame(frame, "SetWidth", 500)
 			for _, button in ipairs(frame.buttons) do
-				button:SetWidth(496)
+				SkinFrame(button, "SetWidth", 496)
 			end
 			getmetatable(self).__index.Show(self)
 		end
 
 		scrollBar.Hide = function(self)
-			frame:SetWidth(521)
+			SkinFrame(frame, "SetWidth", 521)
 			for _, button in ipairs(frame.buttons) do
-				button:SetWidth(517)
+				SkinFrame(button, "SetWidth", 517)
 			end
 			getmetatable(self).__index.Hide(self)
 		end

@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("ZOMGBuffs") then return end
@@ -14,10 +23,10 @@ S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", function()
 	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	if ZOMGBuffsButton then
-		ZOMGBuffsButton:SetNormalTexture(nil)
+		SkinFrame(ZOMGBuffsButton, "SetNormalTexture", nil)
 		ZOMGBuffsButton.SetNormalTexture = E.noop
-		ZOMGBuffsButton:SetHighlightTexture(nil)
-		ZOMGBuffsButton:SetPushedTexture(nil)
+		SkinFrame(ZOMGBuffsButton, "SetHighlightTexture", nil)
+		SkinFrame(ZOMGBuffsButton, "SetPushedTexture", nil)
 	else
 		S:SecureHook(ZOMGBuffs, "OnStartup", function(self)
 			self.icon:SetNormalTexture(nil)
@@ -32,10 +41,10 @@ S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", function()
 	S:RawHook(ZOMGBuffs, "CreateHelpFrame", function(self)
 		local frame = S.hooks[self].CreateHelpFrame(self)
 
-		frame:SetScale(E:Scale(0.9))
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "SetScale", E:Scale(0.9))
+		SkinFrame(frame, "SetTemplate", "Transparent")
 		frame.close:StripTextures()
-		S:HandleButton((frame:GetChildren()))
+		SkinControl("HandleButton", (frame:GetChildren()))
 
 		S:Unhook(ZOMGBuffs, "CreateHelpFrame")
 
@@ -57,12 +66,12 @@ S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager"
 	S:SecureHook(ZBM, "SplitInitialize", function(self)
 		local frame = self.splitframe
 
-		S:HandleButton(frame.autoButton)
-		S:HandleCheckBox(frame.useGuild)
+		SkinControl("HandleButton", frame.autoButton)
+		SkinControl("HandleCheckBox", frame.useGuild)
 
 		for i = 1, #frame.column do
 			frame.column[i]:SetTemplate("Transparent")
-			S:HandleScrollBar(frame.column[i].scroll.bar)
+			SkinControl("HandleScrollBar", frame.column[i].scroll.bar)
 
 			for j = 1, 10 do
 				frame.column[i].list[j].icon:SetTexCoord(unpack(E.TexCoords))
@@ -73,12 +82,12 @@ S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager"
 	S:RawHook(ZBM, "CreateMainMainFrame", function(self)
 		local frame = S.hooks[self].CreateMainMainFrame(self)
 
-		S:HandleButton(frame.configure)
-		S:HandleButton(frame.help)
-		S:HandleButton(frame.generate)
-		S:HandleButton(frame.broadcast)
-		S:HandleButton(frame.groups)
-		S:HandleButton(frame.autoroles)
+		SkinControl("HandleButton", frame.configure)
+		SkinControl("HandleButton", frame.help)
+		SkinControl("HandleButton", frame.generate)
+		SkinControl("HandleButton", frame.broadcast)
+		SkinControl("HandleButton", frame.groups)
+		SkinControl("HandleButton", frame.autoroles)
 
 		for _, button in pairs(frame.classTitle.cell) do
 			button.highlightTex:SetTexture(1, 1, 1, 0.3)
@@ -92,9 +101,9 @@ S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager"
 	local function SkinActionButton(button)
 		if button.isSkinned then return end
 
-		button:StyleButton()
-		button:SetTemplate("Default")
-		button:SetNormalTexture(nil)
+		SkinFrame(button, "StyleButton")
+		SkinFrame(button, "SetTemplate", "Default")
+		SkinFrame(button, "SetNormalTexture", nil)
 		button.SetNormalTexture = E.noop
 
 		button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -136,7 +145,7 @@ S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", function()
 	S:RawHook(ZL, "CreateLogFrame", function(self)
 		local frame = S.hooks[self].CreateLogFrame(self)
 
-		S:HandleScrollBar(frame.scrollBar.slider)
+		SkinControl("HandleScrollBar", frame.scrollBar.slider)
 		frame.scrollBar.slider:Height(24)
 
 		return frame

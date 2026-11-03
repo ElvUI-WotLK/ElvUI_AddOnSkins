@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("GnomishVendorShrinker") then return end
@@ -15,16 +24,16 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 	if not E.private.addOnSkins.GnomishVendorShrinker then return end
 
 	if GVSEditBox then
-		GVSEditBox:StripTextures()
-		S:HandleEditBox(GVSEditBox)
-		GVSEditBox:Size(135, 19)
-		GVSEditBox:SetScale(1)
+		SkinFrame(GVSEditBox, "StripTextures")
+		SkinControl("HandleEditBox", GVSEditBox)
+		SkinFrame(GVSEditBox, "Size", 135, 19)
+		SkinFrame(GVSEditBox, "SetScale", 1)
 
 		GVSMerchantFrame:CreateBackdrop("Transparent")
-		S:HandleButton(GVSScrollButton1)
-		S:HandleButton(GVSScrollButton2)
-		GVSScrollFrame:StripTextures()
-		S:HandleSliderFrame(GVSScrollBar)
+		SkinControl("HandleButton", GVSScrollButton1)
+		SkinControl("HandleButton", GVSScrollButton2)
+		SkinFrame(GVSScrollFrame, "StripTextures")
+		SkinControl("HandleSliderFrame", GVSScrollBar)
 
 		return
 	end
@@ -32,12 +41,12 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 	local GVS = AS:FindChildFrameByPoint(MerchantFrame, "Frame", "TOPLEFT", MerchantFrame, "TOPLEFT", 21, -77)
 	if not GVS then return end
 
-	GVS:Size(304, 294)
-	GVS:Point("TOPLEFT", 19, -54)
-	GVS:SetTemplate("Transparent")
+	SkinFrame(GVS, "Size", 304, 294)
+	SkinFrame(GVS, "Point", "TOPLEFT", 19, -54)
+	SkinFrame(GVS, "SetTemplate", "Transparent")
 
-	MerchantBuyBackItem:ClearAllPoints()
-	MerchantBuyBackItem:Point("BOTTOMLEFT", 187, 118)
+	SkinFrame(MerchantBuyBackItem, "ClearAllPoints")
+	SkinFrame(MerchantBuyBackItem, "Point", "BOTTOMLEFT", 187, 118)
 
 	local popoutButtonOnEnter = function(self) self.icon:SetVertexColor(unpack(E.media.rgbvaluecolor)) end
 	local popoutButtonOnLeave = function(self) self.icon:SetVertexColor(1, 1, 1) end
@@ -54,9 +63,9 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 		local objType = child:GetObjectType()
 
 		if objType == "Button" then
-			child:Point("RIGHT", -3, 0)
+			SkinFrame(child, "Point", "RIGHT", -3, 0)
 
-			S:HandleButtonHighlight(child)
+			SkinControl("HandleButtonHighlight", child)
 
 			if child.icon then
 				child.icon:SetTexCoord(unpack(E.TexCoords))
@@ -83,9 +92,9 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 				end
 			end
 
-			child:Height(18)
-			child:Point("TOPLEFT", GVS, "BOTTOMLEFT", 1, -61)
-			S:HandleEditBox(child)
+			SkinFrame(child, "Height", 18)
+			SkinFrame(child, "Point", "TOPLEFT", GVS, "BOTTOMLEFT", 1, -61)
+			SkinControl("HandleEditBox", child)
 		elseif objType == "Slider" then
 			for _, child2 in ipairs({child:GetChildren()}) do
 				local objType2 = child2:GetObjectType()
@@ -94,22 +103,22 @@ S:AddCallbackForAddon("GnomishVendorShrinker", "GnomishVendorShrinker", function
 					local texture = child2:GetNormalTexture():GetTexture()
 
 					if texture == "Interface\\Buttons\\UI-ScrollBar-ScrollUpButton-Up" then
-						S:HandleNextPrevButton(child2, "up")
-						child2:Point("BOTTOM", child2:GetParent(), "TOP", 0, 1)
+						SkinControl("HandleNextPrevButton", child2, "up")
+						SkinFrame(child2, "Point", "BOTTOM", child2:GetParent(), "TOP", 0, 1)
 					elseif texture == "Interface\\Buttons\\UI-ScrollBar-ScrollDownButton-Up" then
-						S:HandleNextPrevButton(child2, "down")
-						child2:Point("TOP", child2:GetParent(), "BOTTOM", 0, -1)
+						SkinControl("HandleNextPrevButton", child2, "down")
+						SkinFrame(child2, "Point", "TOP", child2:GetParent(), "BOTTOM", 0, -1)
 					end
 				elseif objType2 == "Frame" then
-					child2:SetBackdrop(nil)
+					SkinFrame(child2, "SetBackdrop", nil)
 				end
 			end
 
-			child:Width(18)
-			child:Point("TOPRIGHT", 21, -19)
-			child:Point("BOTTOMRIGHT", 21, 19)
+			SkinFrame(child, "Width", 18)
+			SkinFrame(child, "Point", "TOPRIGHT", 21, -19)
+			SkinFrame(child, "Point", "BOTTOMRIGHT", 21, 19)
 
-			S:HandleScrollBar(child)
+			SkinControl("HandleScrollBar", child)
 		end
 	end
 end)

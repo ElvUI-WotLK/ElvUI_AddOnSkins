@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Examiner") then return end
@@ -28,7 +37,7 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 
 	Examiner.portrait:Hide()
 
-	S:HandleCloseButton((Examiner:GetChildren()), Examiner.backdrop)
+	SkinControl("HandleCloseButton", (Examiner:GetChildren()), Examiner.backdrop)
 
 	Examiner.model:Size(325, 352)
 	Examiner.model:Point("BOTTOM", -11, 12)
@@ -64,9 +73,9 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 
 	local dropdownArrowColor = {1, 0.8, 0}
 	local function skinAzDropdown(frame)
-		frame:SetTemplate()
+		SkinFrame(frame, "SetTemplate")
 
-		S:HandleNextPrevButton(frame.button, "down", dropdownArrowColor)
+		SkinControl("HandleNextPrevButton", frame.button, "down", dropdownArrowColor)
 		frame.button:Point("TOPRIGHT", -2, -2)
 		frame.button:Point("BOTTOMRIGHT", -2, 2)
 		frame.button:Size(20)
@@ -103,14 +112,14 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 				buttonReposition = true
 			end
 
-			S:HandleButton(mod.button)
+			SkinControl("HandleButton", mod.button)
 		end
 
 		if mod.token == "ItemSlots" then
 			for i, slot in ipairs(mod.slotBtns) do
-				slot:StripTextures()
-				slot:StyleButton(false)
-				slot:SetTemplate("Default", true, true)
+				SkinFrame(slot, "StripTextures")
+				SkinFrame(slot, "StyleButton", false)
+				SkinFrame(slot, "SetTemplate", "Default", true, true)
 
 				slot.texture:SetDrawLayer("BORDER")
 				slot.texture:SetInside()
@@ -122,15 +131,15 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 				slot.border.Hide = setSlotBackdropDefault
 
 				if i == 1 then
-					slot:SetPoint("TOPLEFT", 0, 0)
+					SkinFrame(slot, "SetPoint", "TOPLEFT", 0, 0)
 				elseif i == 9 then
-					slot:SetPoint("TOPRIGHT", 0, 0)
+					SkinFrame(slot, "SetPoint", "TOPRIGHT", 0, 0)
 				elseif i == 17 then
-					slot:Point("BOTTOM", -42, 28)
+					SkinFrame(slot, "Point", "BOTTOM", -42, 28)
 				elseif i <= 16 then
-					slot:Point("TOP", mod.slotBtns[i - 1], "BOTTOM", 0, -4)
+					SkinFrame(slot, "Point", "TOP", mod.slotBtns[i - 1], "BOTTOM", 0, -4)
 				else
-					slot:Point("LEFT", mod.slotBtns[i - 1], "RIGHT", 5, 0)
+					SkinFrame(slot, "Point", "LEFT", mod.slotBtns[i - 1], "RIGHT", 5, 0)
 				end
 			end
 		elseif mod.token == "Config" then
@@ -138,21 +147,21 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 
 			for i = 2, mod.page:GetNumChildren() do
 				local child = select(i, mod.page:GetChildren())
-				S:HandleCheckBox(child)
+				SkinControl("HandleCheckBox", child)
 			end
 		elseif mod.token == "Cache" then
-			S:HandleScrollBar(ExaminerCacheScrollScrollBar)
-			ExaminerCacheScrollScrollBar:Point("TOPLEFT", ExaminerCacheScroll, "TOPRIGHT", 3, -19)
-			ExaminerCacheScrollScrollBar:Point("BOTTOMLEFT", ExaminerCacheScroll, "BOTTOMRIGHT", 3, 19)
+			SkinControl("HandleScrollBar", ExaminerCacheScrollScrollBar)
+			SkinFrame(ExaminerCacheScrollScrollBar, "Point", "TOPLEFT", ExaminerCacheScroll, "TOPRIGHT", 3, -19)
+			SkinFrame(ExaminerCacheScrollScrollBar, "Point", "BOTTOMLEFT", ExaminerCacheScroll, "BOTTOMRIGHT", 3, 19)
 		elseif mod.token == "Stats" then
 			for i = 1, 5 do
 				local child = select(i, mod.page:GetChildren())
 
-				child:Size(24)
-				child:SetTemplate("Transparent")
+				SkinFrame(child, "Size", 24)
+				SkinFrame(child, "SetTemplate", "Transparent")
 
 				if i == 1 then
-					child:Point("TOPLEFT", 58, -9)
+					SkinFrame(child, "Point", "TOPLEFT", 58, -9)
 				end
 
 				child.texture:SetInside()
@@ -176,24 +185,24 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 				end
 			end
 
-			S:HandleScrollBar(ExaminerStatScrollScrollBar)
-			ExaminerStatScrollScrollBar:Point("TOPLEFT", ExaminerStatScroll, "TOPRIGHT", 10, -20)
-			ExaminerStatScrollScrollBar:Point("BOTTOMLEFT", ExaminerStatScroll, "BOTTOMRIGHT", 10, 20)
+			SkinControl("HandleScrollBar", ExaminerStatScrollScrollBar)
+			SkinFrame(ExaminerStatScrollScrollBar, "Point", "TOPLEFT", ExaminerStatScroll, "TOPRIGHT", 10, -20)
+			SkinFrame(ExaminerStatScrollScrollBar, "Point", "BOTTOMLEFT", ExaminerStatScroll, "BOTTOMRIGHT", 10, 20)
 		elseif mod.token == "PvP" then
 			for i = 2, 4 do
 				local child = select(i, mod.page:GetChildren())
-				child:SetTemplate("Transparent")
+				SkinFrame(child, "SetTemplate", "Transparent")
 			end
 		elseif mod.token == "Feats" then
 			skinAzDropdown((mod.page:GetChildren()))
 
-			S:HandleScrollBar(ExaminerFeatsScrollScrollBar)
-			ExaminerFeatsScrollScrollBar:Point("TOPLEFT", ExaminerFeatsScroll, "TOPRIGHT", 6, -19)
-			ExaminerFeatsScrollScrollBar:Point("BOTTOMLEFT", ExaminerFeatsScroll, "BOTTOMRIGHT", 6, 19)
+			SkinControl("HandleScrollBar", ExaminerFeatsScrollScrollBar)
+			SkinFrame(ExaminerFeatsScrollScrollBar, "Point", "TOPLEFT", ExaminerFeatsScroll, "TOPRIGHT", 6, -19)
+			SkinFrame(ExaminerFeatsScrollScrollBar, "Point", "BOTTOMLEFT", ExaminerFeatsScroll, "BOTTOMRIGHT", 6, 19)
 		elseif mod.token == "Talents" then
 			for i = 1, MAX_TALENT_TABS do
 				local tab = _G["ExaminerTab"..i]
-				tab:StripTextures()
+				SkinFrame(tab, "StripTextures")
 				tab:CreateBackdrop("Default", true)
 
 				tab.backdrop:Point("TOPLEFT", 2, -7)
@@ -205,9 +214,9 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 			for i, button in ipairs({ExaminerScrollChildFrame:GetChildren()}) do
 				if i > 40 then break end
 
-				button:StripTextures()
-				button:SetTemplate("Default")
-				button:StyleButton()
+				SkinFrame(button, "StripTextures")
+				SkinFrame(button, "SetTemplate", "Default")
+				SkinFrame(button, "StyleButton")
 
 				button.icon:SetInside()
 				button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -219,13 +228,13 @@ S:AddCallbackForAddon("Examiner", "Examiner", function()
 				button.rank:SetFont(E.LSM:Fetch("font", E.db.general.font), 12, "OUTLINE")
 			end
 
-			S:HandleScrollBar(ExaminerTalentsScrollChildScrollBar)
-			ExaminerTalentsScrollChildScrollBar:Point("TOPLEFT", ExaminerTalentsScrollChild, "TOPRIGHT", 4, -18)
-			ExaminerTalentsScrollChildScrollBar:Point("BOTTOMLEFT", ExaminerTalentsScrollChild, "BOTTOMRIGHT", 4, 17)
+			SkinControl("HandleScrollBar", ExaminerTalentsScrollChildScrollBar)
+			SkinFrame(ExaminerTalentsScrollChildScrollBar, "Point", "TOPLEFT", ExaminerTalentsScrollChild, "TOPRIGHT", 4, -18)
+			SkinFrame(ExaminerTalentsScrollChildScrollBar, "Point", "BOTTOMLEFT", ExaminerTalentsScrollChild, "BOTTOMRIGHT", 4, 17)
 
-			ExaminerTalentsScrollChild:ClearAllPoints()
-			ExaminerTalentsScrollChild:Point("TOPLEFT", 1, -1)
-			ExaminerTalentsScrollChild:Point("BOTTOMRIGHT", -1, 2)
+			SkinFrame(ExaminerTalentsScrollChild, "ClearAllPoints")
+			SkinFrame(ExaminerTalentsScrollChild, "Point", "TOPLEFT", 1, -1)
+			SkinFrame(ExaminerTalentsScrollChild, "Point", "BOTTOMRIGHT", -1, 2)
 		end
 	end
 

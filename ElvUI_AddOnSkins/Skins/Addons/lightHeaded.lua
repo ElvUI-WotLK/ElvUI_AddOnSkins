@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("LightHeaded") then return end
@@ -11,64 +20,64 @@ local cos, pi = math.cos, math.pi
 S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 	if not E.private.addOnSkins.LightHeaded then return end
 
-	LightHeadedFrame:StripTextures()
-	LightHeadedFrame:SetTemplate("Transparent")
-	LightHeadedFrame:Height(424)
-	LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", -2, 0)
+	SkinFrame(LightHeadedFrame, "StripTextures")
+	SkinFrame(LightHeadedFrame, "SetTemplate", "Transparent")
+	SkinFrame(LightHeadedFrame, "Height", 424)
+	SkinFrame(LightHeadedFrame, "Point", "LEFT", QuestLogFrame, "RIGHT", -2, 0)
 
 	LightHeadedFrame.handle:SetParent(QuestLogFrame) -- ignore LightHeadedFrame alpha
 	LightHeadedFrame.handle:StripTextures()
 	LightHeadedFrame.handle:SetTemplate("Default")
 	LightHeadedFrame.handle:Point("LEFT", LightHeadedFrame, "RIGHT", -1, 0)
 
-	LightHeadedSearchBox:Width(281)
-	LightHeadedSearchBox:Point("TOP", LightHeadedFrame, "TOP", 0, -30)
-	S:HandleEditBox(LightHeadedSearchBox)
+	SkinFrame(LightHeadedSearchBox, "Width", 281)
+	SkinFrame(LightHeadedSearchBox, "Point", "TOP", LightHeadedFrame, "TOP", 0, -30)
+	SkinControl("HandleEditBox", LightHeadedSearchBox)
 
-	S:HandleCloseButton(LightHeadedFrame.close, LightHeadedFrame)
+	SkinControl("HandleCloseButton", LightHeadedFrame.close, LightHeadedFrame)
 
 	LightHeadedScrollFrame:CreateBackdrop("Transparent")
 	LightHeadedScrollFrame.backdrop:Point("TOPLEFT", -1, 2)
 	LightHeadedScrollFrame.backdrop:Point("BOTTOMRIGHT", 1, -2)
 
-	LightHeadedScrollFrame:Point("TOPLEFT", 9, -75)
-	LightHeadedScrollFrame:Point("BOTTOMRIGHT", -30, 55)
+	SkinFrame(LightHeadedScrollFrame, "Point", "TOPLEFT", 9, -75)
+	SkinFrame(LightHeadedScrollFrame, "Point", "BOTTOMRIGHT", -30, 55)
 
-	LightHeadedScrollFrameScrollBar:Point("TOPLEFT", LightHeadedScrollFrame, "TOPRIGHT", 4, -17)
-	LightHeadedScrollFrameScrollBar:Point("BOTTOMLEFT", LightHeadedScrollFrame, "BOTTOMRIGHT", 4, 17)
+	SkinFrame(LightHeadedScrollFrameScrollBar, "Point", "TOPLEFT", LightHeadedScrollFrame, "TOPRIGHT", 4, -17)
+	SkinFrame(LightHeadedScrollFrameScrollBar, "Point", "BOTTOMLEFT", LightHeadedScrollFrame, "BOTTOMRIGHT", 4, 17)
 
-	S:HandleNextPrevButton(LightHeadedFrameSub.next, "right")
-	S:HandleNextPrevButton(LightHeadedFrameSub.prev, "left")
+	SkinControl("HandleNextPrevButton", LightHeadedFrameSub.next, "right")
+	SkinControl("HandleNextPrevButton", LightHeadedFrameSub.prev, "left")
 
-	S:HandleScrollBar(LightHeadedScrollFrameScrollBar)
+	SkinControl("HandleScrollBar", LightHeadedScrollFrameScrollBar)
 
-	LightHeadedTooltip:SetTemplate("Transparent")
+	SkinFrame(LightHeadedTooltip, "SetTemplate", "Transparent")
 	hooksecurefunc(LightHeaded, "OnHyperlinkEnter", function()
 		local backdrop = E.media.backdropfadecolor
 		local border = E.media.bordercolor
-		LightHeadedTooltip:SetBackdropColor(backdrop[1], backdrop[2], backdrop[3], backdrop[4])
-		LightHeadedTooltip:SetBackdropBorderColor(border[1], border[2], border[3])
+		SkinFrame(LightHeadedTooltip, "SetBackdropColor", backdrop[1], backdrop[2], backdrop[3], backdrop[4])
+		SkinFrame(LightHeadedTooltip, "SetBackdropBorderColor", border[1], border[2], border[3])
 	end)
 	hooksecurefunc(LightHeaded, "OnHyperlinkClick", function()
-		LightHeadedTooltip:Hide()
+		SkinFrame(LightHeadedTooltip, "Hide")
 	end)
 
 	local QLFrameOffsetXOpened, QLFrameOffsetXClosed = -2, -326
 
 	local function UpdatePosition()
 		if LightHeaded.db.profile.open then
-			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXOpened, 0)
+			SkinFrame(LightHeadedFrame, "Point", "LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXOpened, 0)
 		else
-			LightHeadedFrame:SetAlpha(0)
-			LightHeadedFrameSub:SetAlpha(1)
-			LightHeadedFrame:Point("LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXClosed, 0)
+			SkinFrame(LightHeadedFrame, "SetAlpha", 0)
+			SkinFrame(LightHeadedFrameSub, "SetAlpha", 1)
+			SkinFrame(LightHeadedFrame, "Point", "LEFT", QuestLogFrame, "RIGHT", QLFrameOffsetXClosed, 0)
 		end
 	end
 
 	UpdatePosition()
 
 	hooksecurefunc(LightHeaded, "LockUnlockFrame", function()
-		LightHeadedFrame:Height(424)
+		SkinFrame(LightHeadedFrame, "Height", 424)
 		UpdatePosition()
 	end)
 
@@ -96,18 +105,18 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 			closedX = temp
 			count = 0
 			totalElapsed = 0
-			self:SetScript("OnUpdate", nil)
+			SkinFrame(self, "SetScript", "OnUpdate", nil)
 
 			if not LightHeaded.db.profile.open then
 				if LightHeadedFrameSub.justclosed then
 					LightHeadedFrameSub.justclosed = false
-					LightHeadedFrameSub:Hide()
+					SkinFrame(LightHeadedFrameSub, "Hide")
 
-					self:SetAlpha(0)
+					SkinFrame(self, "SetAlpha", 0)
 				else
 					LightHeaded.db.profile.open = true
 
-					self:SetAlpha(1)
+					SkinFrame(self, "SetAlpha", 1)
 				end
 			end
 
@@ -117,7 +126,7 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 				LightHeaded.db.profile.open = false
 				LightHeadedFrameSub.justclosed = true
 			else
-				LightHeadedFrameSub:Show()
+				SkinFrame(LightHeadedFrameSub, "Show")
 				LightHeaded:SelectQuestLogEntry()
 			end
 		end
@@ -125,12 +134,12 @@ S:AddCallbackForAddon("LightHeaded", "LightHeaded", function()
 		local status = mod * totalElapsed
 		local offset = cosineInterpolation(closedX, openedX, status)
 
-		self:Point("LEFT", QuestLogFrame, "RIGHT", offset, 0)
-		self:SetAlpha(LightHeaded.db.profile.lhopen and (1 - status) or status)
+		SkinFrame(self, "Point", "LEFT", QuestLogFrame, "RIGHT", offset, 0)
+		SkinFrame(self, "SetAlpha", LightHeaded.db.profile.lhopen and (1 - status) or status)
 	end
 
 	LightHeadedFrame.handle:SetScript("OnClick", function()
-		LightHeadedFrame:SetScript("OnUpdate", OnUpdate)
+		SkinFrame(LightHeadedFrame, "SetScript", "OnUpdate", OnUpdate)
 
 		if LightHeaded.db.profile.sound then
 			PlaySoundFile("Sound\\Doodad\\Karazahn_WoodenDoors_Close_A.wav")

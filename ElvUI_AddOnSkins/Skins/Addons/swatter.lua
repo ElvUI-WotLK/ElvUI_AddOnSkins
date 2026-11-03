@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("!Swatter") then return end
@@ -18,13 +27,13 @@ S:AddCallbackForAddon("!Swatter", "!Swatter", function()
 
 	Swatter.Error.Box:Width(461)
 
-	S:HandleScrollBar(SwatterErrorInputScrollScrollBar)
-	SwatterErrorInputScrollScrollBar:Point("TOPLEFT", SwatterErrorInputScroll, "TOPRIGHT", 4, -18)
-	SwatterErrorInputScrollScrollBar:Point("BOTTOMLEFT", SwatterErrorInputScroll, "BOTTOMRIGHT", 4, 18)
+	SkinControl("HandleScrollBar", SwatterErrorInputScrollScrollBar)
+	SkinFrame(SwatterErrorInputScrollScrollBar, "Point", "TOPLEFT", SwatterErrorInputScroll, "TOPRIGHT", 4, -18)
+	SkinFrame(SwatterErrorInputScrollScrollBar, "Point", "BOTTOMLEFT", SwatterErrorInputScroll, "BOTTOMRIGHT", 4, 18)
 
-	S:HandleButton(Swatter.Error.Prev)
-	S:HandleButton(Swatter.Error.Next)
-	S:HandleButton(Swatter.Error.Done)
+	SkinControl("HandleButton", Swatter.Error.Prev)
+	SkinControl("HandleButton", Swatter.Error.Next)
+	SkinControl("HandleButton", Swatter.Error.Done)
 
 	Swatter.Error.Done:Point("BOTTOMRIGHT", Swatter.Error, "BOTTOMRIGHT", -8, 8)
 end)

@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("RaidRoll") then return end
@@ -10,53 +19,53 @@ if not AS:IsAddonLODorEnabled("RaidRoll") then return end
 S:AddCallbackForAddon("RaidRoll", "RaidRoll", function()
 	if not E.private.addOnSkins.RaidRoll then return end
 
-	RR_RollFrame:SetTemplate("Transparent")
-	RR_NAME_FRAME:SetTemplate("Default")
+	SkinFrame(RR_RollFrame, "SetTemplate", "Transparent")
+	SkinFrame(RR_NAME_FRAME, "SetTemplate", "Default")
 
-	S:HandleCloseButton(RR_Close_Button, RR_RollFrame)
+	SkinControl("HandleCloseButton", RR_Close_Button, RR_RollFrame)
 
 	RaidRoll_Slider_ID:SetHitRectInsets(0, 0, 0, 0)
-	S:HandleSliderFrame(RaidRoll_Slider_ID)
+	SkinControl("HandleSliderFrame", RaidRoll_Slider_ID)
 
-	S:HandleButton(RaidRoll_AnnounceWinnerButton)
-	S:HandleButton(RR_Roll_5SecAndAnnounce)
-	S:HandleButton(RR_Roll_RollButton)
-	S:HandleButton(RR_Last)
-	S:HandleButton(RR_Clear)
-	S:HandleButton(RR_Next)
-	S:HandleButton(RaidRoll_OptionButton)
+	SkinControl("HandleButton", RaidRoll_AnnounceWinnerButton)
+	SkinControl("HandleButton", RR_Roll_5SecAndAnnounce)
+	SkinControl("HandleButton", RR_Roll_RollButton)
+	SkinControl("HandleButton", RR_Last)
+	SkinControl("HandleButton", RR_Clear)
+	SkinControl("HandleButton", RR_Next)
+	SkinControl("HandleButton", RaidRoll_OptionButton)
 
-	RR_Roll_5SecAndAnnounce:ClearAllPoints()
-	RR_Roll_5SecAndAnnounce:Point("BOTTOM", 0, 31)
+	SkinFrame(RR_Roll_5SecAndAnnounce, "ClearAllPoints")
+	SkinFrame(RR_Roll_5SecAndAnnounce, "Point", "BOTTOM", 0, 31)
 
-	RR_Clear:Point("BOTTOM", 0, 8)
-	RR_Last:Point("BOTTOM", -45, 8)
-	RR_Roll_RollButton:Point("BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -65, 8)
-	RR_Next:Point("BOTTOM", 45, 8)
-	RaidRoll_OptionButton:Size(20)
-	RaidRoll_OptionButton:Point("BOTTOM", 75, 8)
+	SkinFrame(RR_Clear, "Point", "BOTTOM", 0, 8)
+	SkinFrame(RR_Last, "Point", "BOTTOM", -45, 8)
+	SkinFrame(RR_Roll_RollButton, "Point", "BOTTOMRIGHT", RR_RollFrame, "BOTTOM", -65, 8)
+	SkinFrame(RR_Next, "Point", "BOTTOM", 45, 8)
+	SkinFrame(RaidRoll_OptionButton, "Size", 20)
+	SkinFrame(RaidRoll_OptionButton, "Point", "BOTTOM", 75, 8)
 
-	RR_Frame:SetTemplate("Transparent")
-	RR_Frame:Width(185)
-	RR_Frame:Point("TOP", RR_RollFrame, "BOTTOM", 0, 1)
+	SkinFrame(RR_Frame, "SetTemplate", "Transparent")
+	SkinFrame(RR_Frame, "Width", 185)
+	SkinFrame(RR_Frame, "Point", "TOP", RR_RollFrame, "BOTTOM", 0, 1)
 
 	local rrframeLevel = RR_Frame:GetFrameLevel()
-	RaidRoll_Catch_All:SetFrameLevel(rrframeLevel + 2)
-	RaidRoll_Allow_All:SetFrameLevel(rrframeLevel + 2)
-	RaidRollCheckBox_ExtraRolls:SetFrameLevel(rrframeLevel + 2)
-	S:HandleCheckBox(RaidRoll_Catch_All)
-	S:HandleCheckBox(RaidRoll_Allow_All)
-	S:HandleCheckBox(RaidRollCheckBox_ExtraRolls)
+	SkinFrame(RaidRoll_Catch_All, "SetFrameLevel", rrframeLevel + 2)
+	SkinFrame(RaidRoll_Allow_All, "SetFrameLevel", rrframeLevel + 2)
+	SkinFrame(RaidRollCheckBox_ExtraRolls, "SetFrameLevel", rrframeLevel + 2)
+	SkinControl("HandleCheckBox", RaidRoll_Catch_All)
+	SkinControl("HandleCheckBox", RaidRoll_Allow_All)
+	SkinControl("HandleCheckBox", RaidRollCheckBox_ExtraRolls)
 
-	S:HandleButton(Raid_Roll_ClearSymbols)
-	S:HandleButton(Raid_Roll_ClearRolls)
-	S:HandleButton(RaidRoll_ExtraOptionButton)
+	SkinControl("HandleButton", Raid_Roll_ClearSymbols)
+	SkinControl("HandleButton", Raid_Roll_ClearRolls)
+	SkinControl("HandleButton", RaidRoll_ExtraOptionButton)
 
 	for i = 1, 5 do
 		local f = _G["Raid_Roll_SetSymbol"..i]
-		f:ClearAllPoints()
-		f:Point("TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
-		f:Point("BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
+		SkinFrame(f, "ClearAllPoints")
+		SkinFrame(f, "Point", "TOPLEFT", _G["RR_RollerPos"..i], "TOPRIGHT", -15, -1)
+		SkinFrame(f, "Point", "BOTTOMRIGHT", _G["RR_Rolled"..i], "BOTTOMLEFT", 45, -1)
 
 		local highlight = f:GetHighlightTexture()
 		highlight:SetTexture(E.Media.Textures.Highlight)
@@ -80,33 +89,33 @@ end)
 S:AddCallbackForAddon("RaidRoll_LootTracker", "RaidRoll_LootTracker", function()
 	if not E.private.addOnSkins.RaidRoll then return end
 
-	RR_LOOT_FRAME:SetTemplate("Transparent")
+	SkinFrame(RR_LOOT_FRAME, "SetTemplate", "Transparent")
 
-	S:HandleSliderFrame(RaidRoll_Loot_Slider_ID)
+	SkinControl("HandleSliderFrame", RaidRoll_Loot_Slider_ID)
 
-	S:HandleButton(RR_Loot_LinkLootButton)
-	S:HandleButton(RR_Loot_ButtonClear)
-	S:HandleButton(RR_Loot_ButtonFirst)
-	S:HandleButton(RR_Loot_ButtonPrev)
-	S:HandleButton(RR_Loot_ButtonNext)
-	S:HandleButton(RR_Loot_ButtonLast)
+	SkinControl("HandleButton", RR_Loot_LinkLootButton)
+	SkinControl("HandleButton", RR_Loot_ButtonClear)
+	SkinControl("HandleButton", RR_Loot_ButtonFirst)
+	SkinControl("HandleButton", RR_Loot_ButtonPrev)
+	SkinControl("HandleButton", RR_Loot_ButtonNext)
+	SkinControl("HandleButton", RR_Loot_ButtonLast)
 
 	for i = 1, 4 do
-		_G["RR_Loot_Announce_1_Button_"..i]:Show()
-		_G["RR_Loot_Announce_2_Button_"..i]:Show()
-		_G["RR_Loot_Announce_3_Button_"..i]:Show()
-		_G["RR_Loot_RaidRollButton_"..i]:Show()
+		SkinFrame(_G["RR_Loot_Announce_1_Button_"..i], "Show")
+		SkinFrame(_G["RR_Loot_Announce_2_Button_"..i], "Show")
+		SkinFrame(_G["RR_Loot_Announce_3_Button_"..i], "Show")
+		SkinFrame(_G["RR_Loot_RaidRollButton_"..i], "Show")
 
-		S:HandleButton(_G["RR_Loot_Announce_1_Button_"..i])
-		S:HandleButton(_G["RR_Loot_Announce_2_Button_"..i])
-		S:HandleButton(_G["RR_Loot_Announce_3_Button_"..i])
-		S:HandleButton(_G["RR_Loot_RaidRollButton_"..i])
+		SkinControl("HandleButton", _G["RR_Loot_Announce_1_Button_"..i])
+		SkinControl("HandleButton", _G["RR_Loot_Announce_2_Button_"..i])
+		SkinControl("HandleButton", _G["RR_Loot_Announce_3_Button_"..i])
+		SkinControl("HandleButton", _G["RR_Loot_RaidRollButton_"..i])
 	end
 
 	for i = 1, RR_LOOT_FRAME:GetNumChildren() do
 		local child = select(i, RR_LOOT_FRAME:GetChildren())
 		if child and child:IsObjectType("Button") and child:GetName() == "Close_Button" then
-			S:HandleCloseButton(child)
+			SkinControl("HandleCloseButton", child)
 			break
 		end
 	end

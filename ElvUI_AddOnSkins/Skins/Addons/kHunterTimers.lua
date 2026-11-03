@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("KHunterTimers") then return end
@@ -14,50 +23,50 @@ S:AddCallbackForAddon("KHunterTimers", "KHunterTimers", function()
 
 	KHTvars.bartexture = E.media.normTex
 
-	KHunterTimersAnchor:SetTemplate("Default")
+	SkinFrame(KHunterTimersAnchor, "SetTemplate", "Default")
 
-	KHunterTimersOptions:StripTextures()
-	KHunterTimersOptions:SetTemplate("Transparent")
+	SkinFrame(KHunterTimersOptions, "StripTextures")
+	SkinFrame(KHunterTimersOptions, "SetTemplate", "Transparent")
 
-	KHunterTimersOptionsTimers:SetTemplate("Transparent")
-	KHunterTimersOptionsBars:SetTemplate("Transparent")
+	SkinFrame(KHunterTimersOptionsTimers, "SetTemplate", "Transparent")
+	SkinFrame(KHunterTimersOptionsBars, "SetTemplate", "Transparent")
 
-	S:HandleEditBox(KHunterTimersOptionsBarsEditBox1)
-	KHunterTimersOptionsBarsEditBox1:Height(22)
+	SkinControl("HandleEditBox", KHunterTimersOptionsBarsEditBox1)
+	SkinFrame(KHunterTimersOptionsBarsEditBox1, "Height", 22)
 
-	S:HandleEditBox(KHunterTimersOptionsBarsEditBox2)
-	KHunterTimersOptionsBarsEditBox2:Height(22)
+	SkinControl("HandleEditBox", KHunterTimersOptionsBarsEditBox2)
+	SkinFrame(KHunterTimersOptionsBarsEditBox2, "Height", 22)
 
-	S:HandleButton(KHunterTimersOptionsButtonOkay)
-	S:HandleButton(KHunterTimersOptionsButtonApply)
-	S:HandleButton(KHunterTimersOptionsButtonCancel)
+	SkinControl("HandleButton", KHunterTimersOptionsButtonOkay)
+	SkinControl("HandleButton", KHunterTimersOptionsButtonApply)
+	SkinControl("HandleButton", KHunterTimersOptionsButtonCancel)
 
-	S:HandleCheckBox(KHunterTimersOptionsBarsCheckButtonOn)
+	SkinControl("HandleCheckBox", KHunterTimersOptionsBarsCheckButtonOn)
 
 	for i = 1, KHT_NUM_OPTIONS do
-		S:HandleCheckBox(_G["KHunterTimersOptionsBarsCheckButton"..i])
+		SkinControl("HandleCheckBox", _G["KHunterTimersOptionsBarsCheckButton"..i])
 	end
 
 	for i = 1, KHT_NUM_SLIDERS do
-		S:HandleSliderFrame(_G["KHunterTimersOptionsBarsSlider"..i.."Slider"])
+		SkinControl("HandleSliderFrame", _G["KHunterTimersOptionsBarsSlider"..i.."Slider"])
 	end
 
 	for i = 1, 6 do
 		for j = 1, 13 do
-			S:HandleCheckBox(_G["KHunterTimersOptionsTimers"..i.."CheckButton"..j])
+			SkinControl("HandleCheckBox", _G["KHunterTimersOptionsTimers"..i.."CheckButton"..j])
 		end
 
-		S:HandleScrollBar(_G["KHunterTimers"..i.."ScrollBarScrollBar"])
+		SkinControl("HandleScrollBar", _G["KHunterTimers"..i.."ScrollBarScrollBar"])
 
 		local tabName = "KHunterTimersOptionsTimersTab"..i
-		S:HandleTab(_G[tabName])
-		_G[tabName .. "Text"]:Point("CENTER", 0, 1)
+		SkinControl("HandleTab", _G[tabName])
+		SkinFrame(_G[tabName .. "Text"], "Point", "CENTER", 0, 1)
 	end
 
-	KHunterTimersFrame:StripTextures()
+	SkinFrame(KHunterTimersFrame, "StripTextures")
 
 	for i = 1, KHT_NUM_BARS do
-		S:HandleIcon(_G["KHunterTimersStatus"..i.."Icon"])
-		S:HandleStatusBar(_G["KHunterTimersStatus"..i.."Bar"])
+		SkinControl("HandleIcon", _G["KHunterTimersStatus"..i.."Icon"])
+		SkinControl("HandleStatusBar", _G["KHunterTimersStatus"..i.."Bar"])
 	end
 end)

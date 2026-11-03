@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("EPGP_LootMaster") then return end
@@ -32,12 +41,12 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 		self.versioncheckframe.titleFrame:SetTemplate("Default")
 
 		self.versioncheckframe.sstScroll.frame:SetTemplate("Default")
-		S:HandleScrollBar(_G[self.versioncheckframe.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
+		SkinControl("HandleScrollBar", _G[self.versioncheckframe.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
 
 		for i = 1, self.versioncheckframe:GetNumChildren() do
 			local child = select(i, self.versioncheckframe:GetChildren())
 			if child and child:IsObjectType("Button") then
-				S:HandleButton(child)
+				SkinControl("HandleButton", child)
 			end
 		end
 
@@ -46,14 +55,14 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 	local function UpdateLootUI_Icon_SetNormalTexture(self, texture)
 		if texture and self:GetParent().data then
-			self:SetBackdropBorderColor(GetItemQualityColor(self:GetParent().data.quality))
+			SkinFrame(self, "SetBackdropBorderColor", GetItemQualityColor(self:GetParent().data.quality))
 		end
 	end
 
 	hooksecurefunc(EPGPLM, "UpdateLootUI", function(self)
 		for _, frame in ipairs(self.lootSelectFrames) do
 			if not frame.isSkinned then
-				frame:SetTemplate("Transparent")
+				SkinFrame(frame, "SetTemplate", "Transparent")
 
 				frame.itemIcon:SetTemplate("Default")
 				frame.itemIcon:GetNormalTexture():SetInside(frame.itemIcon.backdrop)
@@ -62,7 +71,7 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 				hooksecurefunc(frame.itemIcon, "SetNormalTexture", UpdateLootUI_Icon_SetNormalTexture)
 
-				S:HandleButton(frame.btnPass)
+				SkinControl("HandleButton", frame.btnPass)
 
 				frame.timerFrame:SetBackdrop(nil)
 				select(2, frame.timerFrame:GetChildren()):SetBackdrop(nil)
@@ -82,21 +91,21 @@ S:AddCallbackForAddon("EPGP_LootMaster", "EPGP_LootMaster", function()
 
 				local btnNoteIcon = frame.btnNote:GetRegions()
 				btnNoteIcon:SetDrawLayer("ARTWORK")
-				btnNoteIcon:SetPoint("CENTER", 0, 0)
+				SkinFrame(btnNoteIcon, "SetPoint", "CENTER", 0, 0)
 
 				frame.tbNote:SetBackdrop(nil)
-				S:HandleEditBox(frame.tbNote)
+				SkinControl("HandleEditBox", frame.tbNote)
 
 				local buttonSave = frame.tbNote:GetChildren()
-				buttonSave:SetHeight(26)
-				buttonSave:SetPoint("LEFT", frame.tbNote, "RIGHT", 0, 0)
-				S:HandleButton(buttonSave)
+				SkinFrame(buttonSave, "SetHeight", 26)
+				SkinFrame(buttonSave, "SetPoint", "LEFT", frame.tbNote, "RIGHT", 0, 0)
+				SkinControl("HandleButton", buttonSave)
 
 				frame.isSkinned = true
 			end
 
 			for _, button in ipairs(frame.buttons) do
-				S:HandleButton(button)
+				SkinControl("HandleButton", button)
 			end
 		end
 	end)
@@ -121,32 +130,32 @@ S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", function()
 
 		hooksecurefunc(self.frame.itemIcon, "SetNormalTexture", function(self, texture)
 			if texture and self:GetParent().currentLoot then
-				self:SetBackdropBorderColor(GetItemQualityColor(self:GetParent().currentLoot.quality))
+				SkinFrame(self, "SetBackdropBorderColor", GetItemQualityColor(self:GetParent().currentLoot.quality))
 			end
 		end)
 
 		self.frame.tbGPValueFrame:SetBackdrop(nil)
-		S:HandleEditBox(self.frame.tbGPValue)
+		SkinControl("HandleEditBox", self.frame.tbGPValue)
 
-		S:HandleButton(self.frame.btnAnnounce)
-		S:HandleButton(self.frame.btnDiscard)
+		SkinControl("HandleButton", self.frame.btnAnnounce)
+		SkinControl("HandleButton", self.frame.btnDiscard)
 
 		self.frame.sstScroll.frame:SetTemplate("Default")
-		S:HandleScrollBar(_G[self.frame.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
+		SkinControl("HandleScrollBar", _G[self.frame.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
 
 		S:Unhook(LMML, "GetFrame")
 	end)
 
 	local function CreateLootButton_Icon_SetNormalTexturefunction(self, texture)
 		if texture and self.data then
-			self:SetBackdropBorderColor(GetItemQualityColor(self.data.quality))
+			SkinFrame(self, "SetBackdropBorderColor", GetItemQualityColor(self.data.quality))
 		end
 	end
 
 	S:RawHook(LMML, "CreateLootButton", function(self)
 		local icon = S.hooks[self].CreateLootButton(self)
 
-		icon:SetTemplate("Default")
+		SkinFrame(icon, "SetTemplate", "Default")
 		icon:GetNormalTexture():SetInside(icon.backdrop)
 		icon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
@@ -162,15 +171,15 @@ S:AddCallbackForAddon("EPGP_LootMaster_ML", "EPGP_LootMaster_ML", function()
 		for i = 1, self.raidinfoframe:GetNumChildren() do
 			local child = select(i, self.raidinfoframe:GetChildren())
 			if child and child:IsObjectType("Button") then
-				S:HandleButton(child)
+				SkinControl("HandleButton", child)
 			end
 		end
 
 		self.raidinfoframe.sstScroll.frame:SetTemplate("Default")
-		S:HandleScrollBar(_G[self.raidinfoframe.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
+		SkinControl("HandleScrollBar", _G[self.raidinfoframe.sstScroll.frame:GetName().."ScrollFrameScrollBar"])
 
 		self.raidinfoframe.tbWhisperFrame:SetBackdrop(nil)
-		S:HandleEditBox(self.raidinfoframe.tbWhisperBox)
+		SkinControl("HandleEditBox", self.raidinfoframe.tbWhisperBox)
 
 		S:Unhook(LMML, "ShowRaidInfoLookup")
 	end)

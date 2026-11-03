@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("PAB") then return end
@@ -16,24 +25,24 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 
 	if not PAB then return end
 
-	S:HandleSliderFrame(PAB_Panel_Slider1)
+	SkinControl("HandleSliderFrame", PAB_Panel_Slider1)
 
-	S:HandleCheckBox(PAB_Panel_Toggle1)
-	S:HandleCheckBox(PAB_Panel_Toggle2)
-	S:HandleCheckBox(PAB_Panel_Toggle3)
+	SkinControl("HandleCheckBox", PAB_Panel_Toggle1)
+	SkinControl("HandleCheckBox", PAB_Panel_Toggle2)
+	SkinControl("HandleCheckBox", PAB_Panel_Toggle3)
 
-	S:HandleScrollBar(PABScrollFrameScrollBar)
+	SkinControl("HandleScrollBar", PABScrollFrameScrollBar)
 
-	S:HandleDropDownBox(PAB_Panel_DropDown1)
+	SkinControl("HandleDropDownBox", PAB_Panel_DropDown1)
 
-	_G["PABScrollFrameAbility name"]:Height(21)
-	_G["PABScrollFrameCD (s)"]:Height(21)
-	S:HandleEditBox(_G["PABScrollFrameAbility name"])
-	S:HandleEditBox(_G["PABScrollFrameCD (s)"])
+	SkinFrame(_G["PABScrollFrameAbility name"], "Height", 21)
+	SkinFrame(_G["PABScrollFrameCD (s)"], "Height", 21)
+	SkinControl("HandleEditBox", _G["PABScrollFrameAbility name"])
+	SkinControl("HandleEditBox", _G["PABScrollFrameCD (s)"])
 
-	PAB_Panel_Button1:Point("TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
-	S:HandleButton(PAB_Panel_Button1)
-	S:HandleButton(PAB_Panel_Button2)
+	SkinFrame(PAB_Panel_Button1, "Point", "TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
+	SkinControl("HandleButton", PAB_Panel_Button1)
+	SkinControl("HandleButton", PAB_Panel_Button2)
 
 	local function SkinIcon(frame)
 		if frame.backdrop then return end
@@ -53,11 +62,11 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 		if not PABIcons then return end
 
 		SCALE = PABIcons:GetScale()
-		PABIcons:SetScale(1)
+		SkinFrame(PABIcons, "SetScale", 1)
 
 		for i = 1, 4 do
 			for _, iconFrame in ipairs(_G["PABAnchor"..i].icons) do
-				iconFrame:Size(ICON_SIZE * SCALE)
+				SkinFrame(iconFrame, "Size", ICON_SIZE * SCALE)
 			end
 		end
 	end)
@@ -66,12 +75,12 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 		local iconFrame = S.hooks[self].AppendIcon(self, icons, anchor, ...)
 
 		SkinIcon(iconFrame)
-		iconFrame:Size(ICON_SIZE * SCALE)
+		SkinFrame(iconFrame, "Size", ICON_SIZE * SCALE)
 
 		if #icons == 0 then
-			iconFrame:Point("TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
+			SkinFrame(iconFrame, "Point", "TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
 		else
-			iconFrame:Point("LEFT", icons[#icons - 1], "RIGHT", E.Border, 0)
+			SkinFrame(iconFrame, "Point", "LEFT", icons[#icons - 1], "RIGHT", E.Border, 0)
 		end
 
 		return iconFrame
@@ -79,7 +88,7 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 
 	for i = 1, 4 do
 		local frame = _G["PABAnchor"..i]
-		frame:SetBackdrop(nil)
+		SkinFrame(frame, "SetBackdrop", nil)
 		frame:CreateBackdrop("Transparent")
 
 		for _, iconFrame in ipairs(frame.icons) do
@@ -89,13 +98,13 @@ S:AddCallbackForAddon("PAB", "PAB", function()
 			end
 
 			SkinIcon(iconFrame)
-			iconFrame:Size(ICON_SIZE * SCALE)
+			SkinFrame(iconFrame, "Size", ICON_SIZE * SCALE)
 
 			local point, anchor = iconFrame:GetPoint()
 			if point == "LEFT" then
-				iconFrame:Point("LEFT", anchor, "RIGHT", E.Border, 0)
+				SkinFrame(iconFrame, "Point", "LEFT", anchor, "RIGHT", E.Border, 0)
 			elseif point == "TOPLEFT" then
-				iconFrame:Point("TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
+				SkinFrame(iconFrame, "Point", "TOPLEFT", anchor, "BOTTOMRIGHT", E.Border, -E.Border)
 			end
 		end
 	end

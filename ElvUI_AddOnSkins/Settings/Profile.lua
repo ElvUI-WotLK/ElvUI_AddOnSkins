@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 P.addOnSkins = {
+	suppressSkinErrors = true,
 	skadaTemplate = "Default",
 	skadaTemplateGloss = false,
 	skadaTitleTemplate = "Default",

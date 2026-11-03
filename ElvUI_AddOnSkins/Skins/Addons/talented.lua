@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Talented") then return end
@@ -12,17 +21,17 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 	if not E.private.addOnSkins.Talented then return end
 
 	local function SkinButton(button)
-		S:HandleButton(button, true)
+		SkinControl("HandleButton", button, true)
 		button.left:Kill()
 		button.middle:Kill()
 		button.right:Kill()
 	end
 
 	S:SecureHook(Talented, "CreateBaseFrame", function()
-		TalentedFrame:StripTextures()
-		TalentedFrame:SetTemplate("Transparent")
+		SkinFrame(TalentedFrame, "StripTextures")
+		SkinFrame(TalentedFrame, "SetTemplate", "Transparent")
 
-		S:HandleCloseButton(TalentedFrame.close, TalentedFrame)
+		SkinControl("HandleCloseButton", TalentedFrame.close, TalentedFrame)
 
 		SkinButton(TalentedFrame.bactions)
 		SkinButton(TalentedFrame.bmode)
@@ -33,9 +42,9 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 
 		TalentedFrame.editname:Height(18)
 		TalentedFrame.editname:DisableDrawLayer("BACKGROUND")
-		S:HandleEditBox(TalentedFrame.editname)
+		SkinControl("HandleEditBox", TalentedFrame.editname)
 
-		S:HandleCheckBox(TalentedFrame.checkbox)
+		SkinControl("HandleCheckBox", TalentedFrame.checkbox)
 
 		S:Unhook(Talented, "CreateBaseFrame")
 	end)
@@ -44,11 +53,11 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 		local button = S.hooks[self].MakeButton(self, parent)
 
 		if not button.isSkinned then
-			button:SetTemplate("Default")
-			button:StyleButton()
+			SkinFrame(button, "SetTemplate", "Default")
+			SkinFrame(button, "StyleButton")
 
 			button:DisableDrawLayer("BACKGROUND")
-			button:SetNormalTexture(nil)
+			SkinFrame(button, "SetNormalTexture", nil)
 			button.SetNormalTexture = E.noop
 
 			button.texture:SetInside(button)
@@ -69,8 +78,8 @@ S:AddCallbackForAddon("Talented", "Talented", function()
 		local target = S.hooks[self].GetButtonTarget(self, button)
 
 		if not target.isSkinned then
-			target:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
-			target:Point("CENTER", button, "TOPRIGHT", 2, 0)
+			SkinFrame(target, "SetFont", E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			SkinFrame(target, "Point", "CENTER", button, "TOPRIGHT", 2, 0)
 			target.texture:Kill()
 
 			target.isSkinned = true
@@ -106,7 +115,7 @@ S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
 
 	S:SetBackdropHitRect(TalentedGlyphs, TalentedGlyphs.backdrop, true)
 
-	S:HandleCloseButton(TalentedGlyphs.close)
+	SkinControl("HandleCloseButton", TalentedGlyphs.close)
 
 	TalentedGlyphs.title:Point("TOP", 0, -15)
 
@@ -156,11 +165,11 @@ S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
 	local glyphFrameLevel = TalentedGlyphs:GetFrameLevel() + 1
 
 	for glyphID, glyph in ipairs(TalentedGlyphs.glyphs) do
-		glyph:SetFrameLevel(glyphFrameLevel)
-		glyph:Size(90)
-		glyph:SetScale(glyphBGScale)
+		SkinFrame(glyph, "SetFrameLevel", glyphFrameLevel)
+		SkinFrame(glyph, "Size", 90)
+		SkinFrame(glyph, "SetScale", glyphBGScale)
 		local point, x, y = unpack(glyphPositions[glyphID])
-		glyph:Point(point, TalentedGlyphs.background.backdrop, x, y)
+		SkinFrame(glyph, "Point", point, TalentedGlyphs.background.backdrop, x, y)
 
 		local animation = slotAnimations[glyphID]
 		glyph.sparkle:SetDrawLayer("OVERLAY")
@@ -168,7 +177,7 @@ S:AddCallbackForAddon("Talented_GlyphFrame", "Talented_GlyphFrame", function()
 		glyph.sparkle.anim.translation:SetOffset(animation.xStop - animation.xStart, animation.yStop - animation.yStart)
 	end
 
-	S:HandleCheckBox(TalentedGlyphs.checkbox)
+	SkinControl("HandleCheckBox", TalentedGlyphs.checkbox)
 	TalentedGlyphs.checkbox:Point("BOTTOMLEFT", 15, 80)
 end)
 
@@ -180,8 +189,8 @@ S:AddCallbackForAddon("Talented_SpecTabs", "Talented_SpecTabs", function()
 
 		for _, tab in ipairs({"spec1", "spec2", "petspec1"}) do
 			tab = Talented.tabs[tab]
-			tab:SetTemplate("Default")
-			tab:StyleButton()
+			SkinFrame(tab, "SetTemplate", "Default")
+			SkinFrame(tab, "StyleButton")
 			tab:DisableDrawLayer("BACKGROUND")
 			tab:GetNormalTexture():SetInside(tab.backdrop)
 			tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))

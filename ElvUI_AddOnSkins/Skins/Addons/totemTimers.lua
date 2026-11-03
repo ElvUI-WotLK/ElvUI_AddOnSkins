@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("TotemTimers") then return end
@@ -46,7 +55,7 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 		for i, f in pairs(TTActionBars.bars) do
 			for j in pairs(f.buttons) do
 				local button = _G["TT_ActionButton" .. i .. j]
-				button:StyleButton(nil, nil, true)
+				SkinFrame(button, "StyleButton", nil, nil, true)
 				button:CreateBackdrop("Default")
 				button.backdrop:SetAllPoints()
 				button.icon:SetInside()
@@ -61,19 +70,19 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 			local button = _G["XiTimers_Timer" .. i]
 			local icon = _G["XiTimers_Timer" .. i .. "Icon"]
 
-			button:StyleButton(nil, nil, true)
+			SkinFrame(button, "StyleButton", nil, nil, true)
 			button:CreateBackdrop("Default")
 			button.backdrop:SetAllPoints()
 
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetInside()
+			SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
+			SkinFrame(icon, "SetInside")
 		end
 
-		TotemTimers_MultiSpell:StyleButton(nil, nil, true)
+		SkinFrame(TotemTimers_MultiSpell, "StyleButton", nil, nil, true)
 		TotemTimers_MultiSpell:CreateBackdrop("Default")
 		TotemTimers_MultiSpell.backdrop:SetAllPoints()
-		TotemTimers_MultiSpellIcon:SetTexCoord(unpack(E.TexCoords))
-		TotemTimers_MultiSpellIcon:SetInside()
+		SkinFrame(TotemTimers_MultiSpellIcon, "SetTexCoord", unpack(E.TexCoords))
+		SkinFrame(TotemTimers_MultiSpellIcon, "SetInside")
 
 		S:Unhook("TotemTimers_SetupGlobals")
 	end)
@@ -81,9 +90,9 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 	hooksecurefunc(TotemTimers, "SetEmptyTexCoord", function(icon, nr)
 		if nr and nr > 0 then
 			local tcoords = SLOT_EMPTY_TCOORDS[nr]
-			icon:SetTexCoord(tcoords.left, tcoords.right, tcoords.top, tcoords.bottom)
+			SkinFrame(icon, "SetTexCoord", tcoords.left, tcoords.right, tcoords.top, tcoords.bottom)
 		else
-			icon:SetTexCoord(unpack(E.TexCoords))
+			SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 		end
 	end)
 
@@ -96,7 +105,7 @@ S:AddCallbackForAddon("TotemTimers", "TotemTimers", function()
 
 	hooksecurefunc(XiTimers, "new", function(self)
 		for _, bar in ipairs(self.timers[#self.timers].timerbars) do
-			bar:SetTemplate("Default")
+			SkinFrame(bar, "SetTemplate", "Default")
 			bar.background.Show = E.noop
 			bar.background:Hide()
 		end

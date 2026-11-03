@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("PowerAuras") then return end
@@ -255,77 +264,77 @@ S:AddCallbackForAddon("PowerAuras", "PowerAuras", function()
 
 	for _, frame in ipairs(frames) do
 		frame = _G[frame]
-		frame:StripTextures()
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "StripTextures")
+		SkinFrame(frame, "SetTemplate", "Transparent")
 	end
 	for _, button in ipairs(buttons) do
-		S:HandleButton(_G[button])
+		SkinControl("HandleButton", _G[button])
 	end
 	for _, checkBox in ipairs(checkBoxes) do
-		S:HandleCheckBox(_G[checkBox])
+		SkinControl("HandleCheckBox", _G[checkBox])
 	end
 	for _, slider in ipairs(sliders) do
-		S:HandleSliderFrame(_G[slider])
+		SkinControl("HandleSliderFrame", _G[slider])
 	end
 	for _, editBox in ipairs(editBoxes) do
-		S:HandleEditBox(_G[editBox])
+		SkinControl("HandleEditBox", _G[editBox])
 	end
 	for _, dropDownBox in ipairs(dropDownBoxes) do
-		S:HandleDropDownBox(_G[dropDownBox])
+		SkinControl("HandleDropDownBox", _G[dropDownBox])
 	end
 	for _, itemButton in ipairs(itemButtons) do
-		S:HandleItemButton(_G[itemButton], true)
+		SkinControl("HandleItemButton", _G[itemButton], true)
 	end
 
 	local icon
 	for i = 1, 24 do
 		icon = _G["PowaIcone"..i]
-		icon:SetTemplate()
+		SkinFrame(icon, "SetTemplate")
 		icon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		icon:GetNormalTexture():SetInside(icon)
-		icon:StyleButton(false, true)
+		SkinFrame(icon, "StyleButton", false, true)
 	end
 
-	PowaSelected:SetFrameStrata(PowaSelected:GetParent():GetFrameStrata())
-	PowaSelected:SetFrameLevel(PowaSelected:GetParent():GetFrameLevel() + 2)
-	PowaSelected:StripTextures()
-	PowaSelected:SetTemplate("Default", nil, true)
-	PowaSelected:SetBackdropColor(0, 0, 0, 0)
-	PowaSelected:SetBackdropBorderColor(1, 0.82, 0)
-	PowaSelected:Hide()
+	SkinFrame(PowaSelected, "SetFrameStrata", PowaSelected:GetParent():GetFrameStrata())
+	SkinFrame(PowaSelected, "SetFrameLevel", PowaSelected:GetParent():GetFrameLevel() + 2)
+	SkinFrame(PowaSelected, "StripTextures")
+	SkinFrame(PowaSelected, "SetTemplate", "Default", nil, true)
+	SkinFrame(PowaSelected, "SetBackdropColor", 0, 0, 0, 0)
+	SkinFrame(PowaSelected, "SetBackdropBorderColor", 1, 0.82, 0)
+	SkinFrame(PowaSelected, "Hide")
 
 	local tab
 	for i = 1, 5 do
 		tab = _G["PowaEditorTab"..i]
-		S:HandleTab(tab)
-		tab:Height(29)
+		SkinControl("HandleTab", tab)
+		SkinFrame(tab, "Height", 29)
 	end
 
-	PowaOptionsFrame:Height(463)
+	SkinFrame(PowaOptionsFrame, "Height", 463)
 
-	PowaOptionsSelectorFrame:Height(390)
-	PowaOptionsSelectorNew:Point("BOTTOMLEFT", 5, 86)
+	SkinFrame(PowaOptionsSelectorFrame, "Height", 390)
+	SkinFrame(PowaOptionsSelectorNew, "Point", "BOTTOMLEFT", 5, 86)
 
-	PowaOptionsRename:Point("TOP", PowaOptionsGlobalListFrame, "BOTTOM", 0, -5)
+	SkinFrame(PowaOptionsRename, "Point", "TOP", PowaOptionsGlobalListFrame, "BOTTOM", 0, -5)
 
-	PowaOptionsRenameEditBox:Size(88, 20)
-	PowaOptionsRenameEditBox:Point("TOP", PowaOptionsRename, "TOP", 0, -1)
+	SkinFrame(PowaOptionsRenameEditBox, "Size", 88, 20)
+	SkinFrame(PowaOptionsRenameEditBox, "Point", "TOP", PowaOptionsRename, "TOP", 0, -1)
 
-	PowaEquipmentSlotsFrame:Height(370)
+	SkinFrame(PowaEquipmentSlotsFrame, "Height", 370)
 
-	PowaHeadSlot:Point("TOPLEFT", 11, -25)
-	PowaHandsSlot:Point("TOPRIGHT", -11, -25)
+	SkinFrame(PowaHeadSlot, "Point", "TOPLEFT", 11, -25)
+	SkinFrame(PowaHandsSlot, "Point", "TOPRIGHT", -11, -25)
 
-	PowaOptionsHeader:Point("TOP", 0, -10)
-	PowaHeader:Point("TOP", 0, -8)
-	PowaTitleText:Point("TOP", 0, -8)
+	SkinFrame(PowaOptionsHeader, "Point", "TOP", 0, -10)
+	SkinFrame(PowaHeader, "Point", "TOP", 0, -8)
+	SkinFrame(PowaTitleText, "Point", "TOP", 0, -8)
 
-	S:HandleCloseButton(PowaOptionsFrameCloseButton, PowaOptionsFrame)
-	S:HandleCloseButton(PowaCloseButton, PowaBarConfigFrame)
-	S:HandleCloseButton(PowaFrameCloseButton, PowaEquipmentSlotsFrame)
+	SkinControl("HandleCloseButton", PowaOptionsFrameCloseButton, PowaOptionsFrame)
+	SkinControl("HandleCloseButton", PowaCloseButton, PowaBarConfigFrame)
+	SkinControl("HandleCloseButton", PowaFrameCloseButton, PowaEquipmentSlotsFrame)
 
-	PowaBuffTimerCentsButton:Size(25)
+	SkinFrame(PowaBuffTimerCentsButton, "Size", 25)
 
 	PowaAuthorText.Show = E.noop
-	PowaAuthorText:Hide()
+	SkinFrame(PowaAuthorText, "Hide")
 end)

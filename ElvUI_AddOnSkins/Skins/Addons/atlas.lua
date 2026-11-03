@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Atlas") then return end
@@ -9,19 +18,19 @@ if not AS:IsAddonLODorEnabled("Atlas") then return end
 S:AddCallbackForAddon("Atlas", "Atlas", function()
 	if not E.private.addOnSkins.Atlas then return end
 
-	AtlasFrame:StripTextures()
-	AtlasFrame:SetTemplate("Transparent")
+	SkinFrame(AtlasFrame, "StripTextures")
+	SkinFrame(AtlasFrame, "SetTemplate", "Transparent")
 	AtlasFrame:SetClampRectInsets(0, 0, 0, 0)
 
-	S:HandleCloseButton(AtlasFrameCloseButton, AtlasFrame)
+	SkinControl("HandleCloseButton", AtlasFrameCloseButton, AtlasFrame)
 
-	AtlasFrameLockButton:Point("RIGHT", AtlasFrameCloseButton, "LEFT", 12, -1)
+	SkinFrame(AtlasFrameLockButton, "Point", "RIGHT", AtlasFrameCloseButton, "LEFT", 12, -1)
 	AtlasFrameLockButton:SetHitRectInsets(6, 6, 6, 6)
 
-	AtlasLockNorm:SetInside(AtlasFrameLockButton, 10, 10)
-	AtlasLockPush:SetInside(AtlasFrameLockButton, 10, 10)
-	AtlasLockNorm:SetTexCoord(.36, .65, .32, .73)
-	AtlasLockPush:SetTexCoord(.36, .60, .38, .76)
+	SkinFrame(AtlasLockNorm, "SetInside", AtlasFrameLockButton, 10, 10)
+	SkinFrame(AtlasLockPush, "SetInside", AtlasFrameLockButton, 10, 10)
+	SkinFrame(AtlasLockNorm, "SetTexCoord", .36, .65, .32, .73)
+	SkinFrame(AtlasLockPush, "SetTexCoord", .36, .60, .38, .76)
 
 	AtlasMap:SetDrawLayer("ARTWORK")
 	AtlasMap:CreateBackdrop()
@@ -32,54 +41,54 @@ S:AddCallbackForAddon("Atlas", "Atlas", function()
 	end)
 	Atlas_UpdateLock()
 
-	S:HandleDropDownBox(AtlasFrameDropDownType)
-	S:HandleDropDownBox(AtlasFrameDropDown)
+	SkinControl("HandleDropDownBox", AtlasFrameDropDownType)
+	SkinControl("HandleDropDownBox", AtlasFrameDropDown)
 
-	S:HandleEditBox(AtlasSearchEditBox)
-	AtlasSearchEditBox:Height(22)
+	SkinControl("HandleEditBox", AtlasSearchEditBox)
+	SkinFrame(AtlasSearchEditBox, "Height", 22)
 
-	S:HandleButton(AtlasSwitchButton)
-	S:HandleButton(AtlasSearchButton)
-	S:HandleButton(AtlasSearchClearButton)
-	S:HandleButton(AtlasFrameOptionsButton)
+	SkinControl("HandleButton", AtlasSwitchButton)
+	SkinControl("HandleButton", AtlasSearchButton)
+	SkinControl("HandleButton", AtlasSearchClearButton)
+	SkinControl("HandleButton", AtlasFrameOptionsButton)
 
-	S:HandleScrollBar(AtlasScrollBarScrollBar)
+	SkinControl("HandleScrollBar", AtlasScrollBarScrollBar)
 
-	AtlasFrameDropDownType:Point("TOPLEFT", 24, -40)
-	AtlasFrameDropDown:Point("LEFT", AtlasFrameDropDownType, "RIGHT", 2, 0)
+	SkinFrame(AtlasFrameDropDownType, "Point", "TOPLEFT", 24, -40)
+	SkinFrame(AtlasFrameDropDown, "Point", "LEFT", AtlasFrameDropDownType, "RIGHT", 2, 0)
 
-	AtlasFrameOptionsButton:Point("TOPRIGHT", -14, -43)
+	SkinFrame(AtlasFrameOptionsButton, "Point", "TOPRIGHT", -14, -43)
 
-	AtlasMap:Point("TOPLEFT", 15, -74)
+	SkinFrame(AtlasMap, "Point", "TOPLEFT", 15, -74)
 	AtlasMap.ClearAllPoints = E.noop
 	AtlasMap.SetPoint = E.noop
 
-	AtlasSwitchButton:Height(24)
-	AtlasSearchButton:Height(24)
-	AtlasSearchClearButton:Size(62, 24)
+	SkinFrame(AtlasSwitchButton, "Height", 24)
+	SkinFrame(AtlasSearchButton, "Height", 24)
+	SkinFrame(AtlasSearchClearButton, "Size", 62, 24)
 
-	AtlasSearchEditBox:Point("BOTTOMRIGHT", -152, 15)
-	AtlasSwitchButton:Point("RIGHT", AtlasSearchEditBox, "LEFT", -4, 0)
-	AtlasSearchButton:Point("LEFT", AtlasSearchEditBox, "RIGHT", 4, 0)
-	AtlasSearchClearButton:Point("LEFT", AtlasSearchButton, "RIGHT", 3, 0)
+	SkinFrame(AtlasSearchEditBox, "Point", "BOTTOMRIGHT", -152, 15)
+	SkinFrame(AtlasSwitchButton, "Point", "RIGHT", AtlasSearchEditBox, "LEFT", -4, 0)
+	SkinFrame(AtlasSearchButton, "Point", "LEFT", AtlasSearchEditBox, "RIGHT", 4, 0)
+	SkinFrame(AtlasSearchClearButton, "Point", "LEFT", AtlasSearchButton, "RIGHT", 3, 0)
 
-	AtlasScrollBarScrollBar:Point("TOPLEFT", AtlasScrollBar, "TOPRIGHT", 8, -16)
-	AtlasScrollBarScrollBar:Point("BOTTOMLEFT", AtlasScrollBar, "BOTTOMRIGHT", 8, 16)
+	SkinFrame(AtlasScrollBarScrollBar, "Point", "TOPLEFT", AtlasScrollBar, "TOPRIGHT", 8, -16)
+	SkinFrame(AtlasScrollBarScrollBar, "Point", "BOTTOMLEFT", AtlasScrollBar, "BOTTOMRIGHT", 8, 16)
 
 	-- options
-	S:HandleCheckBox(AtlasOptionsFrameToggleButton)
-	S:HandleCheckBox(AtlasOptionsFrameAutoSelect)
-	S:HandleCheckBox(AtlasOptionsFrameRightClick)
-	S:HandleCheckBox(AtlasOptionsFrameAcronyms)
-	S:HandleCheckBox(AtlasOptionsFrameClamped)
-	S:HandleCheckBox(AtlasOptionsFrameCtrl)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameToggleButton)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameAutoSelect)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameRightClick)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameAcronyms)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameClamped)
+	SkinControl("HandleCheckBox", AtlasOptionsFrameCtrl)
 
-	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonPos)
-	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonRad)
-	S:HandleSliderFrame(AtlasOptionsFrameSliderAlpha)
-	S:HandleSliderFrame(AtlasOptionsFrameSliderScale)
+	SkinControl("HandleSliderFrame", AtlasOptionsFrameSliderButtonPos)
+	SkinControl("HandleSliderFrame", AtlasOptionsFrameSliderButtonRad)
+	SkinControl("HandleSliderFrame", AtlasOptionsFrameSliderAlpha)
+	SkinControl("HandleSliderFrame", AtlasOptionsFrameSliderScale)
 
-	S:HandleDropDownBox(AtlasOptionsFrameDropDownCats)
+	SkinControl("HandleDropDownBox", AtlasOptionsFrameDropDownCats)
 
-	S:HandleButton(AtlasOptionsFrameResetPosition)
+	SkinControl("HandleButton", AtlasOptionsFrameResetPosition)
 end)

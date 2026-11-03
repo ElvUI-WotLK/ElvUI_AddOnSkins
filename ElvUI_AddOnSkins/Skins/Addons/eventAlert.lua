@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("EventAlert") then return end
@@ -14,7 +23,7 @@ S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 
 	local function Alart_OnShow(self)
 		self.icon:SetTexture(self:GetBackdrop().bgFile)
-		self:SetTemplate("Transparent")
+		SkinFrame(self, "SetTemplate", "Transparent")
 	end
 
 	local function SkinAlartFrame(frame, hook)
@@ -25,8 +34,8 @@ S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
 
 		if hook or not frame:GetBackdrop() then
-			frame:Hide()
-			frame:HookScript("OnShow", Alart_OnShow)
+			SkinFrame(frame, "Hide")
+			SkinFrame(frame, "HookScript", "OnShow", Alart_OnShow)
 		else
 			Alart_OnShow(frame)
 		end
@@ -52,7 +61,7 @@ S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 		for i = 1, Class_Events_Frame:GetNumChildren() do
 			local child = select(i, Class_Events_Frame:GetChildren())
 			if child and child:IsObjectType("CheckButton") then
-				S:HandleCheckBox(child)
+				SkinControl("HandleCheckBox", child)
 			end
 		end
 
@@ -60,7 +69,7 @@ S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 		for i = 1, Alt_Alerts_Frame:GetNumChildren() do
 			local child = select(i, Alt_Alerts_Frame:GetChildren())
 			if child and child:IsObjectType("CheckButton") then
-				S:HandleCheckBox(child)
+				SkinControl("HandleCheckBox", child)
 			end
 		end
 	end
@@ -80,58 +89,58 @@ S:AddCallbackForAddon("EventAlert", "EventAlert", function()
 	hooksecurefunc("EventAlert_CreateCustomFrames", SkinCustomFrames)
 
 	-- Options
-	EA_Options_Frame:SetTemplate("Transparent")
-	EA_Options_Frame_Header:Hide()
-	S:HandleButton(EA_Options_Frame_ToggleIconOptions)
-	S:HandleButton(EA_Options_Frame_ToggleClassEvents)
-	S:HandleButton(EA_Options_Frame_ToggleCustomEvents)
-	S:HandleButton(EA_Options_Frame_Okay)
-	S:HandleCheckBox(EA_Options_Frame_ShowFrame)
-	S:HandleCheckBox(EA_Options_Frame_ShowName)
-	S:HandleCheckBox(EA_Options_Frame_ShowTimer)
-	S:HandleCheckBox(EA_Options_Frame_ChangeTimer)
-	S:HandleCheckBox(EA_Options_Frame_ShowFlash)
-	S:HandleCheckBox(EA_Options_Frame_DoAlertSound)
-	S:HandleCheckBox(EA_Options_Frame_AllowESC)
-	S:HandleCheckBox(EA_Options_Frame_AltAlerts)
-	S:HandleCheckBox(EA_Options_Frame_ShowSpellInfo)
-	S:HandleDropDownBox(EA_Options_Frame_AlertSoundSelect)
+	SkinFrame(EA_Options_Frame, "SetTemplate", "Transparent")
+	SkinFrame(EA_Options_Frame_Header, "Hide")
+	SkinControl("HandleButton", EA_Options_Frame_ToggleIconOptions)
+	SkinControl("HandleButton", EA_Options_Frame_ToggleClassEvents)
+	SkinControl("HandleButton", EA_Options_Frame_ToggleCustomEvents)
+	SkinControl("HandleButton", EA_Options_Frame_Okay)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ShowFrame)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ShowName)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ShowTimer)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ChangeTimer)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ShowFlash)
+	SkinControl("HandleCheckBox", EA_Options_Frame_DoAlertSound)
+	SkinControl("HandleCheckBox", EA_Options_Frame_AllowESC)
+	SkinControl("HandleCheckBox", EA_Options_Frame_AltAlerts)
+	SkinControl("HandleCheckBox", EA_Options_Frame_ShowSpellInfo)
+	SkinControl("HandleDropDownBox", EA_Options_Frame_AlertSoundSelect)
 
 	-- Icon Position Options
-	EA_Icon_Options_Frame:SetTemplate("Transparent")
-	EA_Icon_Options_Frame_Header:Hide()
-	EA_Icon_Options_Frame:Point("TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
-	S:HandleCheckBox(EA_Icon_Options_Frame_LockFrame)
-	S:HandleSliderFrame(EA_Icon_Options_Frame_IconSize)
-	S:HandleSliderFrame(EA_Icon_Options_Frame_IconXOffset)
-	S:HandleSliderFrame(EA_Icon_Options_Frame_IconYOffset)
-	S:HandleButton(EA_Icon_Options_Frame_ToggleAlertFrame)
-	S:HandleButton(EA_Icon_Options_Frame_ResetAlertPosition)
+	SkinFrame(EA_Icon_Options_Frame, "SetTemplate", "Transparent")
+	SkinFrame(EA_Icon_Options_Frame_Header, "Hide")
+	SkinFrame(EA_Icon_Options_Frame, "Point", "TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
+	SkinControl("HandleCheckBox", EA_Icon_Options_Frame_LockFrame)
+	SkinControl("HandleSliderFrame", EA_Icon_Options_Frame_IconSize)
+	SkinControl("HandleSliderFrame", EA_Icon_Options_Frame_IconXOffset)
+	SkinControl("HandleSliderFrame", EA_Icon_Options_Frame_IconYOffset)
+	SkinControl("HandleButton", EA_Icon_Options_Frame_ToggleAlertFrame)
+	SkinControl("HandleButton", EA_Icon_Options_Frame_ResetAlertPosition)
 
 	-- Class Alart Options
-	Class_Events_Frame:SetTemplate("Transparent")
-	Class_Events_Frame_Header:Hide()
-	Class_Events_Frame:Point("TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
+	SkinFrame(Class_Events_Frame, "SetTemplate", "Transparent")
+	SkinFrame(Class_Events_Frame_Header, "Hide")
+	SkinFrame(Class_Events_Frame, "Point", "TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
 
 	-- Alt Alarts Options
-	Alt_Alerts_Frame:SetTemplate("Transparent")
-	Alt_Alerts_Frame_Header:Hide()
-	Alt_Alerts_Frame:Point("TOPLEFT", Class_Events_Frame, "TOPRIGHT", -1, 0)
+	SkinFrame(Alt_Alerts_Frame, "SetTemplate", "Transparent")
+	SkinFrame(Alt_Alerts_Frame_Header, "Hide")
+	SkinFrame(Alt_Alerts_Frame, "Point", "TOPLEFT", Class_Events_Frame, "TOPRIGHT", -1, 0)
 
 	-- Custom Event Options
-	Custom_Events_Frame:SetTemplate("Transparent")
-	Custom_Events_Frame_Header:Hide()
-	Custom_Events_Frame:SetPoint("TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
-	S:HandleButton(Custom_Events_Frame_SaveCustom_Button)
-	S:HandleButton(Custom_Events_Frame_DeleteCustom_Button)
-	S:HandleEditBox(Custom_Events_Frame_SaveCustom_Box)
-	S:HandleDropDownBox(Custom_Events_Frame_DeleteCustom_Box)
-	Custom_Events_Frame_SaveCustom_Box:Height(20)
-	Custom_Events_Frame_DeleteCustom_Box:Width(182)
-	Custom_Events_Frame_DeleteCustom_Button:Point("RIGHT", Custom_Events_Frame_DeleteCustom_Box, "RIGHT", 91, 3)
+	SkinFrame(Custom_Events_Frame, "SetTemplate", "Transparent")
+	SkinFrame(Custom_Events_Frame_Header, "Hide")
+	SkinFrame(Custom_Events_Frame, "SetPoint", "TOPLEFT", EA_Options_Frame, "TOPRIGHT", -1, 0)
+	SkinControl("HandleButton", Custom_Events_Frame_SaveCustom_Button)
+	SkinControl("HandleButton", Custom_Events_Frame_DeleteCustom_Button)
+	SkinControl("HandleEditBox", Custom_Events_Frame_SaveCustom_Box)
+	SkinControl("HandleDropDownBox", Custom_Events_Frame_DeleteCustom_Box)
+	SkinFrame(Custom_Events_Frame_SaveCustom_Box, "Height", 20)
+	SkinFrame(Custom_Events_Frame_DeleteCustom_Box, "Width", 182)
+	SkinFrame(Custom_Events_Frame_DeleteCustom_Button, "Point", "RIGHT", Custom_Events_Frame_DeleteCustom_Box, "RIGHT", 91, 3)
 
 	-- Version
-	EA_Version_Frame:SetTemplate("Transparent")
-	EA_Version_Frame_Header:Hide()
-	S:HandleButton(EA_Version_Frame_Okay)
+	SkinFrame(EA_Version_Frame, "SetTemplate", "Transparent")
+	SkinFrame(EA_Version_Frame_Header, "Hide")
+	SkinControl("HandleButton", EA_Version_Frame_Okay)
 end)

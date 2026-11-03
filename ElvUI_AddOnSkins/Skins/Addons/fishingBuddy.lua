@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("FishingBuddy") then return end
@@ -16,37 +25,37 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 
 	S:SetBackdropHitRect(FishingBuddyFrame)
 
-	FishingBuddyFramePortrait:Kill()
-	FishingLocationsFrame:StripTextures()
-	FishingOptionsFrame:StripTextures()
-	FishingLocationExpandButtonFrame:StripTextures()
+	SkinFrame(FishingBuddyFramePortrait, "Kill")
+	SkinFrame(FishingLocationsFrame, "StripTextures")
+	SkinFrame(FishingOptionsFrame, "StripTextures")
+	SkinFrame(FishingLocationExpandButtonFrame, "StripTextures")
 
-	S:HandleCloseButton(FishingBuddyCloseButton, FishingBuddyFrame.backdrop)
+	SkinControl("HandleCloseButton", FishingBuddyCloseButton, FishingBuddyFrame.backdrop)
 
-	FishingLocsScrollFrame:StripTextures()
-	S:HandleScrollBar(FishingLocsScrollFrameScrollBar)
+	SkinFrame(FishingLocsScrollFrame, "StripTextures")
+	SkinControl("HandleScrollBar", FishingLocsScrollFrameScrollBar)
 
-	S:HandleButton(FishingLocationsSwitchButton)
+	SkinControl("HandleButton", FishingLocationsSwitchButton)
 
-	S:HandleSliderFrame(FishingBuddyOption_MinimapRadSlider)
-	S:HandleSliderFrame(FishingBuddyOption_MinimapPosSlider)
+	SkinControl("HandleSliderFrame", FishingBuddyOption_MinimapRadSlider)
+	SkinControl("HandleSliderFrame", FishingBuddyOption_MinimapPosSlider)
 
-	S:HandleDropDownBox(FishingFluffPetMenu, 187)
-	S:HandleDropDownBox(FishingBuddyOption_OutfitMenu, 210)
+	SkinControl("HandleDropDownBox", FishingFluffPetMenu, 187)
+	SkinControl("HandleDropDownBox", FishingBuddyOption_OutfitMenu, 210)
 
-	S:HandleCheckBox(FishingBuddyOptionSLZ)
+	SkinControl("HandleCheckBox", FishingBuddyOptionSLZ)
 
 	local skinnedTabs = 0
 	local function skinTabs()
 		local id = skinnedTabs + 1
 		local tab = _G["FishingBuddyFrameTab"..id]
 		while tab do
-			S:HandleTab(tab)
+			SkinControl("HandleTab", tab)
 
 			if id == 1 then
-				tab:Point("CENTER", FishingBuddyFrame, "BOTTOMLEFT", 54, 62)
+				SkinFrame(tab, "Point", "CENTER", FishingBuddyFrame, "BOTTOMLEFT", 54, 62)
 			else
-				tab:Point("LEFT", _G["FishingBuddyFrameTab" .. (id - 1)], "RIGHT", -15, 0)
+				SkinFrame(tab, "Point", "LEFT", _G["FishingBuddyFrameTab" .. (id - 1)], "RIGHT", -15, 0)
 			end
 
 			tab.ClearAllPoints = E.noop
@@ -62,10 +71,10 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 	skinTabs()
 
 	if FishingBuddyOption_EasyCastKeys then
-		S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
+		SkinControl("HandleDropDownBox", FishingBuddyOption_EasyCastKeys, 140)
 	else
 		S:SecureHook(FishingBuddy, "Initialize", function()
-			S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)
+			SkinControl("HandleDropDownBox", FishingBuddyOption_EasyCastKeys, 140)
 			S:Unhook(FishingBuddy, "Initialize")
 		end)
 	end
@@ -75,13 +84,13 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 		for i = 1, 12 do
 			checkBox = _G["FishingBuddyOption"..i]
 			if checkBox and not checkBox.isSkinned then
-				S:HandleCheckBox(checkBox)
+				SkinControl("HandleCheckBox", checkBox)
 				checkBox.isSkinned = true
 			end
 		end
 	end
 
-	S:HookScript(FishingOptionsFrame, "OnShow", function()
+	SkinFrame(S, "HookScript", FishingOptionsFrame, "OnShow", function()
 		E:Delay(0.01, SkinCheckBoxes)
 		S:Unhook(FishingOptionsFrame, "OnShow")
 	end)
@@ -92,18 +101,18 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 		FishingBuddyOptionTab3
 	}
 
-	FishingBuddyOptionTab1:Point("TOPLEFT", FishingOptionsFrame, "TOPRIGHT", -33, -65)
+	SkinFrame(FishingBuddyOptionTab1, "Point", "TOPLEFT", FishingOptionsFrame, "TOPRIGHT", -33, -65)
 	FishingBuddyOptionTab1.ClearAllPoints = E.noop
 	FishingBuddyOptionTab1.SetPoint = E.noop
 
 	for _, frame in ipairs(optionTabs) do
-		frame:SetTemplate("Default")
-		frame:StyleButton()
+		SkinFrame(frame, "SetTemplate", "Default")
+		SkinFrame(frame, "StyleButton")
 		frame:DisableDrawLayer("BACKGROUND")
 		frame:GetNormalTexture():SetInside(frame.backdrop)
 		frame:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
-		frame:HookScript("OnClick", function(self)
+		SkinFrame(frame, "HookScript", "OnClick", function(self)
 			if not self.isSkinned then
 				SkinCheckBoxes()
 				self.isSkinned = true
@@ -113,11 +122,11 @@ S:AddCallbackForAddon("FishingBuddy", "FishingBuddy", function()
 
 	for i = 0, 21 do
 		if i == 0 then
-			S:HandleCollapseExpandButton(FishingLocationsCollapseAllButton)
+			SkinControl("HandleCollapseExpandButton", FishingLocationsCollapseAllButton)
 		else
 			local button = _G["FishingLocations"..i]
 			if button then
-				S:HandleCollapseExpandButton(button)
+				SkinControl("HandleCollapseExpandButton", button)
 			end
 		end
 	end

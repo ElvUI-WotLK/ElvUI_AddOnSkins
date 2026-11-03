@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 
 local select = select
 local unpack = unpack
@@ -17,7 +26,7 @@ S:AddCallbackForAddon("LootWonAlert", "LootWonAlert", function()
 	local function skinFrame(frame)
 		if frame.isSkinned then return end
 
-		frame:Size(300, 88)
+		SkinFrame(frame, "Size", 300, 88)
 		frame.Background:Hide()
 		frame.lootItem.IconBorder:Hide()
 
@@ -51,11 +60,11 @@ S:AddCallbackForAddon("LootWonAlert", "LootWonAlert", function()
 			local quality = select(3, GetItemInfo(itemLink))
 			if quality then
 				local r, g, b = GetItemQualityColor(quality)
-				self:SetBackdropBorderColor(r, g, b)
+				SkinFrame(self, "SetBackdropBorderColor", r, g, b)
 				-- self.backdrop:SetBackdropBorderColor(r, g, b)
 				self.lootItem.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			else
-				self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				SkinFrame(self, "SetBackdropBorderColor", unpack(E.media.bordercolor))
 				-- self.backdrop:SetBackdropBorderColor(r, g, b)
 				self.lootItem.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end

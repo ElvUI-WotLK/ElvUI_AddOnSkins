@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Skillet") then return end
@@ -15,76 +24,76 @@ local GetTradeSkillListLink = GetTradeSkillListLink
 S:AddCallbackForAddon("Skillet", "Skillet", function()
 	if not E.private.addOnSkins.Skillet then return end
 
-	S:HandleCloseButton(SkilletFrameCloseButton, SkilletFrame)
+	SkinControl("HandleCloseButton", SkilletFrameCloseButton, SkilletFrame)
 
-	S:HandleDropDownBox(SkilletSortDropdown)
+	SkinControl("HandleDropDownBox", SkilletSortDropdown)
 
-	S:HandleEditBox(SkilletFilterBox)
+	SkinControl("HandleEditBox", SkilletFilterBox)
 
-	S:HandleCheckBox(SkilletHideUncraftableRecipes)
+	SkinControl("HandleCheckBox", SkilletHideUncraftableRecipes)
 	SkilletHideUncraftableRecipes.backdrop:SetFrameLevel(SkilletHideUncraftableRecipes:GetFrameLevel())
 
-	S:HandleCheckBox(SkilletHideTrivialRecipes)
+	SkinControl("HandleCheckBox", SkilletHideTrivialRecipes)
 	SkilletHideTrivialRecipes.backdrop:SetFrameLevel(SkilletHideTrivialRecipes:GetFrameLevel())
 
-	SkilletRankFrameBorder:Hide()
-	SkilletRankFrame:Point("TOPRIGHT", -9, -32)
-	S:HandleStatusBar(SkilletRankFrame, {0.2, 0.2, 1})
+	SkinFrame(SkilletRankFrameBorder, "Hide")
+	SkinFrame(SkilletRankFrame, "Point", "TOPRIGHT", -9, -32)
+	SkinControl("HandleStatusBar", SkilletRankFrame, {0.2, 0.2, 1})
 
-	S:HandleButton(SkilletRescanButton)
-	S:HandleButton(SkilletShowOptionsButton)
-	S:HandleButton(SkilletRecipeNotesButton)
-	S:HandleButton(SkilletQueueAllButton)
-	S:HandleButton(SkilletCreateAllButton)
-	S:HandleButton(SkilletQueueButton)
-	S:HandleButton(SkilletCreateButton)
+	SkinControl("HandleButton", SkilletRescanButton)
+	SkinControl("HandleButton", SkilletShowOptionsButton)
+	SkinControl("HandleButton", SkilletRecipeNotesButton)
+	SkinControl("HandleButton", SkilletQueueAllButton)
+	SkinControl("HandleButton", SkilletCreateAllButton)
+	SkinControl("HandleButton", SkilletQueueButton)
+	SkinControl("HandleButton", SkilletCreateButton)
 
-	S:HandleEditBox(SkilletItemCountInputBox)
-	S:HandleSliderFrame(SkilletCreateCountSlider)
+	SkinControl("HandleEditBox", SkilletItemCountInputBox)
+	SkinControl("HandleSliderFrame", SkilletCreateCountSlider)
 
-	SkilletShowOptionsButton:Point("TOPRIGHT", SkilletRankFrame, "BOTTOMRIGHT", 1, -4)
-	SkilletRescanButton:Point("RIGHT", SkilletShowOptionsButton, "LEFT", -3, 0)
+	SkinFrame(SkilletShowOptionsButton, "Point", "TOPRIGHT", SkilletRankFrame, "BOTTOMRIGHT", 1, -4)
+	SkinFrame(SkilletRescanButton, "Point", "RIGHT", SkilletShowOptionsButton, "LEFT", -3, 0)
 
-	SkilletSkillListParent:Point("TOPLEFT", 8, -100)
-	SkilletSkillListParent:Point("BOTTOM", 0, 8)
+	SkinFrame(SkilletSkillListParent, "Point", "TOPLEFT", 8, -100)
+	SkinFrame(SkilletSkillListParent, "Point", "BOTTOM", 0, 8)
 
-	S:HandleScrollBar(SkilletSkillListScrollBar)
-	SkilletSkillListScrollBar:Point("TOPLEFT", SkilletSkillList, "TOPRIGHT", 7, -16)
-	SkilletSkillListScrollBar:Point("BOTTOMLEFT", SkilletSkillList, "BOTTOMRIGHT", 7, 16)
+	SkinControl("HandleScrollBar", SkilletSkillListScrollBar)
+	SkinFrame(SkilletSkillListScrollBar, "Point", "TOPLEFT", SkilletSkillList, "TOPRIGHT", 7, -16)
+	SkinFrame(SkilletSkillListScrollBar, "Point", "BOTTOMLEFT", SkilletSkillList, "BOTTOMRIGHT", 7, 16)
 
-	SkilletReagentParent:Point("TOPRIGHT", -8, -75)
+	SkinFrame(SkilletReagentParent, "Point", "TOPRIGHT", -8, -75)
 
-	S:HandleScrollBar(SkilletQueueListScrollBar)
-	SkilletQueueListScrollBar:Point("TOPLEFT", SkilletQueueList, "TOPRIGHT", 7, -16)
-	SkilletQueueListScrollBar:Point("BOTTOMLEFT", SkilletQueueList, "BOTTOMRIGHT", 7, 16)
+	SkinControl("HandleScrollBar", SkilletQueueListScrollBar)
+	SkinFrame(SkilletQueueListScrollBar, "Point", "TOPLEFT", SkilletQueueList, "TOPRIGHT", 7, -16)
+	SkinFrame(SkilletQueueListScrollBar, "Point", "BOTTOMLEFT", SkilletQueueList, "BOTTOMRIGHT", 7, 16)
 
-	SkilletQueueParent:Point("BOTTOMRIGHT", -8, 31)
+	SkinFrame(SkilletQueueParent, "Point", "BOTTOMRIGHT", -8, 31)
 
-	S:HandleScrollBar(SkilletNotesListScrollBar)
-	SkilletNotesListScrollBar:Point("TOPLEFT", SkilletNotesList, "TOPRIGHT", 7, -16)
-	SkilletNotesListScrollBar:Point("BOTTOMLEFT", SkilletNotesList, "BOTTOMRIGHT", 7, 16)
+	SkinControl("HandleScrollBar", SkilletNotesListScrollBar)
+	SkinFrame(SkilletNotesListScrollBar, "Point", "TOPLEFT", SkilletNotesList, "TOPRIGHT", 7, -16)
+	SkinFrame(SkilletNotesListScrollBar, "Point", "BOTTOMLEFT", SkilletNotesList, "BOTTOMRIGHT", 7, 16)
 
-	S:HandleButton(SkilletStartQueueButton)
-	S:HandleButton(SkilletEmptyQueueButton)
-	S:HandleButton(SkilletShoppingListButton)
+	SkinControl("HandleButton", SkilletStartQueueButton)
+	SkinControl("HandleButton", SkilletEmptyQueueButton)
+	SkinControl("HandleButton", SkilletShoppingListButton)
 
-	SkilletEmptyQueueButton:ClearAllPoints()
-	SkilletEmptyQueueButton:Point("LEFT", SkilletStartQueueButton, "RIGHT", 1, 0)
-	SkilletEmptyQueueButton:Point("RIGHT", SkilletShoppingListButton, "LEFT", -1, 0)
+	SkinFrame(SkilletEmptyQueueButton, "ClearAllPoints")
+	SkinFrame(SkilletEmptyQueueButton, "Point", "LEFT", SkilletStartQueueButton, "RIGHT", 1, 0)
+	SkinFrame(SkilletEmptyQueueButton, "Point", "RIGHT", SkilletShoppingListButton, "LEFT", -1, 0)
 
 	E:GetModule("Tooltip"):SecureHookScript(SkilletTradeskillTooltip, "OnShow", "SetStyle")
 
 	S:SecureHook(Skillet, "CreateTradeSkillWindow", function(self)
-		SkilletFrame:StripTextures()
-		SkilletFrame:SetTemplate("Transparent")
+		SkinFrame(SkilletFrame, "StripTextures")
+		SkinFrame(SkilletFrame, "SetTemplate", "Transparent")
 
-		SkilletSkillListParent:SetTemplate("Transparent")
-		SkilletReagentParent:SetTemplate("Transparent")
-		SkilletQueueParent:SetTemplate("Transparent")
-		SkilletRecipeNotesFrame:SetTemplate("Transparent")
+		SkinFrame(SkilletSkillListParent, "SetTemplate", "Transparent")
+		SkinFrame(SkilletReagentParent, "SetTemplate", "Transparent")
+		SkinFrame(SkilletQueueParent, "SetTemplate", "Transparent")
+		SkinFrame(SkilletRecipeNotesFrame, "SetTemplate", "Transparent")
 
-		SkilletFrame_SizerSoutheast:Size(20)
-		SkilletFrame_SizerSoutheast:SetScale(0.7)
+		SkinFrame(SkilletFrame_SizerSoutheast, "Size", 20)
+		SkinFrame(SkilletFrame_SizerSoutheast, "SetScale", 0.7)
 
 		S:Unhook(self, "CreateTradeSkillWindow")
 	end)
@@ -96,7 +105,7 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 		local i = scrollButtons + 1
 		local button = _G["SkilletScrollButton"..i]
 		while button do
-			S:HandleCollapseExpandButton(button)
+			SkinControl("HandleCollapseExpandButton", button)
 			i = i + 1
 			button = _G["SkilletScrollButton"..i]
 		end
@@ -110,7 +119,7 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 		local i = deleteButtons + 1
 		local button = _G["SkilletQueueButton"..i.."DeleteButton"]
 		while button do
-			S:HandleButton(button)
+			SkinControl("HandleButton", button)
 			i = i + 1
 			button = _G["SkilletQueueButton"..i.."DeleteButton"]
 		end
@@ -118,7 +127,7 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 	end)
 
 	-- Fix TradeSkill Link
-	SkilletTradeSkillLinkButton:SetScript("OnClick", function()
+	SkinFrame(SkilletTradeSkillLinkButton, "SetScript", "OnClick", function()
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
 		if not ChatFrameEditBox:IsShown() then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
@@ -128,24 +137,24 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 	end)
 
 	-- Notes Window
-	S:HandleCloseButton(SkilletNotesCloseButton, SkilletRecipeNotesFrame)
+	SkinControl("HandleCloseButton", SkilletNotesCloseButton, SkilletRecipeNotesFrame)
 
 	for i = 1, 7 do
 		local icon = _G["SkilletNotesButton"..i.."Icon"]
-		icon:SetTemplate("Default")
-		icon:SetNormalTexture("")
+		SkinFrame(icon, "SetTemplate", "Default")
+		SkinFrame(icon, "SetNormalTexture", "")
 		icon:GetNormalTexture():SetInside()
 
 		local note = _G["SkilletNotesButton"..i.."Notes"]
-		note:Point("TOPLEFT", 1, -25)
-		note:Height(22)
+		SkinFrame(note, "Point", "TOPLEFT", 1, -25)
+		SkinFrame(note, "Height", 22)
 	end
 
 	hooksecurefunc(Skillet, "UpdateNotesWindow", function()
 		for i = 1, 7 do
 			local icon = _G["SkilletNotesButton"..i.."Icon"]:GetNormalTexture()
 			if icon then
-				icon:SetTexCoord(unpack(E.TexCoords))
+				SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 			end
 		end
 	end)
@@ -153,7 +162,7 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 	S:SecureHook(Skillet, "RecipeNote_OnClick", function(self, button)
 		for _, child in ipairs({button:GetChildren()}) do
 			if child:GetObjectType() == "EditBox" then
-				child:SetTemplate("Default")
+				SkinFrame(child, "SetTemplate", "Default")
 				break
 			end
 		end
@@ -169,38 +178,38 @@ S:AddCallbackForAddon("Skillet", "Skillet", function()
 		titlebar1:SetDrawLayer("ARTWORK")
 		titlebar2:SetDrawLayer("ARTWORK")
 
-		titlebar1:Point("TOPLEFT", self.frame, "TOPLEFT", 4, -4)
-		titlebar1:Point("TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
+		SkinFrame(titlebar1, "Point", "TOPLEFT", self.frame, "TOPLEFT", 4, -4)
+		SkinFrame(titlebar1, "Point", "TOPRIGHT", self.frame, "TOPRIGHT", -4, -4)
 
-		S:HandleCloseButton(SkilletShoppingListCloseButton)
-		SkilletShoppingListCloseButton:SetPoint("TOPRIGHT", 0, 0)
+		SkinControl("HandleCloseButton", SkilletShoppingListCloseButton)
+		SkinFrame(SkilletShoppingListCloseButton, "SetPoint", "TOPRIGHT", 0, 0)
 
-		SkilletShoppingListParent:SetTemplate("Transparent")
-		SkilletShoppingListParent:Point("TOPLEFT", 4, -33)
-		SkilletShoppingListParent:Point("BOTTOMRIGHT", -4, 32)
+		SkinFrame(SkilletShoppingListParent, "SetTemplate", "Transparent")
+		SkinFrame(SkilletShoppingListParent, "Point", "TOPLEFT", 4, -33)
+		SkinFrame(SkilletShoppingListParent, "Point", "BOTTOMRIGHT", -4, 32)
 
-		S:HandleScrollBar(SkilletShoppingListListScrollBar)
+		SkinControl("HandleScrollBar", SkilletShoppingListListScrollBar)
 
-		SkilletShoppingListListScrollBar:Point("TOPLEFT", SkilletShoppingListList, "TOPRIGHT", 7, -16)
-		SkilletShoppingListListScrollBar:Point("BOTTOMLEFT", SkilletShoppingListList, "BOTTOMRIGHT", 7, 16)
+		SkinFrame(SkilletShoppingListListScrollBar, "Point", "TOPLEFT", SkilletShoppingListList, "TOPRIGHT", 7, -16)
+		SkinFrame(SkilletShoppingListListScrollBar, "Point", "BOTTOMLEFT", SkilletShoppingListList, "BOTTOMRIGHT", 7, 16)
 
-		S:HandleCheckBox(SkilletShowQueuesFromAllAlts)
+		SkinControl("HandleCheckBox", SkilletShowQueuesFromAllAlts)
 
 		S:Unhook(self, "internal_DisplayShoppingList")
 	end)
 
 	-- Merchant Popup
-	SkilletMerchantBuyFrame:SetTemplate("Transparent")
-	SkilletMerchantBuyFrame:Width(341)
-	SkilletMerchantBuyFrame:Point("TOPLEFT", MerchantFrame, "TOPLEFT", 11, 37)
+	SkinFrame(SkilletMerchantBuyFrame, "SetTemplate", "Transparent")
+	SkinFrame(SkilletMerchantBuyFrame, "Width", 341)
+	SkinFrame(SkilletMerchantBuyFrame, "Point", "TOPLEFT", MerchantFrame, "TOPLEFT", 11, 37)
 	SkilletMerchantBuyFrame.SetPoint = E.noop
-	S:HandleButton(SkilletMerchantBuyFrameButton)
+	SkinControl("HandleButton", SkilletMerchantBuyFrameButton)
 
 	-- Inventory Information
 	S:SecureHook(Skillet, "ShowInventoryInfoPopup", function()
 		if SkilletInfoBoxFrame then
-			SkilletInfoBoxFrame:SetTemplate("Transparent")
-			S:HandleButton(SkilletInfoBoxFrameButton)
+			SkinFrame(SkilletInfoBoxFrame, "SetTemplate", "Transparent")
+			SkinControl("HandleButton", SkilletInfoBoxFrameButton)
 		end
 
 		S:Unhook(Skillet, "ShowInventoryInfoPopup")

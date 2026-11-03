@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("AdiBags") then return end
@@ -32,27 +41,27 @@ S:AddCallbackForAddon("AdiBags", "AdiBags", function()
 	end)
 
 	local function SkinContainer(frame)
-		frame:SetTemplate("Transparent")
-		S:HandleCloseButton(frame.CloseButton)
+		SkinFrame(frame, "SetTemplate", "Transparent")
+		SkinControl("HandleCloseButton", frame.CloseButton)
 
 		local bagSlots = frame.HeaderLeftRegion.widgets[1].widget
-		bagSlots:SetTemplate()
-		bagSlots:StyleButton(nil, true)
+		SkinFrame(bagSlots, "SetTemplate")
+		SkinFrame(bagSlots, "StyleButton", nil, true)
 
 		local bagSlotsTex = bagSlots:GetNormalTexture()
-		bagSlotsTex:SetInside()
-		bagSlotsTex:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(bagSlotsTex, "SetInside")
+		SkinFrame(bagSlotsTex, "SetTexCoord", unpack(E.TexCoords))
 
 		frame.BagSlotPanel:SetTemplate("Transparent")
 
 		for _, bag in ipairs(frame.BagSlotPanel.buttons) do
-			bag:StripTextures()
-			bag:SetTemplate()
-			bag:StyleButton()
+			SkinFrame(bag, "StripTextures")
+			SkinFrame(bag, "SetTemplate")
+			SkinFrame(bag, "StyleButton")
 
 			local icon = _G[bag:GetName().."IconTexture"]
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
+			SkinFrame(icon, "SetInside")
+			SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 		end
 	end
 
@@ -76,27 +85,27 @@ S:AddCallbackForAddon("AdiBags", "AdiBags", function()
 	hooksecurefunc(LayeredRegionClass.prototype, "AddWidget", function(self, widget)
 		if widget:IsObjectType("Button") then
 			if widget:GetText() then
-				S:HandleButton(widget)
+				SkinControl("HandleButton", widget)
 			else
-				widget:StyleButton(true, true)
+				SkinFrame(widget, "StyleButton", true, true)
 				widget:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 				widget:GetCheckedTexture():SetTexCoord(unpack(E.TexCoords))
 			end
 		elseif widget.editBox and widget.editBox.clearButton then
 			widget.editBox:DisableDrawLayer("BACKGROUND")
-			S:HandleEditBox(widget.editBox)
+			SkinControl("HandleEditBox", widget.editBox)
 
-			S:HandleButton(widget.editBox.clearButton)
+			SkinControl("HandleButton", widget.editBox.clearButton)
 		end
 	end)
 
 	local function updateBorderTexture(self, texture, g, b)
 		if texture == TEXTURE_ITEM_QUEST_BANG then
-			self:SetAlpha(1)
+			SkinFrame(self, "SetAlpha", 1)
 			self.parent:SetBackdropBorderColor(unpack(qualityColors.questStarter))
 			self.parent._itemQuality = "questStarter"
 		else
-			self:SetAlpha(0)
+			SkinFrame(self, "SetAlpha", 0)
 
 			if texture == TEXTURE_ITEM_QUEST_BORDER then
 				self.parent:SetBackdropBorderColor(unpack(qualityColors.questItem))
@@ -164,8 +173,8 @@ S:AddCallbackForAddon("AdiBags", "AdiBags", function()
 	local ItemButtonClass = AdiBags:GetClass("ItemButton")
 	hooksecurefunc(ItemButtonClass.prototype, "OnCreate", function(self)
 		self.NormalTexture:SetTexture(nil)
-		self:SetTemplate("Default", true)
-		self:StyleButton()
+		SkinFrame(self, "SetTemplate", "Default", true)
+		SkinFrame(self, "StyleButton")
 
 		self.IconTexture:SetInside()
 		self.IconTexture:SetTexCoord(unpack(E.TexCoords))

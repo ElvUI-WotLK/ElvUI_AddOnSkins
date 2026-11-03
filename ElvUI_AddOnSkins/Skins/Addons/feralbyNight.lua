@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("FeralbyNight") then return end
@@ -31,7 +40,7 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 		if self.__scaleBlock then return end
 
 		self.__scaleBlock = true
-		self:SetScale(1)
+		SkinFrame(self, "SetScale", 1)
 		self.__scaleBlock = nil
 
 		for _, child in ipairs({self:GetChildren()}) do
@@ -42,8 +51,8 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 				end
 
 				local a1, p, a2 = child:GetPoint()
-				child:Size(child.__baseWidth * scale, child.__baseHeight * scale)
-				child:Point(a1, p, a2, child.__basePointX * scale, child.__basePointY * scale)
+				SkinFrame(child, "Size", child.__baseWidth * scale, child.__baseHeight * scale)
+				SkinFrame(child, "Point", a1, p, a2, child.__basePointX * scale, child.__basePointY * scale)
 			end
 		end
 	end
@@ -55,7 +64,7 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 		texture:CreateBackdrop("Default")
 		texture:SetDrawLayer("BORDER")
 		texture:SetTexture(texture:GetTexture())
-		texture:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(texture, "SetTexCoord", unpack(E.TexCoords))
 	end
 
 	local lists = {
@@ -74,7 +83,7 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 		end
 	end
 
-	FeralbyNightDisplayFrame_current_cooldown:SetAllPoints(FeralbyNightDisplayFrame_current)
+	SkinFrame(FeralbyNightDisplayFrame_current_cooldown, "SetAllPoints", FeralbyNightDisplayFrame_current)
 
 	local frames = {
 		"FeralbyNightcdmonFrame1",
@@ -88,16 +97,16 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 	for _, frame in ipairs(frames) do
 		frame = _G[frame]
 		hooksecurefunc(frame, "SetScale", setScale)
-		frame:SetScale(frame:GetScale())
+		SkinFrame(frame, "SetScale", frame:GetScale())
 	end
 
-	FeralbyNightHudFrame_healthbar:Point("BOTTOM", FeralbyNightHudFrame, 0, -17)
-	FeralbyNightHudFrame_powerbar:Point("BOTTOM", FeralbyNightHudFrame_healthbar, "TOP", 0, 1)
-	FeralbyNightHudFrame_castbar:Point("BOTTOM", FeralbyNightHudFrame_powerbar, "TOP", 0, 1)
-	FeralbyNightHudFrame_bosshealthbar:Point("TOP", FeralbyNightHudFrame, 0, 17)
-	FeralbyNightHudFrame_bosspowerbar:Point("TOP", FeralbyNightHudFrame_bosshealthbar, "BOTTOM", 0, -1)
-	FeralbyNightHudFrame_manabar:Point("BOTTOMLEFT", -7, 0)
-	FeralbyNightHudFrame_threatbar:Point("BOTTOMRIGHT", 7, 0)
+	SkinFrame(FeralbyNightHudFrame_healthbar, "Point", "BOTTOM", FeralbyNightHudFrame, 0, -17)
+	SkinFrame(FeralbyNightHudFrame_powerbar, "Point", "BOTTOM", FeralbyNightHudFrame_healthbar, "TOP", 0, 1)
+	SkinFrame(FeralbyNightHudFrame_castbar, "Point", "BOTTOM", FeralbyNightHudFrame_powerbar, "TOP", 0, 1)
+	SkinFrame(FeralbyNightHudFrame_bosshealthbar, "Point", "TOP", FeralbyNightHudFrame, 0, 17)
+	SkinFrame(FeralbyNightHudFrame_bosspowerbar, "Point", "TOP", FeralbyNightHudFrame_bosshealthbar, "BOTTOM", 0, -1)
+	SkinFrame(FeralbyNightHudFrame_manabar, "Point", "BOTTOMLEFT", -7, 0)
+	SkinFrame(FeralbyNightHudFrame_threatbar, "Point", "BOTTOMRIGHT", 7, 0)
 
 	local ufs = {
 		"FeralbyNightHudFrame_powerbar",
@@ -114,17 +123,17 @@ S:AddCallbackForAddon("FeralbyNight", "FeralbyNight", function()
 		frame = _G[frameName]
 		statusbar = _G[frameName.."_frame"]
 
-		frame:SetBackdrop(nil)
+		SkinFrame(frame, "SetBackdrop", nil)
 		frame:CreateBackdrop("Transparent")
 
-		frame:SetFrameStrata("BACKGROUND")
+		SkinFrame(frame, "SetFrameStrata", "BACKGROUND")
 	--	statusbar:SetFrameStrata("LOW")
 	--	statusbar.text
-		statusbar:Size(frame:GetSize())
+		SkinFrame(statusbar, "Size", frame:GetSize())
 	--	statusbar:SetStatusBarTexture(E.media.normTex)
 	--	E:RegisterStatusBar(statusbar)
 
 		hooksecurefunc(frame, "SetScale", setScale)
-		frame:SetScale(frame:GetScale())
+		SkinFrame(frame, "SetScale", frame:GetScale())
 	end
 end)

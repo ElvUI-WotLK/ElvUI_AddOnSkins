@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("BeanCounter") then return end
@@ -19,8 +28,8 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 		local frame = private.frame
 
 		-- External GUI
-		base:SetBackdrop(nil)
-		base:Size(832, 447)
+		SkinFrame(base, "SetBackdrop", nil)
+		SkinFrame(base, "Size", 832, 447)
 		base:SetMinResize(832, 447)
 		base:SetMaxResize(1500, 447)
 
@@ -35,18 +44,18 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 		base.DragBottom:Point("BOTTOMLEFT", 22, 1)
 		base.DragBottom:Point("BOTTOMRIGHT", -11, 1)
 
-		S:HandleButton(base.Done)
+		SkinControl("HandleButton", base.Done)
 		base.Done:Height(18)
 		base.Done:Point("BOTTOMRIGHT", -47, 6)
 
-		S:HandleNextPrevButton(base.Resizer, "right")
+		SkinControl("HandleNextPrevButton", base.Resizer, "right")
 		base.Resizer:Point("BOTTOMRIGHT", -8, 6)
 
 		-- Actual Usable Frame
 		local title = frame:GetRegions()
-		title:Point("TOPLEFT", 80, -10)
+		SkinFrame(title, "Point", "TOPLEFT", 80, -10)
 
-		S:HandleButton(frame.Config)
+		SkinControl("HandleButton", frame.Config)
 		frame.Config:Point("TOPRIGHT", -30, -8)
 
 		-- Left Panel
@@ -74,25 +83,25 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 
 		frame.selectbox.box.button:Size(16)
 		frame.selectbox.box.button:Point("TOPRIGHT", -16, -4)
-		S:HandleNextPrevButton(frame.selectbox.box.button, "down", {1, 0.8, 0})
+		SkinControl("HandleNextPrevButton", frame.selectbox.box.button, "down", {1, 0.8, 0})
 
 		local searchBoxName = frame.searchBox:GetName()
-		_G[searchBoxName.."Left"]:Hide()
-		_G[searchBoxName.."Middle"]:Hide()
-		_G[searchBoxName.."Right"]:Hide()
+		SkinFrame(_G[searchBoxName.."Left"], "Hide")
+		SkinFrame(_G[searchBoxName.."Middle"], "Hide")
+		SkinFrame(_G[searchBoxName.."Right"], "Hide")
 		frame.searchBox:SetTemplate("Default")
 		frame.searchBox:Point("TOPLEFT", 23, -165)
 		frame.searchBox:Size(157, 20)
 
-		S:HandleButton(frame.searchButton)
+		SkinControl("HandleButton", frame.searchButton)
 		frame.searchButton:Point("TOPLEFT", frame.searchBox, "BOTTOMLEFT", 0, -3)
 
-		S:HandleCheckBox(frame.exactCheck)
-		S:HandleCheckBox(frame.neutralCheck)
-		S:HandleCheckBox(frame.bidCheck)
-		S:HandleCheckBox(frame.bidFailedCheck)
-		S:HandleCheckBox(frame.auctionCheck)
-		S:HandleCheckBox(frame.auctionFailedCheck)
+		SkinControl("HandleCheckBox", frame.exactCheck)
+		SkinControl("HandleCheckBox", frame.neutralCheck)
+		SkinControl("HandleCheckBox", frame.bidCheck)
+		SkinControl("HandleCheckBox", frame.bidFailedCheck)
+		SkinControl("HandleCheckBox", frame.auctionCheck)
+		SkinControl("HandleCheckBox", frame.auctionFailedCheck)
 
 		frame.exactCheck:Point("TOPLEFT", 19, -216)
 		frame.neutralCheck:Point("TOPLEFT", 19, -241)
@@ -127,8 +136,8 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 		frame.resultlist:Point("TOPRIGHT", -4, 0)
 		frame.resultlist:Point("BOTTOM", 0, 27)
 
-		S:HandleScrollBar(frame.resultlist.sheet.panel.vScroll)
-		S:HandleScrollBar(frame.resultlist.sheet.panel.hScroll, true)
+		SkinControl("HandleScrollBar", frame.resultlist.sheet.panel.vScroll)
+		SkinControl("HandleScrollBar", frame.resultlist.sheet.panel.hScroll, true)
 
 		frame.resultlist.sheet.panel.vScroll:Point("TOPLEFT", frame.resultlist.sheet.panel, "TOPRIGHT", 3, -16)
 		frame.resultlist.sheet.panel.vScroll:Point("BOTTOMLEFT", frame.resultlist.sheet.panel, "BOTTOMRIGHT", 3, 19)
@@ -138,17 +147,17 @@ S:AddCallbackForAddon("BeanCounter", "BeanCounter", function()
 
 		-- DeletePrompt
 		private.deletePromptFrame:SetTemplate("Transparent")
-		S:HandleButton(private.deletePromptFrame.yes)
-		S:HandleButton(private.deletePromptFrame.no)
+		SkinControl("HandleButton", private.deletePromptFrame.yes)
+		SkinControl("HandleButton", private.deletePromptFrame.no)
 
 		-- ErrorFrame
 		if private.scriptframe.loadError then
 			private.scriptframe.loadError:SetTemplate("Transparent")
-			S:HandleButton(private.scriptframe.loadError.close)
+			SkinControl("HandleButton", private.scriptframe.loadError.close)
 		else
 			hooksecurefunc(private, "CreateErrorFrames", function()
 				private.scriptframe.loadError:SetTemplate("Transparent")
-				S:HandleButton(private.scriptframe.loadError.close)
+				SkinControl("HandleButton", private.scriptframe.loadError.close)
 			end)
 		end
 	end

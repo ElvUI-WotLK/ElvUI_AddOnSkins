@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("MageNuggets") then return end
@@ -13,73 +22,73 @@ local unpack = unpack
 S:AddCallbackForAddon("MageNuggets", "MageNuggets", function()
 	if not E.private.addOnSkins.MageNuggets then return end
 
-	MageNugSP_Frame:SetTemplate("Transparent", nil, true)
-	MageNugSP_FrameText:FontTemplate(nil, 9)
-	MageNugSP_FrameButtonShowOptions:Size(6)
-	S:HandleButton(MageNugSP_FrameButtonShowOptions)
+	SkinFrame(MageNugSP_Frame, "SetTemplate", "Transparent", nil, true)
+	SkinFrame(MageNugSP_FrameText, "FontTemplate", nil, 9)
+	SkinFrame(MageNugSP_FrameButtonShowOptions, "Size", 6)
+	SkinControl("HandleButton", MageNugSP_FrameButtonShowOptions)
 
-	MNTorment_Frame:SetTemplate("Default")
+	SkinFrame(MNTorment_Frame, "SetTemplate", "Default")
 	MNTorment_FrameTexture:SetDrawLayer("OVERLAY")
-	MNTorment_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MNTorment_FrameTexture:SetInside()
+	SkinFrame(MNTorment_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MNTorment_FrameTexture, "SetInside")
 
-	MNicyveins_Frame:SetTemplate("Default")
+	SkinFrame(MNicyveins_Frame, "SetTemplate", "Default")
 	MNicyveins_FrameTexture:SetDrawLayer("OVERLAY")
-	MNicyveins_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MNicyveins_FrameTexture:SetInside()
+	SkinFrame(MNicyveins_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MNicyveins_FrameTexture, "SetInside")
 
-	MNarcanepower_Frame:SetTemplate("Default")
+	SkinFrame(MNarcanepower_Frame, "SetTemplate", "Default")
 	MNarcanepower_FrameTexture:SetDrawLayer("OVERLAY")
-	MNarcanepower_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MNarcanepower_FrameTexture:SetInside()
+	SkinFrame(MNarcanepower_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MNarcanepower_FrameTexture, "SetInside")
 
-	MNlust_Frame:SetTemplate("Default")
+	SkinFrame(MNlust_Frame, "SetTemplate", "Default")
 	MNlust_FrameTexture:SetDrawLayer("OVERLAY")
-	MNlust_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MNlust_FrameTexture:SetInside()
+	SkinFrame(MNlust_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MNlust_FrameTexture, "SetInside")
 
-	MageNugClearcast_Frame:SetTemplate("Default")
+	SkinFrame(MageNugClearcast_Frame, "SetTemplate", "Default")
 	MageNugClearcast_FrameTexture:SetDrawLayer("OVERLAY")
-	MageNugClearcast_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MageNugClearcast_FrameTexture:SetInside()
+	SkinFrame(MageNugClearcast_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugClearcast_FrameTexture, "SetInside")
 	MageNugClearcast_Frame_Bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugClearcast_Frame_Bar)
 	MageNugClearcast_Frame_Bar:CreateBackdrop("Default")
-	MageNugClearcast_Frame_Bar:Width(34 - E.Spacing * 2)
-	MageNugClearcast_Frame_Bar:Point("TOP", MageNugClearcast_Frame, "BOTTOM", 0, -E.Spacing * 3)
+	SkinFrame(MageNugClearcast_Frame_Bar, "Width", 34 - E.Spacing * 2)
+	SkinFrame(MageNugClearcast_Frame_Bar, "Point", "TOP", MageNugClearcast_Frame, "BOTTOM", 0, -E.Spacing * 3)
 
-	MageNugSmallLB_Frame:SetTemplate("Default")
+	SkinFrame(MageNugSmallLB_Frame, "SetTemplate", "Default")
 	MageNugSmallLB_FrameTexture:SetDrawLayer("OVERLAY")
-	MageNugSmallLB_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MageNugSmallLB_FrameTexture:SetInside()
+	SkinFrame(MageNugSmallLB_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugSmallLB_FrameTexture, "SetInside")
 	MageNugSmallLB_Frame_LBBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugSmallLB_Frame_LBBar)
 	MageNugSmallLB_Frame_LBBar:CreateBackdrop("Default")
-	MageNugSmallLB_Frame_LBBar:Width(34 - E.Spacing * 2)
-	MageNugSmallLB_Frame_LBBar:Point("TOP", MageNugSmallLB_Frame, "BOTTOM", 0, -E.Spacing * 3)
+	SkinFrame(MageNugSmallLB_Frame_LBBar, "Width", 34 - E.Spacing * 2)
+	SkinFrame(MageNugSmallLB_Frame_LBBar, "Point", "TOP", MageNugSmallLB_Frame, "BOTTOM", 0, -E.Spacing * 3)
 
-	MageNugScorch_Frame:SetTemplate("Default")
+	SkinFrame(MageNugScorch_Frame, "SetTemplate", "Default")
 	MageNugScorch_FrameTexture:SetDrawLayer("OVERLAY")
-	MageNugScorch_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MageNugScorch_FrameTexture:SetInside()
+	SkinFrame(MageNugScorch_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugScorch_FrameTexture, "SetInside")
 	MageNugScorch_Frame_Bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugScorch_Frame_Bar)
 	MageNugScorch_Frame_Bar:CreateBackdrop("Default")
-	MageNugScorch_Frame_Bar:Width(34 - E.Spacing * 2)
-	MageNugScorch_Frame_Bar:Point("TOP", MageNugScorch_Frame, "BOTTOM", 0, -E.Spacing * 3)
+	SkinFrame(MageNugScorch_Frame_Bar, "Width", 34 - E.Spacing * 2)
+	SkinFrame(MageNugScorch_Frame_Bar, "Point", "TOP", MageNugScorch_Frame, "BOTTOM", 0, -E.Spacing * 3)
 
-	MageNugAB_Frame:SetTemplate("Default")
+	SkinFrame(MageNugAB_Frame, "SetTemplate", "Default")
 	MageNugAB_FrameText:SetDrawLayer("OVERLAY", 1)
 	MageNugAB_FrameTexture:SetDrawLayer("OVERLAY")
-	MageNugAB_FrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MageNugAB_FrameTexture:SetInside()
+	SkinFrame(MageNugAB_FrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugAB_FrameTexture, "SetInside")
 	MageNugAB_Frame_ABBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugAB_Frame_ABBar)
 	MageNugAB_Frame_ABBar:CreateBackdrop("Default")
-	MageNugAB_Frame_ABBar:Width(34 - E.Spacing * 2)
-	MageNugAB_Frame_ABBar:Point("TOP", MageNugAB_Frame, "BOTTOM", 0, -E.Spacing * 3)
-	MNabCast_Frame:SetTemplate("Transparent")
-	MNabCast_Frame:Point("BOTTOM", MageNugAB_Frame, "TOP", 0, E.Spacing)
+	SkinFrame(MageNugAB_Frame_ABBar, "Width", 34 - E.Spacing * 2)
+	SkinFrame(MageNugAB_Frame_ABBar, "Point", "TOP", MageNugAB_Frame, "BOTTOM", 0, -E.Spacing * 3)
+	SkinFrame(MNabCast_Frame, "SetTemplate", "Transparent")
+	SkinFrame(MNabCast_Frame, "Point", "BOTTOM", MageNugAB_Frame, "TOP", 0, E.Spacing)
 
 	local procFrames = {
 		"MageNugProcFrame",
@@ -94,57 +103,57 @@ S:AddCallbackForAddon("MageNuggets", "MageNuggets", function()
 		local texture = _G[frameName .. "Texture"]
 		local bar = _G[frameName .. "_ProcBar"]
 
-		frame:SetBackdrop(nil)
+		SkinFrame(frame, "SetBackdrop", nil)
 		frame:CreateBackdrop("Default")
 		frame.backdrop:SetOutside(texture)
 
-		texture:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(texture, "SetTexCoord", unpack(E.TexCoords))
 
-		_G[frameName .. "Text"]:FontTemplate()
-		_G[frameName .. "Text2"]:FontTemplate(nil, 10)
-		_G[frameName .. "Text2"]:SetPoint("BOTTOMRIGHT", bar)
+		SkinFrame(_G[frameName .. "Text"], "FontTemplate")
+		SkinFrame(_G[frameName .. "Text2"], "FontTemplate", nil, 10)
+		SkinFrame(_G[frameName .. "Text2"], "SetPoint", "BOTTOMRIGHT", bar)
 		_G[frameName .. "Text2"]:SetParent(bar)
 
-		bar:Point("LEFT", frame.backdrop, "RIGHT", E.Spacing * 3, 0)
+		SkinFrame(bar, "Point", "LEFT", frame.backdrop, "RIGHT", E.Spacing * 3, 0)
 		bar:CreateBackdrop("Default")
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 	end
 
-	MageNugPolyFrame:SetTemplate("Transparent")
+	SkinFrame(MageNugPolyFrame, "SetTemplate", "Transparent")
 	MageNugPolyFrame:CreateBackdrop("Default")
 	MageNugPolyFrame.backdrop:SetOutside(MageNugPolyFrameTexture)
-	MageNugPolyFrameTexture:SetTexCoord(unpack(E.TexCoords))
-	MageNugPolyFrameText:FontTemplate()
-	MageNugPolyFrameTimerText:FontTemplate()
+	SkinFrame(MageNugPolyFrameTexture, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugPolyFrameText, "FontTemplate")
+	SkinFrame(MageNugPolyFrameTimerText, "FontTemplate")
 
-	MNSpellSteal_Frame:SetTemplate("Transparent", nil, true)
-	MNSpellSteal_FrameTitleText:FontTemplate()
-	S:HandleButton(MNSpellSteal_FrameButtonShowOptions)
+	SkinFrame(MNSpellSteal_Frame, "SetTemplate", "Transparent", nil, true)
+	SkinFrame(MNSpellSteal_FrameTitleText, "FontTemplate")
+	SkinControl("HandleButton", MNSpellSteal_FrameButtonShowOptions)
 
 	MageNugMI_Frame:CreateBackdrop("Default")
 	MageNugMI_Frame.backdrop:SetOutside(MageNugMI_FrameTexture1)
-	MageNugMI_FrameTexture1:SetTexCoord(unpack(E.TexCoords))
-	MageNugMI_Frame_MIText:FontTemplate()
-	MageNugMI_Frame_MIText1:FontTemplate()
-	MageNugMI_Frame_MiBar:Point("LEFT", MageNugMI_Frame.backdrop, "RIGHT", E.Spacing * 3, 0)
+	SkinFrame(MageNugMI_FrameTexture1, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugMI_Frame_MIText, "FontTemplate")
+	SkinFrame(MageNugMI_Frame_MIText1, "FontTemplate")
+	SkinFrame(MageNugMI_Frame_MiBar, "Point", "LEFT", MageNugMI_Frame.backdrop, "RIGHT", E.Spacing * 3, 0)
 	MageNugMI_Frame_MiBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugMI_Frame_MiBar)
 	MageNugMI_Frame_MiBar:CreateBackdrop("Default")
 
 	MageNugWE_Frame:CreateBackdrop("Default")
 	MageNugWE_Frame.backdrop:SetOutside(MageNugWE_FrameTexture1)
-	MageNugWE_FrameTexture1:SetTexCoord(unpack(E.TexCoords))
-	MageNugWE_Frame_MIText:FontTemplate()
-	MageNugWE_Frame_WEText1:FontTemplate()
-	MageNugWE_Frame_WeBar:Point("LEFT", MageNugWE_Frame.backdrop, "RIGHT", E.Spacing * 3, 0)
+	SkinFrame(MageNugWE_FrameTexture1, "SetTexCoord", unpack(E.TexCoords))
+	SkinFrame(MageNugWE_Frame_MIText, "FontTemplate")
+	SkinFrame(MageNugWE_Frame_WEText1, "FontTemplate")
+	SkinFrame(MageNugWE_Frame_WeBar, "Point", "LEFT", MageNugWE_Frame.backdrop, "RIGHT", E.Spacing * 3, 0)
 	MageNugWE_Frame_WeBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(MageNugWE_Frame_WeBar)
 	MageNugWE_Frame_WeBar:CreateBackdrop("Default")
 
-	MageNugHordeFrame:SetTemplate("Transparent")
-	MageNugHordeFrameText:FontTemplate()
-	MageNugHordeFrameText2:FontTemplate()
+	SkinFrame(MageNugHordeFrame, "SetTemplate", "Transparent")
+	SkinFrame(MageNugHordeFrameText, "FontTemplate")
+	SkinFrame(MageNugHordeFrameText2, "FontTemplate")
 
 	local hordeButtons = {
 		"PortDal",
@@ -165,21 +174,21 @@ S:AddCallbackForAddon("MageNuggets", "MageNuggets", function()
 	}
 
 	for _, button in ipairs(hordeButtons) do
-		_G["MageNugHordeFrame" .. button]:SetTemplate("Default")
-		_G["MageNugHordeFrame" .. button]:StyleButton()
+		SkinFrame(_G["MageNugHordeFrame" .. button], "SetTemplate", "Default")
+		SkinFrame(_G["MageNugHordeFrame" .. button], "StyleButton")
 
 		local icon = _G["MageNugHordeFrame" .. button .. "TelDalTexture"]
 		icon:SetDrawLayer("OVERLAY")
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
+		SkinFrame(icon, "SetInside")
 	end
 
-	S:HandleButton(MageNugHordeFrameClose)
-	S:HandleButton(MageNugHordeFrameShowOptions)
+	SkinControl("HandleButton", MageNugHordeFrameClose)
+	SkinControl("HandleButton", MageNugHordeFrameShowOptions)
 
-	MageNugAlliFrame:SetTemplate("Transparent")
-	MageNugAlliFrameText:FontTemplate()
-	MageNugAlliFrameText2:FontTemplate()
+	SkinFrame(MageNugAlliFrame, "SetTemplate", "Transparent")
+	SkinFrame(MageNugAlliFrameText, "FontTemplate")
+	SkinFrame(MageNugAlliFrameText2, "FontTemplate")
 
 	local alliButtons = {
 		"PortDal",
@@ -200,15 +209,15 @@ S:AddCallbackForAddon("MageNuggets", "MageNuggets", function()
 	}
 
 	for _, button in pairs(alliButtons) do
-		_G["MageNugAlliFrame" .. button]:SetTemplate("Default")
-		_G["MageNugAlliFrame" .. button]:StyleButton()
+		SkinFrame(_G["MageNugAlliFrame" .. button], "SetTemplate", "Default")
+		SkinFrame(_G["MageNugAlliFrame" .. button], "StyleButton")
 
 		local icon = _G["MageNugAlliFrame" .. button .. "TelDalTexture"]
 		icon:SetDrawLayer("OVERLAY")
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
+		SkinFrame(icon, "SetInside")
 	end
 
-	S:HandleButton(MageNugAlliFrameClose)
-	S:HandleButton(MageNugAlliFrameShowOptions)
+	SkinControl("HandleButton", MageNugAlliFrameClose)
+	SkinControl("HandleButton", MageNugAlliFrameShowOptions)
 end)

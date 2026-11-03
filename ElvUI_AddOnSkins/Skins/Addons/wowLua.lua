@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("WowLua") then return end
@@ -10,50 +19,50 @@ if not AS:IsAddonLODorEnabled("WowLua") then return end
 S:AddCallbackForAddon("WowLua", "WowLua", function()
 	if not E.private.addOnSkins.WowLua then return end
 
-	WowLuaFrame:StripTextures()
-	WowLuaFrame:SetTemplate("Transparent")
-	WowLuaFrameLineNumScrollFrame:StripTextures()
+	SkinFrame(WowLuaFrame, "StripTextures")
+	SkinFrame(WowLuaFrame, "SetTemplate", "Transparent")
+	SkinFrame(WowLuaFrameLineNumScrollFrame, "StripTextures")
 
-	S:HandleCloseButton(WowLuaButton_Close, WowLuaFrame)
+	SkinControl("HandleCloseButton", WowLuaButton_Close, WowLuaFrame)
 
-	WowLuaFrameTitle:Point("TOP", 0, -5)
+	SkinFrame(WowLuaFrameTitle, "Point", "TOP", 0, -5)
 
-	WowLuaFrameDragHeader:Height(55)
-	WowLuaFrameDragHeader:SetPoint("TOPLEFT", 0, 0)
+	SkinFrame(WowLuaFrameDragHeader, "Height", 55)
+	SkinFrame(WowLuaFrameDragHeader, "SetPoint", "TOPLEFT", 0, 0)
 
-	WowLuaFrameToolbar:Point("TOPLEFT", 30, -21)
-	WowLuaButton_New:SetPoint("LEFT", WowLuaFrameToolbar, "LEFT", 0, 0)
+	SkinFrame(WowLuaFrameToolbar, "Point", "TOPLEFT", 30, -21)
+	SkinFrame(WowLuaButton_New, "SetPoint", "LEFT", WowLuaFrameToolbar, "LEFT", 0, 0)
 
 	WowLuaFrameLineNumEditBox:EnableMouse(false)
 
-	WowLuaFrameEditFocusGrabber:SetTemplate("Transparent")
-	WowLuaFrameEditFocusGrabber:Point("TOPLEFT", 8, -55)
-	WowLuaFrameEditFocusGrabber:Point("BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -6)
+	SkinFrame(WowLuaFrameEditFocusGrabber, "SetTemplate", "Transparent")
+	SkinFrame(WowLuaFrameEditFocusGrabber, "Point", "TOPLEFT", 8, -55)
+	SkinFrame(WowLuaFrameEditFocusGrabber, "Point", "BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -6)
 
-	WowLuaFrameEditScrollFrame:Point("BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -3)
+	SkinFrame(WowLuaFrameEditScrollFrame, "Point", "BOTTOMRIGHT", WowLuaFrameResizeBar, "TOPRIGHT", -29, -3)
 
-	S:HandleScrollBar(WowLuaFrameEditScrollFrameScrollBar)
-	WowLuaFrameEditScrollFrameScrollBar:Point("TOPLEFT", WowLuaFrameEditScrollFrame, "TOPRIGHT", 3, -17)
-	WowLuaFrameEditScrollFrameScrollBar:Point("BOTTOMLEFT", WowLuaFrameEditScrollFrame, "BOTTOMRIGHT", 3, 16)
+	SkinControl("HandleScrollBar", WowLuaFrameEditScrollFrameScrollBar)
+	SkinFrame(WowLuaFrameEditScrollFrameScrollBar, "Point", "TOPLEFT", WowLuaFrameEditScrollFrame, "TOPRIGHT", 3, -17)
+	SkinFrame(WowLuaFrameEditScrollFrameScrollBar, "Point", "BOTTOMLEFT", WowLuaFrameEditScrollFrame, "BOTTOMRIGHT", 3, 16)
 
-	WowLuaFrameResizeBar:StripTextures()
-	WowLuaFrameResizeBar:Height(20)
+	SkinFrame(WowLuaFrameResizeBar, "StripTextures")
+	SkinFrame(WowLuaFrameResizeBar, "Height", 20)
 
-	WowLuaFrameOutput:Point("TOPLEFT", WowLuaFrameResizeBar, "BOTTOMLEFT", -6, 7)
-	WowLuaFrameOutput:Point("RIGHT", -29, 0)
-	WowLuaFrameOutput:Point("BOTTOM", WowLuaFrameCommand, "TOP", 8, 9)
+	SkinFrame(WowLuaFrameOutput, "Point", "TOPLEFT", WowLuaFrameResizeBar, "BOTTOMLEFT", -6, 7)
+	SkinFrame(WowLuaFrameOutput, "Point", "RIGHT", -29, 0)
+	SkinFrame(WowLuaFrameOutput, "Point", "BOTTOM", WowLuaFrameCommand, "TOP", 8, 9)
 
-	S:HandleNextPrevButton(WowLuaFrameOutputUpButton, "up")
-	WowLuaFrameOutputUpButton:Size(18)
-	WowLuaFrameOutputUpButton:Point("TOPRIGHT", 21, 0)
+	SkinControl("HandleNextPrevButton", WowLuaFrameOutputUpButton, "up")
+	SkinFrame(WowLuaFrameOutputUpButton, "Size", 18)
+	SkinFrame(WowLuaFrameOutputUpButton, "Point", "TOPRIGHT", 21, 0)
 
-	S:HandleNextPrevButton(WowLuaFrameOutputDownButton)
-	WowLuaFrameOutputDownButton:Size(18)
-	WowLuaFrameOutputDownButton:Point("BOTTOMRIGHT", 21, -2)
+	SkinControl("HandleNextPrevButton", WowLuaFrameOutputDownButton)
+	SkinFrame(WowLuaFrameOutputDownButton, "Size", 18)
+	SkinFrame(WowLuaFrameOutputDownButton, "Point", "BOTTOMRIGHT", 21, -2)
 
-	WowLuaFrameCommand:StripTextures()
-	WowLuaFrameCommand:Point("BOTTOMLEFT", 8, 9)
-	WowLuaFrameCommand:Point("BOTTOMRIGHT", -29, 0)
+	SkinFrame(WowLuaFrameCommand, "StripTextures")
+	SkinFrame(WowLuaFrameCommand, "Point", "BOTTOMLEFT", 8, 9)
+	SkinFrame(WowLuaFrameCommand, "Point", "BOTTOMRIGHT", -29, 0)
 	WowLuaFrameCommand:CreateBackdrop()
 	WowLuaFrameCommand.backdrop:SetPoint("TOPLEFT", 0, 0)
 	WowLuaFrameCommand.backdrop:Point("BOTTOMRIGHT", 0, -1)
@@ -79,10 +88,10 @@ S:AddCallbackForAddon("WowLua", "WowLua", function()
 		if object:GetDisabledTexture() then
 			object:GetDisabledTexture():SetTexCoord(0.125, 0.890625, 0.15625, 0.921875)
 		end
-		object:StyleButton(nil, true)
+		SkinFrame(object, "StyleButton", nil, true)
 	end
 
 	hooksecurefunc(WowLua, "UpdateLineNums", function()
-		WowLuaFrameLineNumScrollFrame:Point("TOPLEFT", 8, -57)
+		SkinFrame(WowLuaFrameLineNumScrollFrame, "Point", "TOPLEFT", 8, -57)
 	end)
 end)

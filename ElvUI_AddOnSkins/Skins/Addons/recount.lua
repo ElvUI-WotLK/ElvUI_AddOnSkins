@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Recount") then return end
@@ -14,47 +23,47 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 	if not E.private.addOnSkins.Recount then return end
 
 	local function skinFrame(frame)
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "SetTemplate", "Transparent")
 
 		frame.Title:ClearAllPoints()
 		frame.Title:Point("TOP", frame, "TOP", 0, -5)
 		frame.Title:FontTemplate()
 		frame.Title:SetTextColor(1, 0.82, 0, 1)
 
-		S:HandleCloseButton(frame.CloseButton)
+		SkinControl("HandleCloseButton", frame.CloseButton)
 		frame.CloseButton:ClearAllPoints()
 		frame.CloseButton:Point("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
 	end
 
 	local function skinMainFrame(frame)
-		frame:SetBackdrop(nil)
+		SkinFrame(frame, "SetBackdrop", nil)
 
 		local backdrop = CreateFrame("Frame", nil, frame)
-		backdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
-		backdrop:Point("BOTTOMLEFT", frame, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0)
-		backdrop:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30))
-		backdrop:SetTemplate(E.db.addOnSkins.recountTemplate, E.db.addOnSkins.recountTemplate == "Default" and E.db.addOnSkins.recountTemplateGloss or false)
+		SkinFrame(backdrop, "SetFrameLevel", frame:GetFrameLevel() - 1)
+		SkinFrame(backdrop, "Point", "BOTTOMLEFT", frame, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0)
+		SkinFrame(backdrop, "Point", "TOPRIGHT", frame, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30))
+		SkinFrame(backdrop, "SetTemplate", E.db.addOnSkins.recountTemplate, E.db.addOnSkins.recountTemplate == "Default" and E.db.addOnSkins.recountTemplateGloss or false)
 		frame.backdrop = backdrop
 
 		local header = CreateFrame("Frame", nil, backdrop)
-		header:Height(22)
-		header:Point("TOPLEFT", frame, E.PixelMode and 1 or 0, -(E.PixelMode and 8 or 7))
-		header:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, 0)
-		header:SetTemplate(E.db.addOnSkins.recountTitleTemplate, E.db.addOnSkins.recountTitleTemplate == "Default" and E.db.addOnSkins.recountTitleTemplateGloss or false)
+		SkinFrame(header, "Height", 22)
+		SkinFrame(header, "Point", "TOPLEFT", frame, E.PixelMode and 1 or 0, -(E.PixelMode and 8 or 7))
+		SkinFrame(header, "Point", "TOPRIGHT", frame, E.PixelMode and -1 or 0, 0)
+		SkinFrame(header, "SetTemplate", E.db.addOnSkins.recountTitleTemplate, E.db.addOnSkins.recountTitleTemplate == "Default" and E.db.addOnSkins.recountTitleTemplateGloss or false)
 		frame.header = header
 
 		frame.Title:ClearAllPoints()
 		frame.Title:Point("LEFT", header, 6, 0)
 
-		S:HandleCloseButton(frame.CloseButton)
+		SkinControl("HandleCloseButton", frame.CloseButton)
 		frame.CloseButton:ClearAllPoints()
 		frame.CloseButton:Point("RIGHT", header, -6, 0)
 		frame.CloseButton.Texture:Size(10)
 
 		frame.RightButton:Size(18)
 		frame.LeftButton:Size(18)
-		S:HandleNextPrevButton(frame.RightButton, "right", nil, true)
-		S:HandleNextPrevButton(frame.LeftButton, "left", nil, true)
+		SkinControl("HandleNextPrevButton", frame.RightButton, "right", nil, true)
+		SkinControl("HandleNextPrevButton", frame.LeftButton, "left", nil, true)
 
 		Recount:SetupMainWindowButtons()
 
@@ -78,9 +87,9 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 			Recount_ReportWindow.Whisper:StripTextures(true)
 			Recount_ReportWindow.Whisper:Height(16)
 
-			S:HandleSliderFrame(Recount_ReportWindow.slider)
-			S:HandleEditBox(Recount_ReportWindow.Whisper)
-			S:HandleButton(Recount_ReportWindow.ReportButton)
+			SkinControl("HandleSliderFrame", Recount_ReportWindow.slider)
+			SkinControl("HandleEditBox", Recount_ReportWindow.Whisper)
+			SkinControl("HandleButton", Recount_ReportWindow.ReportButton)
 
 			Recount_ReportWindow.isSkinned = true
 		elseif window:GetName() == "Recount_ConfigWindow" then
@@ -88,9 +97,9 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 
 			skinFrame(Recount_ConfigWindow)
 
-			S:HandleSliderFrame(Recount_ConfigWindow_Scaling_Slider)
-			S:HandleSliderFrame(Recount_ConfigWindow_RowHeight_Slider)
-			S:HandleSliderFrame(Recount_ConfigWindow_RowSpacing_Slider)
+			SkinControl("HandleSliderFrame", Recount_ConfigWindow_Scaling_Slider)
+			SkinControl("HandleSliderFrame", Recount_ConfigWindow_RowHeight_Slider)
+			SkinControl("HandleSliderFrame", Recount_ConfigWindow_RowSpacing_Slider)
 
 			Recount_ConfigWindow.isSkinned = true
 		end
@@ -100,7 +109,7 @@ S:AddCallbackForAddon("Recount", "Recount", function()
 	skinFrame(Recount.DetailWindow)
 	skinFrame(Recount.GraphWindow)
 
-	S:HandleScrollBar(Recount_MainWindow_ScrollBarScrollBar)
+	SkinControl("HandleScrollBar", Recount_MainWindow_ScrollBarScrollBar)
 
 	hooksecurefunc(Recount, "HideScrollbarElements", function(self, name)
 		_G[name.."ScrollBar"].backdrop:Hide()

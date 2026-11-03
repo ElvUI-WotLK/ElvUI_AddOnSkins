@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("SexyCooldown") then return end
@@ -13,7 +22,7 @@ S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", function()
 	if not E.private.addOnSkins.SexyCooldown then return end
 
 	local function SkinSexyCooldownIcon(_, icon)
-		icon:SetTemplate("Default")
+		SkinFrame(icon, "SetTemplate", "Default")
 		icon.overlay:SetTemplate("Default")
 		icon.overlay.tex:SetInside()
 		icon.tex:SetInside()
@@ -22,7 +31,7 @@ S:AddCallbackForAddon("SexyCooldown", "SexyCooldown", function()
 	end
 
 	local function SkinSexyCooldownBackdrop(bar)
-		bar:SetTemplate("Transparent")
+		SkinFrame(bar, "SetTemplate", "Transparent")
 	end
 
 	local function HookBar(bar)

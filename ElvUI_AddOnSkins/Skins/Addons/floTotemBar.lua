@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("FloTotemBar") then return end
@@ -21,13 +30,13 @@ S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", function()
 		S:RawHook("FloLib_ShowBorders", function(self)
 			if self.globalSettings.borders then
 				if not self.template then
-					self:SetTemplate("Transparent")
+					SkinFrame(self, "SetTemplate", "Transparent")
 				end
 				if self.settings and self.settings.color then
-					self:SetBackdropBorderColor(unpack(self.settings.color))
+					SkinFrame(self, "SetBackdropBorderColor", unpack(self.settings.color))
 				end
 			else
-				self:SetBackdrop(nil)
+				SkinFrame(self, "SetBackdrop", nil)
 				self.template = nil
 			end
 		end)
@@ -53,7 +62,7 @@ S:AddCallbackForAddon("FloTotemBar", "FloTotemBar", function()
 
 		for i = 1, 10 do
 			local button = _G[frameName.."Button"..i]
-			AB:StyleButton(button)
+			SkinFrame(AB, "StyleButton", button)
 
 			if frameName ~= "FloBarTRAP" and frameName ~= "FloBarCALL" then
 				FloSwitchButton_OnLeave(button)

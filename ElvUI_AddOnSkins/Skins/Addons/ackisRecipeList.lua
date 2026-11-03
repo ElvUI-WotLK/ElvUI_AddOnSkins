@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("AckisRecipeList") then return end
@@ -20,11 +29,11 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 	local function HandleScrollBar(frame)
 		local UpButton, DownButton = frame:GetChildren()
 
-		S:HandleNextPrevButton(UpButton, "up")
-		UpButton:Size(20, 18)
+		SkinControl("HandleNextPrevButton", UpButton, "up")
+		SkinFrame(UpButton, "Size", 20, 18)
 
-		S:HandleNextPrevButton(DownButton)
-		DownButton:Size(20, 18)
+		SkinControl("HandleNextPrevButton", DownButton)
+		SkinFrame(DownButton, "Size", 20, 18)
 
 		frame.trackbg = CreateFrame("Frame", nil, frame)
 		frame.trackbg:Point("TOPLEFT", UpButton, "BOTTOMLEFT", 0, -1)
@@ -42,7 +51,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 	end
 
 	local function SkinButton(button, strip)
-		S:HandleButton(button, strip)
+		SkinControl("HandleButton", button, strip)
 
 		button.SetNormalTexture = E.noop
 		button.SetHighlightTexture = E.noop
@@ -51,8 +60,8 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 	end
 
 	local function ChangeTexture(texture)
-		texture:SetInside()
-		texture:SetTexCoord(0.22, 0.78, 0.22, 0.78)
+		SkinFrame(texture, "SetInside")
+		SkinFrame(texture, "SetTexCoord", 0.22, 0.78, 0.22, 0.78)
 	end
 
 	local function ExpansionButton(button)
@@ -67,7 +76,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		end)
 	end
 
-	S:HandleButton(addon.scan_button)
+	SkinControl("HandleButton", addon.scan_button)
 
 	hooksecurefunc(addon, "TRADE_SKILL_SHOW", function(self)
 		if self.scan_button:GetParent() == TradeSkillFrame then
@@ -80,7 +89,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 
 		local ARL_MainPanel = ARL_MainPanel
 
-		ARL_MainPanel:StripTextures()
+		SkinFrame(ARL_MainPanel, "StripTextures")
 		ARL_MainPanel:CreateBackdrop("Transparent")
 		ARL_MainPanel.backdrop:Point("TOPLEFT", 11, -12)
 		ARL_MainPanel.backdrop:Point("BOTTOMRIGHT", -32, 76)
@@ -97,7 +106,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			end
 		end)
 
-		S:HandleCloseButton(ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
+		SkinControl("HandleCloseButton", ARL_MainPanel.xclose_button, ARL_MainPanel.backdrop)
 
 		ARL_MainPanel.title_bar:Hide()
 
@@ -116,7 +125,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		ARL_MainPanel.prof_button:Point("TOPLEFT", 19, -20)
 
 		local prof_buttonHighlight = ARL_MainPanel.prof_button:GetHighlightTexture()
-		prof_buttonHighlight:SetInside()
+		SkinFrame(prof_buttonHighlight, "SetInside")
 		prof_buttonHighlight:SetTexture(1, 1, 1, 0.3)
 		prof_buttonHighlight:SetTexture()
 
@@ -130,7 +139,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			ChangeTexture(self._disabled)
 		end)
 
-		S:HandleEditBox(ARL_MainPanel.search_editbox)
+		SkinControl("HandleEditBox", ARL_MainPanel.search_editbox)
 		ARL_MainPanel.search_editbox.backdrop:Point("TOPLEFT", -2, 0)
 		ARL_MainPanel.search_editbox:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 90, -50)
 		ARL_MainPanel.search_editbox:DisableDrawLayer("BACKGROUND")
@@ -140,15 +149,15 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			local child = select(i, ARL_MainPanel:GetChildren())
 			if child and child:IsObjectType("CheckButton") and child.text then
 				-- SkillToggle
-				S:HandleCheckBox(child, true)
-				child:Size(14)
-				child:Point("TOPLEFT", ARL_MainPanel.search_editbox, "TOPRIGHT", -142, 34)
+				SkinControl("HandleCheckBox", child, true)
+				SkinFrame(child, "Size", 14)
+				SkinFrame(child, "Point", "TOPLEFT", ARL_MainPanel.search_editbox, "TOPRIGHT", -142, 34)
 				child.text:Point("LEFT", child, "RIGHT", 3, 0)
 
 				local excludeToggle = select(i + 1, ARL_MainPanel:GetChildren())
-				S:HandleCheckBox(excludeToggle, true)
-				excludeToggle:Size(14)
-				excludeToggle:Point("TOP", child, "BOTTOM", 0, -3)
+				SkinControl("HandleCheckBox", excludeToggle, true)
+				SkinFrame(excludeToggle, "Size", 14)
+				SkinFrame(excludeToggle, "Point", "TOP", child, "BOTTOM", 0, -3)
 				excludeToggle.text:Point("LEFT", excludeToggle, "RIGHT", 3, 0)
 
 				break
@@ -156,7 +165,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		end
 
 		select(2, ARL_MainPanel.expand_button:GetPoint()):GetParent():Hide()
-		S:HandleCollapseExpandButton(ARL_MainPanel.expand_button, "+")
+		SkinControl("HandleCollapseExpandButton", ARL_MainPanel.expand_button, "+")
 		ARL_MainPanel.expand_button:ClearAllPoints()
 		ARL_MainPanel.expand_button:Point("BOTTOMRIGHT", ARL_MainPanel.search_editbox, "BOTTOMLEFT", -53, -2)
 
@@ -173,11 +182,11 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		ARL_MainPanel.list_frame.scroll_bar:Show()
 
 		for i = 1, 25 do
-			S:HandleCollapseExpandButton(ARL_MainPanel.list_frame.state_buttons[i], "+")
-			S:HandleButtonHighlight(ARL_MainPanel.list_frame.entry_buttons[i])
+			SkinControl("HandleCollapseExpandButton", ARL_MainPanel.list_frame.state_buttons[i], "+")
+			SkinControl("HandleButtonHighlight", ARL_MainPanel.list_frame.entry_buttons[i])
 		end
 
-		S:HandleNextPrevButton(ARL_MainPanel.sort_button, "down", nil, true)
+		SkinControl("HandleNextPrevButton", ARL_MainPanel.sort_button, "down", nil, true)
 		ARL_MainPanel.sort_button:Size(22)
 		ARL_MainPanel.sort_button:ClearAllPoints()
 		ARL_MainPanel.sort_button:Point("LEFT", ARL_MainPanel.expand_button, "RIGHT", 20, 0)
@@ -207,7 +216,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		SkinButton(ARL_MainPanel.close_button, true)
 
 		for i, tab in ipairs(ARL_MainPanel.tabs) do
-			tab:StripTextures()
+			SkinFrame(tab, "StripTextures")
 			tab.left.SetTexture = E.noop
 			tab.middle.SetTexture = E.noop
 			tab.right.SetTexture = E.noop
@@ -219,9 +228,9 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			tab:SetHitRectInsets(10, 10, E.PixelMode and 1 or 3, 3)
 
 			if i == 1 then
-				tab:Point("TOPLEFT", ARL_MainPanel, "BOTTOMLEFT", 11, 78)
+				SkinFrame(tab, "Point", "TOPLEFT", ARL_MainPanel, "BOTTOMLEFT", 11, 78)
 			else
-				tab:Point("LEFT", ARL_MainPanel.tabs[i-1], "RIGHT", -15, 0)
+				SkinFrame(tab, "Point", "LEFT", ARL_MainPanel.tabs[i-1], "RIGHT", -15, 0)
 			end
 		end
 
@@ -230,7 +239,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 			AS:SkinLibrary("LibQTip-1.0")
 		end
 
-		S:HandleNextPrevButton(ARL_MainPanel.filter_toggle, "right", nil, true)
+		SkinControl("HandleNextPrevButton", ARL_MainPanel.filter_toggle, "right", nil, true)
 		ARL_MainPanel.filter_toggle:Point("TOPLEFT", ARL_MainPanel, "TOPLEFT", 324, -39)
 		ARL_MainPanel.filter_toggle:Size(28)
 
@@ -244,10 +253,10 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 				pushed:SetRotation(-1.57)
 			end
 
-			self:HookScript("OnEnter", function()
+			SkinFrame(self, "HookScript", "OnEnter", function()
 				normal:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			end)
-			self:HookScript("OnLeave", function()
+			SkinFrame(self, "HookScript", "OnLeave", function()
 				normal:SetVertexColor(1, 1, 1)
 			end)
 		end
@@ -278,16 +287,16 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 				local iconEntry = ARL_MainPanel[menuIcon]
 
 				if i == 1 then
-					iconEntry:Point("LEFT", ARL_MainPanel.filter_toggle, "RIGHT", 17, 0)
+					SkinFrame(iconEntry, "Point", "LEFT", ARL_MainPanel.filter_toggle, "RIGHT", 17, 0)
 				end
 
-				iconEntry:SetTemplate()
-				iconEntry:StyleButton()
+				SkinFrame(iconEntry, "SetTemplate")
+				SkinFrame(iconEntry, "StyleButton")
 				iconEntry:DisableDrawLayer("BACKGROUND")
 
 				local region = select(2, iconEntry:GetRegions())
-				region:SetInside()
-				region:SetTexCoord(unpack(E.TexCoords))
+				SkinFrame(region, "SetInside")
+				SkinFrame(region, "SetTexCoord", unpack(E.TexCoords))
 			end
 
 			local filterMenus = {
@@ -309,7 +318,7 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 						local child = select(i, menuEntry:GetChildren())
 
 						if child and child:IsObjectType("Button") then
-							S:HandleNextPrevButton(child)
+							SkinControl("HandleNextPrevButton", child)
 							select(2, child:GetPoint()):SetTextColor(1, 1, 1)
 						end
 					end
@@ -319,10 +328,10 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 							local child = select(i, menuEntry["expansion"..expNum]:GetChildren())
 
 							if child and (child:IsObjectType("Button") and child.text and not child:IsObjectType("CheckButton")) then
-								child:StripTextures()
+								SkinFrame(child, "StripTextures")
 								child.text:SetTextColor(1, 0.8, 0.1)
 							elseif child and child:IsObjectType("CheckButton") and child.text then
-								S:HandleCheckBox(child)
+								SkinControl("HandleCheckBox", child)
 								child.text:SetTextColor(1, 1, 1)
 							end
 						end
@@ -332,10 +341,10 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 						local child = select(i, menuEntry:GetChildren())
 
 						if child and (child:IsObjectType("Button") and child.text and not child:IsObjectType("CheckButton")) then
-							child:StripTextures()
+							SkinFrame(child, "StripTextures")
 							child.text:SetTextColor(1, 0.8, 0.1)
 						elseif child and child:IsObjectType("CheckButton") and child.text then
-							S:HandleCheckBox(child)
+							SkinControl("HandleCheckBox", child)
 							child.text:SetTextColor(1, 1, 1)
 						end
 					end
@@ -348,17 +357,17 @@ S:AddCallbackForAddon("AckisRecipeList", "AckisRecipeList", function()
 		end)
 	end)
 
-	ARLCopyFrame:StripTextures()
-	ARLCopyFrame:SetTemplate("Transparent")
+	SkinFrame(ARLCopyFrame, "StripTextures")
+	SkinFrame(ARLCopyFrame, "SetTemplate", "Transparent")
 
-	S:HandleScrollBar(ARLCopyScrollScrollBar)
+	SkinControl("HandleScrollBar", ARLCopyScrollScrollBar)
 
 	for i = 1, ARLCopyFrame:GetNumChildren() do
 		local child = select(i, ARLCopyFrame:GetChildren())
 		if child and child:IsObjectType("Button") then
-			child:ClearAllPoints()
-			child:Point("TOPRIGHT", ARLCopyFrame, "TOPRIGHT", 1, 0)
-			S:HandleCloseButton(child)
+			SkinFrame(child, "ClearAllPoints")
+			SkinFrame(child, "Point", "TOPRIGHT", ARLCopyFrame, "TOPRIGHT", 1, 0)
+			SkinControl("HandleCloseButton", child)
 			break
 		end
 	end

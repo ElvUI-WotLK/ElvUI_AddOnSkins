@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("Outfitter") then return end
@@ -17,111 +26,111 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 	if not E.private.addOnSkins.Outfitter then return end
 
 	-- ButtonFrame
-	OutfitterButtonFrame:SetAllPoints(CharacterFrame.backdrop)
+	SkinFrame(OutfitterButtonFrame, "SetAllPoints", CharacterFrame.backdrop)
 
-	OutfitterButton:ClearAllPoints()
-	OutfitterButton:Point("TOPRIGHT", OutfitterButtonFrame, -25, -5)
+	SkinFrame(OutfitterButton, "ClearAllPoints")
+	SkinFrame(OutfitterButton, "Point", "TOPRIGHT", OutfitterButtonFrame, -25, -5)
 
-	OutfitterButton:Size(30, 16)
-	OutfitterButton:SetTemplate("Transparent")
-	OutfitterButton:SetHighlightTexture("")
-	OutfitterButton:HookScript("OnEnter", S.SetModifiedBackdrop)
-	OutfitterButton:HookScript("OnLeave", S.SetOriginalBackdrop)
+	SkinFrame(OutfitterButton, "Size", 30, 16)
+	SkinFrame(OutfitterButton, "SetTemplate", "Transparent")
+	SkinFrame(OutfitterButton, "SetHighlightTexture", "")
+	SkinFrame(OutfitterButton, "HookScript", "OnEnter", S.SetModifiedBackdrop)
+	SkinFrame(OutfitterButton, "HookScript", "OnLeave", S.SetOriginalBackdrop)
 
 	local buttonTexture = OutfitterButton:GetNormalTexture()
-	buttonTexture:SetInside()
-	buttonTexture:SetTexCoord(0.296875, 0.765625, 0.140625, 0.390625)
+	SkinFrame(buttonTexture, "SetInside")
+	SkinFrame(buttonTexture, "SetTexCoord", 0.296875, 0.765625, 0.140625, 0.390625)
 	buttonTexture = OutfitterButton:GetPushedTexture()
-	buttonTexture:SetInside()
-	buttonTexture:SetTexCoord(0.25, 0.71875, 0.640625, 0.890625)
+	SkinFrame(buttonTexture, "SetInside")
+	SkinFrame(buttonTexture, "SetTexCoord", 0.25, 0.71875, 0.640625, 0.890625)
 
 	-- AboutFrame
-	OutfitterAboutFrame:StripTextures()
-	OutfitterAboutFrame:SetTemplate("Transparent")
+	SkinFrame(OutfitterAboutFrame, "StripTextures")
+	SkinFrame(OutfitterAboutFrame, "SetTemplate", "Transparent")
 
 	-- OptionsFrame
-	OutfitterOptionsFrame:StripTextures()
-	OutfitterOptionsFrame:SetTemplate("Transparent")
+	SkinFrame(OutfitterOptionsFrame, "StripTextures")
+	SkinFrame(OutfitterOptionsFrame, "SetTemplate", "Transparent")
 
-	S:HandleCheckBox(OutfitterAutoSwitch, true)
-	S:HandleCheckBox(OutfitterShowOutfitBar, true)
-	S:HandleCheckBox(OutfitterShowMinimapButton, true)
-	S:HandleCheckBox(OutfitterShowHotkeyMessages, true)
-	S:HandleCheckBox(OutfitterTooltipInfo, true)
-	S:HandleCheckBox(OutfitterItemComparisons, true)
+	SkinControl("HandleCheckBox", OutfitterAutoSwitch, true)
+	SkinControl("HandleCheckBox", OutfitterShowOutfitBar, true)
+	SkinControl("HandleCheckBox", OutfitterShowMinimapButton, true)
+	SkinControl("HandleCheckBox", OutfitterShowHotkeyMessages, true)
+	SkinControl("HandleCheckBox", OutfitterTooltipInfo, true)
+	SkinControl("HandleCheckBox", OutfitterItemComparisons, true)
 
-	OutfitterShowOutfitBar:Point("TOPLEFT", OutfitterAutoSwitch, "BOTTOMLEFT", 0, -5)
+	SkinFrame(OutfitterShowOutfitBar, "Point", "TOPLEFT", OutfitterAutoSwitch, "BOTTOMLEFT", 0, -5)
 
 	-- MainFrame
-	OutfitterFrame:Point("TOPLEFT", OutfitterButtonFrame, "TOPRIGHT", -1, 0)
+	SkinFrame(OutfitterFrame, "Point", "TOPLEFT", OutfitterButtonFrame, "TOPRIGHT", -1, 0)
 
-	OutfitterMainFrame:SetTemplate("Transparent")
+	SkinFrame(OutfitterMainFrame, "SetTemplate", "Transparent")
 
-	OutfitterMainFrameBackground:StripTextures()
-	OutfitterMainFrameButtonBarBackground:StripTextures()
+	SkinFrame(OutfitterMainFrameBackground, "StripTextures")
+	SkinFrame(OutfitterMainFrameButtonBarBackground, "StripTextures")
 
-	OutfitterFrameTitle:Point("TOP", 0, -6)
+	SkinFrame(OutfitterFrameTitle, "Point", "TOP", 0, -6)
 	OutfitterFrameTitle:SetParent(OutfitterMainFrame)
 
-	S:HandleCloseButton(OutfitterCloseButton, OutfitterFrame)
+	SkinControl("HandleCloseButton", OutfitterCloseButton, OutfitterFrame)
 
 	for i = 1, 3 do
 		local tab = _G["OutfitterFrameTab"..i]
-		tab:StripTextures()
-		tab:SetTemplate()
+		SkinFrame(tab, "StripTextures")
+		SkinFrame(tab, "SetTemplate")
 
-		tab:Height(28)
+		SkinFrame(tab, "Height", 28)
 
 		if i == 1 then
-			tab:Point("BOTTOMRIGHT", -6, -27)
+			SkinFrame(tab, "Point", "BOTTOMRIGHT", -6, -27)
 		else
-			tab:Point("RIGHT", _G["OutfitterFrameTab"..(i - 1)], "LEFT", -5, 0)
+			SkinFrame(tab, "Point", "RIGHT", _G["OutfitterFrameTab"..(i - 1)], "LEFT", -5, 0)
 		end
 	end
 
 	OutfitterMainFrameHighlight:SetTexture(E.Media.Textures.Highlight)
 	OutfitterMainFrameHighlight:SetVertexColor(0.9, 0.9, 0.9, 0.35)
 
-	OutfitterMainFrameScrollbarTrench:StripTextures()
+	SkinFrame(OutfitterMainFrameScrollbarTrench, "StripTextures")
 
-	S:HandleScrollBar(OutfitterMainFrameScrollFrameScrollBar)
-	OutfitterMainFrameScrollFrameScrollBar:Point("TOPLEFT", OutfitterMainFrameScrollFrame, "TOPRIGHT", 3, -20)
-	OutfitterMainFrameScrollFrameScrollBar:Point("BOTTOMLEFT", OutfitterMainFrameScrollFrame, "BOTTOMRIGHT", 3, 20)
+	SkinControl("HandleScrollBar", OutfitterMainFrameScrollFrameScrollBar)
+	SkinFrame(OutfitterMainFrameScrollFrameScrollBar, "Point", "TOPLEFT", OutfitterMainFrameScrollFrame, "TOPRIGHT", 3, -20)
+	SkinFrame(OutfitterMainFrameScrollFrameScrollBar, "Point", "BOTTOMLEFT", OutfitterMainFrameScrollFrame, "BOTTOMRIGHT", 3, 20)
 
-	OutfitterItem0:Point("TOPLEFT", 3, -57)
+	SkinFrame(OutfitterItem0, "Point", "TOPLEFT", 3, -57)
 
-	S:HandleButton(OutfitterNewButton)
-	OutfitterNewButton:Point("BOTTOMRIGHT", -8, 8)
+	SkinControl("HandleButton", OutfitterNewButton)
+	SkinFrame(OutfitterNewButton, "Point", "BOTTOMRIGHT", -8, 8)
 
 	for i = 0, 13 do
 		local categoryExpand = _G["OutfitterItem"..i.."CategoryExpand"]
-		S:HandleCollapseExpandButton(categoryExpand)
-		categoryExpand:Point("BOTTOMLEFT", 2, 1)
+		SkinControl("HandleCollapseExpandButton", categoryExpand)
+		SkinFrame(categoryExpand, "Point", "BOTTOMLEFT", 2, 1)
 
 		local outfitSelected = _G["OutfitterItem"..i.."OutfitSelected"]
-		S:HandleCheckBox(outfitSelected, true)
-		outfitSelected:Point("BOTTOMLEFT", 5, 1)
+		SkinControl("HandleCheckBox", outfitSelected, true)
+		SkinFrame(outfitSelected, "Point", "BOTTOMLEFT", 5, 1)
 
-		_G["OutfitterItem"..i.."ItemIcon"]:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(_G["OutfitterItem"..i.."ItemIcon"], "SetTexCoord", unpack(E.TexCoords))
 
 		local outfitServerButton = _G["OutfitterItem"..i.."OutfitServerButton"]
 		outfitServerButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		outfitServerButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
 
 		local outfitMenu = _G["OutfitterItem"..i.."OutfitMenu"]
-		S:HandleNextPrevButton(outfitMenu, "down")
-		outfitMenu:Size(16)
+		SkinControl("HandleNextPrevButton", outfitMenu, "down")
+		SkinFrame(outfitMenu, "Size", 16)
 	end
 
 	hooksecurefunc(Outfitter._SidebarWindowFrame, "Construct", function(self)
 		for _, textureFrame in pairs(self.Background) do
-			textureFrame:StripTextures()
+			SkinFrame(textureFrame, "StripTextures")
 		end
 	end)
 
 	-- SlotEnables
-	S:HandleButton(OutfitterEnableAll)
-	S:HandleButton(OutfitterEnableNone)
+	SkinControl("HandleButton", OutfitterEnableAll)
+	SkinControl("HandleButton", OutfitterEnableNone)
 
 --[[
 	local slots = {
@@ -148,7 +157,7 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 	}
 
 	for _, slot in ipairs(slots) do
-		S:HandleCheckBox(slot)
+		SkinControl("HandleCheckBox", slot)
 	end
 --]]
 
@@ -176,44 +185,44 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 		self.ItemButton:SetTemplate("Default")
 		self.ItemButton:StyleButton()
 
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(icon, "SetInside")
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 
 		E:RegisterCooldown(_G[buttonName.."Cooldown"])
 	end)
 
 	-- ScriptFrame
-	OutfitterEditScriptDialog:StripTextures()
-	OutfitterEditScriptDialog:SetTemplate("Transparent")
-	OutfitterEditScriptDialog:ClearAllPoints()
-	OutfitterEditScriptDialog:SetPoint("CENTER")
+	SkinFrame(OutfitterEditScriptDialog, "StripTextures")
+	SkinFrame(OutfitterEditScriptDialog, "SetTemplate", "Transparent")
+	SkinFrame(OutfitterEditScriptDialog, "ClearAllPoints")
+	SkinFrame(OutfitterEditScriptDialog, "SetPoint", "CENTER")
 
 	OutfitterEditScriptDialog.CloseButton:Size(32)
-	S:HandleCloseButton(OutfitterEditScriptDialog.CloseButton, OutfitterEditScriptDialog)
+	SkinControl("HandleCloseButton", OutfitterEditScriptDialog.CloseButton, OutfitterEditScriptDialog)
 
-	S:HandleDropDownBox(OutfitterEditScriptDialogPresetScript)
-	OutfitterEditScriptDialogPresetScript:Point("TOPLEFT", 291, -20)
+	SkinControl("HandleDropDownBox", OutfitterEditScriptDialogPresetScript)
+	SkinFrame(OutfitterEditScriptDialogPresetScript, "Point", "TOPLEFT", 291, -20)
 
-	OutfitterEditScriptDialogSourceScript:StripTextures()
+	SkinFrame(OutfitterEditScriptDialogSourceScript, "StripTextures")
 	OutfitterEditScriptDialogSourceScript:CreateBackdrop("Transparent")
-	OutfitterEditScriptDialogSourceScript:Size(422, 369)
-	OutfitterEditScriptDialogSourceScript:Point("TOPLEFT", 60, -51)
+	SkinFrame(OutfitterEditScriptDialogSourceScript, "Size", 422, 369)
+	SkinFrame(OutfitterEditScriptDialogSourceScript, "Point", "TOPLEFT", 60, -51)
 
-	OutfitterEditScriptDialogSourceScriptEditBox:Width(421)
+	SkinFrame(OutfitterEditScriptDialogSourceScriptEditBox, "Width", 421)
 
-	S:HandleScrollBar(OutfitterEditScriptDialogSourceScriptScrollBar)
-	OutfitterEditScriptDialogSourceScriptScrollBar:Point("TOPLEFT", OutfitterEditScriptDialogSourceScript, "TOPRIGHT", 4, -18)
-	OutfitterEditScriptDialogSourceScriptScrollBar:Point("BOTTOMLEFT", OutfitterEditScriptDialogSourceScript, "BOTTOMRIGHT", 4, 18)
+	SkinControl("HandleScrollBar", OutfitterEditScriptDialogSourceScriptScrollBar)
+	SkinFrame(OutfitterEditScriptDialogSourceScriptScrollBar, "Point", "TOPLEFT", OutfitterEditScriptDialogSourceScript, "TOPRIGHT", 4, -18)
+	SkinFrame(OutfitterEditScriptDialogSourceScriptScrollBar, "Point", "BOTTOMLEFT", OutfitterEditScriptDialogSourceScript, "BOTTOMRIGHT", 4, 18)
 
-	S:HandleButton(OutfitterEditScriptDialogDoneButton)
-	S:HandleButton(OutfitterEditScriptDialogCancelButton)
-	OutfitterEditScriptDialogCancelButton:Point("BOTTOMRIGHT", -8, 8)
+	SkinControl("HandleButton", OutfitterEditScriptDialogDoneButton)
+	SkinControl("HandleButton", OutfitterEditScriptDialogCancelButton)
+	SkinFrame(OutfitterEditScriptDialogCancelButton, "Point", "BOTTOMRIGHT", -8, 8)
 
-	S:HandleTab(OutfitterEditScriptDialogTab1)
-	S:HandleTab(OutfitterEditScriptDialogTab2)
+	SkinControl("HandleTab", OutfitterEditScriptDialogTab1)
+	SkinControl("HandleTab", OutfitterEditScriptDialogTab2)
 
-	OutfitterEditScriptDialogTab1:Point("TOPLEFT", OutfitterEditScriptDialog, "BOTTOMLEFT", 0, 2)
-	OutfitterEditScriptDialogTab2:Point("LEFT", OutfitterEditScriptDialogTab1, "RIGHT", -15, 0)
+	SkinFrame(OutfitterEditScriptDialogTab1, "Point", "TOPLEFT", OutfitterEditScriptDialog, "BOTTOMLEFT", 0, 2)
+	SkinFrame(OutfitterEditScriptDialogTab2, "Point", "LEFT", OutfitterEditScriptDialogTab1, "RIGHT", -15, 0)
 
 	hooksecurefunc(OutfitterEditScriptDialog, "ConstructSettingsFields", function(self, pSettings) -- Outfitter._EditScriptDialog.ConstructSettingsFields
 		if pSettings.Inputs then
@@ -223,37 +232,37 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 				local vFrameType = vSettingTypeInfo.FrameType
 
 				if vFrameType == "ScrollableEditBox" then
-					frame:StripTextures()
+					SkinFrame(frame, "StripTextures")
 					frame:CreateBackdrop()
 
-					_G[frame:GetName().."EditBox"]:Width(frame:GetWidth() - 1)
+					SkinFrame(_G[frame:GetName().."EditBox"], "Width", frame:GetWidth() - 1)
 
 					local scrollBar = _G[frame:GetName().."ScrollBar"]
-					S:HandleScrollBar(scrollBar)
-					scrollBar:Point("TOPLEFT", frame, "TOPRIGHT", 4, -18)
-					scrollBar:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", 4, 18)
+					SkinControl("HandleScrollBar", scrollBar)
+					SkinFrame(scrollBar, "Point", "TOPLEFT", frame, "TOPRIGHT", 4, -18)
+					SkinFrame(scrollBar, "Point", "BOTTOMLEFT", frame, "BOTTOMRIGHT", 4, 18)
 				elseif vFrameType == "EditBox" then
-					S:HandleEditBox(frame)
+					SkinControl("HandleEditBox", frame)
 
 					for _, region in ipairs({frame:GetRegions()}) do
 						if region:GetObjectType("Texture") and region:GetDrawLayer() == "BACKGROUND" then
-							region:Hide()
+							SkinFrame(region, "Hide")
 						end
 					end
 				elseif vFrameType == "ZoneListEditBox" then
-					frame:StripTextures()
+					SkinFrame(frame, "StripTextures")
 					frame:CreateBackdrop()
 
-					_G[frame:GetName().."EditBox"]:Width(frame:GetWidth() - 1)
+					SkinFrame(_G[frame:GetName().."EditBox"], "Width", frame:GetWidth() - 1)
 
 					local scrollBar = _G[frame:GetName().."ScrollBar"]
-					S:HandleScrollBar(scrollBar)
-					scrollBar:Point("TOPLEFT", frame, "TOPRIGHT", 4, -18)
-					scrollBar:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", 4, 18)
+					SkinControl("HandleScrollBar", scrollBar)
+					SkinFrame(scrollBar, "Point", "TOPLEFT", frame, "TOPRIGHT", 4, -18)
+					SkinFrame(scrollBar, "Point", "BOTTOMLEFT", frame, "BOTTOMRIGHT", 4, 18)
 
-					S:HandleButton(_G[frame:GetName().."ZoneButton"])
+					SkinControl("HandleButton", _G[frame:GetName().."ZoneButton"])
 				elseif vFrameType == "Checkbox" then
-					S:HandleCheckBox(frame)
+					SkinControl("HandleCheckBox", frame)
 				end
 			end
 		end
@@ -261,39 +270,39 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 
 	-- ChooseIconDialog
 	OutfitterChooseIconDialog:GetChildren():Hide() -- backdrop
-	OutfitterChooseIconDialog:SetTemplate("Transparent")
-	OutfitterChooseIconDialog:Size(303, 367)
+	SkinFrame(OutfitterChooseIconDialog, "SetTemplate", "Transparent")
+	SkinFrame(OutfitterChooseIconDialog, "Size", 303, 367)
 
-	S:HandleDropDownBox(OutfitterChooseIconDialogIconSetMenu)
+	SkinControl("HandleDropDownBox", OutfitterChooseIconDialogIconSetMenu)
 
-	S:HandleEditBox(OutfitterChooseIconDialogFilterEditBox)
+	SkinControl("HandleEditBox", OutfitterChooseIconDialogFilterEditBox)
 	local leftTex, rightTex, middleTex = select(OutfitterChooseIconDialogFilterEditBox:GetNumRegions() - 2, OutfitterChooseIconDialogFilterEditBox:GetRegions())
-	leftTex:Hide()
-	rightTex:Hide()
-	middleTex:Hide()
+	SkinFrame(leftTex, "Hide")
+	SkinFrame(rightTex, "Hide")
+	SkinFrame(middleTex, "Hide")
 
-	OutfitterChooseIconDialogScrollFrame:StripTextures()
-	OutfitterChooseIconDialogScrollFrame:Point("TOPLEFT", OutfitterChooseIconDialogFilterEditBox, "BOTTOMLEFT", -64, -19)
+	SkinFrame(OutfitterChooseIconDialogScrollFrame, "StripTextures")
+	SkinFrame(OutfitterChooseIconDialogScrollFrame, "Point", "TOPLEFT", OutfitterChooseIconDialogFilterEditBox, "BOTTOMLEFT", -64, -19)
 
-	S:HandleScrollBar(OutfitterChooseIconDialogScrollFrameScrollBar)
-	OutfitterChooseIconDialogScrollFrameScrollBar:Point("TOPLEFT", OutfitterChooseIconDialogScrollFrame, "TOPRIGHT", 6, -19)
-	OutfitterChooseIconDialogScrollFrameScrollBar:Point("BOTTOMLEFT", OutfitterChooseIconDialogScrollFrame, "BOTTOMRIGHT", 6, 19)
+	SkinControl("HandleScrollBar", OutfitterChooseIconDialogScrollFrameScrollBar)
+	SkinFrame(OutfitterChooseIconDialogScrollFrameScrollBar, "Point", "TOPLEFT", OutfitterChooseIconDialogScrollFrame, "TOPRIGHT", 6, -19)
+	SkinFrame(OutfitterChooseIconDialogScrollFrameScrollBar, "Point", "BOTTOMLEFT", OutfitterChooseIconDialogScrollFrame, "BOTTOMRIGHT", 6, 19)
 
-	S:HandleButton(OutfitterChooseIconDialogOKButton)
-	S:HandleButton(OutfitterChooseIconDialogCancelButton)
-	OutfitterChooseIconDialogCancelButton:Point("BOTTOMRIGHT", -8, 8)
+	SkinControl("HandleButton", OutfitterChooseIconDialogOKButton)
+	SkinControl("HandleButton", OutfitterChooseIconDialogCancelButton)
+	SkinFrame(OutfitterChooseIconDialogCancelButton, "Point", "BOTTOMRIGHT", -8, 8)
 
 	hooksecurefunc(OutfitterChooseIconDialog, "NewIconButton", function(self) -- Outfitter.OutfitBar._ChooseIconDialog
 		local button = _G["OutfitterChooseIconDialogButton"..#self.IconButtons]
 		local buttonIcon = _G["OutfitterChooseIconDialogButton"..#self.IconButtons.."Icon"]
 
-		button:StripTextures()
-		button:SetTemplate(nil, true)
-		button:StyleButton(nil, true)
+		SkinFrame(button, "StripTextures")
+		SkinFrame(button, "SetTemplate", nil, true)
+		SkinFrame(button, "StyleButton", nil, true)
 
 		buttonIcon:SetDrawLayer("ARTWORK")
-		buttonIcon:SetTexCoord(unpack(E.TexCoords))
-		buttonIcon:SetInside()
+		SkinFrame(buttonIcon, "SetTexCoord", unpack(E.TexCoords))
+		SkinFrame(buttonIcon, "SetInside")
 	end)
 
 	-- OutfitBar
@@ -302,16 +311,16 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 
 		for _, texture in ipairs(frame.BackgroundTextures) do
 			texture.Show = E.noop
-			texture:Hide()
+			SkinFrame(texture, "Hide")
 		end
 
 		if not self.Settings.OutfitBar.HideBackground then
-			frame:SetTemplate("Transparent")
+			SkinFrame(frame, "SetTemplate", "Transparent")
 		end
 
 		for _, button in ipairs(frame.Buttons) do
 			button.Widgets.Icon:SetDrawLayer("BORDER")
-			S:HandleItemButton(button, true)
+			SkinControl("HandleItemButton", button, true)
 		end
 	end)
 
@@ -326,40 +335,40 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 	function Outfitter.OutfitBar._DragBar:SetVerticalOrientation(pVertical)
 		self.Vertical = pVertical
 		if pVertical then
-			self:Size(53, 12)
+			SkinFrame(self, "Size", 53, 12)
 		else
-			self:Size(12, 53)
+			SkinFrame(self, "Size", 12, 53)
 		end
 	end
 
 	hooksecurefunc(Outfitter.OutfitBar._SettingsDialog, "Construct", function(self)
-		self:SetTemplate("Transparent")
+		SkinFrame(self, "SetTemplate", "Transparent")
 
-		S:HandleSliderFrame(self.SizeSlider)
-		S:HandleSliderFrame(self.AlphaSlider)
-		S:HandleSliderFrame(self.CombatAlphaSlider)
+		SkinControl("HandleSliderFrame", self.SizeSlider)
+		SkinControl("HandleSliderFrame", self.AlphaSlider)
+		SkinControl("HandleSliderFrame", self.CombatAlphaSlider)
 
-		S:HandleCheckBox(self.VerticalCheckbutton)
-		S:HandleCheckBox(self.LockPositionCheckbutton)
-		S:HandleCheckBox(self.HideBackgroundCheckbutton)
+		SkinControl("HandleCheckBox", self.VerticalCheckbutton)
+		SkinControl("HandleCheckBox", self.LockPositionCheckbutton)
+		SkinControl("HandleCheckBox", self.HideBackgroundCheckbutton)
 	end)
 
 	function Outfitter._ButtonBar:ShowBackground(pShow)
 		self.HideBackground = not pShow
-		self:SetTemplate(pShow and "Transparent" or "NoBackdrop")
+		SkinFrame(self, "SetTemplate", pShow and "Transparent" or "NoBackdrop")
 	end
 
 	-- MC2UIElementsLib
 	hooksecurefunc(Outfitter.UIElementsLib._SidebarWindowFrame, "Construct", function(self)
-		self:SetTemplate("Transparent")
-		S:HandleCloseButton(self.CloseButton, self)
+		SkinFrame(self, "SetTemplate", "Transparent")
+		SkinControl("HandleCloseButton", self.CloseButton, self)
 
 		for _, textureFrame in pairs(self.Background) do
-			textureFrame:StripTextures()
+			SkinFrame(textureFrame, "StripTextures")
 		end
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._ModalDialogFrame, "Construct", function(self)
-		self:SetTemplate("Transparent")
+		SkinFrame(self, "SetTemplate", "Transparent")
 
 		self.Title:Point("TOP", 0, -5)
 
@@ -371,16 +380,16 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 		self.YOffset = (pYOffset or 0) + 3
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._Tabs, "NewTab", function(self)
-		S:HandleTab(self.Tabs[#self.Tabs])
+		SkinControl("HandleTab", self.Tabs[#self.Tabs])
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._ScrollbarTrench, "Construct", function(self)
-		self:StripTextures()
+		SkinFrame(self, "StripTextures")
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._Scrollbar, "Construct", function(self)
-		S:HandleScrollBar(self)
+		SkinControl("HandleScrollBar", self)
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._CheckButton, "Construct", function(self)
-		S:HandleCheckBox(self, true)
+		SkinControl("HandleCheckBox", self, true)
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._ExpandAllButton, "Construct", function(self)
 		self.TabLeft.Show = E.noop
@@ -391,33 +400,33 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 		self.TabRight:Hide()
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._PlainBorderedFrame, "Construct", function(self)
-		self:SetTemplate("Transparent")
+		SkinFrame(self, "SetTemplate", "Transparent")
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._CloseButton, "Construct", function(self, pParent)
-		S:HandleCloseButton(self, pParent)
+		SkinControl("HandleCloseButton", self, pParent)
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._FadingTitleBar, "Construct", function(self)
 		self.FullBar:StripTextures()
 		self.FullBar:SetTemplate("Transparent")
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._ExpandButton, "Construct", function(self)
-		S:HandleCollapseExpandButton(self, "-")
+		SkinControl("HandleCollapseExpandButton", self, "-")
 	end)
 	local dropdownArrowColor = {1, 0.8, 0}
 	hooksecurefunc(Outfitter.UIElementsLib._DropDownMenuButton, "Construct", function(self, pParent, pMenuFunc, pWidth)
-		S:HandleNextPrevButton(self.Button, "down", dropdownArrowColor)
+		SkinControl("HandleNextPrevButton", self.Button, "down", dropdownArrowColor)
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._Section, "Construct", function(self)
-		self:SetTemplate("Transparent")
+		SkinFrame(self, "SetTemplate", "Transparent")
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._DropDownMenu, "Construct", function(self)
-		self:StripTextures()
-		self:SetTemplate()
+		SkinFrame(self, "StripTextures")
+		SkinFrame(self, "SetTemplate")
 
 		self.Button:Point("RIGHT", -2, 0)
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._EditBox, "Construct", function(self, pParent, pLabel, pMaxLetters, pWidth, pPlain)
-		self:SetTemplate()
+		SkinFrame(self, "SetTemplate")
 
 		if not pPlain then
 			self.LeftTexture:SetAlpha(0)
@@ -426,7 +435,7 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 		end
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._PushButton, "Construct", function(self)
-		S:HandleButton(self, true)
+		SkinControl("HandleButton", self, true)
 
 		self.HighlightTexture.Show = E.noop
 		self.HighlightTexture:Hide()
@@ -436,6 +445,6 @@ S:AddCallbackForAddon("Outfitter", "Outfitter", function()
 		self.EditBox:SetTemplate("NoBackdrop")
 	end)
 	hooksecurefunc(Outfitter.UIElementsLib._ProgressBar, "Construct", function(self)
-		S:HandleStatusBar(self)
+		SkinControl("HandleStatusBar", self)
 	end)
 end)

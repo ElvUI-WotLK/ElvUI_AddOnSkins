@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("CallToArms") then return end
@@ -106,26 +115,26 @@ S:AddCallbackForAddon("CallToArms", "CallToArms", function()
 	}
 
 	for _, frame in ipairs(frames) do
-		frame:SetTemplate("Transparent")
+		SkinFrame(frame, "SetTemplate", "Transparent")
 	end
 	for _, button in ipairs(buttons) do
-		S:HandleButton(button)
+		SkinControl("HandleButton", button)
 	end
 	for _, checkbox in ipairs(checkBoxes) do
-		S:HandleCheckBox(checkbox)
+		SkinControl("HandleCheckBox", checkbox)
 	end
 	for _, slider in ipairs(sliders) do
-		S:HandleSliderFrame(slider)
+		SkinControl("HandleSliderFrame", slider)
 	end
 	for _, nextPrevButton in ipairs(nextPrevButtons) do
-		S:HandleNextPrevButton(nextPrevButton)
+		SkinControl("HandleNextPrevButton", nextPrevButton)
 	end
 	for _, tab in ipairs(tabNames) do
-		S:HandleTab(tab)
+		SkinControl("HandleTab", tab)
 
 		local text = _G[tab:GetName().."Text"]
-		text:ClearAllPoints()
-		text:Point("CENTER", 0, 1)
+		SkinFrame(text, "ClearAllPoints")
+		SkinFrame(text, "Point", "CENTER", 0, 1)
 	end
 
 	local function editboxClearFocus(self)
@@ -133,56 +142,56 @@ S:AddCallbackForAddon("CallToArms", "CallToArms", function()
 	end
 	for _, editBox in ipairs(editBoxes) do
 		local backdrop, border = select(6, editBox:GetRegions())
-		backdrop:Hide()
-		border:Hide()
+		SkinFrame(backdrop, "Hide")
+		SkinFrame(border, "Hide")
 
-		S:HandleEditBox(editBox)
+		SkinControl("HandleEditBox", editBox)
 
 		if not editBox:GetScript("OnEnterPressed") then
-			editBox:SetScript("OnEnterPressed", editboxClearFocus)
+			SkinFrame(editBox, "SetScript", "OnEnterPressed", editboxClearFocus)
 		end
 		if not editBox:GetScript("OnEscapePressed") then
-			editBox:SetScript("OnEscapePressed", editboxClearFocus)
+			SkinFrame(editBox, "SetScript", "OnEscapePressed", editboxClearFocus)
 		end
 	end
 
-	CTA_MainFrame:StripTextures()
-	CTA_MainFrame:SetTemplate("Transparent")
-	CTA_MainFrame:Height(500)
+	SkinFrame(CTA_MainFrame, "StripTextures")
+	SkinFrame(CTA_MainFrame, "SetTemplate", "Transparent")
+	SkinFrame(CTA_MainFrame, "Height", 500)
 
-	S:HandleCloseButton(CTA_MainFrameCloseButton, CTA_MainFrame)
+	SkinControl("HandleCloseButton", CTA_MainFrameCloseButton, CTA_MainFrame)
 
-	CTA_SearchDropDown:Point("TOPLEFT", 4, -48)
-	S:HandleDropDownBox(CTA_SearchDropDown, 200)
-	S:HandleDropDownBox(CTA_PlayerClassDropDown, 100)
-	S:HandleDropDownBox(CTA_RoleplayDropDown, 100)
+	SkinFrame(CTA_SearchDropDown, "Point", "TOPLEFT", 4, -48)
+	SkinControl("HandleDropDownBox", CTA_SearchDropDown, 200)
+	SkinControl("HandleDropDownBox", CTA_PlayerClassDropDown, 100)
+	SkinControl("HandleDropDownBox", CTA_RoleplayDropDown, 100)
 
-	CTA_SearchFrame_ResultsPrev:Point("BOTTOM", -60, 7)
-	CTA_SearchFrame_ResultsNext:Point("BOTTOM", 60, 7)
+	SkinFrame(CTA_SearchFrame_ResultsPrev, "Point", "BOTTOM", -60, 7)
+	SkinFrame(CTA_SearchFrame_ResultsNext, "Point", "BOTTOM", 60, 7)
 
-	CTA_GreyListFramePrev:Point("BOTTOM", -60, 7)
-	CTA_GreyListFrameNext:Point("BOTTOM", 60, 7)
+	SkinFrame(CTA_GreyListFramePrev, "Point", "BOTTOM", -60, 7)
+	SkinFrame(CTA_GreyListFrameNext, "Point", "BOTTOM", 60, 7)
 
-	CTA_ShowSearchButton:Point("TOPLEFT", CTA_MainFrame, "BOTTOMLEFT", 0, 2)
-	CTA_ShowMyRaidButton:Point("TOPLEFT", CTA_ShowSearchButton, "TOPRIGHT", -15, 0)
-	CTA_ShowLFGButton:Point("TOPLEFT", CTA_ShowMyRaidButton, "TOPRIGHT", -15, 0)
-	CTA_ShowMFFButton:Point("TOPRIGHT", CTA_MainFrame, "BOTTOMRIGHT", 0, 2)
+	SkinFrame(CTA_ShowSearchButton, "Point", "TOPLEFT", CTA_MainFrame, "BOTTOMLEFT", 0, 2)
+	SkinFrame(CTA_ShowMyRaidButton, "Point", "TOPLEFT", CTA_ShowSearchButton, "TOPRIGHT", -15, 0)
+	SkinFrame(CTA_ShowLFGButton, "Point", "TOPLEFT", CTA_ShowMyRaidButton, "TOPRIGHT", -15, 0)
+	SkinFrame(CTA_ShowMFFButton, "Point", "TOPRIGHT", CTA_MainFrame, "BOTTOMRIGHT", 0, 2)
 
-	CTA_AnnounceToLFGButton2:Point("BOTTOM", 0, 90)
+	SkinFrame(CTA_AnnounceToLFGButton2, "Point", "BOTTOM", 0, 90)
 
-	CTA_AcidEditDialog:StripTextures()
-	CTA_AcidEditDialog:SetTemplate("Default")
+	SkinFrame(CTA_AcidEditDialog, "StripTextures")
+	SkinFrame(CTA_AcidEditDialog, "SetTemplate", "Default")
 
 	for i = 0, 10 do
-		_G["CTA_Acid"..i.."barBorder"]:SetTemplate("Transparent")
-		S:HandleButton(_G["CTA_Acid"..i.."DeleteButton"])
+		SkinFrame(_G["CTA_Acid"..i.."barBorder"], "SetTemplate", "Transparent")
+		SkinControl("HandleButton", _G["CTA_Acid"..i.."DeleteButton"])
 
 		local button = _G["CTA_Acid"..i.."MoreButton"]
-		button:Point("TOPLEFT", 43, 0)
-		S:HandleNextPrevButton(button, "up")
+		SkinFrame(button, "Point", "TOPLEFT", 43, 0)
+		SkinControl("HandleNextPrevButton", button, "up")
 
 		button = _G["CTA_Acid"..i.."LessButton"]
-		button:Point("TOPLEFT", 43, -30)
-		S:HandleNextPrevButton(button, "down")
+		SkinFrame(button, "Point", "TOPLEFT", 43, -30)
+		SkinControl("HandleNextPrevButton", button, "down")
 	end
 end)

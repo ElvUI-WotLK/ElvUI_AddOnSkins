@@ -1,5 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+-- Optional controls differ between supported addon versions. Keep missing
+-- targets out of native skin handlers without masking other Lua errors.
+local function SkinControl(method, frame, ...)
+	if frame then return S[method](S, frame, ...) end
+end
+local function SkinFrame(frame, method, ...)
+	if frame then return frame[method](frame, ...) end
+end
+
 local AS = E:GetModule("AddOnSkins")
 
 if not AS:IsAddonLODorEnabled("QuestGuru_Tracker") then return end
@@ -13,28 +22,28 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 	QGT_QuestWatchFrameTooltip.SetBackdropColor = E.noop
 	QGT_QuestWatchFrameTooltip.SetBackdropBorderColor = E.noop
 
-	QGT_QuestWatchFrame:SetBackdrop(nil)
+	SkinFrame(QGT_QuestWatchFrame, "SetBackdrop", nil)
 	QGT_QuestWatchFrame:CreateBackdrop(QGT_Settings.ShowBorder and "Transparent" or "NoBackdrop")
 	QGT_QuestWatchFrame:SetHitRectInsets(0, 0, 0, 0)
-	QGT_QuestWatchFrameBackground:Hide()
+	SkinFrame(QGT_QuestWatchFrameBackground, "Hide")
 
-	QGT_AchievementWatchFrame:SetBackdrop(nil)
+	SkinFrame(QGT_AchievementWatchFrame, "SetBackdrop", nil)
 	QGT_AchievementWatchFrame:CreateBackdrop(QGT_Settings.ShowBorder and "Transparent" or "NoBackdrop")
 	QGT_AchievementWatchFrame:SetHitRectInsets(0, 0, 0, 0)
-	QGT_AchievementWatchFrameBackground:Hide()
+	SkinFrame(QGT_AchievementWatchFrameBackground, "Hide")
 
-	S:HandleButton(QGT_QuestWatchFrameToggle)
-	S:HandleButton(QGT_QuestWatchFrameMinimize)
-	S:HandleButton(QGT_QuestWatchFrameOptions)
-	S:HandleButton(QGT_AchievementWatchFrameToggle)
-	S:HandleButton(QGT_AchievementWatchFrameMinimize)
-	S:HandleButton(QGT_AchievementWatchFrameOptions)
+	SkinControl("HandleButton", QGT_QuestWatchFrameToggle)
+	SkinControl("HandleButton", QGT_QuestWatchFrameMinimize)
+	SkinControl("HandleButton", QGT_QuestWatchFrameOptions)
+	SkinControl("HandleButton", QGT_AchievementWatchFrameToggle)
+	SkinControl("HandleButton", QGT_AchievementWatchFrameMinimize)
+	SkinControl("HandleButton", QGT_AchievementWatchFrameOptions)
 
-	QGT_QuestWatchFrameMinimize:Point("RIGHT", QGT_QuestWatchFrameOptions, "LEFT", -1, 0)
-	QGT_QuestWatchFrameToggle:Point("RIGHT", QGT_QuestWatchFrameMinimize, "LEFT", -2, 0)
+	SkinFrame(QGT_QuestWatchFrameMinimize, "Point", "RIGHT", QGT_QuestWatchFrameOptions, "LEFT", -1, 0)
+	SkinFrame(QGT_QuestWatchFrameToggle, "Point", "RIGHT", QGT_QuestWatchFrameMinimize, "LEFT", -2, 0)
 
-	QGT_AchievementWatchFrameMinimize:Point("RIGHT", QGT_AchievementWatchFrameOptions, "LEFT", -1, 0)
-	QGT_AchievementWatchFrameToggle:Point("RIGHT", QGT_AchievementWatchFrameMinimize, "LEFT", -2, 0)
+	SkinFrame(QGT_AchievementWatchFrameMinimize, "Point", "RIGHT", QGT_AchievementWatchFrameOptions, "LEFT", -1, 0)
+	SkinFrame(QGT_AchievementWatchFrameToggle, "Point", "RIGHT", QGT_AchievementWatchFrameMinimize, "LEFT", -2, 0)
 
 	local _SetPoint = QGT_QuestWatchFrameSlider.SetPoint
 	local function sliderSetPoint(self, point)
@@ -45,10 +54,10 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 		end
 	end
 
-	S:HandleSliderFrame(QGT_QuestWatchFrameSlider)
+	SkinControl("HandleSliderFrame", QGT_QuestWatchFrameSlider)
 	QGT_QuestWatchFrameSlider.SetPoint = sliderSetPoint
 
-	S:HandleSliderFrame(QGT_AchievementWatchFrameSlider)
+	SkinControl("HandleSliderFrame", QGT_AchievementWatchFrameSlider)
 	QGT_AchievementWatchFrameSlider.SetPoint = sliderSetPoint
 
 	local function skinOptions(f)
@@ -56,13 +65,13 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 			local child = select(i, f:GetChildren())
 			if child then
 				if child:IsObjectType("CheckButton") then
-					S:HandleCheckBox(child)
+					SkinControl("HandleCheckBox", child)
 				elseif child:IsObjectType("EditBox") then
-					S:HandleEditBox(child)
+					SkinControl("HandleEditBox", child)
 				elseif child:IsObjectType("Button") then
-					S:HandleButton(child)
+					SkinControl("HandleButton", child)
 				elseif child:IsObjectType("Slider") then
-					S:HandleSliderFrame(child)
+					SkinControl("HandleSliderFrame", child)
 				end
 			end
 		end
@@ -74,8 +83,8 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 		local frame = _G["QGT_AchievementWatchLine"..i]
 		local icon = _G["QGT_AchievementWatchLine"..i.."Icon"]
 
-		icon:Size(14)
-		icon:SetTexCoord(unpack(E.TexCoords))
+		SkinFrame(icon, "Size", 14)
+		SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 
 		frame.statusBar:StripTextures()
 		frame.statusBar:CreateBackdrop("Transparent")
@@ -111,7 +120,7 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 		end
 	end
 
-	QGT_OptionsFrameTrackerAlpha:SetScript("OnValueChanged", function(self)
+	SkinFrame(QGT_OptionsFrameTrackerAlpha, "SetScript", "OnValueChanged", function(self)
 		local alpha = self:GetValue()
 		local backdropR, backdropG, backdropB = unpack(E.media.backdropfadecolor, 1, 3)
 		local borderR, borderG, borderB = unpack(E.media.bordercolor, 1, 3)
@@ -146,13 +155,13 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 
 						button:CreateBackdrop()
 						button.backdrop:SetAllPoints()
-						button:StyleButton()
-						button:Size(25)
+						SkinFrame(button, "StyleButton")
+						SkinFrame(button, "Size", 25)
 
-						normal:SetAlpha(0)
+						SkinFrame(normal, "SetAlpha", 0)
 
-						icon:SetInside()
-						icon:SetTexCoord(unpack(E.TexCoords))
+						SkinFrame(icon, "SetInside")
+						SkinFrame(icon, "SetTexCoord", unpack(E.TexCoords))
 
 						E:RegisterCooldown(cooldown)
 
@@ -164,15 +173,15 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 
 						if leftSide then
 							if sliderVisible then
-								button:Point("TOPLEFT", watchText, "TOPRIGHT", 19, 0)
+								SkinFrame(button, "Point", "TOPLEFT", watchText, "TOPRIGHT", 19, 0)
 							else
-								button:Point("TOPLEFT", watchText, "TOPRIGHT", 8, 0)
+								SkinFrame(button, "Point", "TOPLEFT", watchText, "TOPRIGHT", 8, 0)
 							end
 						else
 							if sliderRightVisible then
-								button:Point("TOPRIGHT", watchText, "TOPLEFT", -19, 0)
+								SkinFrame(button, "Point", "TOPRIGHT", watchText, "TOPLEFT", -19, 0)
 							else
-								button:Point("TOPRIGHT", watchText, "TOPLEFT", -8, 0)
+								SkinFrame(button, "Point", "TOPRIGHT", watchText, "TOPLEFT", -8, 0)
 							end
 						end
 					end
@@ -262,7 +271,7 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 						QuestLog_OpenToQuest(qID)
 
 						if QuestGuru_QuestLogFrame then
-							QuestGuru_QuestLogFrame:Show()
+							SkinFrame(QuestGuru_QuestLogFrame, "Show")
 						end
 					end
 				end
@@ -335,10 +344,10 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 			frame2 = _G["QGT_AchievementWatchLine"..i]
 
 			if frame1 then
-				frame1:SetScript("OnClick", questOnClick)
+				SkinFrame(frame1, "SetScript", "OnClick", questOnClick)
 			end
 			if frame2 then
-				frame2:SetScript("OnClick", achievementOnClick)
+				SkinFrame(frame2, "SetScript", "OnClick", achievementOnClick)
 			end
 		end
 
@@ -350,18 +359,18 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 			if flag then
 				local width = 20
 
-				QGT_QuestWatchQuestName:ClearAllPoints()
-				QGT_QuestWatchNumQuests:ClearAllPoints()
+				SkinFrame(QGT_QuestWatchQuestName, "ClearAllPoints")
+				SkinFrame(QGT_QuestWatchNumQuests, "ClearAllPoints")
 
 				if QGT_QuestWatchFrameToggle:IsShown() then
 					width = width + 60
-					QGT_QuestWatchNumQuests:Point("TOPRIGHT", -60, -6)
+					SkinFrame(QGT_QuestWatchNumQuests, "Point", "TOPRIGHT", -60, -6)
 				else
 					width = width + 42
-					QGT_QuestWatchNumQuests:Point("TOPRIGHT", -42, -6)
+					SkinFrame(QGT_QuestWatchNumQuests, "Point", "TOPRIGHT", -42, -6)
 				end
 
-				QGT_QuestWatchQuestName:Point("RIGHT", QGT_QuestWatchNumQuests, "LEFT", -12, 0)
+				SkinFrame(QGT_QuestWatchQuestName, "Point", "RIGHT", QGT_QuestWatchNumQuests, "LEFT", -12, 0)
 
 			--	width = width + QGT_QuestWatchQuestName:GetWidth() + QGT_QuestWatchNumQuests:GetWidth()
 				width = width + QGT_QuestWatchQuestName:GetWidth() + 32
@@ -374,29 +383,29 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 				QGT_QuestWatchFrame.backdrop:Point("TOPLEFT", -1, 1)
 				QGT_QuestWatchFrame.backdrop:Point("BOTTOMRIGHT", 1, -1)
 
-				QGT_QuestWatchQuestName:ClearAllPoints()
-				QGT_QuestWatchQuestName:Point("TOPLEFT", 8, -6)
+				SkinFrame(QGT_QuestWatchQuestName, "ClearAllPoints")
+				SkinFrame(QGT_QuestWatchQuestName, "Point", "TOPLEFT", 8, -6)
 
-				QGT_QuestWatchNumQuests:ClearAllPoints()
-				QGT_QuestWatchNumQuests:Point("LEFT", QGT_QuestWatchQuestName, "RIGHT", 12, 0)
+				SkinFrame(QGT_QuestWatchNumQuests, "ClearAllPoints")
+				SkinFrame(QGT_QuestWatchNumQuests, "Point", "LEFT", QGT_QuestWatchQuestName, "RIGHT", 12, 0)
 			end
 		end
 		local function updateAchievemtHeader(flag)
 			if flag then
 				local width = 20
 
-				QGT_AchievementWatchName:ClearAllPoints()
-				QGT_AchievementWatchNum:ClearAllPoints()
+				SkinFrame(QGT_AchievementWatchName, "ClearAllPoints")
+				SkinFrame(QGT_AchievementWatchNum, "ClearAllPoints")
 
 				if QGT_AchievementWatchFrameToggle:IsShown() then
 					width = width + 60
-					QGT_AchievementWatchNum:Point("TOPRIGHT", -60, -6)
+					SkinFrame(QGT_AchievementWatchNum, "Point", "TOPRIGHT", -60, -6)
 				else
 					width = width + 42
-					QGT_AchievementWatchNum:Point("TOPRIGHT", -42, -6)
+					SkinFrame(QGT_AchievementWatchNum, "Point", "TOPRIGHT", -42, -6)
 				end
 
-				QGT_AchievementWatchName:Point("RIGHT", QGT_AchievementWatchNum, "LEFT", -12, 0)
+				SkinFrame(QGT_AchievementWatchName, "Point", "RIGHT", QGT_AchievementWatchNum, "LEFT", -12, 0)
 
 			--	width = width + QGT_AchievementWatchName:GetWidth() + QGT_AchievementWatchNum:GetWidth()
 				width = width + QGT_AchievementWatchName:GetWidth() + 8
@@ -409,27 +418,27 @@ S:AddCallbackForAddon("QuestGuru_Tracker", "QuestGuru_Tracker", function()
 				QGT_AchievementWatchFrame.backdrop:Point("TOPLEFT", -1, 1)
 				QGT_AchievementWatchFrame.backdrop:Point("BOTTOMRIGHT", 1, -1)
 
-				QGT_AchievementWatchName:ClearAllPoints()
-				QGT_AchievementWatchName:Point("TOPLEFT", 8, -6)
+				SkinFrame(QGT_AchievementWatchName, "ClearAllPoints")
+				SkinFrame(QGT_AchievementWatchName, "Point", "TOPLEFT", 8, -6)
 
-				QGT_AchievementWatchNum:ClearAllPoints()
-				QGT_AchievementWatchNum:Point("LEFT", QGT_AchievementWatchName, "RIGHT", 12, 0)
+				SkinFrame(QGT_AchievementWatchNum, "ClearAllPoints")
+				SkinFrame(QGT_AchievementWatchNum, "Point", "LEFT", QGT_AchievementWatchName, "RIGHT", 12, 0)
 			end
 		end
 
-		QGT_QuestWatchFrameToggle:HookScript("OnClick", function()
+		SkinFrame(QGT_QuestWatchFrameToggle, "HookScript", "OnClick", function()
 			updateAchievemtHeader(QGT_Settings.AchievementWatch.Minimized)
 		end)
-		QGT_AchievementWatchFrameToggle:HookScript("OnClick", function()
+		SkinFrame(QGT_AchievementWatchFrameToggle, "HookScript", "OnClick", function()
 			updateQuestHeader(QGT_Settings.QuestWatch.Minimized)
 		end)
 
-		QGT_QuestWatchFrameMinimize:HookScript("OnClick", function(self, button)
+		SkinFrame(QGT_QuestWatchFrameMinimize, "HookScript", "OnClick", function(self, button)
 			if button == "LeftButton" then
 				updateQuestHeader(QGT_Settings.QuestWatch.Minimized)
 			end
 		end)
-		QGT_AchievementWatchFrameMinimize:HookScript("OnClick", function(self, button)
+		SkinFrame(QGT_AchievementWatchFrameMinimize, "HookScript", "OnClick", function(self, button)
 			if button == "LeftButton" then
 				updateAchievemtHeader(QGT_Settings.AchievementWatch.Minimized)
 			end

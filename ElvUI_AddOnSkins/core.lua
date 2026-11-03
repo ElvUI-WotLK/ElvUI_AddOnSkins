@@ -163,8 +163,13 @@ function AS:RegisterAddonOption(addonName, options)
 
 	options[addonName] = {
 		type = "toggle",
-		name = addonName,
-		desc = L["TOGGLESKIN_DESC"],
+		name = function()
+			return AS:GetSkinError(addonName) and ("|cffff5555[!] "..addonName.."|r") or addonName
+		end,
+		desc = function()
+			local entry = AS:GetSkinError(addonName)
+			return entry and (L["TOGGLESKIN_DESC"].."\n\nLast skin error:\n"..entry.message) or L["TOGGLESKIN_DESC"]
+		end,
 	}
 end
 
@@ -627,6 +632,19 @@ local function getOptions()
 		target.WeakAuras.hidden = WeakAuras and WeakAuras.IsCorrectVersion ~= nil or false
 	end
 
+	options.args.errors = {
+		order = 4, type = "group", name = "Errors",
+		args = {
+			suppress = {
+				order = 1, type = "toggle", width = "full", name = "Suppress AddOnSkins error popups",
+				desc = "Record errors here and mark affected skins in red with [!]. Other addons' errors remain visible. A failed skin may be incomplete. No reload required.",
+				get = function() return E.db.addOnSkins.suppressSkinErrors ~= false end,
+				set = function(_, value) E.db.addOnSkins.suppressSkinErrors = value end,
+			},
+			clear = {order = 2, type = "execute", name = "Clear recorded errors", func = function() AS:ClearSkinErrors() end},
+			log = {order = 3, type = "description", width = "full", name = function() return AS:SkinErrorText() end},
+		}
+	}
 	E.Options.args.addOnSkins = options
 end
 
