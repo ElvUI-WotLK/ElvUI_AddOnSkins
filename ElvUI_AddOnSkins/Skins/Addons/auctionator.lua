@@ -239,7 +239,17 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		skinItemButtom(Atr_RecommendItem_Tex)
 
 		SkinFrame(AuctionatorMessageFrame, "Point", "TOP", 100, -65)
-		SkinFrame(AuctionatorMessage2Frame, "Point", "TOP", 100, -55)
+		if Atr_Hilite1_btn and AuctionatorMessage2Frame and Atr_Recommend_Text then
+			-- Auctionator+ keeps the posted-item title visible with its status.
+			-- The legacy 100-high centered message lands on that title's row.
+			AuctionatorMessage2Frame:ClearAllPoints()
+			AuctionatorMessage2Frame:Point("TOPLEFT", Atr_Recommend_Text, "BOTTOMLEFT", 0, -6)
+			AuctionatorMessage2Frame:Size(525, 30)
+			AuctionatorMessage2Frame:SetJustifyH("LEFT")
+			AuctionatorMessage2Frame:SetJustifyV("TOP")
+		else
+			SkinFrame(AuctionatorMessage2Frame, "Point", "TOP", 100, -55)
+		end
 
 		for i = 1, 3 do
 			local tab = _G["Atr_ListTabsTab"..i]
