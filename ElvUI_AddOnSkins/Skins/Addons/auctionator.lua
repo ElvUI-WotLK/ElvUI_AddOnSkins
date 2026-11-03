@@ -364,18 +364,13 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		SkinControl("HandleDropDownBox", Atr_Duration, 130)
 
 		SkinFrame(Atr_Deposit_Text, "Point", "TOPLEFT", 10, -304)
-		-- Use cropped money-atlas coins without the old four-pixel offset. Preserve
-		-- Auctionator's calculated amount and multi-auction multiplier.
+		-- Preserve Auctionator's original coin textures, size, and four-pixel
+		-- spacing. Remove only trailing blank glyphs after the final coin.
 		local function formatDeposit()
 			local text = Atr_Deposit_Text:GetText()
 			if not text or text == "" then return end
-			text = text:gsub("|TInterface\\MoneyFrame\\UI%-(%a+)Icon:[^|]*|t", function(coin)
-				local bounds = ({Gold={1,16}, Silver={17,32}, Copper={33,48}})[coin]
-				if not bounds then return "" end
-				return string.format("|TInterface\\MoneyFrame\\UI-MoneyIcons:12:12:0:0:64:16:%d:%d:1:16|t", bounds[1], bounds[2])
-			end)
-			text = text:gsub("%s+$", "")
-			Atr_Deposit_Text:SetText(text.."|r")
+			local cleaned = text:gsub("%s+$", "")
+			if cleaned ~= text then Atr_Deposit_Text:SetText(cleaned) end
 		end
 		hooksecurefunc("Atr_SetDepositText", formatDeposit)
 		formatDeposit()
