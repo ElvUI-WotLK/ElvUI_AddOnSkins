@@ -96,8 +96,8 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 
 		if Atr_IsAuctionatorTab(index) then
 			if index == Atr_FindTabIndex(BUY_TAB) then
-				SkinFrame(Atr_Hlist, "Height", 242)
-				SkinFrame(Atr_Hlist_ScrollFrame, "Height", 242)
+				SkinFrame(Atr_Hlist, "Height", Atr_SrchSListButton and 220 or 242)
+				SkinFrame(Atr_Hlist_ScrollFrame, "Height", Atr_SrchSListButton and 220 or 242)
 			else
 				SkinFrame(Atr_Hlist, "Height", 330)
 				SkinFrame(Atr_Hlist_ScrollFrame, "Height", 330)
@@ -232,6 +232,7 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		SkinFrame(Atr_Hilite1, "SetTemplate", "Transparent", nil, true)
 		SkinFrame(Atr_Hilite1, "SetBackdropColor", 0, 0, 0, 0)
 		SkinFrame(Atr_Hilite1, "Height", 112)
+		SkinFrame(Atr_Hilite1, "ClearAllPoints")
 		SkinFrame(Atr_Hilite1, "Point", "TOPLEFT", 5, -57)
 		SkinFrame(Atr_Hilite1, "Point", "RIGHT", 202, 0)
 
@@ -317,6 +318,18 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		SkinFrame(Atr_NewSListButton, "Width", 193)
 		SkinFrame(Atr_NewSListButton, "Point", "TOPLEFT", -191, -367)
 
+		if Atr_SrchSListButton and Atr_MngSListsButton then
+			local shoppingButtons = {Atr_AddToSListButton, Atr_RemFromSListButton,
+				Atr_SrchSListButton, Atr_MngSListsButton, Atr_NewSListButton}
+			for i, button in ipairs(shoppingButtons) do
+				SkinControl("HandleButton", button)
+				button:ClearAllPoints()
+				button:Size(193, 20)
+				button:Point("TOPLEFT", Atr_Main_Panel, "TOPLEFT", -191, -282 - (i - 1) * 22)
+			end
+			SkinControl("HandleButton", Atr_SaveThisList_Button)
+		end
+
 		SkinControl("HandleButton", Atr_Back_Button)
 		SkinFrame(Atr_Back_Button, "Height", 22)
 		SkinFrame(Atr_Back_Button, "Point", "TOPLEFT", 7, 13)
@@ -351,6 +364,20 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 		SkinControl("HandleDropDownBox", Atr_Duration, 130)
 
 		SkinFrame(Atr_Deposit_Text, "Point", "TOPLEFT", 10, -304)
+		-- Keep deposit text free of inline coin texture artifacts. Preserve
+		-- Auctionator's calculated amount and multi-auction multiplier.
+		local function formatDeposit()
+			local text = Atr_Deposit_Text:GetText()
+			if not text or text == "" then return end
+			text = text:gsub("|TInterface\\MoneyFrame\\UI%-(%a+)Icon:[^|]*|t", function(coin)
+				return ({Gold="g", Silver="s", Copper="c"})[coin] or ""
+			end)
+			text = text:gsub("%s+$", "")
+			Atr_Deposit_Text:SetText(text.."|r")
+		end
+		hooksecurefunc("Atr_SetDepositText", formatDeposit)
+		formatDeposit()
+
 
 		SkinControl("HandleEditBox", Atr_StackPriceGold)
 		SkinControl("HandleEditBox", Atr_StackPriceSilver)
@@ -376,6 +403,25 @@ S:AddCallbackForAddon("Auctionator", "Auctionator", function()
 			SkinControl("HandleButton", Atr_CancelAllUndercutsButton)
 			SkinFrame(Atr_CancelAllUndercutsButton, "Height", 22)
 			SkinFrame(Atr_CancelAllUndercutsButton, "Point", "TOPLEFT", 7, -394)
+		end
+
+		-- Auctionator+ changes both sizes on tab switches, completed searches,
+		-- and clearing the sale. Replace its old anchors, then keep the real
+		-- mouse target identical to the visible rectangle on every transition.
+		if Atr_Hilite1_btn then
+			local function syncDropArea()
+				local selling = Atr_SellControls:IsShown()
+				Atr_Hilite1:ClearAllPoints()
+				Atr_Hilite1:Point("TOPLEFT", Atr_Main_Panel, "TOPLEFT", selling and 5 or -191, -57)
+				Atr_Hilite1:Point("BOTTOMRIGHT", Atr_Main_Panel, "TOPLEFT", 614, selling and -169 or -387)
+				Atr_Hilite1_btn:ClearAllPoints()
+				Atr_Hilite1_btn:SetAllPoints(Atr_Hilite1)
+			end
+			hooksecurefunc(Atr_Hilite1, "SetSize", syncDropArea)
+			hooksecurefunc(Atr_Hilite1_btn, "SetSize", syncDropArea)
+			Atr_SellControls:HookScript("OnShow", syncDropArea)
+			Atr_SellControls:HookScript("OnHide", syncDropArea)
+			syncDropArea()
 		end
 	end)
 
